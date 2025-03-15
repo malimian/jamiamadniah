@@ -5,7 +5,7 @@ if($_SERVER['REMOTE_ADDR'] == "::1" || $_SERVER['REMOTE_ADDR'] == "127.0.0.1"){
 	$servername = "localhost";
 	$username = "root";
 	$password = "";
-	$dbname = "ibspotlight";
+	$dbname = "ibspotlight9225";
 	$conn = new mysqli($servername, $username, $password, $dbname);
 }
 else{

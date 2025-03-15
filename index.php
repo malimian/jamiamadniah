@@ -26,524 +26,504 @@ echo Baseheader($content['page_meta_title'],
 ?>
 
 
-     <div class="container-fluid bg-primary py-5 mb-5 hero-header">
-            <div class="container py-5">
-                <div class="row justify-content-center py-5">
-                    <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-                        <h1 class="display-3 text-white mb-3 animated slideInDown">Around the World, One O'Clock at a Time!</h1>
-                        <p class="fs-4 text-white mb-4 animated slideInDown"><?php echo SITE_TAGLINE ;?></p>
-                        <div class="position-relative w-75 mx-auto animated slideInDown">
-                            <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Eg: Thailand">
-                            <button type="button" class="btn btn-primary rounded-pill py-2 px-4 position-absolute top-0 end-0 me-2" style="margin-top: 7px;">Search</button>
-                        </div>
-                    </div>
-                </div>
+   <section class="section first-section">
+            <div class="container-fluid">
+                <div class="masonry-blog clearfix">
+                    <div class="left-side">
+                        <div class="masonry-box post-media">
+                             <img src="upload/blog_masonry_01.jpg" alt="" class="img-fluid">
+                             <div class="shadoweffect">
+                                <div class="shadow-desc">
+                                    <div class="blog-meta">
+                                        <span class="bg-aqua"><a href="blog-category-01.html" title="">Lifestyle</a></span>
+                                        <h4><a href="single.html" title="">The golden rules you need to know for a positive life</a></h4>
+                                        <small><a href="single.html" title="">24 July, 2017</a></small>
+                                        <small><a href="blog-author.html" title="">by Amanda</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end shadow-desc -->
+                            </div><!-- end shadow -->
+                        </div><!-- end post-media -->
+                    </div><!-- end left-side -->
+
+                    <div class="center-side">
+                        <div class="masonry-box post-media">
+                             <img src="upload/blog_masonry_02.jpg" alt="" class="img-fluid">
+                             <div class="shadoweffect">
+                                <div class="shadow-desc">
+                                    <div class="blog-meta">
+                                        <span class="bg-green"><a href="blog-category-01.html" title="">Travel</a></span>
+                                        <h4><a href="single.html" title="">5 places you should see</a></h4>
+                                        <small><a href="single.html" title="">24 July, 2017</a></small>
+                                        <small><a href="blog-author.html" title="">by Amanda</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end shadow-desc -->
+                            </div><!-- end shadow -->
+                        </div><!-- end post-media -->
+
+                        <div class="masonry-box small-box post-media">
+                             <img src="upload/blog_masonry_03.jpg" alt="" class="img-fluid">
+                             <div class="shadoweffect">
+                                <div class="shadow-desc">
+                                    <div class="blog-meta">
+                                        <span class="bg-green"><a href="blog-category-01.html" title="">Travel</a></span>
+                                        <h4><a href="single.html" title="">Separate your place with exotic hotels</a></h4>
+                                    </div><!-- end meta -->
+                                </div><!-- end shadow-desc -->
+                            </div><!-- end shadow -->
+                        </div><!-- end post-media -->
+
+                        <div class="masonry-box small-box post-media">
+                             <img src="upload/blog_masonry_04.jpg" alt="" class="img-fluid">
+                             <div class="shadoweffect">
+                                <div class="shadow-desc">
+                                    <div class="blog-meta">
+                                        <span class="bg-green"><a href="blog-category-01.html" title="">Travel</a></span>
+                                        <h4><a href="single.html" title="">What you need to know for child health</a></h4>
+                                    </div><!-- end meta -->
+                                </div><!-- end shadow-desc -->
+                            </div><!-- end shadow -->
+                        </div><!-- end post-media -->
+                    </div><!-- end left-side -->
+
+                    <div class="right-side hidden-md-down">
+                        <div class="masonry-box post-media">
+                             <img src="upload/blog_masonry_05.jpg" alt="" class="img-fluid">
+                             <div class="shadoweffect">
+                                <div class="shadow-desc">
+                                    <div class="blog-meta">
+                                        <span class="bg-aqua"><a href="blog-category-01.html" title="">Lifestyle</a></span>
+                                        <h4><a href="single.html" title="">The rules you need to know for a happy union</a></h4>
+                                        <small><a href="single.html" title="">03 July, 2017</a></small>
+                                        <small><a href="blog-author.html" title="">by Jessica</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end shadow-desc -->
+                             </div><!-- end shadow -->
+                        </div><!-- end post-media -->
+                    </div><!-- end right-side -->
+                </div><!-- end masonry -->
             </div>
-        </div>
-    </div>
-    <!-- Navbar & Hero End -->
+        </section>
 
+        <section class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="section-title">
+                            <h3 class="color-aqua"><a href="blog-category-01.html" title="">Lifestyle</a></h3>
+                        </div><!-- end title -->
 
-    <!-- About Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
-                    <div class="position-relative h-100">
-                        <img class="img-fluid position-absolute w-100 h-100" src="img/about.jpg" alt="" style="object-fit: cover;">
-                    </div>
-                </div>
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <h6 class="section-title bg-white text-start text-primary pe-3">About Us</h6>
-                    <h1 class="mb-4">Welcome to <span class="text-primary"><?php echo SITE_TITLE ;?></span></h1>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                    <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                    <div class="row gy-2 gx-4 mb-4">
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>First Class Flights</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Handpicked Hotels</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>5 Star Accommodations</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Latest Model Vehicles</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>150 Premium City Tours</p>
-                        </div>
-                        <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>24/7 Service</p>
-                        </div>
-                    </div>
-                    <a class="btn btn-primary py-3 px-5 mt-2" href="">Read More</a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- About End -->
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="blog-box">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_05.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect">
+                                                <span></span>
+                                            </div><!-- end hover -->
+                                        </a>
+                                    </div><!-- end media -->
+                                    <div class="blog-meta big-meta">
+                                        <h4><a href="single.html" title="">The golden rules you need to know for a positive life</a></h4>
+                                        <p>Aenean interdum arcu blandit, vehicula magna non, placerat elit. Mauris et pharetratortor. Suspendissea sodales urna. In at augue elit. Vivamus enim nibh, maximus ac felis nec, maximus tempor odio.</p>
+                                        <small><a href="blog-category-01.html" title="">Lifestyle</a></small>
+                                        <small><a href="single.html" title="">24 July, 2017</a></small>
+                                        <small><a href="blog-author.html" title="">by Amanda</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end blog-box -->
 
+                                <hr class="invis">
 
-    <!-- Service Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Services</h6>
-                <h1 class="mb-5">Our Services</h1>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-globe text-primary mb-4"></i>
-                            <h5>WorldWide Tours</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-hotel text-primary mb-4"></i>
-                            <h5>Hotel Reservation</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-user text-primary mb-4"></i>
-                            <h5>Travel Guides</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-cog text-primary mb-4"></i>
-                            <h5>Event Management</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-globe text-primary mb-4"></i>
-                            <h5>WorldWide Tours</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-hotel text-primary mb-4"></i>
-                            <h5>Hotel Reservation</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-user text-primary mb-4"></i>
-                            <h5>Travel Guides</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-cog text-primary mb-4"></i>
-                            <h5>Event Management</h5>
-                            <p>Diam elitr kasd sed at elitr sed ipsum justo dolor sed clita amet diam</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Service End -->
+                                <div class="blog-box">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_06.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect">
+                                                <span></span>
+                                            </div><!-- end hover -->
+                                        </a>
+                                    </div><!-- end media -->
+                                    <div class="blog-meta big-meta">
+                                        <h4><a href="single.html" title="">I have a desert visit this summer</a></h4>
+                                        <p>Aenean interdum arcu blandit, vehicula magna non, placerat elit. Mauris et pharetratortor. Suspendissea sodales urna. In at augue elit. Vivamus enim nibh, maximus ac felis nec, maximus tempor odio.</p>
+                                        <small><a href="blog-category-01.html" title="">Lifestyle</a></small>
+                                        <small><a href="single.html" title="">22 July, 2017</a></small>
+                                        <small><a href="blog-author.html" title="">by Martines</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end blog-box -->
+                            </div><!-- end col -->
+                        </div><!-- end row -->
+                    </div><!-- end col -->
 
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        <div class="section-title">
+                            <h3 class="color-pink"><a href="blog-category-01.html" title="">Fashion</a></h3>
+                        </div><!-- end title -->
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="blog-box">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_01.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect">
+                                                <span></span>
+                                            </div><!-- end hover -->
+                                        </a>
+                                    </div><!-- end media -->
+                                    <div class="blog-meta">
+                                        <h4><a href="single.html" title="">What is your favorite leather jacket color</a></h4>
+                                        <small><a href="blog-category-01.html" title="">Fashion</a></small>
+                                        <small><a href="blog-category-01.html" title="">21 July, 2017</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end blog-box -->
 
-    <!-- Destination Start -->
-    <div class="container-xxl py-5 destination">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Destination</h6>
-                <h1 class="mb-5">Popular Destination</h1>
-            </div>
-            <div class="row g-3">
-                <div class="col-lg-7 col-md-6">
-                    <div class="row g-3">
-                        <div class="col-lg-12 col-md-12 wow zoomIn" data-wow-delay="0.1s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/destination-1.jpg" alt="">
-                                <div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">30% OFF</div>
-                                <div class="bg-white text-primary fw-bold position-absolute bottom-0 end-0 m-3 py-1 px-2">Thailand</div>
-                            </a>
-                        </div>
-                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.3s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/destination-2.jpg" alt="">
-                                <div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">25% OFF</div>
-                                <div class="bg-white text-primary fw-bold position-absolute bottom-0 end-0 m-3 py-1 px-2">Malaysia</div>
-                            </a>
-                        </div>
-                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.5s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/destination-3.jpg" alt="">
-                                <div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">35% OFF</div>
-                                <div class="bg-white text-primary fw-bold position-absolute bottom-0 end-0 m-3 py-1 px-2">Australia</div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-6 wow zoomIn" data-wow-delay="0.7s" style="min-height: 350px;">
-                    <a class="position-relative d-block h-100 overflow-hidden" href="">
-                        <img class="img-fluid position-absolute w-100 h-100" src="img/destination-4.jpg" alt="" style="object-fit: cover;">
-                        <div class="bg-white text-danger fw-bold position-absolute top-0 start-0 m-3 py-1 px-2">20% OFF</div>
-                        <div class="bg-white text-primary fw-bold position-absolute bottom-0 end-0 m-3 py-1 px-2">Indonesia</div>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Destination Start -->
+                                <hr class="invis">
 
+                                <div class="blog-box">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_02.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect">
+                                                <span></span>
+                                            </div><!-- end hover -->
+                                        </a>
+                                    </div><!-- end media -->
+                                    <div class="blog-meta">
+                                        <h4><a href="single.html" title="">Is summer, have you bought a cane</a></h4>
+                                        <small><a href="blog-category-01.html" title="">Fashion</a></small>
+                                        <small><a href="blog-category-01.html" title="">11 July, 2017</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end blog-box -->
+                            </div><!-- end col -->
 
-    <!-- Package Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Packages</h6>
-                <h1 class="mb-5">Awesome Packages</h1>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="package-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/package-1.jpg" alt="">
-                        </div>
-                        <div class="d-flex border-bottom">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt text-primary me-2"></i>Thailand</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>3 days</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>2 Person</small>
-                        </div>
-                        <div class="text-center p-4">
-                            <h3 class="mb-0">$149.00</h3>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                            </div>
-                            <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam eos</p>
-                            <div class="d-flex justify-content-center mb-2">
-                                <a href="#" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                <a href="#" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Book Now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="package-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/package-2.jpg" alt="">
-                        </div>
-                        <div class="d-flex border-bottom">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt text-primary me-2"></i>Indonesia</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>3 days</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>2 Person</small>
-                        </div>
-                        <div class="text-center p-4">
-                            <h3 class="mb-0">$139.00</h3>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                            </div>
-                            <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam eos</p>
-                            <div class="d-flex justify-content-center mb-2">
-                                <a href="#" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                <a href="#" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Book Now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="package-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/package-3.jpg" alt="">
-                        </div>
-                        <div class="d-flex border-bottom">
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt text-primary me-2"></i>Malaysia</small>
-                            <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>3 days</small>
-                            <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>2 Person</small>
-                        </div>
-                        <div class="text-center p-4">
-                            <h3 class="mb-0">$189.00</h3>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                            </div>
-                            <p>Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam eos</p>
-                            <div class="d-flex justify-content-center mb-2">
-                                <a href="#" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                <a href="#" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Book Now</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Package End -->
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="blog-box">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_03.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect">
+                                                <span></span>
+                                            </div><!-- end hover -->
+                                        </a>
+                                    </div><!-- end media -->
+                                    <div class="blog-meta">
+                                        <h4><a href="single.html" title="">This year's fashionable long beard</a></h4>
+                                        <small><a href="blog-category-01.html" title="">Fashion</a>, <a href="blog-category-01.html" title="">Man</a></small>
+                                        <small><a href="blog-category-01.html" title="">08 July, 2017</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end blog-box -->
 
+                                <hr class="invis">
 
-        <?php echo include_module('modules/module_packages.php' , array('packages_category' => 1));?>   
+                                <div class="blog-box">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_04.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect">
+                                                <span></span>
+                                            </div><!-- end hover -->
+                                        </a>
+                                    </div><!-- end media -->
+                                    <div class="blog-meta">
+                                        <h4><a href="single.html" title="">How to be more cool with clothing</a></h4>
+                                        <small><a href="blog-category-01.html" title="">Fashion</a>, <a href="blog-category-01.html" title="">Style</a></small>
+                                        <small><a href="blog-category-01.html" title="">04 July, 2017</a></small>
+                                    </div><!-- end meta -->
+                                </div><!-- end blog-box -->
+                            </div><!-- end col -->
+                        </div><!-- end row -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
 
+                <hr class="invis1">
 
-    <!-- Booking Start -->
-    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container">
-            <div class="booking p-5">
-                <div class="row g-5 align-items-center">
-                    <div class="col-md-6 text-white">
-                        <h6 class="text-white text-uppercase">Booking</h6>
-                        <h1 class="text-white mb-4">Online Booking</h1>
-                        <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                        <p class="mb-4">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed stet lorem sit clita duo justo magna dolore erat amet</p>
-                        <a class="btn btn-outline-light py-3 px-5 mt-2" href="">Read More</a>
-                    </div>
-                    <div class="col-md-6">
-                        <h1 class="text-white mb-4">Book A Tour</h1>
-                        <form>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control bg-transparent" id="name" placeholder="Your Name">
-                                        <label for="name">Your Name</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control bg-transparent" id="email" placeholder="Your Email">
-                                        <label for="email">Your Email</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating date" id="date3" data-target-input="nearest">
-                                        <input type="text" class="form-control bg-transparent datetimepicker-input" id="datetime" placeholder="Date & Time" data-target="#date3" data-toggle="datetimepicker" />
-                                        <label for="datetime">Date & Time</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <select class="form-select bg-transparent" id="select1">
-                                            <option value="1">Destination 1</option>
-                                            <option value="2">Destination 2</option>
-                                            <option value="3">Destination 3</option>
-                                        </select>
-                                        <label for="select1">Destination</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea class="form-control bg-transparent" placeholder="Special Request" id="message" style="height: 100px"></textarea>
-                                        <label for="message">Special Request</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-outline-light w-100 py-3" type="submit">Book Now</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Booking Start -->
+                <div class="row">
+                    <div class="col-lg-10 offset-lg-1">
+                        <div class="banner-spot clearfix">
+                            <div class="banner-img">
+                                <img src="upload/banner_01.jpg" alt="" class="img-fluid">
+                            </div><!-- end banner-img -->
+                        </div><!-- end banner -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
 
+                <hr class="invis1">
 
-    <!-- Process Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center pb-4 wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Process</h6>
-                <h1 class="mb-5">3 Easy Steps</h1>
-            </div>
-            <div class="row gy-5 gx-4 justify-content-center">
-                <div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="position-relative border border-primary pt-5 pb-4 px-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow" style="width: 100px; height: 100px;">
-                            <i class="fa fa-globe fa-3x text-white"></i>
-                        </div>
-                        <h5 class="mt-4">Choose A Destination</h5>
-                        <hr class="w-25 mx-auto bg-primary mb-1">
-                        <hr class="w-50 mx-auto bg-primary mt-0">
-                        <p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam eos erat ipsum et lorem et sit sed stet lorem sit</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="position-relative border border-primary pt-5 pb-4 px-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow" style="width: 100px; height: 100px;">
-                            <i class="fa fa-dollar-sign fa-3x text-white"></i>
-                        </div>
-                        <h5 class="mt-4">Pay Online</h5>
-                        <hr class="w-25 mx-auto bg-primary mb-1">
-                        <hr class="w-50 mx-auto bg-primary mt-0">
-                        <p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam eos erat ipsum et lorem et sit sed stet lorem sit</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="position-relative border border-primary pt-5 pb-4 px-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow" style="width: 100px; height: 100px;">
-                            <i class="fa fa-plane fa-3x text-white"></i>
-                        </div>
-                        <h5 class="mt-4">Fly Today</h5>
-                        <hr class="w-25 mx-auto bg-primary mb-1">
-                        <hr class="w-50 mx-auto bg-primary mt-0">
-                        <p class="mb-0">Tempor erat elitr rebum clita dolor diam ipsum sit diam amet diam eos erat ipsum et lorem et sit sed stet lorem sit</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Process Start -->
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="blog-list clearfix">
+                            <div class="section-title">
+                                <h3 class="color-green"><a href="blog-category-01.html" title="">Travel</a></h3>
+                            </div><!-- end title -->
 
+                            <div class="blog-box row">
+                                <div class="col-md-4">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_square_01.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect"></div>
+                                        </a>
+                                    </div><!-- end media -->
+                                </div><!-- end col -->
 
-    <!-- Team Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Travel Guide</h6>
-                <h1 class="mb-5">Meet Our Guide</h1>
-            </div>
-            <div class="row g-4">
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/team-1.jpg" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Full Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="team-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/team-2.jpg" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Full Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="team-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/team-3.jpg" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Full Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="team-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/team-4.jpg" alt="">
-                        </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -19px;">
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-twitter"></i></a>
-                            <a class="btn btn-square mx-1" href=""><i class="fab fa-instagram"></i></a>
-                        </div>
-                        <div class="text-center p-4">
-                            <h5 class="mb-0">Full Name</h5>
-                            <small>Designation</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Team End -->
+                                <div class="blog-meta big-meta col-md-8">
+                                    <h4><a href="single.html" title="">5 Beautiful buildings you need to visit without dying</a></h4>
+                                    <p>Aenean interdum arcu blandit, vehicula magna non, placerat elit. Mauris et pharetratortor. Suspendissea sodales urna. In at augue elit. Vivamus enim nibh, maximus ac felis nec, maximus tempor odio.</p>
+                                    <small><a href="blog-category-01.html" title="">Travel</a></small>
+                                    <small><a href="single.html" title="">21 July, 2017</a></small>
+                                    <small><a href="blog-author.html" title="">by Boby</a></small>
+                                </div><!-- end meta -->
+                            </div><!-- end blog-box -->
 
+                            <hr class="invis">
 
-    <!-- Testimonial Start -->
-    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container">
-            <div class="text-center">
-                <h6 class="section-title bg-white text-center text-primary px-3">Testimonial</h6>
-                <h1 class="mb-5">Our Clients Say!!!</h1>
-            </div>
-            <div class="owl-carousel testimonial-carousel position-relative">
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <img class="bg-white rounded-circle shadow p-1 mx-auto mb-3" src="img/testimonial-1.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">John Doe</h5>
-                    <p>New York, USA</p>
-                    <p class="mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                </div>
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <img class="bg-white rounded-circle shadow p-1 mx-auto mb-3" src="img/testimonial-2.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">John Doe</h5>
-                    <p>New York, USA</p>
-                    <p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                </div>
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <img class="bg-white rounded-circle shadow p-1 mx-auto mb-3" src="img/testimonial-3.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">John Doe</h5>
-                    <p>New York, USA</p>
-                    <p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                </div>
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <img class="bg-white rounded-circle shadow p-1 mx-auto mb-3" src="img/testimonial-4.jpg" style="width: 80px; height: 80px;">
-                    <h5 class="mb-0">John Doe</h5>
-                    <p>New York, USA</p>
-                    <p class="mt-2 mb-0">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam et eos. Clita erat ipsum et lorem et sit.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Testimonial End -->
+                            <div class="blog-box row">
+                                <div class="col-md-4">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_square_02.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect"></div>
+                                        </a>
+                                    </div><!-- end media -->
+                                </div><!-- end col -->
+
+                                <div class="blog-meta big-meta col-md-8">
+                                    <h4><a href="single.html" title="">Let's make an introduction to the glorious world of history</a></h4>
+                                    <p>Aenean interdum arcu blandit, vehicula magna non, placerat elit. Mauris et pharetratortor. Suspendissea sodales urna. In at augue elit. Vivamus enim nibh, maximus ac felis nec, maximus tempor odio.</p>
+                                    <small><a href="blog-category-01.html" title="">Travel</a></small>
+                                    <small><a href="single.html" title="">20 July, 2017</a></small>
+                                    <small><a href="blog-author.html" title="">by Samanta</a></small>
+                                </div><!-- end meta -->
+                            </div><!-- end blog-box -->
+
+                            <hr class="invis">
+
+                            <div class="blog-box row">
+                                <div class="col-md-4">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_square_03.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect"></div>
+                                        </a>
+                                    </div><!-- end media -->
+                                </div><!-- end col -->
+
+                                <div class="blog-meta big-meta col-md-8">
+                                    <h4><a href="single.html" title="">Did you see the most beautiful sea in the world?</a></h4>
+                                    <p>Aenean interdum arcu blandit, vehicula magna non, placerat elit. Mauris et pharetratortor. Suspendissea sodales urna. In at augue elit. Vivamus enim nibh, maximus ac felis nec, maximus tempor odio.</p>
+                                    <small><a href="blog-category-01.html" title="">Travel</a></small>
+                                    <small><a href="single.html" title="">19 July, 2017</a></small>
+                                    <small><a href="blog-author.html" title="">by Jackie</a></small>
+                                </div><!-- end meta -->
+                            </div><!-- end blog-box -->
+                        </div><!-- end blog-list -->
+
+                        <hr class="invis">
+
+                        <div class="blog-list clearfix">
+                            <div class="section-title">
+                                <h3 class="color-red"><a href="blog-category-01.html" title="">Food</a></h3>
+                            </div><!-- end title -->
+
+                            <div class="blog-box row">
+                                <div class="col-md-4">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_square_05.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect"></div>
+                                        </a>
+                                    </div><!-- end media -->
+                                </div><!-- end col -->
+
+                                <div class="blog-meta big-meta col-md-8">
+                                    <h4><a href="single.html" title="">Banana-chip chocolate cake recipe</a></h4>
+                                    <p>Aenean interdum arcu blandit, vehicula magna non, placerat elit. Mauris et pharetratortor. Suspendissea sodales urna. In at augue elit. Vivamus enim nibh, maximus ac felis nec, maximus tempor odio.</p>
+                                    <small><a href="blog-category-01.html" title="">Food</a></small>
+                                    <small><a href="single.html" title="">11 July, 2017</a></small>
+                                    <small><a href="blog-author.html" title="">by Matilda</a></small>
+                                </div><!-- end meta -->
+                            </div><!-- end blog-box -->
+
+                            <hr class="invis">
+
+                            <div class="blog-box row">
+                                <div class="col-md-4">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_square_06.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect"></div>
+                                        </a>
+                                    </div><!-- end media -->
+                                </div><!-- end col -->
+
+                                <div class="blog-meta big-meta col-md-8">
+                                    <h4><a href="single.html" title="">10 practical ways to choose organic vegetables</a></h4>
+                                    <p>Aenean interdum arcu blandit, vehicula magna non, placerat elit. Mauris et pharetratortor. Suspendissea sodales urna. In at augue elit. Vivamus enim nibh, maximus ac felis nec, maximus tempor odio.</p>
+                                    <small><a href="blog-category-01.html" title="">Food</a></small>
+                                    <small><a href="single.html" title="">10 July, 2017</a></small>
+                                    <small><a href="blog-author.html" title="">by Matilda</a></small>
+                                </div><!-- end meta -->
+                            </div><!-- end blog-box -->
+
+                            <hr class="invis">
+
+                            <div class="blog-box row">
+                                <div class="col-md-4">
+                                    <div class="post-media">
+                                        <a href="single.html" title="">
+                                            <img src="upload/blog_square_07.jpg" alt="" class="img-fluid">
+                                            <div class="hovereffect"></div>
+                                        </a>
+                                    </div><!-- end media -->
+                                </div><!-- end col -->
+
+                                <div class="blog-meta big-meta col-md-8">
+                                    <h4><a href="single.html" title="">We are making homemade ravioli</a></h4>
+                                    <p>Aenean interdum arcu blandit, vehicula magna non, placerat elit. Mauris et pharetratortor. Suspendissea sodales urna. In at augue elit. Vivamus enim nibh, maximus ac felis nec, maximus tempor odio.</p>
+                                    <small><a href="blog-category-01.html" title="">Food</a></small>
+                                    <small><a href="single.html" title="">09 July, 2017</a></small>
+                                    <small><a href="blog-author.html" title="">by Matilda</a></small>
+                                </div><!-- end meta -->
+                            </div><!-- end blog-box -->
+                        </div><!-- end blog-list -->
+                    </div><!-- end col -->
+
+                    <div class="col-lg-3">
+                        <div class="section-title">
+                            <h3 class="color-yellow"><a href="blog-category-01.html" title="">Vlogs</a></h3>
+                        </div><!-- end title -->
+
+                        <div class="blog-box">
+                            <div class="post-media">
+                                <a href="single.html" title="">
+                                    <img src="upload/blog_10.jpg" alt="" class="img-fluid">
+                                    <div class="hovereffect">
+                                        <span class="videohover"></span>
+                                    </div><!-- end hover -->
+                                </a>
+                            </div><!-- end media -->
+                            <div class="blog-meta">
+                                <h4><a href="single.html" title="">We are guests of ABC Design Studio - Vlog</a></h4>
+                                <small><a href="blog-category-01.html" title="">Videos</a></small>
+                                <small><a href="blog-category-01.html" title="">21 July, 2017</a></small>
+                            </div><!-- end meta -->
+                        </div><!-- end blog-box -->
+
+                        <hr class="invis">
+
+                        <div class="blog-box">
+                            <div class="post-media">
+                                <a href="single.html" title="">
+                                    <img src="upload/blog_11.jpg" alt="" class="img-fluid">
+                                    <div class="hovereffect">
+                                        <span class="videohover"></span>
+                                    </div><!-- end hover -->
+                                </a>
+                            </div><!-- end media -->
+                            <div class="blog-meta">
+                                <h4><a href="single.html" title="">Nostalgia at work</a></h4>
+                                <small><a href="blog-category-01.html" title="">Videos</a></small>
+                                <small><a href="blog-category-01.html" title="">20 July, 2017</a></small>
+                            </div><!-- end meta -->
+                        </div><!-- end blog-box -->
+
+                        <hr class="invis">
+
+                        <div class="blog-box">
+                            <div class="post-media">
+                                <a href="single.html" title="">
+                                    <img src="upload/blog_12.jpg" alt="" class="img-fluid">
+                                    <div class="hovereffect">
+                                        <span class="videohover"></span>
+                                    </div><!-- end hover -->
+                                </a>
+                            </div><!-- end media -->
+                            <div class="blog-meta">
+                                <h4><a href="single.html" title="">How to become a good vlogger</a></h4>
+                                <small><a href="blog-category-01.html" title="">Beauty</a></small>
+                                <small><a href="blog-category-01.html" title="">20 July, 2017</a></small>
+                            </div><!-- end meta -->
+                        </div><!-- end blog-box -->
+
+                        <hr class="invis">
+
+                        <div class="section-title">
+                            <h3 class="color-grey"><a href="blog-category-01.html" title="">Health</a></h3>
+                        </div><!-- end title -->
+
+                        <div class="blog-box">
+                            <div class="post-media">
+                                <a href="single.html" title="">
+                                    <img src="upload/blog_07.jpg" alt="" class="img-fluid">
+                                    <div class="hovereffect">
+                                        <span></span>
+                                    </div><!-- end hover -->
+                                </a>
+                            </div><!-- end media -->
+                            <div class="blog-meta">
+                                <h4><a href="single.html" title="">Opened the doors of the Istanbul spa center</a></h4>
+                                <small><a href="blog-category-01.html" title="">Spa</a></small>
+                                <small><a href="blog-category-01.html" title="">21 July, 2017</a></small>
+                            </div><!-- end meta -->
+                        </div><!-- end blog-box -->
+
+                        <hr class="invis">
+
+                        <div class="blog-box">
+                            <div class="post-media">
+                                <a href="single.html" title="">
+                                    <img src="upload/blog_08.jpg" alt="" class="img-fluid">
+                                    <div class="hovereffect">
+                                        <span></span>
+                                    </div><!-- end hover -->
+                                </a>
+                            </div><!-- end media -->
+                            <div class="blog-meta">
+                                <h4><a href="single.html" title="">2017 trends in health tourism</a></h4>
+                                <small><a href="blog-category-01.html" title="">Health</a></small>
+                                <small><a href="blog-category-01.html" title="">20 July, 2017</a></small>
+                            </div><!-- end meta -->
+                        </div><!-- end blog-box -->
+
+                        <hr class="invis">
+
+                        <div class="blog-box">
+                            <div class="post-media">
+                                <a href="single.html" title="">
+                                    <img src="upload/blog_09.jpg" alt="" class="img-fluid">
+                                    <div class="hovereffect">
+                                        <span></span>
+                                    </div><!-- end hover -->
+                                </a>
+                            </div><!-- end media -->
+                            <div class="blog-meta">
+                                <h4><a href="single.html" title="">Experience the effects of miraculous stones</a></h4>
+                                <small><a href="blog-category-01.html" title="">Beauty</a></small>
+                                <small><a href="blog-category-01.html" title="">20 July, 2017</a></small>
+                            </div><!-- end meta -->
+                        </div><!-- end blog-box -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
+
+                <hr class="invis1">
+
+                <div class="row">
+                    <div class="col-lg-10 offset-lg-1">
+                        <div class="banner-spot clearfix">
+                            <div class="banner-img">
+                                <img src="upload/banner_02.jpg" alt="" class="img-fluid">
+                            </div><!-- end banner-img -->
+                        </div><!-- end banner -->
+                    </div><!-- end col -->
+                </div><!-- end row -->
+            </div><!-- end container -->
+        </section>
+
 
 <?php 
-	echo replace_sysvari( BaseScript(null,$template_id) , getcwd()."/");
-
-	echo replace_sysvari( Basefooter(null,$template_id) , getcwd()."/");
-
+    echo replace_sysvari( Basefooter(null,$template_id) , getcwd()."/");
+    echo replace_sysvari( BaseScript(null,$template_id) , getcwd()."/");
  ?>
+
+</body>
+</html>
