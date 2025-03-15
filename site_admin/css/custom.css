@@ -1,0 +1,25 @@
+.dataTables_filter, .dataTables_info { display: none; }
+
+.dropdown-item {
+    cursor: pointer;
+}
+#courseimg{
+    width:44px;
+}
+
+.host{
+    overflow:hidden;
+}
+
+.fa-minus-circle , .remove_choice{
+	color: #FF0000;
+}
+
+
+label{
+   font-weight: 500;
+    font-size: 11px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    transition: color .2s linear 0s;
+}

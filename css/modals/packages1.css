@@ -1,0 +1,283 @@
+.PackagesSec{
+    padding: 50px 0px;
+}
+
+.packagePrice {
+    background: transparent;
+    padding: 10px 15px;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.navbar-nav {
+    float: right;
+    margin: 0;
+    margin-top: 8px;
+}
+
+/*.btnPackage .btnBrandArea {
+    background: #000;
+    color: #fff;
+    border: 1px solid #0171bb;
+    border-radius: 5px;
+    padding: 6px 12px;
+    margin: 0px;
+    font-weight: 700;
+    margin-left: 26px;
+    width: 38%;
+}*/
+.btnPackage .btnBrandArea {
+    background: #51cc82;
+    color: #fff;
+    border: 1px solid #0171bb;
+    border-radius: 5px;
+    padding: 6px 12px;
+    margin: 2px;
+    font-weight: 700;
+    margin-left: 55px;
+    width: 55%;
+}
+
+.scocialmediadiv .socialmediamaketingpackages {
+    background: #000;
+    color: #fff;
+    border: 1px solid #0171bb;
+    border-radius: 5px;
+    padding: 6px 6px;
+    margin: 0px;
+    font-weight: 700;
+    margin-left: 0px;
+    width: 49%;
+}
+
+.btnPackage {
+    margin: 0px;
+    padding-bottom: 0px;
+    padding-top: 15px;
+}
+.wrap {
+    width: 100%;
+    height: 188px;
+    position: absolute;
+    top: -8px;
+    left: -7px;
+    overflow: hidden;
+}
+.wrap:before {
+    width: 40px;
+    height: 8px;
+    right: 100px;
+    background: #69530f;
+    border-radius: 8px 8px 0px 0px;
+}
+.wrap:after {
+    width: 8px;
+    height: 40px;
+    right: 0px;
+    top: 100px;
+    background: #69530f;
+    border-radius: 0px 8px 8px 0px;
+}
+.wrap:before, .wrap:after {
+    content: "";
+    position: absolute;
+}
+.ribbon6 {
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    position: absolute;
+    top: 30px;
+    color: #fff;
+    right: -50px;
+    z-index: 2;
+    overflow: hidden;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    border: 1px dashed;
+    box-shadow: 0 0 0 3px #d4a517, 0px 21px 5px -18px rgba(0,0,0,0.6);
+    background: #d4a517;
+    text-align: center;
+}
+
+.packageBox:hover {
+    transform: scale(1);
+    transition: 0s;
+    -webkit-box-shadow: 10px 10px 5px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px -6px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px -6px rgba(0,0,0,0.75);
+    margin: 0px 0px;
+}
+/* width */
+.packageData::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.packageData::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+.packageData::-webkit-scrollbar-thumb {
+  background: #ddd; 
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.packageData::-webkit-scrollbar-thumb:hover {
+  background: #0b77bf; 
+}
+.packageSpace {
+    margin: 20px 0px;
+}
+
+.subscription_detail {
+    font-size: 15px;
+}
+.subscription_detail span {
+    float: right;
+    color: #00baad;
+}
+.packagedatModal {
+    line-height: 24px;
+}
+
+.priceBoxBod ul li {
+    list-style: none;
+    border-bottom: 1px solid;
+    font-weight: 600;
+    text-align: left;
+    border-bottom-color: #475661;
+}
+
+#subscription_Total {
+    padding-top: 29px;
+    font-size: 30px;
+    border-top: 2px dotted #ccc;
+}
+#subscription_Total span {
+    float: right;
+    color: #00baad;
+}
+.btn-order {
+    float: right;
+}
+
+
+.priceBoxHead img {
+    margin: 0 auto;
+}
+.priceBoxHead h3 {
+    margin: 0;
+    /*margin-top: 20px;*/
+     padding: 4px;
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-align: center;
+    color: #ffff;
+}
+.priceBoxHead h5 {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    color: white;
+}
+ul.listPriceBox {
+    padding: 0px;
+    min-height: 138px;
+}
+ul.listPriceBox li {
+    list-style: none;
+    border-bottom: 1px solid;
+    font-weight: 600;
+    text-align: center;
+    border-bottom-color: #475661;
+}
+.PriceBoxPrice {
+    text-align: center;
+    font-size: 58px;
+    position: relative;
+    border-bottom: 1px solid;
+}
+.priceBoxHead {
+    background: #51cc82;
+    /*padding: 25px 0px;*/
+    color: #ffff;
+    text-align: center;
+}
+.priceBoxBod {
+    padding: 20px 15px;
+    overflow: scroll;
+
+}
+/*.priceBoxBod {
+    background: #e1e9f3;
+    padding: 20px 15px;
+    border-bottom: 8px solid #475661;
+    overflow: scroll;
+    overflow-x: hidden;
+    max-height: 318px;
+}*/
+.priceBoxBod {
+    padding: 20px 15px;
+    /* overflow: scroll; */
+    overflow-x: hidden;
+   /* max-height: 220px;
+    min-height: 195px;*/
+}
+.priceBoxMain{
+/*        background: #0000;*/
+        border: 1px solid #51cc82;
+}
+.pricBoxArea {
+    margin-bottom: 10px;
+}
+
+span.cents {
+    font-size: 31px;
+    position: relative;
+    top: -27px;
+}
+span.signDollar {
+    font-size: 31px;
+    position: relative;
+    top: -27px;
+}
+
+.priceBoxBod ul{
+    padding: 0px;
+    min-height: 138px;
+}
+
+
+.priceBoxBod ul{
+    padding: 0px;
+    min-height: 138px;
+}
+
+
+.priceBoxBod ul li{
+    list-style: disc;
+    border-bottom: 1px solid;
+    font-weight: 500;
+    text-align: left;
+    border-bottom-color: #475661;
+    margin: 19px;
+}
+
+
+.priceBoxBod::-webkit-scrollbar {
+    width: 10px;
+}
+.priceBoxBod::-webkit-scrollbar-thumb {
+    background: #000;
+    border-radius: 10px;
+}
+.priceBoxBod::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}

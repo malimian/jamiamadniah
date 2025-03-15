@@ -1,0 +1,2 @@
+[27-Aug-2023 10:33:33 America/New_York] PHP Warning:  Use of undefined constant Email - assumed 'Email' (this will throw an Error in a future version of PHP) in /home2/uaesolar/public_html/post/contactus.php on line 26
+[27-Aug-2023 10:49:43 America/New_York] PHP Notice:  Undefined index: GnTPhone in /home2/uaesolar/public_html/post/contactus.php on line 9

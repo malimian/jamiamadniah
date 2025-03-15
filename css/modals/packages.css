@@ -1,0 +1,116 @@
+.box {
+    border: 2px solid #00a03d;
+    border-radius: 10px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+.REGULAR-box {
+    border: 1px solid#00a03d;
+    margin: 3px;
+    padding-top: 5px;
+    border-radius: 10px;
+    background-color: #00a03d;
+}
+.BEST-SELLING-box {
+    border: 1px solid #00a03d;
+    margin: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+    background-color: #00a03d;
+}
+.PREMIUM-box {
+    border: 1px solid #00a03d;
+    margin: 3px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 10px;
+    background-color: #00a03d;
+}
+h4.tc {
+    text-align: center;
+    color: white;
+    font-weight: 600;
+    font-size: 17px;
+}
+.box {
+    text-align: center;
+    font-size: 16px;
+}
+.save-box {
+    border: 1px solid;
+    margin: 15px 15px 5px 15px;
+    padding-top: 5px;
+    color: white;
+    padding-bottom: 5px;
+    border-radius: 10px;
+    background-color: #092e6e;
+}
+.p-text {
+    font-size: 17px;
+}
+
+.volt-box h2 {
+    font-size: 45px;
+    font-weight: 600;
+    color: #00a03d;
+}
+.volt-box p {
+    color: gray;
+}
+
+.customize-btn {
+    width: 93%;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color:#00a03d;
+    color: white;
+    font-size: 18px;
+}
+.text-box p {
+    margin-bottom: 20px;
+}
+
+.box:hover {
+    background: #32c36c3d;
+    color: black;
+}
+.customize-btn:hover {
+    background: #29292954;
+    color: white;
+}
+
+a.btn.btn-default.btnBrandArea.open_order_model.customize-btn {
+    width: 93%;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #00a03d;
+    color: white;
+    font-size: 18px;
+}
+.customize-btn:hover {
+    background-color: #00A03D;
+    color: white;
+}
+
+
+.box:hover {
+    transform: scale(1.1);
+    transition: 0.9s;
+    -webkit-box-shadow: 10px 10px 5px -6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 5px -6px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 5px -6px rgba(0,0,0,0.75);
+}
+
+.PriceBoxPrice {
+    border: 1px solid;
+    margin: 10px;
+    background: #00a03d;
+    color: white;
+    border-radius: 8px;
+    padding: 10px 10px 10px 7px;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+

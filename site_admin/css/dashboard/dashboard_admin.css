@@ -1,0 +1,81 @@
+.dataTables_filter, .dataTables_info { display: block !important; }
+
+ div.hr-dataentry {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #eee;
+  text-align: center;
+  height: 0px;
+  line-height: 0px;
+}
+
+div.hr-proofreader {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #eee;
+  text-align: center;
+  height: 0px;
+  line-height: 0px;
+}
+
+div.hr-proofreader:before {
+  content: 'Proof Readers';
+  background-color: #fff;
+}
+
+div.hr-dataentry:before {
+  content: 'Data Entry';
+  background-color: #fff;
+}
+
+div.hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #eee;
+  text-align: center;
+  height: 0px;
+  line-height: 0px;
+}
+
+.hr-title {
+  background-color: #fff;
+}
+
+.bg-proofreader{
+    background-color: #28A7A3;
+}
+
+.rg_user{
+  background-color: #004d40;
+}
+
+.membership{
+  background-color: #0d47a1;
+}
+
+.order{
+  background-color: #1b5e20;
+}
+
+.promocode{
+  background-color: #00897b;
+}
+
+.video{
+  background-color: #CC0000;
+}
+
+.quiz{
+  background-color: #1C2331;
+}
+
+.longcourse{
+  background-color: #006064;
+}
+
+.user{
+  background-color: #007E33;
+}

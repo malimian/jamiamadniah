@@ -1,0 +1,172 @@
+.checkoutmain {
+    background-image: url(../images/Contact-us-page.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50% 75%;
+}
+.checkoutmaindata h1 {
+    text-align: center;
+    font-size: 50px;
+    font-weight: 500;
+    color: #656a6a;
+    margin-top: 40px;
+}
+nav.navbar.navbar-default.datacolor {
+    margin-bottom: 0px;
+}
+.checkoutmaindata p {
+    text-align: center;
+    font-size: 20px;
+    color: #656a6a;
+    margin-bottom: 40px;
+}
+.arow {
+    margin: 10px 10px;
+}
+span.checkoutspan {
+    color: #fcb829;
+    font-weight: 500;
+}
+.row.rowbackgray {
+    background: #f4f4f4;
+    padding: 15px 15px;
+    margin: 50px 5px;
+}
+.couponclick {
+    padding: 15px 15px;
+    border-color: #b1adad;
+}
+.details h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: black;
+    text-align: left;
+}
+.yourorder h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: black;
+    text-align: left;
+}
+.row.formsareahead {
+    margin: 0px 0px;
+}
+.detailsform {
+    border: 1px solid;
+    padding: 20px 20px;
+    border-color: #656a6a69;
+    border-radius: 7px;
+}
+.yourorderdetail {
+    border: 1px solid;
+    padding: 10px 10px;
+    border-color: #656a6a69;
+    border-radius: 7px;
+}
+.yourorderdetail p {
+    font-size: 14px;
+    font-weight: 400;
+    color: black;
+    border-bottom: 1px solid;
+    line-height: 30px;
+}
+span.dertailright {
+    float: right;
+}
+.row.formsareahead {
+    margin: 0px 0px;
+}
+.additional h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: black;
+    text-align: left;
+}
+.additional h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: black;
+    text-align: left;
+}
+.transfer h3 {
+    font-size: 24px;
+    font-weight: 600;
+    color: black;
+    text-align: left;
+}
+.infoform {
+    border: 1px solid;
+    padding: 20px 20px;
+    border-color: #656a6a69;
+    border-radius: 7px;
+}
+.yourorderdetails p {
+    background: #f4f4f4;
+    padding: 10px 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: black;
+    line-height: 20px;
+    margin-bottom: 15px;
+}
+.yourorderdetails h4 {
+    font-size: 17px;
+    line-height: 3px;
+    font-weight: 500;
+    color: black;
+}
+.detailline {
+    background: #7a7a7a;
+    height: 1px;
+    width: 100%;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+.placeclick {
+    background: #5b017f;
+    border-color: #5b017f;
+    font-size: 15px;
+    font-weight: 500;
+}
+.placeclick:hover {
+    background: #fcb829;
+    border-color: #fcb829;
+}
+.afterdetailline p {
+    line-height: 20px;
+}
+.allmargen {
+    padding: 0px 20px;
+    margin-bottom: 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width : 768px) {
+
+
+
+
+}
