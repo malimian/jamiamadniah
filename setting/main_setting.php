@@ -42,8 +42,8 @@ else $protocol = "http://";
 
 if($_SERVER['REMOTE_ADDR'] == "::1" || $_SERVER['REMOTE_ADDR'] == "127.0.0.1"){
 	
-	define('BASE_URL', $protocol.'localhost/hajjandtravel/' , '');
-	define('API_BASE_URL', $protocol.'localhost/hajjandtravel/api/' , '');
+	define('BASE_URL', $protocol.'localhost/ibspotlight/' , '');
+	define('API_BASE_URL', $protocol.'localhost/ibspotlight/api/' , '');
 }
 else{
 	define('BASE_URL', $protocol.$settings[2]['settings_value'] , '');
