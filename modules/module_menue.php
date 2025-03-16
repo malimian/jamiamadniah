@@ -1,6 +1,6 @@
-<div class="collapse navbar-collapse" id="navbarCollapse">
+<div class="collapse navbar-collapse bg-light py-3" id="navbarCollapse">
     <!-- responsive nav -->
-                <div class="navbar-nav ms-auto py-0">
+                <div class="navbar-nav mx-auto border-top">
                                                 
                     <?php
 

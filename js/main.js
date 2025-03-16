@@ -141,8 +141,6 @@ window.onload = async function () {
         let temperature = weatherData.current_condition[0].temp_C + "°C";
         let weatherDesc = weatherData.current_condition[0].weatherDesc[0].value;
 
-        console.log(weatherDesc);
-
         // Step 3: Weather Icons
       let weatherIcons = {
             "Clear": '<i class="fas fa-sun text-warning"></i>',
