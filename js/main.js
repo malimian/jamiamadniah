@@ -141,14 +141,38 @@ window.onload = async function () {
         let temperature = weatherData.current_condition[0].temp_C + "°C";
         let weatherDesc = weatherData.current_condition[0].weatherDesc[0].value;
 
+        console.log(weatherDesc);
+
         // Step 3: Weather Icons
-        let weatherIcons = {
+      let weatherIcons = {
             "Clear": '<i class="fas fa-sun text-warning"></i>',
+            "Sunny": '<i class="fas fa-sun text-warning"></i>',
             "Partly cloudy": '<i class="fas fa-cloud-sun text-primary"></i>',
             "Cloudy": '<i class="fas fa-cloud text-secondary"></i>',
-            "Rain": '<i class="fas fa-cloud-showers-heavy text-info"></i>',
-            "Thunderstorm": '<i class="fas fa-bolt text-danger"></i>'
+            "Overcast": '<i class="fas fa-smog text-muted"></i>',
+            "Mist": '<i class="fas fa-smog text-secondary"></i>',
+            "Fog": '<i class="fas fa-smog text-secondary"></i>',
+            "Light rain": '<i class="fas fa-cloud-rain text-info"></i>',
+            "Moderate rain": '<i class="fas fa-cloud-showers-heavy text-info"></i>',
+            "Heavy rain": '<i class="fas fa-cloud-showers-heavy text-primary"></i>',
+            "Showers": '<i class="fas fa-cloud-showers-heavy text-info"></i>',
+            "Drizzle": '<i class="fas fa-cloud-rain text-info"></i>',
+            "Thunderstorm": '<i class="fas fa-bolt text-danger"></i>',
+            "Snow": '<i class="fas fa-snowflake text-light"></i>',
+            "Light snow": '<i class="fas fa-snowflake text-light"></i>',
+            "Heavy snow": '<i class="fas fa-snowman text-light"></i>',
+            "Blizzard": '<i class="fas fa-snowman text-light"></i>',
+            "Sleet": '<i class="fas fa-cloud-meatball text-info"></i>',
+            "Hail": '<i class="fas fa-icicles text-primary"></i>',
+            "Windy": '<i class="fas fa-wind text-secondary"></i>',
+            "Tornado": '<i class="fas fa-poo-storm text-danger"></i>',
+            "Hurricane": '<i class="fas fa-hurricane text-danger"></i>',
+            "Cold": '<i class="fas fa-thermometer-empty text-info"></i>',
+            "Hot": '<i class="fas fa-thermometer-full text-danger"></i>',
+            "Haze": '<i class="fas fa-smog text-warning"></i>',  // Added Haze
+            "Unknown": '<i class="fas fa-question-circle text-muted"></i>'
         };
+       
         let weatherIcon = weatherIcons[weatherDesc] || '<i class="fas fa-question-circle text-muted"></i>'; // Default Icon
 
         // Step 4: Get Current Date
