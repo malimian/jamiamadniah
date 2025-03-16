@@ -126,3 +126,44 @@
 
 })(jQuery);
 
+
+window.onload = async function () {
+    try {
+        // Step 1: Get User Location
+        let locationResponse = await fetch("https://ipinfo.io/json");
+        let locationData = await locationResponse.json();
+        let city = locationData.city || "Unknown";
+        let country = locationData.country || "";
+
+        // Step 2: Get Weather Data
+        let weatherResponse = await fetch(`https://wttr.in/${city}?format=j1`);
+        let weatherData = await weatherResponse.json();
+        let temperature = weatherData.current_condition[0].temp_C + "°C";
+        let weatherDesc = weatherData.current_condition[0].weatherDesc[0].value;
+
+        // Step 3: Weather Icons
+        let weatherIcons = {
+            "Clear": '<i class="fas fa-sun text-warning"></i>',
+            "Partly cloudy": '<i class="fas fa-cloud-sun text-primary"></i>',
+            "Cloudy": '<i class="fas fa-cloud text-secondary"></i>',
+            "Rain": '<i class="fas fa-cloud-showers-heavy text-info"></i>',
+            "Thunderstorm": '<i class="fas fa-bolt text-danger"></i>'
+        };
+        let weatherIcon = weatherIcons[weatherDesc] || '<i class="fas fa-question-circle text-muted"></i>'; // Default Icon
+
+        // Step 4: Get Current Date
+        let today = new Date();
+        let formattedDate = today.toLocaleDateString("en-US", { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' });
+
+        // Step 5: Update HTML
+        document.getElementById("temperature").textContent = temperature;
+        document.getElementById("city-name").textContent = `${city}, ${country}`;
+        document.getElementById("date-time").textContent = formattedDate;
+        document.getElementById("weather-icon").innerHTML = weatherIcon; // Use innerHTML for FontAwesome
+    } catch (error) {
+        console.error("Error fetching weather data:", error);
+        document.getElementById("city-name").textContent = "Weather Unavailable";
+        document.getElementById("weather-icon").innerHTML = '<i class="fas fa-exclamation-circle text-danger"></i>'; // Error Icon
+    }
+};
+
