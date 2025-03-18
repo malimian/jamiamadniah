@@ -55,7 +55,7 @@ if(!empty($content)){
             }
              
             
-           	$slug = generateSeoURL($article_title);
+           	$slug = generateSeoURL($article_title).".html";
 
             if(!empty($slug) && !((strpos($article_url, 'youtube') !== false)) && (strlen($slug) < 151 ) ){
 
