@@ -553,3 +553,11 @@ function createmulltilevelcheckbox($parent, $menu)
     }
     return $html;
 }
+
+
+function remove_utf($str){
+
+         $str = str_replace('"','',$str); 
+        return mb_convert_encoding($str, 'UTF-8', 'UTF-8');
+        
+}

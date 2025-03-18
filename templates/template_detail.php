@@ -25,6 +25,10 @@ if(!function_exists("script_t")) {
 }
 ?>
 
+<?php 
+$user = return_single_row("Select username , fullname , profile_pic , details from loginuser Where soft_delete = 0 and isactive = 1  and id = ".$content['createdby']);
+?>
+
 <!-- Single Product Start -->
         <div class="container-fluid py-5">
             <div class="container py-5">
@@ -62,26 +66,6 @@ if(!function_exists("script_t")) {
                         
                         <div class="tab-class">
                             <div class="d-flex justify-content-between border-bottom mb-4">
-                                <ul class="nav nav-pills d-inline-flex text-center">
-                                    <li class="nav-item mb-3">
-                                        <h5 class="mt-2 me-3 mb-0">Tags:</h5>
-                                    </li>
-                                    <li class="nav-item mb-3">
-                                        <a class="d-flex py-2 bg-light rounded-pill active me-2" data-bs-toggle="pill" href="#tab-1">
-                                            <span class="text-dark" style="width: 100px;">Sports</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item mb-3">
-                                        <a class="d-flex py-2 bg-light rounded-pill me-2" data-bs-toggle="pill" href="#tab-2">
-                                            <span class="text-dark" style="width: 100px;">Magazine</span>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item mb-3">
-                                        <a class="d-flex py-2 bg-light rounded-pill me-2" data-bs-toggle="pill" href="#tab-3">
-                                            <span class="text-dark" style="width: 100px;">Politics</span>
-                                        </a>
-                                    </li>
-                                </ul>
                                 <div class="d-flex align-items-center">
                                     <h5 class="mb-0 me-3">Share:</h5>
                                     <i class="fab fa-facebook-f link-hover btn btn-square rounded-circle border-primary text-dark me-2"></i>
@@ -90,47 +74,16 @@ if(!function_exists("script_t")) {
                                     <i class="btn fab fa-linkedin-in link-hover btn btn-square rounded-circle border-primary text-dark"></i>
                                 </div>
                             </div>
-                            <div class="tab-content">
-                                <div id="tab-1" class="tab-pane fade show active">
-                                    <div class="row g-4 align-items-center">
+                             <div class="row g-4 align-items-center">
                                         <div class="col-3">
-                                            <img src="img/footer-4.jpg" class="img-fluid w-100 rounded" alt="">
+                                            <img src="<?php echo ABSOLUTE_IMAGEPATH.$user['profile_pic'];?>" class="img-fluid w-100 rounded" alt="">
                                         </div>
                                         <div class="col-9">
-                                            <h3>Amelia Alex</h3>
-                                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum has been the industry's standard dummy type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-                                             but also the leap into electronic.
+                                            <h3><?php echo $user['fullname'];?></h3>
+                                            <p class="mb-0"><?php echo $user['details'];?>
                                             </p>
                                         </div>
                                     </div>
-                                </div>
-                                <div id="tab-2" class="tab-pane fade show">
-                                    <div class="row g-4 align-items-center">
-                                        <div class="col-3">
-                                            <img src="img/footer-5.jpg" class="img-fluid w-100 rounded" alt="">
-                                        </div>
-                                        <div class="col-9">
-                                            <h3>Amelia Alex</h3>
-                                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum has been the industry's standard dummy type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-                                             but also the leap into electronic.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="tab-3" class="tab-pane fade show">
-                                    <div class="row g-4 align-items-center">
-                                        <div class="col-3">
-                                            <img src="img/footer-6.jpg" class="img-fluid w-100 rounded" alt="">
-                                        </div>
-                                        <div class="col-9">
-                                            <h3>Amelia Alex</h3>
-                                            <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum has been the industry's standard dummy type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-                                             but also the leap into electronic.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <div class="bg-light rounded my-4 p-4">
                             <h4 class="mb-4">You Might Also Like</h4>
@@ -158,56 +111,8 @@ if(!function_exists("script_t")) {
                         <div class="bg-light rounded p-4">
                             <h4 class="mb-4">Comments</h4>
                             <div class="p-4 bg-white rounded mb-4">
-                                <div class="row g-4">
-                                    <div class="col-3">
-                                        <img src="img/footer-4.jpg" class="img-fluid rounded-circle w-100" alt="">
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="d-flex justify-content-between">
-                                            <h5>James Boreego</h5>
-                                            <a href="#" class="link-hover text-body fs-6"><i class="fas fa-long-arrow-alt-right me-1"></i> Reply</a>
-                                        </div>
-                                        <small class="text-body d-block mb-3"><i class="fas fa-calendar-alt me-1"></i> Dec 9, 2024</small>
-                                        <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum has been the industry's standard dummy type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-                                        </p>
-                                    </div>
-                                </div>
+                                {comments} 
                             </div>
-                            <div class="p-4 bg-white rounded mb-0">
-                                <div class="row g-4">
-                                    <div class="col-3">
-                                        <img src="img/footer-4.jpg" class="img-fluid rounded-circle w-100" alt="">
-                                    </div>
-                                    <div class="col-9">
-                                        <div class="d-flex justify-content-between">
-                                            <h5>James Boreego</h5>
-                                            <a href="#" class="link-hover text-body fs-6"><i class="fas fa-long-arrow-alt-right me-1"></i> Reply</a>
-                                        </div>
-                                        <small class="text-body d-block mb-3"><i class="fas fa-calendar-alt me-1"></i> Dec 9, 2024</small>
-                                        <p class="mb-0">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy Lorem Ipsum has been the industry's standard dummy type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-light rounded p-4 my-4">
-                            <h4 class="mb-4">Leave A Comment</h4>
-                            <form action="#">
-                                <div class="row g-4">
-                                    <div class="col-lg-6">
-                                        <input type="text" class="form-control py-3" placeholder="Full Name">
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <input type="email" class="form-control py-3" placeholder="Email Address">
-                                    </div>
-                                    <div class="col-12">
-                                        <textarea class="form-control" name="textarea" id="" cols="30" rows="7" placeholder="Write Your Comment Here"></textarea>
-                                    </div>
-                                    <div class="col-12">
-                                        <button class="form-control btn btn-primary py-3" type="button">Submit Now</button>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                     </div>
                     <div class="col-lg-4">
