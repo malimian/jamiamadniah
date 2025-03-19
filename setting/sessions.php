@@ -14,5 +14,9 @@ if(!headers_sent()){
         $_SESSION['pages_views'] =   array();
     }
 
+
+  if(!isset($_SESSION['weather'])){
+            $_SESSION['weather'] = "";
+    }
     
 }
