@@ -66,6 +66,6 @@ if (empty($_SESSION['weather_html'])) {
 
 }
 
-    echo $_SESSION['weather_html'];
+    echo "weather_html : ".$_SESSION['weather_html'];
 
 ?>
