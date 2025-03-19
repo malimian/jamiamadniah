@@ -48,6 +48,19 @@ validateform(function(){
     var file_path = $('#file_path').val();
     var error_404 = $('#error_404').val();
     var is_active  = $('#is_active option:selected').val();
+
+
+    var social_media_data = {};
+    var socialMediaPlatforms = [
+        'facebook', 'twitter', 'instagram', 'linkedin', 'youtube', 'pinterest', 
+        'snapchat', 'tiktok', 'reddit', 'whatsapp', 'telegram'
+    ];
+
+    socialMediaPlatforms.forEach(function(platform) {
+        social_media_data[platform + '_url'] = $("#" + platform + "_url").val();
+    });
+
+    console.log(social_media_data);
    
     senddata
     ('post/og_setting/og_setting.php' ,"POST", {
@@ -65,6 +78,7 @@ validateform(function(){
         error_404:error_404,
         page_loader:page_loader,
         friendly_url:friendly_url,
+        social_media_data: social_media_data,
       submit:true
     },
     function(result){

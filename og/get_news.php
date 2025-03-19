@@ -57,11 +57,11 @@ if(!empty($content)){
             
            	$slug = generateSeoURL($article_title).".html";
 
-            if(!empty($slug) && !((strpos($article_url, 'youtube') !== false)) && (strlen($slug) < 151 ) ){
+            if(!empty($slug) && !((strpos($article_url, 'youtube') !== false))){
 
 
                 $site_template_id = 1;
-                $template_id = 6;
+                $template_id = 7;
 
                 $page_meta_keywords = remove_utf($article_author).",".$category.",ibspotlight";
                 $featured_image = $article_urlToImage;
@@ -71,9 +71,6 @@ if(!empty($content)){
 					VALUES ( '$cat_id', '$site_template_id', '$template_id', '$slug', '$article_title', NULL, NULL, NULL, NULL, '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', NULL, '$article_content', '$article_title', '$page_meta_keywords', '$article_description', '1', '1', '$featured_image', '0', '0', '0', '0', current_timestamp(), current_timestamp(), '0', '$article_url', '$article_author' )
 
 					");
-
-
-				die;
 
             }
                 

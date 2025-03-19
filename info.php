@@ -96,6 +96,13 @@ if(!empty($template_page)){
 <script type="text/javascript" src="js/info.js"></script>
 <?php }?>
 
+<?php
+    if(!in_array($url,  $_SESSION['pages_views'])){
+            Update("UPDATE pages SET views = views+1 WHERE pid = ".$content['pid']);
+            array_push($_SESSION['pages_views'] ,$url);
+    }
+?>
+
 <?php 
 	if(!empty($script))
 		echo replace_sysvari(front_script($script));
