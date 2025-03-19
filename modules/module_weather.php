@@ -63,9 +63,8 @@ if (empty($_SESSION['weather_html'])) {
 
     // Store the generated HTML in the session
     $_SESSION['weather_html'] = $weatherHtml;
-
 }
 
-    echo "weather_html : ".$_SESSION['weather_html'];
+    echo $_SESSION['weather_html'];
 
 ?>
