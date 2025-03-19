@@ -18,5 +18,11 @@ if(!headers_sent()){
   if(!isset($_SESSION['weather'])){
             $_SESSION['weather'] = "";
     }
+
+
+  if(!isset($_SESSION['country'])){
+            $_SESSION['country'] = "";
+    }
+
     
 }
