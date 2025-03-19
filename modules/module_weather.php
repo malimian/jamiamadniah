@@ -3,12 +3,12 @@
 if (empty($_SESSION['weather_html'])) {
 
     // Step 1: Get User Location
-    $locationData = json_decode(file_get_contents("https://ipinfo.io/json"), true);
+    $locationData = json_decode(get_webpage("https://ipinfo.io/json"), true);
     $city = isset($locationData['city']) ? $locationData['city'] : "Unknown";
     $country = isset($locationData['country']) ? $locationData['country'] : "";
 
     // Step 2: Get Weather Data
-    $weatherData = json_decode(file_get_contents("https://wttr.in/{$city}?format=j1"), true);
+    $weatherData = json_decode(get_webpage("https://wttr.in/{$city}?format=j1"), true);
     $temperature = isset($weatherData['current_condition'][0]['temp_C']) ? $weatherData['current_condition'][0]['temp_C'] . "°C" : "N/A";
     $weatherDesc = isset($weatherData['current_condition'][0]['weatherDesc'][0]['value']) ? $weatherData['current_condition'][0]['weatherDesc'][0]['value'] : "Unknown";
 
