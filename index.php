@@ -24,33 +24,45 @@ echo Baseheader($content['page_meta_title'],
     echo replace_sysvari(BaseNavBar($template_id), getcwd()."/");
 
 ?>
-
+<style type="text/css">
+    .circle-clss {
+    aspect-ratio: 1 / 1; /* Ensures a square shape */
+    object-fit: cover; /* Ensures the image fills the container */
+}
+</style>
+ 
         <!-- Features Start -->
         <div class="container-fluid features mb-5">
             <div class="container py-5">
                 <div class="row g-4">
+                    <?php 
+                    $news_categories = return_multiple_rows("Select * from category Where ParentCategory = 118");
+                    foreach($news_categories as $new_category){
+                        $latest_news = return_single_row("Select * from pages Where catid = ".$new_category['catid']." and isactive = 1 and soft_delete = 0 and views = 0 ORDER BY `pages`.`createdon` DESC LIMIT 0,1 ");
+                    ?>
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="row g-4 align-items-center features-item">
                             <div class="col-4">
                                 <div class="rounded-circle position-relative">
-                                    <div class="overflow-hidden rounded-circle">
-                                        <img src="img/features-sports-1.jpg" class="img-zoomin img-fluid rounded-circle w-100" alt="">
+                                    <div class="overflow-hidden rounded-circle overflow-hidden">
+                                        <img src="<?php echo $latest_news['featured_image']?>" class="img-zoomin img-fluid rounded-circle w-100 circle-clss"  alt="<?php echo $latest_news['page_title']?>">
                                     </div>
-                                    <span class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute" style="top: 10%; right: -10px;">3</span>
+                                    <span class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute" style="top: 10%; right: -10px;"><?php echo return_single_ans("SELECT COUNT(pid) FROM pages WHERE views = 0 AND catid = ".$new_category['catid']." AND DATE(createdon) = CURDATE();");?></span>
                                 </div>
                             </div>
                             <div class="col-8">
                                 <div class="features-content d-flex flex-column">
-                                    <p class="text-uppercase mb-2">Sports</p>
-                                    <a href="#" class="h6">
-                                        Get the best speak market, news.
+                                    <p class="text-uppercase mb-2"><?php echo $new_category['catname']?></p>
+                                    <a href="<?php echo $latest_news['page_url']?>" class="h6">
+                                        <?php echo mb_strimwidth($latest_news['page_title'], 0, 50, "..."); ?>
                                     </a>
-                                    <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> December 9, 2024</small>
+                                    <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo date("F j, Y", strtotime($latest_news['createdon']))?></small>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3">
+                    <?php }?>
+<!--                 <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="row g-4 align-items-center features-item">
                             <div class="col-4">
                                 <div class="rounded-circle position-relative">
@@ -70,49 +82,7 @@ echo Baseheader($content['page_meta_title'],
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3">
-                        <div class="row g-4 align-items-center features-item">
-                            <div class="col-4">
-                                <div class="rounded-circle position-relative">
-                                    <div class="overflow-hidden rounded-circle">
-                                        <img src="img/features-fashion.jpg" class="img-zoomin img-fluid rounded-circle w-100" alt="">
-                                    </div>
-                                    <span class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute" style="top: 10%; right: -10px;">3</span>
-                                </div>
-                            </div>
-                            <div class="col-8">
-                                <div class="features-content d-flex flex-column">
-                                    <p class="text-uppercase mb-2">Fashion</p>
-                                    <a href="#" class="h6">
-                                        Get the best speak market, news.
-                                    </a>
-                                    <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> December 9, 2024</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-6 col-xl-3">
-                        <div class="row g-4 align-items-center features-item">
-                            <div class="col-4">
-                                <div class="rounded-circle position-relative">
-                                    <div class="overflow-hidden rounded-circle">
-                                        <img src="img/features-life-style.jpg" class="img-zoomin img-fluid rounded-circle w-100" alt="">
-                                    </div>
-                                    <span class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute" style="top: 10%; right: -10px;">3</span>
-                                </div>
-                            </div>
-                            <div class="col-8">
-                                <div class="features-content d-flex flex-column">
-                                    <p class="text-uppercase mb-2">Life Style</p>
-                                    <a href="#" class="h6">
-                                        Get the best speak market, news.
-                                    </a>
-                                    <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> December 9, 2024</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
