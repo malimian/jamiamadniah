@@ -49,37 +49,46 @@ var validateform1 = function(callback , failback){
 }
 
 
-var searchdatatable = function(id){
-
-    oTable = $('#'+id).DataTable(
-      {
-         "pageLength": 150,
-         dom: 'Bfrtip',
-            buttons: [
-            'copy', 'csv', 'excel', 'pdf', 'print'
-            ],
-             createdRow: function(row, data, dataIndex){
-         // Initialize custom control
-              
-                // var elem = document.querySelector('.js-switch');
-                // var init = new Switchery(elem, {
-                //   color: '#28a745',
-                //   secondaryColor: '#dc3545',
-                //   size: 'small'
-                // });
-            },
-            initComplete: function(settings){
-            
-            }
+// Initialize Switchery instances on page load
+function initializeSwitches() {
+    $(".js-switch").each(function() {
+        // Only initialize if not already initialized
+        if (!$(this).data('switchery')) {
+            new Switchery(this, { color: '#28a745', secondaryColor: '#dc3545', size: 'small' });
         }
-      );
-
-    $('#datatable_search').keyup(function(){
-          oTable.search($(this).val()).draw() ;
     });
-    
-    
-  }
+}
+
+// Function to initialize DataTable
+var searchdatatable = function(id){
+    var oTable = $('#'+id).DataTable({
+        "pageLength": 10,
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        createdRow: function(row, data, dataIndex){
+            // Handle row creation logic here if needed
+        },
+        initComplete: function(settings){
+            // Optional initialization after the DataTable is fully initialized
+        }
+    });
+
+    // Search functionality
+    $('#datatable_search').keyup(function(){
+        oTable.search($(this).val()).draw();
+    });
+
+    // Reinitialize switches after DataTable is redrawn (on page change or sorting)
+    oTable.on('draw', function() {
+        initializeSwitches();
+    });
+
+    // Initial switch initialization when DataTable is first created
+    initializeSwitches();
+};
+
 
 
 

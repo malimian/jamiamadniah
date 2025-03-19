@@ -2,7 +2,7 @@
 searchdatatable('dataTable1');
 
 
-$('.js-switch').on("change", function() {
+    $(document).on("change", ".js-switch", function() {
     var id = $(this).data("id");
     senddata(
         'post/promocode/view_promo_code.php',

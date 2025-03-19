@@ -76,6 +76,7 @@ if(isset($_GET['cat'])){
                     <th>Category</th>
                     <th>Page Title</th>
                     <th>Page Sequence</th>
+                    <th>Views</th>
                     <th>Status</th>
                     <th>Option</th>
                   </tr>
@@ -91,6 +92,7 @@ if(isset($_GET['cat'])){
                     <td><?=$page["catname"]?></td>
                     <td><?=$page["page_title"]?></td>
                     <td id="seq_<?php echo  $page["pid"];?>"><?php echo $page["pages_sequence"];?></td>
+                    <td><?=$page["views"]?></td>
                     <td>
                     <?php
 

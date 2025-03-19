@@ -1,5 +1,5 @@
 
-$('.js-switch').on("change", function(){
+    $(document).on("change", ".js-switch", function() {
   var id = $(this).data("id");
    
      senddata(

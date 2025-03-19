@@ -4,7 +4,7 @@ var datatable_id = 'dataTable1';
 searchdatatable(datatable_id);
 
 
-$('.js-switch').on("change", function() {
+    $(document).on("change", ".js-switch", function() {
     var id = $(this).data("id");
     senddata(
         'post/page/pages.php',

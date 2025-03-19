@@ -4,29 +4,33 @@ var datatable_id = 'dataTable';
 searchdatatable(datatable_id);
 
 
-$('.js-switch').on("change", function() {
-    var id = $(this).data("id");
-    senddata(
-        'post/category/categories.php',
-        "POST", {
-            id: id,
-            change_status: true
-        },
-        function(result) {
-            console.log(result);
-        },
-        function(result) {
-            console.log(result);
+    // Ensure event listeners are applied even after page changes using event delegation
+    $(document).on("change", ".js-switch", function() {
+        var id = $(this).data("id");
+
+        // Send the data to the server for processing
+        senddata(
+            'post/category/categories.php',
+            "POST", {
+                id: id,
+                change_status: true
+            },
+            function(result) {
+                console.log(result);
+            },
+            function(result) {
+                console.log(result);
+            }
+        );
+
+        // Update the badge based on the switch status
+        if (!$(this).is(':checked')) {
+            $('#status_' + id).removeClass().addClass('badge badge-danger').html('In Active');
+        } else {
+            $('#status_' + id).removeClass().addClass('badge badge-success').html('Active');
         }
-    );
+    });
 
-    if (!$(this).is(':checked')) {
-        $('#status_' + id).removeClass().addClass('badge badge-danger').html('In Active');
-    } else {
-        $('#status_' + id).removeClass().addClass('badge badge-success').html('Active');
-    }
-
-});
 
 
 function delete_(id) {
