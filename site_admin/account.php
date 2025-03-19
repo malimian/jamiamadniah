@@ -171,7 +171,7 @@
             </div>
 
             <div class="form-group row">
-                <label for="description"><i class="fa fa-pencil"></i> Details</label>
+                <label for="description"><i class="fa fa-pencil"></i> Bio</label>
               <div class="col-sm-12">
                 <textarea name="editor1" class="form-control" required="required" id="editor1"><?php echo $user_[0]['details']; ?></textarea>
               </div>

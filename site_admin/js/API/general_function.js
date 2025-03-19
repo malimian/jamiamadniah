@@ -62,7 +62,7 @@ function initializeSwitches() {
 // Function to initialize DataTable
 var searchdatatable = function(id){
     var oTable = $('#'+id).DataTable({
-        "pageLength": 10,
+        "pageLength": 20,
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
