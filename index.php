@@ -255,17 +255,17 @@ echo Baseheader($content['page_meta_title'],
             /* Live Badge */
             .live-badge {
                 background: red;
-                color: white;
+                color: #fff;
                 font-weight: bold;
-                padding: 10px 22px;
-                font-size: 18px;
+                padding: 1px 12px;
+                font-size: 14px;
                 text-transform: uppercase;
                 border-radius: 50px;
                 display: inline-flex;
                 align-items: center;
-                gap: 8px;
+                gap: 5px;
                 animation: pulse 1.5s infinite alternate;
-                box-shadow: 0 0 15px rgba(255, 0, 0, 0.9);
+                box-shadow: 0 0 8px rgba(255, 0, 0, .7);
             }
 
             .live-badge::before {
