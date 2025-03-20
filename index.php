@@ -56,33 +56,12 @@ echo Baseheader($content['page_meta_title'],
                                     <a href="<?php echo $latest_news['page_url']?>" class="h6">
                                         <?php echo mb_strimwidth($latest_news['page_title'], 0, 50, "..."); ?>
                                     </a>
-                                    <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo date("F j, Y", strtotime($latest_news['createdon']))?></small>
+                                    <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($latest_news['createdon']); ?></small>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <?php }?>
-<!--                 <div class="col-md-6 col-lg-6 col-xl-3">
-                        <div class="row g-4 align-items-center features-item">
-                            <div class="col-4">
-                                <div class="rounded-circle position-relative">
-                                    <div class="overflow-hidden rounded-circle">
-                                        <img src="img/features-technology.jpg" class="img-zoomin img-fluid rounded-circle w-100" alt="">
-                                    </div>
-                                    <span class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute" style="top: 10%; right: -10px;">3</span>
-                                </div>
-                            </div>
-                            <div class="col-8">
-                                <div class="features-content d-flex flex-column">
-                                    <p class="text-uppercase mb-2">Technology</p>
-                                    <a href="#" class="h6">
-                                        Get the best speak market, news.
-                                    </a>
-                                    <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i> December 9, 2024</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
@@ -249,7 +228,7 @@ echo Baseheader($content['page_meta_title'],
 
 
         <!-- Banner Start -->
-        <div class="container-fluid py-5 my-5" style="background: linear-gradient(rgba(202, 203, 185, 1), rgba(202, 203, 185, 1));">
+       <!--  <div class="container-fluid py-5 my-5" style="background: linear-gradient(rgba(202, 203, 185, 1), rgba(202, 203, 185, 1));">
             <div class="container">
                 <div class="row g-4 align-items-center">
                     <div class="col-lg-7">
@@ -269,8 +248,108 @@ echo Baseheader($content['page_meta_title'],
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- Banner End -->
+
+            <style>
+            /* Live Badge */
+            .live-badge {
+                background: red;
+                color: white;
+                font-weight: bold;
+                padding: 10px 22px;
+                font-size: 18px;
+                text-transform: uppercase;
+                border-radius: 50px;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                animation: pulse 1.5s infinite alternate;
+                box-shadow: 0 0 15px rgba(255, 0, 0, 0.9);
+            }
+
+            .live-badge::before {
+                content: "●";
+                font-size: 22px;
+                color: white;
+                animation: blink 1s infinite;
+            }
+
+            /* Glow Effects */
+            @keyframes pulse {
+                0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.8); }
+                100% { box-shadow: 0 0 20px rgba(255, 0, 0, 1); transform: scale(1.05); }
+            }
+
+            @keyframes blink {
+                0% { opacity: 1; }
+                50% { opacity: 0.3; }
+                100% { opacity: 1; }
+            }
+
+            /* YouTube Button */
+            .btn-watch {
+                background: linear-gradient(135deg, #ff0000, #cc0000);
+                color: white;
+                padding: 12px 30px;
+                border-radius: 50px;
+                font-size: 18px;
+                font-weight: bold;
+                text-transform: uppercase;
+                transition: all 0.3s ease-in-out;
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+            }
+
+            .btn-watch:hover {
+                background: #ff0000;
+                transform: scale(1.1);
+                box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
+            }
+
+            .btn-watch i {
+                font-size: 22px;
+            }
+
+            /* Responsive Layout */
+            @media (max-width: 991px) {
+                .live-badge {
+                    margin: auto;
+                }
+
+                .live-video {
+                    margin-top: 20px;
+                }
+            }
+            </style>
+
+        <!-- Live Streaming Section Start -->
+            <div class="container-fluid py-5 my-5" style="background: linear-gradient(rgba(202, 203, 185, 1), rgba(202, 203, 185, 1));">
+                <div class="container">
+                    <div class="row g-4 align-items-center">
+                        <!-- Left Column: Live Stream Info -->
+                        <div class="col-lg-7">
+                            <span class="live-badge">LIVE</span>
+                            <h1 class="mb-4 text-primary">Breaking News Live</h1>
+                            <h2 class="mb-4 text-dark">Watch Latest Updates in Real-Time</h2>
+                            <p class="text-dark mb-4 pb-2">Stay connected with 24/7 live news coverage. Get real-time updates on breaking news, trending topics, and exclusive reports.</p>
+                            <a href="https://www.youtube.com/c/YourNewsChannel" class="btn btn-watch mt-3" target="_blank">
+                                <i class="bi bi-play-circle"></i> Watch on YouTube
+                            </a>
+                        </div>
+
+                        <!-- Right Column: Live Stream Video -->
+                        <div class="col-lg-5">
+                            <div class="live-video rounded overflow-hidden">
+                                <iframe class="w-100" height="300" src="https://www.youtube.com/embed/YDfiTGGPYCk?si=Z1M0lOmqFtiDQ9G3&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Live Streaming Section End -->
 
 
         <!-- Latest News Start -->
