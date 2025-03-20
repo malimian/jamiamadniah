@@ -14,7 +14,7 @@
     </form>
 
     <?php
-    // Set script timeout to unlimited
+   // Set script timeout to unlimited
 set_time_limit(0);
 
 // Enable real-time output
@@ -29,6 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $apiKeys = array_filter(array_map('trim', explode("\n", trim($_POST["api_keys"]))));
 
         $workingKeys = [];
+        $nonWorkingKeys = [];
         $newsData = [];
         echo "<div>";
 
@@ -40,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-            
+
             // ✅ FIX: Add User-Agent header to avoid rejection
             curl_setopt($ch, CURLOPT_HTTPHEADER, [
                 "User-Agent: MyNewsChecker/1.0 (https://yourwebsite.com)"
@@ -56,11 +57,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Check if API key is valid
             if ($httpCode == 200 && isset($data["articles"])) {
-                $workingKeys[] = $apiKey;
+                $workingKeys[] = [$apiKey, "Working"];
                 $newsData = array_merge($newsData, $data["articles"]);
                 echo "<p style='color: green;'>✔️ $apiKey is working</p>";
                 flush(); // Immediately send output to the browser
             } else {
+                $nonWorkingKeys[] = [$apiKey, "Not Working"];
                 echo "<p style='color: red;'>❌ $apiKey is not working</p>";
                 flush(); // Immediately send output to the browser
             }
@@ -68,10 +70,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         echo "</div>";
 
-        // Save to CSV
+        // ✅ Save working & non-working API keys to CSV
+        if (!empty($workingKeys) || !empty($nonWorkingKeys)) {
+            $apiStatusFile = "api_keys_status.csv";
+            $file = fopen($apiStatusFile, "w");
+            fputcsv($file, ["API Key", "Status"]);
+
+            foreach ($workingKeys as $row) {
+                fputcsv($file, $row);
+            }
+            foreach ($nonWorkingKeys as $row) {
+                fputcsv($file, $row);
+            }
+
+            fclose($file);
+            echo "<p style='color: blue;'>API keys status saved! <a href='$apiStatusFile' download>Download API Status CSV</a></p>";
+        }
+
+        // ✅ Save news data if available
         if (!empty($newsData)) {
-            $filename = "news_data.csv";
-            $file = fopen($filename, "w");
+            $newsFile = "news_data.csv";
+            $file = fopen($newsFile, "w");
 
             // CSV Headers
             fputcsv($file, ["Title", "Description", "Source", "Published At", "URL"]);
@@ -89,12 +108,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             fclose($file);
 
-            echo "<p style='color: blue;'>News data saved successfully! <a href='$filename' download>Download CSV</a></p>";
+            echo "<p style='color: blue;'>News data saved! <a href='$newsFile' download>Download News CSV</a></p>";
         } else {
             echo "<p style='color: red;'>No valid API keys found or no news available.</p>";
         }
     }
 }
+
     ?>
 </body>
 </html>
