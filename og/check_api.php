@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News API Checker</title>
+</head>
+<body>
+
+    <h2>Enter API Keys (One per Line)</h2>
+    <form action="" method="post">
+        <textarea name="api_keys" rows="10" cols="50" placeholder="Enter API keys here..."></textarea><br><br>
+        <input type="submit" value="Check API Keys">
+    </form>
+
+    <?php
+    // Set script timeout to unlimited
+set_time_limit(0);
+
+// Enable real-time output
+ob_implicit_flush(true);
+ob_end_flush();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (!isset($_POST["api_keys"]) || empty(trim($_POST["api_keys"]))) {
+        echo "<p style='color: red;'>Please enter at least one API key.</p>";
+    } else {
+        // Get API keys from textarea and split by new lines
+        $apiKeys = array_filter(array_map('trim', explode("\n", trim($_POST["api_keys"]))));
+
+        $workingKeys = [];
+        $newsData = [];
+        echo "<div>";
+
+        foreach ($apiKeys as $apiKey) {
+            $url = "https://newsapi.org/v2/top-headlines?category=Business&apiKey=$apiKey";
+
+            // Initialize cURL
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            
+            // ✅ FIX: Add User-Agent header to avoid rejection
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                "User-Agent: MyNewsChecker/1.0 (https://yourwebsite.com)"
+            ]);
+
+            // Execute request
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            // Decode JSON response
+            $data = json_decode($response, true);
+
+            // Check if API key is valid
+            if ($httpCode == 200 && isset($data["articles"])) {
+                $workingKeys[] = $apiKey;
+                $newsData = array_merge($newsData, $data["articles"]);
+                echo "<p style='color: green;'>✔️ $apiKey is working</p>";
+                flush(); // Immediately send output to the browser
+            } else {
+                echo "<p style='color: red;'>❌ $apiKey is not working</p>";
+                flush(); // Immediately send output to the browser
+            }
+        }
+
+        echo "</div>";
+
+        // Save to CSV
+        if (!empty($newsData)) {
+            $filename = "news_data.csv";
+            $file = fopen($filename, "w");
+
+            // CSV Headers
+            fputcsv($file, ["Title", "Description", "Source", "Published At", "URL"]);
+
+            // Add news articles
+            foreach ($newsData as $article) {
+                fputcsv($file, [
+                    $article["title"] ?? "N/A",
+                    $article["description"] ?? "N/A",
+                    $article["source"]["name"] ?? "N/A",
+                    $article["publishedAt"] ?? "N/A",
+                    $article["url"] ?? "N/A",
+                ]);
+            }
+
+            fclose($file);
+
+            echo "<p style='color: blue;'>News data saved successfully! <a href='$filename' download>Download CSV</a></p>";
+        } else {
+            echo "<p style='color: red;'>No valid API keys found or no news available.</p>";
+        }
+    }
+}
+    ?>
+</body>
+</html>
