@@ -14,7 +14,7 @@
     </form>
 
     <?php
-   // Set script timeout to unlimited
+// Set script timeout to unlimited
 set_time_limit(0);
 
 // Enable real-time output
@@ -30,7 +30,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $workingKeys = [];
         $nonWorkingKeys = [];
-        $newsData = [];
         echo "<div>";
 
         foreach ($apiKeys as $apiKey) {
@@ -58,19 +57,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Check if API key is valid
             if ($httpCode == 200 && isset($data["articles"])) {
                 $workingKeys[] = [$apiKey, "Working"];
-                $newsData = array_merge($newsData, $data["articles"]);
                 echo "<p style='color: green;'>✔️ $apiKey is working</p>";
-                flush(); // Immediately send output to the browser
             } else {
                 $nonWorkingKeys[] = [$apiKey, "Not Working"];
                 echo "<p style='color: red;'>❌ $apiKey is not working</p>";
-                flush(); // Immediately send output to the browser
             }
+
+            flush(); // Immediately send output to the browser
         }
 
         echo "</div>";
 
-        // ✅ Save working & non-working API keys to CSV
+        // ✅ Save API keys status to CSV
         if (!empty($workingKeys) || !empty($nonWorkingKeys)) {
             $apiStatusFile = "api_keys_status.csv";
             $file = fopen($apiStatusFile, "w");
@@ -85,35 +83,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             fclose($file);
             echo "<p style='color: blue;'>API keys status saved! <a href='$apiStatusFile' download>Download API Status CSV</a></p>";
-        }
-
-        // ✅ Save news data if available
-        if (!empty($newsData)) {
-            $newsFile = "news_data.csv";
-            $file = fopen($newsFile, "w");
-
-            // CSV Headers
-            fputcsv($file, ["Title", "Description", "Source", "Published At", "URL"]);
-
-            // Add news articles
-            foreach ($newsData as $article) {
-                fputcsv($file, [
-                    $article["title"] ?? "N/A",
-                    $article["description"] ?? "N/A",
-                    $article["source"]["name"] ?? "N/A",
-                    $article["publishedAt"] ?? "N/A",
-                    $article["url"] ?? "N/A",
-                ]);
-            }
-
-            fclose($file);
-
-            echo "<p style='color: blue;'>News data saved! <a href='$newsFile' download>Download News CSV</a></p>";
         } else {
-            echo "<p style='color: red;'>No valid API keys found or no news available.</p>";
+            echo "<p style='color: red;'>No API keys were processed.</p>";
         }
     }
 }
+
 
     ?>
 </body>
