@@ -10,7 +10,7 @@ $category = $_GET['category'];
     $cat_api = $cat['cat_api_name'];
 
 
-	$api_key = return_single_ans("SELECT api_key FROM `api_keys` Where isProcessed = 0 ");
+	$api_key = return_single_ans("SELECT api_key FROM `api_keys` WHERE isProcessed = 0 ORDER BY RAND() LIMIT 1; ");
 
     $content = get_webpage("https://newsapi.org/v2/top-headlines?category=$cat_api&apiKey=".$api_key);
 
