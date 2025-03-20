@@ -3,7 +3,7 @@
 if (empty($_SESSION['weather_html'])) {
 
     // Step 1: Get User Location
-    $locationData = json_decode(get_webpage("https://ipinfo.io/json"), true);
+    $locationData = json_decode(get_webpage("https://ipinfo.io/".get_client_ip()."/json"), true);
     $city = isset($locationData['city']) ? $locationData['city'] : "Unknown";
     $country = isset($locationData['country']) ? $locationData['country'] : "";
 
