@@ -11,8 +11,8 @@ if (empty($_SESSION['weather_html'])) {
 
     // Step 2: Get Weather Data
     $weatherData = json_decode(get_webpage("https://wttr.in/{$city}?format=j1"), true);
-    $temperature = isset($weatherData['current_condition'][0]['temp_C']) ? $weatherData['current_condition'][0]['temp_C'] . "°C" : "N/A";
-    $weatherDesc = isset($weatherData['current_condition'][0]['weatherDesc'][0]['value']) ? $weatherData['current_condition'][0]['weatherDesc'][0]['value'] : "Unknown";
+    $tempC = isset($weatherData['current_condition'][0]['temp_C']) ? $weatherData['current_condition'][0]['temp_C'] : null;
+$temperature = ($tempC !== null) ? round(($tempC * 9/5) + 32) . "°F" : "N/A";    $weatherDesc = isset($weatherData['current_condition'][0]['weatherDesc'][0]['value']) ? $weatherData['current_condition'][0]['weatherDesc'][0]['value'] : "Unknown";
 
     // Step 3: Weather Icons
     $weatherIcons = [

@@ -39,6 +39,7 @@ function front_header($title = null ,  $keywords = null  ,$description = null ,$
         }
      ?>
 
+
 </head>
 
 
@@ -90,6 +91,11 @@ function Baseheader($title = null ,  $keywords = null  ,$description = null ,$li
             </script>
             
             <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+            <script type="text/javascript">
+                 var islive_streaming = <?php echo return_single_ans("Select isactive from category Where catid = 124 ");?>;
+           </script>
+
             
     <?php
       echo $header;

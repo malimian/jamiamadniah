@@ -251,82 +251,13 @@ echo Baseheader($content['page_meta_title'],
         </div> -->
         <!-- Banner End -->
 
-            <style>
-            /* Live Badge */
-            .live-badge {
-                background: red;
-                color: #fff;
-                font-weight: bold;
-                padding: 1px 12px;
-                font-size: 14px;
-                text-transform: uppercase;
-                border-radius: 50px;
-                display: inline-flex;
-                align-items: center;
-                gap: 5px;
-                animation: pulse 1.5s infinite alternate;
-                box-shadow: 0 0 8px rgba(255, 0, 0, .7);
-            }
-
-            .live-badge::before {
-                content: "●";
-                font-size: 22px;
-                color: white;
-                animation: blink 1s infinite;
-            }
-
-            /* Glow Effects */
-            @keyframes pulse {
-                0% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.8); }
-                100% { box-shadow: 0 0 20px rgba(255, 0, 0, 1); transform: scale(1.05); }
-            }
-
-            @keyframes blink {
-                0% { opacity: 1; }
-                50% { opacity: 0.3; }
-                100% { opacity: 1; }
-            }
-
-            /* YouTube Button */
-            .btn-watch {
-                background: linear-gradient(135deg, #ff0000, #cc0000);
-                color: white;
-                padding: 12px 30px;
-                border-radius: 50px;
-                font-size: 18px;
-                font-weight: bold;
-                text-transform: uppercase;
-                transition: all 0.3s ease-in-out;
-                display: inline-flex;
-                align-items: center;
-                gap: 10px;
-                box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
-            }
-
-            .btn-watch:hover {
-                background: #ff0000;
-                transform: scale(1.1);
-                box-shadow: 0 0 25px rgba(255, 0, 0, 0.8);
-            }
-
-            .btn-watch i {
-                font-size: 22px;
-            }
-
-            /* Responsive Layout */
-            @media (max-width: 991px) {
-                .live-badge {
-                    margin: auto;
-                }
-
-                .live-video {
-                    margin-top: 20px;
-                }
-            }
-            </style>
+        <?php 
+            $islive_streaming = return_single_ans("Select isactive from category Where catid = 124 ");
+            if($islive_streaming == 1){
+        ?>
 
         <!-- Live Streaming Section Start -->
-            <div class="container-fluid py-5 my-5" style="background: linear-gradient(rgba(202, 203, 185, 1), rgba(202, 203, 185, 1));">
+            <div class="container-fluid py-5 my-5 live-streaming-section" style="background: linear-gradient(rgba(202, 203, 185, 1), rgba(202, 203, 185, 1));">
                 <div class="container">
                     <div class="row g-4 align-items-center">
                         <!-- Left Column: Live Stream Info -->
@@ -350,7 +281,7 @@ echo Baseheader($content['page_meta_title'],
                 </div>
             </div>
             <!-- Live Streaming Section End -->
-
+        <?php }?>
 
         <!-- Latest News Start -->
         <div class="container-fluid latest-news py-5">

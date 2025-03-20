@@ -3,7 +3,6 @@
                 <div class="navbar-nav mx-auto border-top">
                                                 
                     <?php
-
                     $menues = return_multiple_rows("Select * from category Where soft_delete = 0  and isactive = 1 and showInNavBar = 1 Order By cat_sequence ASC");
 
                     foreach ($menues as $menu) {
