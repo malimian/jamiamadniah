@@ -254,6 +254,7 @@ echo Baseheader($content['page_meta_title'],
         <?php 
             $islive_streaming = return_single_ans("Select isactive from category Where catid = 124 ");
             if($islive_streaming == 1){
+            $islive_streaming_page = return_single_row("Select * from pages Where catid = 124 AND isactive = 1 and soft_delete = 0 Order by createdon ASC ");
         ?>
 
         <!-- Live Streaming Section Start -->

@@ -25,27 +25,55 @@
                      <div class="col-lg-12">
                         <form class="needs-validation" onsubmit="return false" novalidate>                              
                               <!-- Nav tabs -->
+                              <!-- Tabs Navigation -->
                               <ul class="nav nav-tabs" role="tablist">
+                                 <!-- Description Tab -->
                                  <li class="nav-item">
-                                    <a class="nav-link active" data-toggle="tab" href="#home">Description</a>
+                                    <a class="nav-link active" data-toggle="tab" href="#home">
+                                       <i class="fa fa-file-text"></i> Description
+                                    </a>
                                  </li>
+
+                                 <!-- SEO Tab -->
                                  <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu1">SEO</a>
+                                    <a class="nav-link" data-toggle="tab" href="#menu1">
+                                       <i class="fa fa-search"></i> SEO
+                                    </a>
                                  </li>
+
+                                 <!-- HEADER Tab -->
                                  <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu2">HEADER</a>
+                                    <a class="nav-link" data-toggle="tab" href="#menu2">
+                                       <i class="fa fa-header"></i> HEADER
+                                    </a>
                                  </li>
+
+                                 <!-- TEMPLATE Tab -->
                                  <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu3">TEMPLATE</a>
+                                    <a class="nav-link" data-toggle="tab" href="#menu3">
+                                       <i class="fa fa-code"></i> TEMPLATE
+                                    </a>
                                  </li>
+
+                                 <!-- Photo Gallery Tab -->
                                  <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu4">Photo Gallery</a>
+                                    <a class="nav-link" data-toggle="tab" href="#menu4">
+                                       <i class="fa fa-image"></i> Photo Gallery
+                                    </a>
                                  </li>
-                                  <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu5">Shop</a>
+
+                                 <!-- Shop Tab -->
+                                 <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#menu5">
+                                       <i class="fa fa-shopping-cart"></i> Shop
+                                    </a>
                                  </li>
-                                  <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#menu6">Page Categories</a>
+
+                                 <!-- Page Categories Tab -->
+                                 <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#menu6">
+                                       <i class="fa fa-folder"></i> Page Categories
+                                    </a>
                                  </li>
                               </ul>
 
@@ -235,95 +263,8 @@
                              
                             
                             <div id="menu5" class="container tab-pane fade">
-                                  <!-- Start of Menue 5 shop -->
-                            
-                            
-                            <div class="form-group row">
-                              <label for="colFormLabel" class="col-sm-2 col-form-label">List Price</label>
-                              <div class="col-sm-10">
-                                 <input type="number" class="form-control" id="plistprice" placeholder="Price to show" name="plistprice">
-                                 <div class="valid-feedback">Valid.</div>
-                                 <div class="invalid-feedback">Please fill out this field.</div>
-                              </div>
-                           </div>
-                           
-                            <div class="form-group row">
-                              <label for="colFormLabel" class="col-sm-2 col-form-label">Original Price</label>
-                              <div class="col-sm-10">
-                                 <input type="number" class="form-control" id="pprice" placeholder="Original Price" name="pprice">
-                                 <div class="valid-feedback">Valid.</div>
-                                 <div class="invalid-feedback">Please fill out this field.</div>
-                              </div>
-                           </div>
-                           
-                            <div class="form-group row">
-                              <label for="colFormLabel" class="col-sm-2 col-form-label">SKU</label>
-                              <div class="col-sm-10">
-                                 <input type="text" class="form-control" id="sku" required="required" placeholder="Enter Product title" name="sku" value="<?php echo uniqid();?>">
-                                 <div class="valid-feedback">Valid.</div>
-                                 <div class="invalid-feedback">Please fill out this field.</div>
-                              </div>
-                           </div>
-                           
-                              <div class="form-group row">
-                                 <div class="form-check">
-                                   <input class="form-check-input" type="checkbox" value="" id="additionalCheck1" checked="checked">
-                                   <label class="form-check-label" for="additionalCheck1">
-                                     (Stock Status) Instock ?
-                                   </label>
-                                 </div>
-                              </div>
-                               <div class="form-group row">
-                                 <div class="form-check">
-                                   <input class="form-check-input" type="checkbox" value="" id="additionalCheck2">
-                                   <label class="form-check-label" for="additionalCheck2">
-                                     New Arrival ?
-                                   </label>
-                                 </div>
-                              </div>
-                               <div class="form-group row">
-                                 <div class="form-check">
-                                   <input class="form-check-input" type="checkbox" value="" id="additionalCheck3">
-                                   <label class="form-check-label" for="additionalCheck3">
-                                     Featured Product ?
-                                   </label>
-                                 </div>
-                              </div>
-                               <div class="form-group row">
-                                 <div class="form-check">
-                                   <input class="form-check-input" type="checkbox" value="" id="additionalCheck4">
-                                   <label class="form-check-label" for="additionalCheck4">
-                                     On Sale
-                                   </label>
-                                 </div>
-                              </div>
-                               <div class="form-group row">
-                                 <div class="form-check">
-                                   <input class="form-check-input" type="checkbox" value="" id="additionalCheck5">
-                                   <label class="form-check-label" for="additionalCheck5">
-                                    Best Seller
-                                   </label>
-                                 </div>
-                              </div>
-
-                              <div class="form-group row">
-                                 <div class="form-check">
-                                   <input class="form-check-input" type="checkbox" value="" id="additionalCheck6">
-                                   <label class="form-check-label" for="additionalCheck6">
-                                    Trending Item
-                                   </label>
-                                 </div>
-                              </div>
-
-                               <div class="form-group row">
-                                 <div class="form-check">
-                                   <input class="form-check-input" type="checkbox" value="" id="additionalCheck7">
-                                   <label class="form-check-label" for="additionalCheck7">
-                                    Hot Item 
-                                   </label>
-                                 </div>
-                              </div>
-
+                               <!-- Start of Menue 5 shop -->
+                                 <?php echo include_module('modules/add_product_module.php' , array('action' => "add"));?>  
                                 <!--End of Menue 5 shop-->
                             </div>
                             
