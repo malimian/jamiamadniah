@@ -337,16 +337,29 @@
                         <div class="form-group row">
                             <div class="col-lg" id="category_list">
                                 <?php
-                                $menus = array(
-                                    'items' => array(),
-                                    'parents' => array()
-                                );
-                                $p_cats = return_multiple_rows("SELECT catid, catname, cat_url, ParentCategory FROM category WHERE isactive = 1 AND soft_delete = 0");
-                                foreach ($p_cats as $p_cat) {
-                                    $menus['items'][$p_cat['catid']] = $p_cat;
-                                    $menus['parents'][$p_cat['ParentCategory']][] = $p_cat['catid'];
-                                }
-                                echo createmulltilevelcheckbox(0, $menus);
+                               // Fetch selected categories for the current page
+                                    $selected_categories = return_multiple_rows("SELECT cat_id FROM page_category WHERE page_id = " . $page['pid'] . " AND isactive = 1 AND soft_delete = 0");
+
+                                    // Extract cat_id values into a simple array
+                                    $selected_cat_ids = array_column($selected_categories, 'cat_id');
+
+                                    // Build the menu structure
+                                    $menus = array(
+                                        'items' => array(),
+                                        'parents' => array()
+                                    );
+
+                                    // Fetch all categories
+                                    $p_cats = return_multiple_rows("SELECT catid, catname, cat_url, ParentCategory FROM category WHERE isactive = 1 AND soft_delete = 0");
+
+                                    // Populate the menu structure
+                                    foreach ($p_cats as $p_cat) {
+                                        $menus['items'][$p_cat['catid']] = $p_cat;
+                                        $menus['parents'][$p_cat['ParentCategory']][] = $p_cat['catid'];
+                                    }
+
+                                    // Render the multi-level checkbox structure
+                                    echo createmulltilevelcheckbox(0, $menus, $selected_cat_ids);
                                 ?>
                             </div>
                         </div>

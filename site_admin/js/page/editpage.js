@@ -47,6 +47,14 @@ validateform(function () {
     var p_image = $('#p_image').val();
     var is_active = $('#is_active option:selected').val();
     var showInNavbar = $('#showInNavbar option:selected').val();
+    var category_list = $('#category_list').children("option:selected").val();
+
+    var selectedcategory_list = [];
+    $("#category_list input:checked").each(function () {
+        selectedcategory_list.push($(this).attr('datachck-id'));
+    });
+
+    console.log(selectedcategory_list);
 
     // New fields
     var sale_start_date = $('#saleStartDate').val();
@@ -106,6 +114,7 @@ validateform(function () {
     formData.append("meta_title", meta_title);
     formData.append("meta_keywords", meta_keywords);
     formData.append("meta_desc", meta_desc);
+    formData.append("selectedcategory_list", selectedcategory_list);
 
     // Append new fields
     formData.append("sale_start_date", sale_start_date);
@@ -152,7 +161,7 @@ validateform(function () {
             if (result > 0) {
                 $('#error_id').empty();
                 $('#error_id').html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <strong>Success !</strong> Page Updated Successfully <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div>');
-                location.reload();
+                // location.reload();
             }
         },
         function (result) {

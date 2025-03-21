@@ -43,7 +43,7 @@
                   <div class="input-group-prepend">
                      <span class="input-group-text"><i class="fa fa-align-left"></i></span>
                   </div>
-                  <textarea class="form-control" id="productDescription" placeholder="Enter Product Description" rows="4" required><?php if($action == "edit") echo $page[0]['product_description']; ?></textarea>
+                  <textarea class="form-control" id="productDescription" placeholder="Enter Product Description" rows="4"><?php if($action == "edit") echo $page[0]['product_description']; ?></textarea>
                </div>
                <div class="valid-feedback">Valid.</div>
                <div class="invalid-feedback">Please fill out this field.</div>
@@ -57,7 +57,7 @@
                   <div class="input-group-prepend">
                      <span class="input-group-text"><i class="fa fa-barcode"></i></span>
                   </div>
-                  <input type="text" class="form-control" id="sku" placeholder="Enter SKU" value="<?php if($action == "edit") echo $page[0]['sku']; ?>" required>
+                  <input type="text" class="form-control" id="sku" placeholder="Enter SKU" value="<?php if($action == "edit") echo $page[0]['sku']; ?>" >
                </div>
                <div class="valid-feedback">Valid.</div>
                <div class="invalid-feedback">Please fill out this field.</div>
@@ -105,7 +105,7 @@
                   <div class="input-group-prepend">
                      <span class="input-group-text"><i class="fa fa-industry"></i></span>
                   </div>
-                  <input type="text" class="form-control" id="brand" placeholder="Enter Brand/Manufacturer" value="<?php if($action == "edit") echo $page[0]['brand']; ?>" required>
+                  <input type="text" class="form-control" id="brand" placeholder="Enter Brand/Manufacturer" value="<?php if($action == "edit") echo $page[0]['brand']; ?>" >
                </div>
                <div class="valid-feedback">Valid.</div>
                <div class="invalid-feedback">Please fill out this field.</div>
@@ -119,7 +119,7 @@
                   <div class="input-group-prepend">
                      <span class="input-group-text"><i class="fa fa-dollar"></i></span>
                   </div>
-                  <input type="number" class="form-control" id="price" placeholder="Enter Price" value="<?php if($action == "edit") echo $page[0]['price']; ?>" required>
+                  <input type="number" class="form-control" id="price" placeholder="Enter Price" value="<?php if($action == "edit") echo $page[0]['price']; ?>" >
                </div>
                <div class="valid-feedback">Valid.</div>
                <div class="invalid-feedback">Please fill out this field.</div>
@@ -176,7 +176,7 @@
                   <div class="input-group-prepend">
                      <span class="input-group-text"><i class="fa fa-tags"></i></span>
                   </div>
-                  <input type="text" class="form-control" id="type" placeholder="Enter Product Type" value="<?php if($action == "edit") echo $page[0]['type']; ?>" required>
+                  <input type="text" class="form-control" id="type" placeholder="Enter Product Type" value="<?php if($action == "edit") echo $page[0]['type']; ?>" >
                </div>
                <div class="valid-feedback">Valid.</div>
                <div class="invalid-feedback">Please fill out this field.</div>
@@ -191,7 +191,7 @@
                   <div class="input-group-prepend">
                      <span class="input-group-text"><i class="fa fa-certificate"></i></span>
                   </div>
-                  <select class="form-control" id="condition" required>
+                  <select class="form-control" id="condition" >
                      <option value="">Select Condition</option>
                      <option value="new" <?php if($action == "edit" && $page[0]['condition'] == 'new') echo 'selected'; ?>>New</option>
                      <option value="used" <?php if($action == "edit" && $page[0]['condition'] == 'used') echo 'selected'; ?>>Used</option>

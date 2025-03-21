@@ -524,32 +524,33 @@ function createMenu($parent, $menu)
 }
 
 
-function createmulltilevelcheckbox($parent, $menu)
+function createmulltilevelcheckbox($parent, $menu, $selected_categories = null)
 {
     $html = "";
     if (isset($menu['parents'][$parent])) {
-        //$html ='';
         foreach ($menu['parents'][$parent] as $itemId) {
+            // Check if the current category is selected
+            $isChecked = in_array($menu['items'][$itemId]['catid'], $selected_categories) ? 'checked' : '';
+
             if (!isset($menu['parents'][$itemId])) {
-                //if no parent exits means main parent
+                // If no parent exists, it's a main parent
                 $html .= "
-                      <div class='custom-control custom-checkbox col-md-8'>
-                        <input type='checkbox' class='custom-control-input' id='chk_mdaction_" . $menu['items'][$itemId]['catid'] . "' datachck-id='" . $menu['items'][$itemId]['catid'] . "'>
+                    <div class='custom-control custom-checkbox col-md-8'>
+                        <input type='checkbox' class='custom-control-input' id='chk_mdaction_" . $menu['items'][$itemId]['catid'] . "' datachck-id='" . $menu['items'][$itemId]['catid'] . "' $isChecked>
                         <label class='custom-control-label' for='chk_mdaction_" . $menu['items'][$itemId]['catid'] . "'>" . $menu['items'][$itemId]['catname'] . "</label>
-                      </div>";
+                    </div>";
             }
             if (isset($menu['parents'][$itemId])) {
-                $html .= "<div class='custom-control custom-checkbox col-md'>
-                        <input type='checkbox' class='custom-control-input' id='chk_mdaction_" . $menu['items'][$itemId]['catid'] . "' data-id='" . $menu['items'][$itemId]['catid'] . "'>
-                        <label class='custom-control-label' for='chk_mdaction_" . $menu['items'][$itemId]['catid'] . "'>" . $menu['items'][$itemId]['catname'] . "</label>";
-                $html .= "<div class='custom-control custom-checkbox col-md'>";
-                $html .= createmulltilevelcheckbox($itemId, $menu);
-                $html .= '</div>';
-
-                $html .= "</div>";
+                $html .= "
+                    <div class='custom-control custom-checkbox col-md'>
+                        <input type='checkbox' class='custom-control-input' id='chk_mdaction_" . $menu['items'][$itemId]['catid'] . "' datachck-id='" . $menu['items'][$itemId]['catid'] . "' $isChecked>
+                        <label class='custom-control-label' for='chk_mdaction_" . $menu['items'][$itemId]['catid'] . "'>" . $menu['items'][$itemId]['catname'] . "</label>
+                        <div class='custom-control custom-checkbox col-md'>";
+                $html .= createmulltilevelcheckbox($itemId, $menu, $selected_categories);
+                $html .= '</div>
+                    </div>';
             }
         }
-        // $html .= "</ul>";
     }
     return $html;
 }
