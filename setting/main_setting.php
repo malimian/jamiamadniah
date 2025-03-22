@@ -59,7 +59,11 @@ define('API_V', API_BASE_URL.'v1/' , '');
 
 ##########################PATHS_ABSOLUTE
 define('ABSOLUTE_IMAGEPATH', $settings[9]['settings_value'] , '');
+
 define('ABSOLUTE_FILEPATH',  $settings[11]['settings_value'] , '');
+
+define('ABSOLUTE_VIDEOPATH',  $settings[29]['settings_value'] , '');
+
 
 
 ##########################PAGE_LOADER

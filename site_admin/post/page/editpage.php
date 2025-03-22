@@ -4,7 +4,6 @@ require_once('../../admin_connect.php');
 if(isset($_POST['submit'])){
 
     // Existing fields
-    $ctname = $_POST['ctname'];    
     $page_title = escape($_POST['page_title']);
     $page_url = $_POST['page_url'];
     $template_page = $_POST['template_page'];
@@ -18,6 +17,7 @@ if(isset($_POST['submit'])){
     $p_image = escape($_POST['p_image']);
     $uid = $_SESSION['user']['id'];
     $is_active = $_POST['is_active'];
+    $postVisibility = $_POST['postVisibility'];
     $page_id = $_POST['page_id'];
 
     // New fields
@@ -48,7 +48,6 @@ if(isset($_POST['submit'])){
     $HotItem = isset($_POST['HotItem']) ? 1 : 0;
 
     $sql = "UPDATE `pages` SET 
-        `catid` = '$ctname',
         `page_url` = '$page_url',
         `template_id` = '$template_page',
         `site_template_id` = '$site_template',
@@ -84,27 +83,99 @@ if(isset($_POST['submit'])){
         `best_seller` = '$BestSeller',
         `trending_item` = '$TrendingItem',
         `hot_item` = '$HotItem',
+        `visibility` = '$postVisibility',
         `updatedon` = NOW() 
         WHERE `pages`.`pid` = ".$page_id;
 
     $id = Update($sql);
 
     if($id > 0){
-        if(isset($_FILES['files'])){
-            $countfiles = count($_FILES['files']['name']);
-            for($i=0;$i<$countfiles;$i++){
-                $filename = $_FILES['files']['name'][$i];
+
+        // if(isset($_FILES['images'])){
+           
+        //     $countfiles = count($_FILES['images']['name']);
+
+        //     for($i=0;$i<$countfiles;$i++){
+        //         $filename = $_FILES['images']['name'][$i];
+        //         $temp = explode(".", $filename);
+        //         $temp1 = strtolower(end($temp));
+        //         $newfilename  =  $temp[0]."_".uniqid().'.'.$temp1;
+        //         $newfilename = clean($newfilename);
+        //         $tvb =  move_uploaded_file($_FILES['images']['tmp_name'][$i], '../../../'.ABSOLUTE_IMAGEPATH.$newfilename);
+        //         if($tvb == 1){
+        //             $sql1 ="INSERT INTO `images` ( `pid`, `i_name`, `isactive`, `soft_delete`) VALUES ( '$page_id', '$newfilename', '1', '0')";
+        //             $id1 = Insert($sql1);
+        //         }
+        //     }
+        // }
+
+
+        // Upload Images
+        if (isset($_FILES['images'])) {
+            $countfiles = count($_FILES['images']['name']);
+
+            for ($i = 0; $i < $countfiles; $i++) {
+                $filename = $_FILES['images']['name'][$i];
                 $temp = explode(".", $filename);
                 $temp1 = strtolower(end($temp));
-                $newfilename  =  $temp[0]."_".uniqid().'.'.$temp1;
+                $newfilename = $temp[0] . "_" . uniqid() . '.' . $temp1;
                 $newfilename = clean($newfilename);
-                $tvb =  move_uploaded_file($_FILES['files']['tmp_name'][$i], '../../../'.ABSOLUTE_IMAGEPATH.$newfilename);
-                if($tvb == 1){
-                    $sql1 ="INSERT INTO `images` ( `pid`, `i_name`, `isactive`, `soft_delete`) VALUES ( '$page_id', '$newfilename', '1', '0')";
+
+                // Move the uploaded file
+                $tvb = move_uploaded_file($_FILES['images']['tmp_name'][$i], '../../../' . ABSOLUTE_IMAGEPATH . $newfilename);
+
+                if ($tvb == 1) {
+                    // Insert file details into the database
+                    $sql1 = "INSERT INTO `images` (`pid`, `i_name`, `isactive`, `soft_delete`) VALUES ('$page_id', '$newfilename', '1', '0')";
                     $id1 = Insert($sql1);
                 }
             }
         }
+
+        // Upload Videos
+        if (isset($_FILES['videos'])) {
+            $countfiles = count($_FILES['videos']['name']);
+
+            for ($i = 0; $i < $countfiles; $i++) {
+                $filename = $_FILES['videos']['name'][$i];
+                $temp = explode(".", $filename);
+                $temp1 = strtolower(end($temp));
+                $newfilename = $temp[0] . "_" . uniqid() . '.' . $temp1;
+                $newfilename = clean($newfilename);
+
+                // Move the uploaded file
+                $tvb = move_uploaded_file($_FILES['videos']['tmp_name'][$i], '../../../' . ABSOLUTE_VIDEOPATH . $newfilename);
+
+                if ($tvb == 1) {
+                    // Insert file details into the database
+                    $sql1 = "INSERT INTO `videos` (`pid`, `v_name`, `isactive`, `soft_delete`) VALUES ('$page_id', '$newfilename', '1', '0')";
+                    $id1 = Insert($sql1);
+                }
+            }
+        }
+
+        // Upload Files
+        if (isset($_FILES['page_files'])) {
+            $countfiles = count($_FILES['page_files']['name']);
+
+            for ($i = 0; $i < $countfiles; $i++) {
+                $filename = $_FILES['page_files']['name'][$i];
+                $temp = explode(".", $filename);
+                $temp1 = strtolower(end($temp));
+                $newfilename = $temp[0] . "_" . uniqid() . '.' . $temp1;
+                $newfilename = clean($newfilename);
+
+                // Move the uploaded file
+                $tvb = move_uploaded_file($_FILES['page_files']['tmp_name'][$i], '../../../' . ABSOLUTE_FILEPATH . $newfilename);
+
+                if ($tvb == 1) {
+                    // Insert file details into the database
+                    $sql1 = "INSERT INTO `page_files` (`pid`, `f_name`, `isactive`, `soft_delete`) VALUES ('$page_id', '$newfilename', '1', '0')";
+                    $id1 = Insert($sql1);
+                }
+            }
+        }
+
 
 
       // Delete all existing entries for the given page_id

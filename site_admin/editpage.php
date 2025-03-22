@@ -57,7 +57,7 @@
                         <!-- Photo Gallery Tab -->
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#menu4">
-                                <i class="fa fa-image"></i> Photo Gallery
+                                <i class="fa fa-image"></i> Media
                             </a>
                         </li>
                         <!-- Shop Tab -->
@@ -72,22 +72,6 @@
                     <div class="tab-content">
                         <!-- Description Tab Content -->
                         <div id="home" class="container tab-pane active">
-                            <!-- Category -->
-                            <div class="form-group row">
-                                <label for="colFormLabel" class="col-sm-2 col-form-label">Category</label>
-                                <div class="col-sm-10">
-                                    <select type="text" class="form-control" id="ctname" required="required" name="ctname">
-                                        <?php
-                                        $categories = return_multiple_rows("SELECT catname, catid FROM category $where_gc AND isactive = 1");
-                                        foreach ($categories as $category) {
-                                            $isselected_cat = ($page['catid'] == $category['catid']) ? "selected" : "";
-                                            echo "<option value='{$category['catid']}' $isselected_cat>{$category['catname']}</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-
                             <!-- Title -->
                             <div class="form-group row">
                                 <label for="colFormLabel" class="col-sm-2 col-form-label">Title</label>
@@ -146,15 +130,6 @@
                             </div>
 
                             <!-- Is Active -->
-                            <div class="form-group row">
-                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Is Active</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control form-control-sm" id="is_active" name="is_active">
-                                        <option value="1" <?php if ($page['isactive'] == 1) echo "selected"; ?>>YES</option>
-                                        <option value="0" <?php if ($page['isactive'] != 1) echo "selected"; ?>>NO</option>
-                                    </select>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- SEO Tab Content -->
@@ -234,46 +209,7 @@
 
                         <!-- Photo Gallery Tab Content -->
                         <div id="menu4" class="container tab-pane fade">
-                            <label for="colFormLabel" class="col-sm-5 col-form-label">Upload Photo Gallery</label>
-                            <input class="form-control" type="file" id="files" name="files[]" multiple style="opacity: 100%; margin: 17px">
-
-                            <?php
-                            $photogallery = return_multiple_rows("SELECT * FROM images WHERE pid = {$_GET['id']} AND isactive = 1 AND soft_delete = 0");
-                            if (!empty($photogallery)) {
-                            ?>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <table class="table table-image">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Image</th>
-                                                        <th scope="col">Name</th>
-                                                        <th scope="col">Delete</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    foreach ($photogallery as $photogallery_) {
-                                                    ?>
-                                                        <tr id="dr_<?php echo $photogallery_['i_id']; ?>">
-                                                            <td class="w-25">
-                                                                <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $photogallery_['i_name']; ?>" class="img-fluid img-thumbnail" alt="Sheep">
-                                                            </td>
-                                                            <td><?php echo $photogallery_['i_name']; ?></td>
-                                                            <td>
-                                                                <button onclick="delete_image(<?php echo $photogallery_['i_id']; ?>)" class="btn btn-danger btn-sm rounded-0" type="button" title="Delete">
-                                                                    <i class="fa fa-trash"></i>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    <?php } ?>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php } ?>
+                            <?php echo include_module('modules/media_tab_module.php', array('action' => "edit" , 'page' => array($page) )); ?>
                         </div>
 
                         <!-- Shop Tab Content -->
@@ -281,15 +217,7 @@
                             <?php echo include_module('modules/add_product_module.php', array('action' => "edit" , 'page' => array($page) )); ?>
                         </div>
                     </div>
-
-                    <!-- Submit Button -->
-                    <div class="form-group row">
-                        <div class="col-sm-10"></div>
-                        <div class="col-sm-2">
-                            <input type="submit" name="submit" class="form-control btn btn-info" value="Submit" id="submit_btn" />
-                        </div>
-                    </div>
-                </form>
+                
                 <script type="text/javascript">
                     var page_id = "<?php echo $page['pid']; ?>";
                 </script>
@@ -305,26 +233,28 @@
                     </div>
                     <div class="card-body">
                         <div class="form-group">
-                            <button type="button" class="btn btn-secondary btn-block">Save Draft</button>
-                            <button type="button" class="btn btn-secondary btn-block">Preview</button>
+                                <div class="form-group">
+                                    <a href="<?php echo BASE_URL . $page['page_url']; ?>" id="previewLink" class="btn btn-secondary btn-block">
+                                        <i class="fa fa-eye"></i> Preview
+                                    </a>
+                                </div>
                         </div>
                         <div class="form-group">
                             <label for="postStatus">Status:</label>
-                            <select id="postStatus" class="form-control">
-                                <option value="draft">Draft</option>
-                                <option value="published">Published</option>
+                            <select id="is_active" name="is_active" class="form-control">
+                                <option value="0" <?php echo ($page['isactive'] == 0) ? 'selected' : ''; ?>>Draft</option>
+                                <option value="1" <?php echo ($page['isactive'] == 1) ? 'selected' : ''; ?>>Published</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="postVisibility">Visibility:</label>
                             <select id="postVisibility" class="form-control">
-                                <option value="public">Public</option>
-                                <option value="private">Private</option>
+                                <option <?php echo ($page['visibility'] == 1) ? 'selected' : ''; ?> value="1">Public</option>
+                                <option <?php echo ($page['visibility'] == 0) ? 'selected' : ''; ?> value="0">Private</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <button type="button" class="btn btn-danger btn-block">Move to Trash</button>
-                            <button type="button" class="btn btn-primary btn-block">Publish</button>
+                            <button type="submit" id="submit_btn" class="btn btn-primary btn-block">Publish</button>
                         </div>
                     </div>
                 </div>
@@ -366,6 +296,7 @@
                     </div>
                 </div>
             </div>
+            </form>
         </div>
     </div>
 </div>

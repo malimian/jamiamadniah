@@ -32,9 +32,36 @@ function process(value) {
 
 
 
+function createFormDataWithFiles(inputId, fieldName) {
+    const formData = new FormData(); // Create a new FormData object
+    var fileInput = document.getElementById(inputId);
+
+    if (!fileInput) {
+        console.error(`File input with ID '${inputId}' not found.`);
+        return formData; // Return the empty FormData object
+    }
+
+ // Check if the file input has the `files` property
+    if (!fileInput.files) {
+        console.error(`File input with ID '${inputId}' does not support multiple files.`);
+        return formData; // Return the empty FormData object
+    }
+
+    
+    var totalfiles = fileInput.files.length;
+    console.log(`Total Files for ${inputId}: ${totalfiles}`);
+
+    for (var index = 0; index < totalfiles; index++) {
+        formData.append(fieldName, fileInput.files[index]);
+        console.log(`Appended file: ${fileInput.files[index].name}`);
+    }
+
+    return formData; // Return the FormData object with appended files
+}
+
+
 validateform(function () {
     // Existing fields
-    var ctname = $('#ctname').val();
     var page_title = $('#page_title').val();
     var page_url = $('#page_url').val();
     var template_page = $('#template_page').val();
@@ -46,6 +73,7 @@ validateform(function () {
     var header = $('#header').val();
     var p_image = $('#p_image').val();
     var is_active = $('#is_active option:selected').val();
+    var postVisibility = $('#postVisibility option:selected').val();
     var showInNavbar = $('#showInNavbar option:selected').val();
     var category_list = $('#category_list').children("option:selected").val();
 
@@ -53,8 +81,6 @@ validateform(function () {
     $("#category_list input:checked").each(function () {
         selectedcategory_list.push($(this).attr('datachck-id'));
     });
-
-    console.log(selectedcategory_list);
 
     // New fields
     var sale_start_date = $('#saleStartDate').val();
@@ -94,20 +120,29 @@ validateform(function () {
     // Create FormData object
     const formData = new FormData();
 
-    // Append files
-    var totalfiles = document.getElementById('files').files.length;
-    for (var index = 0; index < totalfiles; index++) {
-        formData.append("files[]", document.getElementById('files').files[index]);
-    }
+    // var totalfiles = document.getElementById('images').files.length;
+    // console.log("Total Files "+totalfiles);
+    // for (var index = 0; index < totalfiles; index++) {
+    //     formData.append("images[]", document.getElementById('images').files[index]);
+    // }
+
+
+    const imagesFormData = createFormDataWithFiles('images', 'images[]');
+    const videosFormData = createFormDataWithFiles('videos', 'videos[]');
+    const filesFormData = createFormDataWithFiles('page_files', 'page_files[]');
+
+    for (let [key, value] of imagesFormData.entries()) formData.append(key, value);
+    for (let [key, value] of videosFormData.entries()) formData.append(key, value);
+    for (let [key, value] of filesFormData.entries()) formData.append(key, value);
 
     // Append existing fields
-    formData.append("ctname", ctname);
     formData.append("page_title", page_title);
     formData.append("page_url", page_url);
     formData.append("header", header);
     formData.append("template_page", template_page);
     formData.append("site_template", site_template);
     formData.append("is_active", is_active);
+    formData.append("postVisibility", postVisibility);
     formData.append("showInNavbar", showInNavbar);
     formData.append("editor1", editor1);
     formData.append("p_image", p_image);
@@ -195,3 +230,18 @@ function delete_image(id){
         );
 }
 
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('previewLink').addEventListener('click', function(event) {
+        // Prevent the default link behavior
+        event.preventDefault();
+
+        // Open the URL in a named window (or refresh if already open)
+        const previewWindow = window.open(this.href, 'previewWindow');
+
+        // Focus on the window if it already exists
+        if (previewWindow) {
+            previewWindow.focus();
+        }
+    });
+});
