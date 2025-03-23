@@ -23,6 +23,7 @@ echo Baseheader($content['page_meta_title'],
 
     echo replace_sysvari(BaseNavBar($template_id), getcwd()."/");
 
+
 ?>
 <style type="text/css">
     .circle-clss {
