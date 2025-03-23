@@ -161,6 +161,19 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
             <div class="col-lg-5 col-xl-4">
                 <div class="bg-light rounded p-4 pt-0">
                     <div class="row g-4">
+                        <div class="col-12">
+                            <div class="rounded overflow-hidden">
+                                <img src="img/news-3.jpg" class="img-fluid rounded img-zoomin w-100" alt="">
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-flex flex-column">
+                                <a href="#" class="h4 mb-2">Get the best speak market, news.</a>
+                                <p class="fs-5 mb-0"><i class="fa fa-clock"> 06 minute read</i> </p>
+                                <p class="fs-5 mb-0"><i class="fa fa-eye"> 3.5k Views</i></p>
+                            </div>
+                        </div>
+
                         <?php
                         $sidebar_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0
                          AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
