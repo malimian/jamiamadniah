@@ -3,6 +3,8 @@ include 'front_connect.php';
 
 $url = "index.php";
 
+$not_show_more_then_once = [];
+
 // Fetch page data
 $content = return_single_row("SELECT page_meta_title, site_template_id, page_meta_keywords, page_meta_desc, page_title, featured_image, pages.createdon, pid, catname, cat_url, page_url FROM pages LEFT JOIN category ON pages.catid = category.catid WHERE pages.soft_delete = 0 AND category.soft_delete = 0 AND page_url = '$url' AND pages.isactive = 1");
 
@@ -62,6 +64,7 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
             <?php
             $news_categories = return_multiple_rows("SELECT * FROM category WHERE ParentCategory = 118");
             foreach ($news_categories as $new_category) {
+            
                 $latest_news = return_single_row("SELECT * FROM pages WHERE catid = " . $new_category['catid'] . " AND isactive = 1 AND soft_delete = 0 AND views = 0 ORDER BY pages.createdon DESC LIMIT 0,1");
             ?>
                 <div class="col-md-6 col-lg-6 col-xl-3">
@@ -85,7 +88,9 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
                         </div>
                     </div>
                 </div>
-            <?php } ?>
+            <?php 
+                    $not_show_more_then_once[] = $latest_news['pid'];
+        } ?>
         </div>
     </div>
 </div>
@@ -98,7 +103,16 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
             <div class="col-lg-7 col-xl-8 mt-0">
                 <!-- Main News Article -->
                 <?php
-                $main_news = return_single_row("SELECT * FROM pages WHERE isactive = 1 AND soft_delete = 0 ORDER BY createdon DESC LIMIT 1");
+                $main_news = return_single_row("
+                    SELECT * 
+                    FROM pages 
+                    WHERE isactive = 1 
+                      AND soft_delete = 0 
+                      AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
+                    ORDER BY createdon DESC 
+                    LIMIT 1
+                ");
+                    $not_show_more_then_once[] = $main_news['pid'];
                 ?>
                 <div class="position-relative overflow-hidden rounded">
                     <img src="<?php echo $main_news['featured_image']; ?>" class="img-fluid rounded img-zoomin w-100" alt="<?php echo $main_news['page_title']; ?>">
@@ -120,7 +134,11 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
                         <h3 class="mb-4">Top Story</h3>
                     </div>
                     <?php
-                    $top_story = return_single_row("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 ORDER BY views DESC LIMIT 1");
+                    $top_story = return_single_row("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
+                      AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
+                        ORDER BY views DESC LIMIT 1");
+
+                         $not_show_more_then_once[] = $top_story['pid'];
                     ?>
                     <div class="row g-4 align-items-center">
                         <div class="col-md-6">
@@ -144,7 +162,9 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
                 <div class="bg-light rounded p-4 pt-0">
                     <div class="row g-4">
                         <?php
-                        $sidebar_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 ORDER BY createdon DESC LIMIT 5");
+                        $sidebar_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0
+                         AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
+                         ORDER BY createdon DESC LIMIT 5");
                         foreach ($sidebar_news as $news) {
                         ?>
                             <div class="col-12">
@@ -163,7 +183,9 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
                                     </div>
                                 </div>
                             </div>
-                        <?php } ?>
+                        <?php 
+                            $not_show_more_then_once[] = $news['pid'];
+                    } ?>
                     </div>
                 </div>
             </div>
@@ -204,14 +226,38 @@ if ($islive_streaming == 1) {
 <?php } ?>
 <!-- Breaking News Live Section End -->
 
+<?php
+$news_categories = return_multiple_rows("SELECT * FROM category WHERE ParentCategory = 118");
+
+$latest_news_items = [];
+
+foreach ($news_categories as $new_category) {
+    $latest_news = return_single_row("
+        SELECT * 
+        FROM pages 
+        WHERE catid = " . $new_category['catid'] . " 
+          AND isactive = 1 
+          AND soft_delete = 0 
+          AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ")
+          AND views = 0 
+        ORDER BY createdon DESC 
+        LIMIT 1
+    ");
+
+    if ($latest_news) {
+        $latest_news_items[] = $latest_news;
+    }
+}
+
+?>
 <!-- Latest News Start -->
 <div class="container-fluid latest-news py-5">
     <div class="container py-5">
         <h2 class="mb-4">Latest News</h2>
         <div class="latest-news-carousel owl-carousel">
             <?php
-            $latest_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 ORDER BY createdon DESC LIMIT 5");
-            foreach ($latest_news as $news) {
+            // Loop through the latest news items and display them
+            foreach ($latest_news_items as $news) {
             ?>
                 <div class="latest-news-item">
                     <div class="bg-light rounded">
@@ -219,15 +265,17 @@ if ($islive_streaming == 1) {
                             <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
                         </div>
                         <div class="d-flex flex-column p-4">
-                            <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
+                            <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 45, "..."); ?></a>
                             <div class="d-flex justify-content-between">
-                                <a href="#" class="small text-body link-hover">by <?php echo $news['article_author']; ?></a>
+                                <a href="#" class="small text-body link-hover">by <?php echo mb_strimwidth($news['article_author'], 0, 15, "..."); ?></a>
                                 <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($news['createdon']); ?></small>
                             </div>
                         </div>
                     </div>
                 </div>
-            <?php } ?>
+            <?php
+                 $not_show_more_then_once[] = $news['pid'];
+             } ?>
         </div>
     </div>
 </div>
@@ -240,7 +288,7 @@ if ($islive_streaming == 1) {
             <div class="row g-4">
                 <div class="col-lg-8 col-xl-9">
                     <div class="d-flex flex-column flex-md-row justify-content-md-between border-bottom mb-4">
-                        <h1 class="mb-4">What’s New</h1>
+                        <h1 class="mb-4">What's New</h1>
                         <ul class="nav nav-pills d-inline-flex text-center">
                             <?php
                             $categories = return_multiple_rows("SELECT * FROM category WHERE ParentCategory = 118");
@@ -257,13 +305,17 @@ if ($islive_streaming == 1) {
                     <div class="tab-content mb-4">
                         <?php
                         foreach ($categories as $index => $category) {
-                            $category_news = return_multiple_rows("SELECT * FROM pages WHERE catid = " . $category['catid'] . " AND isactive = 1 AND soft_delete = 0 ORDER BY createdon DESC LIMIT 5");
+                            $category_news = return_multiple_rows("SELECT * FROM pages WHERE catid = " . $category['catid'] . " AND isactive = 1 AND soft_delete = 0
+                             AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
+
+                             ORDER BY createdon DESC LIMIT 5");
                         ?>
                             <div id="tab-<?php echo $index + 1; ?>" class="tab-pane fade show p-0 <?php echo $index === 0 ? 'active' : ''; ?>">
                                 <div class="row g-4">
                                     <div class="col-lg-8">
                                         <?php
                                         $main_category_news = $category_news[0];
+                                        $not_show_more_then_once[] = $main_category_news['pid'];
                                         ?>
                                         <div class="position-relative rounded overflow-hidden">
                                             <img src="<?php echo $main_category_news['featured_image']; ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $main_category_news['page_title']; ?>">
@@ -285,6 +337,7 @@ if ($islive_streaming == 1) {
                                     <div class="col-lg-4">
                                         <?php
                                         foreach (array_slice($category_news, 1) as $news) {
+                                            $not_show_more_then_once[] = $news['pid'];
                                         ?>
                                             <div class="row g-4 align-items-center">
                                                 <div class="col-5">
@@ -310,10 +363,14 @@ if ($islive_streaming == 1) {
                         <!-- Life Style and Most View Section Start -->
                         <?php
                         // Fetch most viewed news articles
-                        $most_viewed_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 ORDER BY views DESC LIMIT 5");
+                        $most_viewed_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
+                            AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
+                            ORDER BY views DESC LIMIT 5");
 
                         // Fetch lifestyle news articles
-                        $lifestyle_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 ORDER BY createdon DESC LIMIT 2");
+                        $lifestyle_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
+                            AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
+                            ORDER BY createdon DESC LIMIT 2");
                         ?>
 
             <!-- Most Views News Section -->
@@ -338,7 +395,9 @@ if ($islive_streaming == 1) {
                             </div>
                         </div>
                     </div>
-                <?php } ?>
+                <?php 
+                   $not_show_more_then_once[] = $news['pid'];
+                } ?>
             </div>
 
             <!-- Life Style Section -->
@@ -364,7 +423,9 @@ if ($islive_streaming == 1) {
                                 </div>
                             </div>
                         </div>
-                    <?php } ?>
+                    <?php 
+                      $not_show_more_then_once[] = $news['pid'];
+                } ?>
                 </div>
             </div>
                         <!-- Life Style and Most View Section End -->
@@ -406,7 +467,9 @@ if ($islive_streaming == 1) {
                                 <h4 class="my-4">Popular News</h4>
                                 <div class="row g-4">
                                     <?php
-                                    $popular_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 ORDER BY views DESC LIMIT 5");
+                                    $popular_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0
+                                    AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
+                                     ORDER BY views DESC LIMIT 5");
                                     foreach ($popular_news as $news) {
                                     ?>
                                         <div class="col-12">
@@ -424,7 +487,9 @@ if ($islive_streaming == 1) {
                                                 </div>
                                             </div>
                                         </div>
-                                    <?php } ?>
+                                    <?php
+                                    $not_show_more_then_once[] = $news['pid'];
+                                     } ?>
                                 </div>
                             </div>
                         </div>
