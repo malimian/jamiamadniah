@@ -27,15 +27,20 @@ if(!function_exists("script_t")) {
 
 <?php 
 $user = return_single_row("Select username , fullname , profile_pic , details from loginuser Where soft_delete = 0 and isactive = 1  and id = ".$content['createdby']);
+
+$news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".$content['catid']);
+
 ?>
 
 <!-- Single Product Start -->
         <div class="container-fluid py-5">
             <div class="container py-5">
                 <ol class="breadcrumb justify-content-start mb-4">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                    <li class="breadcrumb-item active text-dark">Single Page</li>
+                    <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>">Home</a></li>
+                    <?php if (!empty($news_categories)) { ?>
+                        <li class="breadcrumb-item"><a href="<?php echo BASE_URL . $news_categories[0]['cat_url']; ?>"><?php echo $news_categories[0]['catname']; ?></a></li>
+                    <?php } ?>
+                    <li class="breadcrumb-item active text-dark"><?php echo replace_sysvari($content['page_title']); ?></li>
                 </ol>
                 <div class="row g-4">
                     <div class="col-lg-8">
@@ -44,8 +49,8 @@ $user = return_single_row("Select username , fullname , profile_pic , details fr
                         </div>
                         <div class="position-relative rounded overflow-hidden mb-3">
                             <img src="<?php echo ABSOLUTE_IMAGEPATH.$content['featured_image'];?>" title="<?php echo $content['page_title'];?>" alt="<?php echo $content['page_title'];?>" class="img-zoomin img-fluid rounded w-100" alt="">
-                            <div class="position-absolute text-white px-4 py-2 bg-primary rounded" style="top: 20px; right: 20px;">                                              
-                                Busimess
+                             <div class="position-absolute text-white px-4 py-2 bg-primary rounded" style="top: 20px; right: 20px;">
+                                <?php echo $news_categories[0]['catname']; ?> <!-- Dynamic Category Name -->
                             </div>
                         </div>
                         <div class="d-flex justify-content-between">
@@ -238,6 +243,35 @@ $user = return_single_row("Select username , fullname , profile_pic , details fr
                                         </div>
                                         <ul class="nav nav-pills d-inline-flex text-center mb-4">
                                             <?php
+                                                $tags = [];
+                                                $all_keywords = return_multiple_rows("
+                                                SELECT page_meta_keywords 
+                                                FROM pages 
+                                                WHERE page_meta_keywords IS NOT NULL 
+                                                AND page_meta_keywords != ''
+                                                ");
+                                                // Process keywords and count their frequency
+                                                foreach ($all_keywords as $keyword_row) {
+                                                    $keywords = explode(",", $keyword_row['page_meta_keywords']);
+                                                    foreach ($keywords as $keyword) {
+                                                        $keyword = trim($keyword); // Remove extra spaces
+                                                        if (!empty($keyword)) {
+                                                            if (isset($tags[$keyword])) {
+                                                                $tags[$keyword]++;
+                                                            } else {
+                                                                $tags[$keyword] = 1;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+
+                                                // Sort tags by frequency in descending order
+                                                arsort($tags);
+
+                                                // Get top 10 tags
+                                                $trending_tags = array_slice(array_keys($tags), 0, 9);
+
+
                                             foreach ($trending_tags as $tag) {
                                             ?>
                                                 <li class="nav-item mb-3">

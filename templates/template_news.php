@@ -30,14 +30,7 @@ $user = return_single_row("Select username , fullname , profile_pic , details fr
 
 
 
-// print_r($user);
-
-
-$news_categories = return_multiple_rows("SELECT * FROM category WHERE ParentCategory = 118");
-
-// print_r($news_categories);
-
-// print_r($content);
+$news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".$content['catid']);
 
 ?>
 

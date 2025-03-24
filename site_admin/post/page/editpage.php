@@ -6,6 +6,7 @@ if(isset($_POST['submit'])){
     // Existing fields
     $page_title = escape($_POST['page_title']);
     $page_url = $_POST['page_url'];
+    $ctname = $_POST['ctname'];
     $template_page = $_POST['template_page'];
     $site_template = $_POST['site_template'];
     $showInNavbar = $_POST['showInNavbar'];
@@ -84,10 +85,12 @@ if(isset($_POST['submit'])){
         `trending_item` = '$TrendingItem',
         `hot_item` = '$HotItem',
         `visibility` = '$postVisibility',
-        `updatedon` = NOW() 
+        `updatedon` = NOW(),
+        `catid` = '$ctname'
         WHERE `pages`.`pid` = ".$page_id;
 
     $id = Update($sql);
+
 
     if($id > 0){
 

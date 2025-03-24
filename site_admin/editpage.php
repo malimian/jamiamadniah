@@ -82,6 +82,26 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label for="ctname" class="col-sm-2 col-form-label">Category</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" id="ctname" required name="ctname">
+                                        <?php 
+                                        // Get categories from database
+                                        $categories = return_multiple_rows("SELECT catname, catid FROM category $where_gc AND isactive = 1");
+                                        
+                                        foreach ($categories as $category) {
+                                            $selected = ($page['catid'] == $category['catid']) ? 'selected' : '';
+                                            $catname = htmlspecialchars($category['catname'], ENT_QUOTES, 'UTF-8');
+                                            $catid = (int)$category['catid'];
+                                            
+                                            echo "<option value='{$catid}' {$selected}>{$catname}</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+
                             <!-- URL -->
                             <div class="form-group row">
                                 <label for="colFormLabel" class="col-sm-2 col-form-label">URL</label>

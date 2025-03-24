@@ -64,6 +64,7 @@ validateform(function () {
     // Existing fields
     var page_title = $('#page_title').val();
     var page_url = $('#page_url').val();
+    var ctname = $('#ctname').val();
     var template_page = $('#template_page').val();
     var site_template = $('#site_template').val();
     var editor1 = CKEDITOR.instances['editor1'].getData();
@@ -138,6 +139,7 @@ validateform(function () {
     // Append existing fields
     formData.append("page_title", page_title);
     formData.append("page_url", page_url);
+    formData.append("ctname", ctname);
     formData.append("header", header);
     formData.append("template_page", template_page);
     formData.append("site_template", site_template);

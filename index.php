@@ -31,7 +31,7 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
             $news_categories = return_multiple_rows("SELECT * FROM category WHERE ParentCategory = 118");
             foreach ($news_categories as $new_category) {
             
-                $latest_news = return_single_row("SELECT * FROM pages WHERE catid = " . $new_category['catid'] . " AND isactive = 1 AND soft_delete = 0 AND views = 0 ORDER BY pages.createdon DESC LIMIT 0,1");
+                $latest_news = return_single_row("SELECT * FROM pages WHERE catid = " . $new_category['catid'] . " AND isactive = 1 AND soft_delete = 0 AND template_id = 7 AND views = 0 ORDER BY pages.createdon DESC LIMIT 0,1");
             ?>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="row g-4 align-items-center features-item">
@@ -74,6 +74,7 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
                     FROM pages 
                     WHERE isactive = 1 
                       AND soft_delete = 0 
+                      AND template_id = 7
                       AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
                     ORDER BY createdon DESC 
                     LIMIT 1
@@ -345,11 +346,6 @@ foreach ($news_categories as $new_category) {
                         $most_viewed_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
                             AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
                             ORDER BY views DESC LIMIT 5");
-
-                        // Fetch lifestyle news articles
-                        $lifestyle_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
-                            AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                            ORDER BY createdon DESC LIMIT 2");
                         ?>
 
             <!-- Most Views News Section -->
@@ -386,6 +382,11 @@ foreach ($news_categories as $new_category) {
                 </div>
                 <div class="row g-4">
                     <?php
+                       // Fetch lifestyle news articles
+                    $lifestyle_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
+                            AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
+                            ORDER BY createdon DESC LIMIT 2");
+
                     foreach ($lifestyle_news as $news) {
                     ?>
                         <div class="col-lg-6">
@@ -407,7 +408,41 @@ foreach ($news_categories as $new_category) {
                 } ?>
                 </div>
             </div>
-                        <!-- Life Style and Most View Section End -->
+                <!-- Life Style and Most View Section End -->
+
+                <!-- Editor Choice Start -->
+                    <div class="border-bottom mb-4">
+                        <h2 class="my-4">Editors Choice</h2>
+                    </div>
+                    <div class="whats-carousel owl-carousel most-views-news">
+                    <?php
+                        // Fetch most viewed news articles
+                        $editor_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 6 AND isactive = 1 AND soft_delete = 0 
+                            ORDER BY views DESC LIMIT 5");
+
+                        foreach ($editor_news as $news) {
+                        ?>
+                            <div class="latest-news-item">
+                                <div class="bg-light rounded">
+                                    <div class="rounded-top overflow-hidden">
+                                        <img src="<?php echo ABSOLUTE_IMAGEPATH.$news['featured_image']; ?>" class="img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
+                                    </div>
+                                    <div class="d-flex flex-column p-4">
+                                        <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="small text-body link-hover">by <?php echo $news['article_author']; ?></a>
+                                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($news['createdon']); ?></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php 
+                           $not_show_more_then_once[] = $news['pid'];
+                        } ?>
+                    </div>
+                <!-- Editor Choice End -->
+             
+
                 </div>
                 <div class="col-lg-4 col-xl-3">
                     <!-- Sidebar Content -->
