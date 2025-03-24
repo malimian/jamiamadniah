@@ -23,40 +23,6 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
 
 ?>
 
-<style type="text/css">
-    .circle-clss {
-        aspect-ratio: 1 / 1; /* Ensures a square shape */
-        object-fit: cover; /* Ensures the image fills the container */
-    }
-
-        /* Ensure consistent image dimensions for Most Views News */
-        .most-views-news img {
-            width: 100%; /* Full width of the container */
-            height: 200px; /* Fixed height */
-            object-fit: cover; /* Maintain aspect ratio while filling the container */
-            border-radius: 8px 8px 0 0; /* Rounded corners for the top */
-        }
-
-        /* Ensure consistent image dimensions for Life Style */
-        .lifestyle img {
-            width: 100%; /* Full width of the container */
-            height: 300px; /* Fixed height for lifestyle images */
-            object-fit: cover; /* Maintain aspect ratio while filling the container */
-            border-radius: 8px; /* Rounded corners */
-        }
-
-        /* Additional styles for the carousel and lifestyle sections */
-        .whats-carousel .latest-news-item,
-        .lifestyle-item {
-            transition: transform 0.3s ease; /* Smooth hover effect */
-        }
-
-        .whats-carousel .latest-news-item:hover,
-        .lifestyle-item:hover {
-            transform: translateY(-5px); /* Slight lift on hover */
-        }
-</style>
-
 <!-- Features Start -->
 <div class="container-fluid features mb-5">
     <div class="container py-5">
@@ -519,7 +485,7 @@ foreach ($news_categories as $new_category) {
                                 }
                                 // Sort tags by frequency in descending order
                                 arsort($tags);
-                                $trending_tags = array_slice(array_keys($tags), 0, 8); // Get top 8 tags
+                                $trending_tags = array_slice(array_keys($tags), 0, 10); // Get top 10 tags
                                 ?>
 
                                 <h4 class="my-4">Popular News</h4>
