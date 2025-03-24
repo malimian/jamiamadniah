@@ -421,6 +421,8 @@ foreach ($news_categories as $new_category) {
                             ORDER BY views DESC LIMIT 5");
 
                         foreach ($editor_news as $news) {
+
+                            $user = return_single_row("Select username , fullname , profile_pic , details from loginuser Where soft_delete = 0 and isactive = 1  and id = ".$news['createdby']);
                         ?>
                             <div class="latest-news-item">
                                 <div class="bg-light rounded">
@@ -430,7 +432,7 @@ foreach ($news_categories as $new_category) {
                                     <div class="d-flex flex-column p-4">
                                         <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
                                         <div class="d-flex justify-content-between">
-                                            <a href="#" class="small text-body link-hover">by <?php echo $news['article_author']; ?></a>
+                                            <a href="#" class="small text-body link-hover">by <?php echo $user['fullname']; ?></a>
                                             <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($news['createdon']); ?></small>
                                         </div>
                                     </div>
