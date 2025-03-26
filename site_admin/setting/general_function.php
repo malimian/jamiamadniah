@@ -263,6 +263,19 @@ function clean($string){
 	return $string;
 }
 
+// Function to strip HTML tags and clean up content
+function cleanContent($content) {
+    // Remove HTML tags
+    $content = strip_tags($content);
+    // Convert special characters to HTML entities
+    $content = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
+    // Trim whitespace
+    $content = trim($content);
+    // Replace multiple spaces with single space
+    $content = preg_replace('/\s+/', ' ', $content);
+    return $content;
+}
+
 
 function remove0with92($number){
     $phoneNumber = $number;

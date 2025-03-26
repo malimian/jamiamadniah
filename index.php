@@ -23,6 +23,14 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
 
 ?>
 
+<style>
+
+    .owl-carousel img {
+        height: 250px; /* Adjust height as needed */
+        object-fit: cover; /* Ensures the image covers the area without stretching */
+    }
+</style>
+
 <!-- Features Start -->
 <div class="container-fluid features mb-5">
     <div class="container py-5">
@@ -93,7 +101,7 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
                 <div class="border-bottom py-3">
                     <a href="<?php echo $main_news['page_url']; ?>" class="display-4 text-dark mb-0 link-hover"><?php echo $main_news['page_title']; ?></a>
                 </div>
-                <p class="mt-3 mb-4"><?php echo mb_strimwidth($main_news['page_desc'], 0, 200, "..."); ?></p>
+                <p class="mt-3 mb-4"><?php echo mb_strimwidth(cleanContent($main_news['page_desc']), 0, 200, "..."); ?></p>
 
                 <!-- Top Story Section -->
                 <div class="bg-light p-4 rounded">
@@ -312,7 +320,7 @@ foreach ($news_categories as $new_category) {
                                             <a href="#" class="text-dark link-hover me-3"><i class="fa fa-comment-dots"></i> 05 Comments</a>
                                             <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> 1.5k Shares</a>
                                         </div>
-                                        <p class="my-4"><?php echo mb_strimwidth($main_category_news['page_desc'], 0, 200, "..."); ?></p>
+                                        <p class="my-4"><?php echo mb_strimwidth(cleanContent($main_category_news['page_desc']), 0, 200, "..."); ?></p>
                                     </div>
                                     <div class="col-lg-4">
                                         <?php
