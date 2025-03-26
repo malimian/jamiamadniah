@@ -191,10 +191,54 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
             background: #333;
             transform: scale(1.3);
         }
+
+
+         .hero-section {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #0d6efd;
+        }
+        
+        .testimonial-card {
+            transition: transform 0.3s;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .interview-showcase {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 30px;
+        }
+
     </style>
 </head>
 <body>
-    <section class="people-slider">
+
+	<!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-4">Share Your Story With The World</h1>
+            <p class="lead mb-5">Get featured in our spotlight interviews and showcase your professional background to a global audience.</p>
+            <div class="d-flex justify-content-center gap-3">
+                <a href="#people-slider" class="btn btn-primary btn-lg px-4">Spotlight</a>
+                <a href="#signup" class="btn btn-outline-light btn-lg px-4">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="people-slider" class="people-slider">
         <div class="slider-container">
             <div class="slider-track" id="sliderTrack">
                 <!-- Slide 1 -->
@@ -264,8 +308,6 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
         </div>
     </section>
 
-    <!-- Bootstrap 5 JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -337,6 +379,169 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
         });
     </script>
   
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Features Section -->
+    <section id="features" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Amplify Your Professional Presence</h2>
+                <p class="lead text-muted">Our platform helps you highlight your achievements and expertise</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-tie"></i>
+                        </div>
+                        <h3>Professional Profile</h3>
+                        <p>Showcase your career journey, education, and accomplishments in a professionally designed format that stands out.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <h3>Featured Interviews</h3>
+                        <p>Get interviewed by our team and have your story published across our media channels and partner networks.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="text-center p-4">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Increased Visibility</h3>
+                        <p>Reach thousands of potential clients, employers, or collaborators through our targeted distribution.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Showcase Section -->
+    <section id="showcase" class="py-5 bg-light">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <h2 class="fw-bold mb-4">Showcase Your Background With Us</h2>
+                    <p class="lead">Whether you're an entrepreneur, executive, or creative professional, our spotlight features help you present your background in the best possible light.</p>
+                    
+                    <div class="interview-showcase mt-4">
+                        <h4><i class="fas fa-star me-2 text-warning"></i> What We Highlight:</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Your career milestones and achievements</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Educational background and certifications</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Professional skills and expertise</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Personal journey and insights</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Projects and portfolio pieces</li>
+                        </ul>
+                        <a href="#signup" class="btn btn-primary mt-3">Feature My Background</a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3" alt="Interview showcase" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Success Stories</h2>
+                <p class="lead text-muted">Hear from professionals who've boosted their visibility with us</p>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card testimonial-card h-100">
+                        <div class="card-body text-center p-4">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mb-3" width="80" alt="Testimonial">
+                            <h5 class="card-title">Sarah Johnson</h5>
+                            <h6 class="card-subtitle mb-3 text-muted">Marketing Director</h6>
+                            <p class="card-text">"After my spotlight feature, I received three job offers and multiple speaking invitations. It perfectly showcased my 15-year career journey."</p>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card testimonial-card h-100">
+                        <div class="card-body text-center p-4">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle mb-3" width="80" alt="Testimonial">
+                            <h5 class="card-title">Michael Chen</h5>
+                            <h6 class="card-subtitle mb-3 text-muted">Tech Entrepreneur</h6>
+                            <p class="card-text">"The interview helped me present my startup background to investors. We secured funding within weeks of the feature going live."</p>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card testimonial-card h-100">
+                        <div class="card-body text-center p-4">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle mb-3" width="80" alt="Testimonial">
+                            <h5 class="card-title">David Rodriguez</h5>
+                            <h6 class="card-subtitle mb-3 text-muted">Creative Director</h6>
+                            <p class="card-text">"As a designer, I needed a way to showcase both my portfolio and career path. This service provided the perfect platform."</p>
+                            <div class="text-warning">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-5 bg-light">
+      	<?php echo include_module('modules/module_packages.php' , array('packages_category' => 41));?>	
+    </section>
+
+    <!-- Signup CTA -->
+    <section id="signup" class="py-5 bg-primary text-white">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="fw-bold mb-4">Ready to Showcase Your Background?</h2>
+                    <p class="lead mb-5">Join hundreds of professionals who've elevated their visibility with our spotlight features.</p>
+                    <form class="row g-3 justify-content-center">
+                        <div class="col-md-8">
+                            <input type="email" class="form-control form-control-lg" placeholder="Your email address">
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-light btn-lg w-100">Get Started</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 
 
 <?php

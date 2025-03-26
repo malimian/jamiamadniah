@@ -76,7 +76,7 @@ define('PAGE_LOADER',  $settings[13]['settings_value'] , '0');
 
 define('COMMENT_API', '%241%24wq1rdBcg%24cC9mlw%2FSWcQWnSvdj5vpc1' , '');
 
-define('CURRENCY', 'PKR' , '');
+define('CURRENCY', '$' , '');
 
 define('COMMENTS_API', '%241%24wq1rdBcg%24cC9mlw%2FSWcQWnSvdj5vpc1' , '');
 
