@@ -425,32 +425,117 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
     </section>
 
     <!-- Showcase Section -->
-    <section id="showcase" class="py-5 bg-light">
+     <style>
+        .showcase-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+        }
+        .highlight-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        .highlight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <!-- Showcase Section -->
+    <section class="py-5">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0">
-                    <h2 class="fw-bold mb-4">Showcase Your Background With Us</h2>
-                    <p class="lead">Whether you're an entrepreneur, executive, or creative professional, our spotlight features help you present your background in the best possible light.</p>
-                    
-                    <div class="interview-showcase mt-4">
-                        <h4><i class="fas fa-star me-2 text-warning"></i> What We Highlight:</h4>
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Your career milestones and achievements</li>
-                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Educational background and certifications</li>
-                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Professional skills and expertise</li>
-                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Personal journey and insights</li>
-                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Projects and portfolio pieces</li>
-                        </ul>
-                        <a href="#signup" class="btn btn-primary mt-3">Feature My Background</a>
+            <div class="showcase-section p-4 p-md-5 mb-5">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <h2 class="display-5 fw-bold mb-3">Showcase Your Background <span class="gradient-text">With Us</span></h2>
+                        <p class="lead mb-4">Whether you're an entrepreneur, executive, or creative professional, our spotlight features help you present your background in the best possible light.</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="#featured-spotlights" class="btn btn-primary px-4 py-2">View Examples</a>
+                            <a href="#get-featured" class="btn btn-outline-primary px-4 py-2">Get Featured</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <img src="https://images.unsplash.com/photo-1579389083078-4e7018379f7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Professional showcasing work" class="img-fluid rounded-3 shadow">
                     </div>
                 </div>
-                
-                <div class="col-lg-6">
-                    <img src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?ixlib=rb-4.0.3" alt="Interview showcase" class="img-fluid rounded shadow">
+            </div>
+
+            <!-- What We Highlight Section -->
+            <div class="row mb-5">
+                <div class="col-12 text-center mb-5">
+                    <h2 class="fw-bold">What We Highlight</h2>
+                    <p class="lead text-muted">We showcase the complete professional profile that makes you unique</p>
                 </div>
+
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="highlight-card p-4 bg-white">
+                        <div class="icon-wrapper bg-primary bg-opacity-10 text-primary">
+                            <i class="fas fa-trophy fa-lg"></i>
+                        </div>
+                        <h4 class="mb-3">Career Milestones</h4>
+                        <p class="text-muted">Highlight your professional achievements, promotions, and career-defining moments that showcase your growth.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="highlight-card p-4 bg-white">
+                        <div class="icon-wrapper bg-success bg-opacity-10 text-success">
+                            <i class="fas fa-graduation-cap fa-lg"></i>
+                        </div>
+                        <h4 class="mb-3">Education</h4>
+                        <p class="text-muted">Showcase your academic background, certifications, and continuous learning efforts that contribute to your expertise.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="highlight-card p-4 bg-white">
+                        <div class="icon-wrapper bg-info bg-opacity-10 text-info">
+                            <i class="fas fa-lightbulb fa-lg"></i>
+                        </div>
+                        <h4 class="mb-3">Skills & Expertise</h4>
+                        <p class="text-muted">Present your professional skills, technical competencies, and unique abilities that set you apart in your field.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="highlight-card p-4 bg-white">
+                        <div class="icon-wrapper bg-warning bg-opacity-10 text-warning">
+                            <i class="fas fa-project-diagram fa-lg"></i>
+                        </div>
+                        <h4 class="mb-3">Projects & Portfolio</h4>
+                        <p class="text-muted">Feature your best work, case studies, and portfolio pieces that demonstrate your capabilities and achievements.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTA Section -->
+            <div class="text-center py-5">
+                <h3 class="fw-bold mb-4">Ready to showcase your professional journey?</h3>
+                <p class="lead mb-4">Join our community of featured professionals and gain visibility in your industry.</p>
+                <a href="#" class="btn btn-primary btn-lg px-5 py-3">Apply to Be Featured <i class="fas fa-arrow-right ms-2"></i></a>
             </div>
         </div>
     </section>
+
 
     <!-- Testimonials -->
     <section class="py-5">
