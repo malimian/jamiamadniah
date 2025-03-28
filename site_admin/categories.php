@@ -28,7 +28,7 @@
         <!-- Page Content -->
                 <h1 class="page-header">
                 List of Menue
-                <a href="addmenue.php" style="float:right;color: #fff" class="btn btn-danger btn-md"><i class="fa fa-globe">&nbsp;</i>Add Menue</a>
+                <a href="addmenue.php?ction=add" style="float:right;color: #fff" class="btn btn-danger btn-md"><i class="fa fa-globe">&nbsp;</i>Add Menue</a>
             </h1>
 
         <hr>
@@ -95,7 +95,7 @@
                             </a>
                           <div class="dropdown-menu" aria-labelledby="optionDropdown">
                           <?php 
-                            echo '<a class="dropdown-item" href="editmenue.php?id='.$category['catid'].'">Edit</a>';
+                            echo '<a class="dropdown-item" href="editmenue.php?id='.$category['catid'].'&action=edit">Edit</a>';
                             echo '<a class="dropdown-item" onclick="delete_('.$category['catid'].')" >Delete</a>';
                                 echo ' <a class="dropdown-item" onclick="change_seq( '.$category["catid"].', '.$category["cat_sequence"].')" >Edit Sequence</a>';
                           ?>
