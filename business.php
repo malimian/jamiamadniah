@@ -71,7 +71,7 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
 
 <!-- Stock Market Ticker -->
 <div class="container-fluid stock-ticker py-2">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
               <!-- TradingView Widget BEGIN -->
@@ -181,12 +181,12 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
                     <h2 class="mb-4">Latest Business News</h2>
                     <div class="row">
                         <?php
-                        $latest_business_news = return_multiple_rows("SELECT * FROM pages WHERE catid = 119 AND isactive = 1 AND soft_delete = 0 AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") ORDER BY createdon DESC LIMIT 3");
+                        $latest_business_news = return_multiple_rows("SELECT * FROM pages WHERE catid = 119 AND isactive = 1 AND soft_delete = 0 AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") ORDER BY createdon DESC LIMIT 6");
                         
                         foreach ($latest_business_news as $news) {
                             $not_show_more_then_once[] = $news['pid'];
                         ?>
-                        <div class="col-md-4 mb-4">
+                        <div class="col-md-4 mb-4 img-zoomin">
                             <div class="card h-100">
                                 <img src="<?php echo $news['featured_image']; ?>" class="card-img-top" alt="<?php echo $news['page_title']; ?>">
                                 <div class="card-body">
@@ -203,161 +203,84 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
                     </div>
                 </div>
                 
-                <!-- Business Categories -->
-                <div class="mb-5">
-                    <h2 class="mb-4">Business Categories</h2>
-                    <div class="row">
-                        <?php
-                        $business_categories = return_multiple_rows("SELECT * FROM category WHERE ParentCategory = 119");
-                        
-                        foreach ($business_categories as $category) {
-                            $category_news = return_single_row("SELECT * FROM pages WHERE catid = " . $category['catid'] . " AND isactive = 1 AND soft_delete = 0 ORDER BY createdon DESC LIMIT 1");
-                            if ($category_news) {
-                                $not_show_more_then_once[] = $category_news['pid'];
-                        ?>
-                        <div class="col-md-6 mb-4">
-                            <div class="card h-100">
-                                <div class="card-header bg-primary text-white">
-                                    <h5 class="mb-0"><?php echo $category['catname']; ?></h5>
-                                </div>
-                                <div class="card-body">
-                                    <h6><?php echo mb_strimwidth($category_news['page_title'], 0, 70, "..."); ?></h6>
-                                    <p><?php echo mb_strimwidth(cleanContent($category_news['page_desc']), 0, 120, "..."); ?></p>
-                                </div>
-                                <div class="card-footer bg-transparent">
-                                    <a href="category.php?cat=<?php echo $category['cat_url']; ?>" class="btn btn-sm btn-primary">View All</a>
-                                </div>
-                            </div>
-                        </div>
-                        <?php } } ?>
+
+              <!-- Business Analysis -->
+<div class="mb-5">
+    <h2 class="mb-4">Business Analysis</h2>
+    <div id="analysis-container">
+        <?php
+        $analysis_news = return_multiple_rows("SELECT * FROM pages WHERE catid = 119 AND isactive = 1 AND soft_delete = 0 AND pid 
+            NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") AND template_id = 7 ORDER BY createdon DESC LIMIT 5");
+        
+        foreach ($analysis_news as $news) {
+            $not_show_more_then_once[] = $news['pid'];
+        ?>
+        <div class="card mb-3 analysis-item">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="<?php echo $news['featured_image']; ?>" class="img-fluid rounded-start img-zoomin" alt="<?php echo $news['page_title']; ?>">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><?php echo $news['page_title']; ?></h5>
+                        <p class="card-text"><?php echo mb_strimwidth(cleanContent($news['page_desc']), 0, 200, "..."); ?></p>
+                        <p class="card-text"><small class="text-muted">Analysis by <?php echo $news['article_author']; ?></small></p>
+                        <a href="<?php echo $news['page_url']; ?>" class="btn btn-primary">Read Analysis</a>
                     </div>
                 </div>
-                
-               <!-- Market Updates Section -->
-                <div class="mb-5">
-                    <h2 class="mb-4">Market Updates</h2>
-                    <div class="market-data">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <h5>Stock Indices</h5>
-                                <ul class="list-group list-group-flush" id="stock-indices">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        S&P 500
-                                        <span id="sp500" class="badge rounded-pill">Loading...</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Dow Jones
-                                        <span id="dowjones" class="badge rounded-pill">Loading...</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        NASDAQ
-                                        <span id="nasdaq" class="badge rounded-pill">Loading...</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-md-4">
-                                <h5>Commodities</h5>
-                                <ul class="list-group list-group-flush" id="commodities">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Gold
-                                        <span id="gold" class="badge rounded-pill">Loading...</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Oil
-                                        <span id="oil" class="badge rounded-pill">Loading...</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        Silver
-                                        <span id="silver" class="badge rounded-pill">Loading...</span>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="col-md-4">
-                                <h5>Forex</h5>
-                                <ul class="list-group list-group-flush" id="forex">
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        EUR/USD
-                                        <span id="eurusd" class="badge rounded-pill">Loading...</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        GBP/USD
-                                        <span id="gbpusd" class="badge rounded-pill">Loading...</span>
-                                    </li>
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        USD/JPY
-                                        <span id="usdjpy" class="badge rounded-pill">Loading...</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
+        </div>
+        <?php } ?>
+    </div>
+    
+    <div class="text-center mt-4">
+        <button id="load-more-btn" class="btn btn-outline-primary" data-offset="5" data-catid="119">
+            Load More Analysis
+        </button>
+        <div id="loading-spinner" class="spinner-border text-primary d-none" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
 
-                <script>
-                async function fetchMarketData() {
-                    try {
-                        const response = await fetch('https://api.twelvedata.com/time_series?symbol=SPX,DJI,IXIC,GC,CL,SI,EUR/USD,GBP/USD,USD/JPY&interval=1min&apikey=YOUR_API_KEY');
-                        const data = await response.json();
-
-                        // Stock Indices
-                        updateMarketItem("sp500", data.SPX.close);
-                        updateMarketItem("dowjones", data.DJI.close);
-                        updateMarketItem("nasdaq", data.IXIC.close);
-
-                        // Commodities
-                        updateMarketItem("gold", data.GC.close);
-                        updateMarketItem("oil", data.CL.close);
-                        updateMarketItem("silver", data.SI.close);
-
-                        // Forex
-                        updateMarketItem("eurusd", data["EUR/USD"].close);
-                        updateMarketItem("gbpusd", data["GBP/USD"].close);
-                        updateMarketItem("usdjpy", data["USD/JPY"].close);
-
-                    } catch (error) {
-                        console.error("Error fetching market data:", error);
-                    }
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const analysisContainer = document.getElementById('analysis-container');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    
+    loadMoreBtn.addEventListener('click', function() {
+        const offset = parseInt(this.getAttribute('data-offset'));
+        const catid = this.getAttribute('data-catid');
+        
+        // Show loading spinner
+        loadMoreBtn.classList.add('d-none');
+        loadingSpinner.classList.remove('d-none');
+        
+        // AJAX request to load more news
+        fetch(`post/load_more_analysis.php?offset=${offset}&catid=${catid}`)
+            .then(response => response.text())
+            .then(data => {
+                if (data.trim() !== '') {
+                    analysisContainer.insertAdjacentHTML('beforeend', data);
+                    this.setAttribute('data-offset', offset + 5);
+                    loadMoreBtn.classList.remove('d-none');
+                } else {
+                    this.textContent = 'No more analysis to load';
+                    this.classList.add('disabled');
                 }
+                loadingSpinner.classList.add('d-none');
+            })
+            .catch(error => {
+                console.error('Error loading more analysis:', error);
+                loadingSpinner.classList.add('d-none');
+                loadMoreBtn.classList.remove('d-none');
+            });
+    });
+});
+</script>
 
-                function updateMarketItem(id, value) {
-                    let element = document.getElementById(id);
-                    let change = Math.random() * 2 - 1; // Simulated percentage change
-                    element.textContent = `${change.toFixed(2)}%`;
-                    element.className = `badge ${change >= 0 ? 'bg-success' : 'bg-danger'} rounded-pill`;
-                }
 
-                // Fetch market data every 30 seconds
-                fetchMarketData();
-                setInterval(fetchMarketData, 30000);
-                </script>
-
-                
-                <!-- Business Analysis -->
-                <div class="mb-5">
-                    <h2 class="mb-4">Business Analysis</h2>
-                    <?php
-                    $analysis_news = return_multiple_rows("SELECT * FROM pages WHERE catid = 119 AND isactive = 1 AND soft_delete = 0 AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") AND template_id = 6 ORDER BY createdon DESC LIMIT 2");
-                    
-                    foreach ($analysis_news as $news) {
-                        $not_show_more_then_once[] = $news['pid'];
-                    ?>
-                    <div class="card mb-3">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="<?php echo $news['featured_image']; ?>" class="img-fluid rounded-start" alt="<?php echo $news['page_title']; ?>">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title"><?php echo $news['page_title']; ?></h5>
-                                    <p class="card-text"><?php echo mb_strimwidth(cleanContent($news['page_desc']), 0, 200, "..."); ?></p>
-                                    <p class="card-text"><small class="text-muted">Analysis by <?php echo $news['article_author']; ?></small></p>
-                                    <a href="<?php echo $news['page_url']; ?>" class="btn btn-primary">Read Analysis</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <?php } ?>
-                </div>
             </div>
             
             <!-- Sidebar -->
@@ -467,36 +390,7 @@ echo replace_sysvari(BaseNavBar($template_id), getcwd() . "/");
         </div>
         
         
-        <!-- Business Podcasts -->
-        <div class="row mt-5">
-            <div class="col-md-12">
-                <h2 class="mb-4">Business Podcasts</h2>
-                <div class="row">
-                    <?php
-                    $podcasts = return_multiple_rows("SELECT * FROM pages WHERE catid = 119 AND isactive = 1 AND soft_delete = 0 AND media_type = 'podcast' ORDER BY createdon DESC LIMIT 3");
-                    
-                    foreach ($podcasts as $podcast) {
-                        $not_show_more_then_once[] = $podcast['pid'];
-                    ?>
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <img src="<?php echo $podcast['featured_image']; ?>" class="card-img-top" alt="<?php echo $podcast['page_title']; ?>">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $podcast['page_title']; ?></h5>
-                                <p class="card-text"><?php echo mb_strimwidth(cleanContent($podcast['page_desc']), 0, 100, "..."); ?></p>
-                            </div>
-                            <div class="card-footer bg-transparent">
-                                <audio controls class="w-100">
-                                    <source src="<?php echo $podcast['media_url']; ?>" type="audio/mpeg">
-                                    Your browser does not support the audio element.
-                                </audio>
-                            </div>
-                        </div>
-                    </div>
-                    <?php } ?>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </div>
 

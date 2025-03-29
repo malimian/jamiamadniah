@@ -28,7 +28,7 @@
         <!-- Page Content -->
                 <h1 class="page-header">
                 List of Menue
-                <a href="addmenue.php?ction=add" style="float:right;color: #fff" class="btn btn-danger btn-md"><i class="fa fa-globe">&nbsp;</i>Add Menue</a>
+                <a href="addmenue.php?action=add" style="float:right;color: #fff" class="btn btn-danger btn-md"><i class="fa fa-globe">&nbsp;</i>Add Menue</a>
             </h1>
 
         <hr>

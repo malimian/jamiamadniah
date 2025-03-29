@@ -1,7 +1,7 @@
 <?php
 include 'front_connect.php';
 
-$url = "index.php";
+$url = "spotlight.php";
 
 $not_show_more_then_once = [];
 

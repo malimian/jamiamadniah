@@ -1,160 +1,401 @@
 <?php include 'includes/header.php';
 
+// Initialize variables
 $template = "";
 $category = "";
+$author_filter = "";
+$publisher_filter = "";
+$status_filter = "";
 $page_link = "";
+$current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$per_page = 50;
 
-if(isset($_GET['temp'])){
-  
-  if(!empty($_GET['temp'])){
-    
+// Template filter
+if(isset($_GET['temp']) && !empty($_GET['temp'])) {
     $temp_id = $_GET['temp'];
-    $template = " and pages.template_id = $temp_id ";
+    $template = " AND pages.template_id = $temp_id ";
     $page_link .="&temp=".$temp_id;
-  
-  }
 }
 
-
-if(isset($_GET['cat'])){
-  
-  if(!empty($_GET['cat'])){
-    
+// Category filter
+if(isset($_GET['cat']) && !empty($_GET['cat'])) {
     $cat_id = $_GET['cat'];
-    $category = " and pages.catid = $cat_id ";
+    $category = " AND pages.catid = $cat_id ";
     $page_link .="&cat=".$cat_id;
-  
-  }
 }
 
+// Author (Creator) filter
+if(isset($_GET['author']) && !empty($_GET['author'])) {
+    $author_id = $_GET['author'];
+    $author_filter = " AND pages.createdby = $author_id ";
+    $page_link .="&author=".$author_id;
+}
+
+// Publisher filter
+if(isset($_GET['publisher']) && !empty($_GET['publisher'])) {
+    $publisher_id = $_GET['publisher'];
+    $publisher_filter = " AND pages.activatedby = $publisher_id ";
+    $page_link .="&publisher=".$publisher_id;
+}
+
+// Status filter
+if(isset($_GET['status']) && $_GET['status'] !== '') {
+    $status = $_GET['status'];
+    $status_filter = " AND pages.isactive = $status ";
+    $page_link .="&status=".$status;
+}
+
+// Get total count
+$total_query = "SELECT COUNT(*) as total FROM pages 
+    LEFT JOIN category ON pages.catid = category.catid 
+    WHERE pages.soft_delete = 0 AND category.soft_delete = 0 $template $category $author_filter $publisher_filter $status_filter";
+$total_result = return_single_row($total_query);
+$total_items = $total_result['total'];
+
+// Calculate pagination
+$total_pages = ceil($total_items / $per_page);
+$offset = ($current_page - 1) * $per_page;
+
+// Get all users
+$users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
+$user_lookup = [];
+foreach ($users as $user) {
+    $user_lookup[$user['id']] = $user;
+}
+
+// Get paginated data - make sure to include activatedby in your SELECT
+$Pages = return_multiple_rows("SELECT *, pages.isactive as pages_isactive, pages.createdby as pages_createdby, pages.activatedby 
+    FROM pages LEFT JOIN category ON pages.catid = category.catid 
+    WHERE pages.soft_delete = 0 AND category.soft_delete = 0 $template $category $author_filter $publisher_filter $status_filter
+    ORDER BY pages.catid, pages_sequence ASC 
+    LIMIT $offset, $per_page");
 ?>
 
 <body id="page-top">
+    <?php include 'setting/company_name.php';?>
+    <?php include 'includes/navbar_search.php';?>
+    <?php include 'includes/notification.php';?>
 
-     <?php include 'setting/company_name.php';?>
+    <div id="wrapper">
+        <?php include'includes/sidebar.php'; ?>
+        
+        <div id="content-wrapper">
+            <div class="container-fluid">
+                <!-- Breadcrumbs-->
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="domain.php">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Pages</li>
+                </ol>
 
-     <?php include 'includes/navbar_search.php';?>
+                <!-- Page Content -->
+                <h1 class="page-header">
+                    All Pages (<?php echo $total_items; ?>)
+                    <a href="addpage.php?<?php echo $page_link;?>" style="float:right;color: #fff" class="btn btn-danger btn-md">
+                        <i class="fa fa-plus">&nbsp;</i>Add New
+                    </a>
+                </h1>
 
-      <?php include 'includes/notification.php';?>
-   
+                <hr>
 
-  <div id="wrapper">
-
-  <?php include'includes/sidebar.php'; ?>
-    
-    <div id="content-wrapper">
-
-      <div class="container-fluid">
-
-        <!-- Breadcrumbs-->
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="domain.php">Dashboard</a>
-          </li>
-          <li class="breadcrumb-item active">List Of Pages</li>
-        </ol>
-
-        <!-- Page Content -->
-              <h1 class="page-header">
-            List of Pages
-                <a href="addpage.php?<?php echo $page_link;?>" style="float:right;color: #fff" class="btn btn-danger btn-md"><i class="fa fa-globe">&nbsp;</i>Add Page</a>
-            </h1>
-
-        <hr>
-
-        <!-- DataTables Example -->
-        <div class="card mb-3">
-          <div class="card-header">
-            <i class="fas fa-globe"></i>
-            Pages</div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table class="table table-bordered" id="dataTable1" width="100%" cellspacing="0">
-                <thead>
-                  <tr>
-                    <th>No#</th>
-                    <th>Category</th>
-                    <th>Page Title</th>
-                    <th>Page Sequence</th>
-                    <th>Views</th>
-                    <th>Status</th>
-                    <th>Option</th>
-                  </tr>
-                </thead>
-                <tbody>
-                <?php 
-                $Pages = return_multiple_rows("Select * , pages.isactive as pages_isactive from pages LEFT Join category On pages.catid  =  category.catid Where pages.soft_delete = 0 AND category.soft_delete = 0 $template $category Order by pages.catid , pages_sequence ASC");
-                foreach($Pages as $page) {
-                  static $count =1;
-                 ?> 
-                  <tr id="tr_<?=$page['pid']?>">
-                    <td><?=$count++;?></td>
-                    <td><?=$page["catname"]?></td>
-                    <td><?=$page["page_title"]?></td>
-                    <td id="seq_<?php echo  $page["pid"];?>"><?php echo $page["pages_sequence"];?></td>
-                    <td><?=$page["views"]?></td>
-                    <td>
-                    <?php
-
-                      if ($page['pages_isactive'] == 1) {
-                        echo '<span id="status_'.$page['pid'].'" class="badge badge-success">Active</span>
-                        <input type="checkbox" data-id="'.$page['pid'].'" class="js-switch" checked />';
-                        } 
-                        else echo '<span id="status_'.$page['pid'].'"class="badge badge-danger">In Active</span>
-                        <input type="checkbox" data-id="'.$page['pid'].'" class="js-switch" />';
-                      
-                    ?>
-                    
-                    
-                    </td>
-
-
-                     <td>
-                            <a class=" dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                              <i class="fas fa-fw fa-cog"></i>
-                            </a>
-                          <div class="dropdown-menu" aria-labelledby="optionDropdown">
+                <!-- Filter Options -->
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <select class="form-control" id="filter-status" onchange="filterPages()">
+                            <option value="">All Statuses</option>
+                            <option value="1" <?= (isset($_GET['status']) && $_GET['status'] == '1' ? 'selected' : '') ?>>Published</option>
+                            <option value="0" <?= (isset($_GET['status']) && $_GET['status'] == '0' ? 'selected' : '') ?>>Draft</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="filter-category" onchange="filterPages()">
+                            <option value="">All Categories</option>
                             <?php 
-                              echo '<a class="dropdown-item" href="editpage.php?id='.$page['pid'].'">Edit</a>';
-                              echo '<a class="dropdown-item" href="copypage.php?id='.$page['pid'].'">Copy Page</a>';
-                              echo '<a class="dropdown-item" onclick="delete_('.$page['pid'].')" >Delete</a>';
-                              echo '<a class="dropdown-item" target="_blank" href="'.BASE_URL.$page['page_url'].'">View</a>';
-                              echo ' <a class="dropdown-item" onclick="change_seq( '.$page["pid"].', '.$page["pages_sequence"].')" >Edit Sequence</a>';
-                              if($page['template_id'] == 3)
-                                echo '<a class="dropdown-item" href="comments.php?page='.$page['page_url'].'">Comments</a>';
-                              
+                            $categories = return_multiple_rows("SELECT * FROM category WHERE soft_delete = 0 ORDER BY catname");
+                            foreach($categories as $cat) {
+                                $selected = (isset($_GET['cat']) && $_GET['cat'] == $cat['catid']) ? 'selected' : '';
+                                echo '<option value="'.$cat['catid'].'" '.$selected.'>'.$cat['catname'].'</option>';
+                            }
                             ?>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="filter-author" onchange="filterPages()">
+                            <option value="">All Authors</option>
+                            <?php 
+                            foreach($users as $user) {
+                                $selected = (isset($_GET['author']) && $_GET['author'] == $user['id']) ? 'selected' : '';
+                                echo '<option value="'.$user['id'].'" '.$selected.'>'.$user['username'].'</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="filter-publisher" onchange="filterPages()">
+                            <option value="">All Publishers</option>
+                            <?php 
+                            foreach($users as $user) {
+                                $selected = (isset($_GET['publisher']) && $_GET['publisher'] == $user['id']) ? 'selected' : '';
+                                echo '<option value="'.$user['id'].'" '.$selected.'>'.$user['username'].'</option>';
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- DataTables Example -->
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <i class="fas fa-table"></i>
+                        Pages List
+                        <div class="float-right">
+                            <span class="badge badge-primary">Showing <?php echo min($offset + 1, $total_items); ?>-<?php echo min($offset + $per_page, $total_items); ?> of <?php echo $total_items; ?></span>
                         </div>
-                      </td>
-   </tr>
-   <?php } ?>      
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover" id="dataTable1" width="100%" cellspacing="0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th width="40px">ID</th>
+                                        <th width="150px">Author</th>
+                                        <th>Title</th>
+                                        <th width="120px">Category</th>
+                                        <th width="100px">Status</th>
+                                        <th width="100px">Visibility</th>
+                                        <th width="100px">Featured</th>
+                                        <th width="100px">Views</th>
+                                        <th width="120px">Last Modified</th>
+                                        <th width="100px">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php 
+                                    if(count($Pages) > 0) {
+                                        foreach($Pages as $page) {                        
+                                            $author = isset($user_lookup[$page['pages_createdby']]) ? $user_lookup[$page['pages_createdby']] : null;
+                                            $author_name = $author ? $author['username'] : 'System';
+                                            $author_image = $author && !empty($author['profile_pic']) ? 
+                                                BASE_URL.ABSOLUTE_IMAGEPATH.$author['profile_pic'] : 
+                                                'https://ui-avatars.com/api/?name='.urlencode($author_name).'&size=40';  
 
-   </tbody>
-</table>
+                                            // Get publisher info (activatedby)
+                                            $publisher = isset($user_lookup[$page['activatedby']]) ? $user_lookup[$page['activatedby']] : null;
+                                            $publisher_name = $publisher ? $publisher['username'] : 'System';
+                                            $publisher_image = $publisher && !empty($publisher['profile_pic']) ? 
+                                                BASE_URL.ABSOLUTE_IMAGEPATH.$publisher['profile_pic'] : 
+                                                'https://ui-avatars.com/api/?name='.urlencode($publisher_name).'&size=40';
 
-</div>
+                                                $same_user = ($page['pages_createdby'] == $page['activatedby']) && $page['pages_isactive'];
 
-  <script type="text/javascript" src="js/page/pages.js"></script>
-
-</div>
-  <!-- /#page-content-wrapper -->
-
-</div>
-<!-- /#wrapper -->
+                                            $featured_class = $page['isFeatured'] ? 'featured-post' : '';
+                                            $status_label = $page['pages_isactive'] ? 'Published' : 'Draft';
+                                            $status_class = $page['pages_isactive'] ? 'success' : 'warning';
+                                            
+                                            $visibility_label = $page['visibility'] ? 'Public' : 'Private';
+                                            $visibility_class = $page['visibility'] ? 'success' : 'secondary';
+                                            
+                                            $featured_label = $page['isFeatured'] ? 'Yes' : 'No';
+                                            $featured_status_class = $page['isFeatured'] ? 'success' : 'secondary';
+                                            
+                                            $last_modified = date('M j, Y', strtotime($page['updatedon']));
+                                            ?>
+                                            <tr id="tr_<?=$page['pid']?>" class="<?=$featured_class?>">
+                                                <td><?=$page['pid']?></td>
+                                          <td>
+                                          <div class="d-flex flex-column">
+                                              <?php if($same_user): ?>
+                                                  <!-- Combined display when same user -->
+                                                  <div class="d-flex align-items-center">
+                                                      <img src="<?=$author_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$author_image?>">
+                                                      <div>
+                                                          <small class="text-muted d-block">Author & Published by</small>
+                                                          <span><?=$author_name?></span>
+                                                      </div>
+                                                  </div>
+                                              <?php else: ?>
+                                                  <!-- Creator -->
+                                                  <div class="d-flex align-items-center mb-2">
+                                                      <img src="<?=$author_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$author_name?>">
+                                                      <div>
+                                                          <small class="text-muted d-block">Author</small>
+                                                          <span><?=$author_name?></span>
+                                                      </div>
+                                                  </div>
+                                                  <!-- Publisher -->
+                                                  <?php if($page['pages_isactive'] && $page['activatedby']): ?>
+                                                  <div class="d-flex align-items-center">
+                                                      <img src="<?=$publisher_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$publisher_name?>">
+                                                      <div>
+                                                          <small class="text-muted d-block">Published by</small>
+                                                          <span><?=$publisher_name?></span>
+                                                      </div>
+                                                  </div>
+                                                  <?php endif; ?>
+                                              <?php endif; ?>
+                                          </div>
+                                      </td>
+                                                <td>
+                                                    <strong><?=$page['page_title']?></strong>
+                                                    <div class="text-muted small">/<?=$page['page_url']?></div>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-info"><?=$page['catname']?></span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-<?=$status_class?>"><?=$status_label?></span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-<?=$visibility_class?>"><?=$visibility_label?></span>
+                                                </td>
+                                                <td>
+                                                    <span class="badge badge-<?=$featured_status_class?>"><?=$featured_label?></span>
+                                                </td>
+                                                <td>
+                                                    <span class="text-primary"><?=number_format($page['views'])?></span>
+                                                </td>
+                                                <td>
+                                                    <small class="text-muted"><?=$last_modified?></small>
+                                                </td>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            Actions
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                            <a class="dropdown-item" href="editpage.php?id=<?=$page['pid']?>">
+                                                                <i class="fas fa-edit fa-fw"></i> Edit
+                                                            </a>
+                                                            <a class="dropdown-item" href="copypage.php?id=<?=$page['pid']?>">
+                                                                <i class="fas fa-copy fa-fw"></i> Duplicate
+                                                            </a>
+                                                            <a class="dropdown-item" target="_blank" href="<?=BASE_URL.$page['page_url']?>">
+                                                                <i class="fas fa-eye fa-fw"></i> View
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item text-danger" onclick="delete_(<?=$page['pid']?>)">
+                                                                <i class="fas fa-trash fa-fw"></i> Delete
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <?php
+                                        }
+                                    } else {
+                                        echo '<tr><td colspan="10" class="text-center">No pages found</td></tr>';
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                            
+                            <!-- Pagination Controls -->
+                            <?php if($total_pages > 1): ?>
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center">
+                                    <!-- First Page Link -->
+                                    <li class="page-item <?= ($current_page == 1) ? 'disabled' : '' ?>">
+                                        <a class="page-link" href="?page=1<?=$page_link?>" aria-label="First">
+                                            <span aria-hidden="true">&laquo;&laquo;</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <!-- Previous Page Link -->
+                                    <li class="page-item <?= ($current_page == 1) ? 'disabled' : '' ?>">
+                                        <a class="page-link" href="?page=<?=($current_page - 1)?><?=$page_link?>" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <!-- Page Numbers -->
+                                    <?php
+                                    // Show up to 5 page numbers around current page
+                                    $start_page = max(1, $current_page - 2);
+                                    $end_page = min($total_pages, $current_page + 2);
+                                    
+                                    // Adjust if we're at the beginning or end
+                                    if($current_page <= 3) {
+                                        $end_page = min(5, $total_pages);
+                                    }
+                                    if($current_page >= $total_pages - 2) {
+                                        $start_page = max(1, $total_pages - 4);
+                                    }
+                                    
+                                    // Show page numbers
+                                    for($i = $start_page; $i <= $end_page; $i++): ?>
+                                        <li class="page-item <?= ($i == $current_page) ? 'active' : '' ?>">
+                                            <a class="page-link" href="?page=<?=$i?><?=$page_link?>"><?=$i?></a>
+                                        </li>
+                                    <?php endfor; ?>
+                                    
+                                    <!-- Next Page Link -->
+                                    <li class="page-item <?= ($current_page == $total_pages) ? 'disabled' : '' ?>">
+                                        <a class="page-link" href="?page=<?=($current_page + 1)?><?=$page_link?>" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <!-- Last Page Link -->
+                                    <li class="page-item <?= ($current_page == $total_pages) ? 'disabled' : '' ?>">
+                                        <a class="page-link" href="?page=<?=$total_pages?><?=$page_link?>" aria-label="Last">
+                                            <span aria-hidden="true">&raquo;&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="card-footer small text-muted">
+                        Updated at <?=date('Y-m-d H:i:s')?>
+                    </div>
+                </div>
             </div>
-          </div>
+            
+            <div id="deletemodal"></div>
+            <?php include 'includes/footer_copyright.php';?>
         </div>
-        <!-- DataTables Example -->
-      </div>
-      <!-- /.container-fluid -->
-      
-          <div id="deletemodal"></div>
-         <?php include 'includes/footer_copyright.php';?>
-
     </div>
-    <!-- /.content-wrapper -->
 
-  </div>
-  <!-- /#wrapper -->
+    <?php include 'includes/footer.php';?>
 
- <?php include 'includes/footer.php';?>
+    <style>
+        .featured-post {
+            background-color: #f8f9fa;
+        }
+        .table-hover tbody tr:hover {
+            background-color: rgba(0,0,0,.02);
+        }
+        .badge {
+            font-weight: 500;
+        }
+        .pagination {
+            margin-top: 20px;
+        }
+        .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .page-link {
+            color: #007bff;
+        }
+    </style>
+
+    <script>
+    function filterPages() {
+        const status = document.getElementById('filter-status').value;
+        const category = document.getElementById('filter-category').value;
+        const author = document.getElementById('filter-author').value;
+        const publisher = document.getElementById('filter-publisher').value;
+        
+        let url = '?page=1'; // Always reset to page 1 when filtering
+        
+        if (status) url += '&status=' + status;
+        if (category) url += '&cat=' + category;
+        if (author) url += '&author=' + author;
+        if (publisher) url += '&publisher=' + publisher;
+        
+        window.location.href = url;
+    }
+    </script>

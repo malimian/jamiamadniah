@@ -19,15 +19,14 @@ $footer = [];
 $page = [];
 
 // Fetch page content from the database
-$content = return_single_row("
-    SELECT 
+$content = return_single_row("SELECT 
     pages.*, 
-    template_id, 
-    site_template_id 
-FROM pages 
+    category.*
+FROM pages
+INNER JOIN category ON pages.catid = category.catid
 WHERE 
     pages.soft_delete = 0 
-    AND page_url = '$url'
+    AND pages.page_url = '$url';
 ");
 
 // Redirect to 404 if no content is found
