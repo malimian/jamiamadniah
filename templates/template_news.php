@@ -100,9 +100,9 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                         <?php foreach ($news_categories as $category) { ?>
                             <div class="col-lg-6">
                                 <div class="d-flex align-items-center p-3 bg-white rounded">
-                                    <img src="img/chatGPT.jpg" class="img-fluid rounded" alt="">
+                                    <img src="img/chatGPT.jpg" class="img-fluid rounded" alt="<?php echo $category['catname']; ?>">
                                     <div class="ms-3">
-                                        <a href="#" class="h5 mb-2"><?php echo $category['catname']; ?></a>
+                                        <a href="<?php echo $category['cat_url']; ?>" class="h5 mb-2"><?php echo $category['catname']; ?></a>
                                         <p class="text-dark mt-3 mb-0 me-3"><i class="fa fa-clock"></i> 06 minute read</p>
                                     </div>
                                 </div>
