@@ -54,7 +54,7 @@ if (!empty($username) && !empty($password)) {
           $_SESSION['user']['unautorize'] = $all_modules_dashboard_are_not_allowed;
 
           //Side Bar Modules
-          $sql = "SELECT url , title , iconclass FROM loginuser INNER JOIN user_module ON loginuser.id = user_module.uid INNER JOIN og_module ON user_module.og_module_id = og_module.id Where 
+          $sql = "SELECT url , title , iconclass , og_module.* FROM loginuser INNER JOIN user_module ON loginuser.id = user_module.uid INNER JOIN og_module ON user_module.og_module_id = og_module.id Where 
           og_module.showInNavBar = 1 AND
           loginuser.id = ".$uid." and og_module.soft_delete = 0  and og_module.isactive = 1 and loginuser.soft_delete = 0  and loginuser.isactive = 1 ";
 
