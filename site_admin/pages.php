@@ -6,14 +6,16 @@ $category = "";
 $author_filter = "";
 $publisher_filter = "";
 $status_filter = "";
+$search_filter = "";
 $page_link = "";
 $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $per_page = 50;
 
+
 // Template filter
 if(isset($_GET['temp']) && !empty($_GET['temp'])) {
     $temp_id = $_GET['temp'];
-    $template = " AND pages.template_id = $temp_id ";
+    $template = " AND pages.site_template_id = $temp_id ";
     $page_link .="&temp=".$temp_id;
 }
 
@@ -45,10 +47,17 @@ if(isset($_GET['status']) && $_GET['status'] !== '') {
     $page_link .="&status=".$status;
 }
 
+// Search filter
+if(isset($_GET['search']) && !empty($_GET['search'])) {
+    $search = trim($_GET['search']);
+    $search_filter = " AND (pages.page_title LIKE '%$search%' OR pages.page_url LIKE '%$search%') ";
+    $page_link .="&search=".urlencode($search);
+}
+
 // Get total count
 $total_query = "SELECT COUNT(*) as total FROM pages 
     LEFT JOIN category ON pages.catid = category.catid 
-    WHERE pages.soft_delete = 0 AND category.soft_delete = 0 $template $category $author_filter $publisher_filter $status_filter";
+    WHERE pages.soft_delete = 0 AND category.soft_delete = 0 $template $category $author_filter $publisher_filter $status_filter $search_filter";
 $total_result = return_single_row($total_query);
 $total_items = $total_result['total'];
 
@@ -66,9 +75,11 @@ foreach ($users as $user) {
 // Get paginated data - make sure to include activatedby in your SELECT
 $Pages = return_multiple_rows("SELECT *, pages.isactive as pages_isactive, pages.createdby as pages_createdby, pages.activatedby 
     FROM pages LEFT JOIN category ON pages.catid = category.catid 
-    WHERE pages.soft_delete = 0 AND category.soft_delete = 0 $template $category $author_filter $publisher_filter $status_filter
+    WHERE pages.soft_delete = 0 AND category.soft_delete = 0 $template $category $author_filter $publisher_filter $status_filter $search_filter
     ORDER BY pages.catid, pages_sequence ASC 
     LIMIT $offset, $per_page");
+
+$site_templates = return_multiple_rows("Select * from og_template Where isactive = 1 and soft_delete = 0 ");
 ?>
 
 <body id="page-top">
@@ -90,59 +101,112 @@ $Pages = return_multiple_rows("SELECT *, pages.isactive as pages_isactive, pages
                 </ol>
 
                 <!-- Page Content -->
-                <h1 class="page-header">
+                <h3 class="page-header">
                     All Pages (<?php echo $total_items; ?>)
+                    <?php if($has_add): ?>
                     <a href="addpage.php?<?php echo $page_link;?>" style="float:right;color: #fff" class="btn btn-danger btn-md">
                         <i class="fa fa-plus">&nbsp;</i>Add New
                     </a>
-                </h1>
+                    <?php endif; ?>
+                </h3>
 
                 <hr>
 
-                <!-- Filter Options -->
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <select class="form-control" id="filter-status" onchange="filterPages()">
-                            <option value="">All Statuses</option>
-                            <option value="1" <?= (isset($_GET['status']) && $_GET['status'] == '1' ? 'selected' : '') ?>>Published</option>
-                            <option value="0" <?= (isset($_GET['status']) && $_GET['status'] == '0' ? 'selected' : '') ?>>Draft</option>
-                        </select>
+            <!-- Search and Filter Options -->
+<div class="row mb-3">
+    <!-- First Line - Search and Template -->
+    <div class="col-12 mb-2">
+        <div class="row">
+            <div class="col-md-8 mb-2">
+                <form method="get" action="">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="search" placeholder="Search by title..." 
+                            value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-md-3">
-                        <select class="form-control" id="filter-category" onchange="filterPages()">
-                            <option value="">All Categories</option>
-                            <?php 
-                            $categories = return_multiple_rows("SELECT * FROM category WHERE soft_delete = 0 ORDER BY catname");
-                            foreach($categories as $cat) {
-                                $selected = (isset($_GET['cat']) && $_GET['cat'] == $cat['catid']) ? 'selected' : '';
-                                echo '<option value="'.$cat['catid'].'" '.$selected.'>'.$cat['catname'].'</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-control" id="filter-author" onchange="filterPages()">
-                            <option value="">All Authors</option>
-                            <?php 
-                            foreach($users as $user) {
-                                $selected = (isset($_GET['author']) && $_GET['author'] == $user['id']) ? 'selected' : '';
-                                echo '<option value="'.$user['id'].'" '.$selected.'>'.$user['username'].'</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select class="form-control" id="filter-publisher" onchange="filterPages()">
-                            <option value="">All Publishers</option>
-                            <?php 
-                            foreach($users as $user) {
-                                $selected = (isset($_GET['publisher']) && $_GET['publisher'] == $user['id']) ? 'selected' : '';
-                                echo '<option value="'.$user['id'].'" '.$selected.'>'.$user['username'].'</option>';
-                            }
-                            ?>
-                        </select>
-                    </div>
-                </div>
+                    <!-- Keep other filter parameters -->
+                    <?php if(isset($_GET['temp'])): ?>
+                        <input type="hidden" name="temp" value="<?= $_GET['temp'] ?>">
+                    <?php endif; ?>
+                    <?php if(isset($_GET['cat'])): ?>
+                        <input type="hidden" name="cat" value="<?= $_GET['cat'] ?>">
+                    <?php endif; ?>
+                    <?php if(isset($_GET['author'])): ?>
+                        <input type="hidden" name="author" value="<?= $_GET['author'] ?>">
+                    <?php endif; ?>
+                    <?php if(isset($_GET['publisher'])): ?>
+                        <input type="hidden" name="publisher" value="<?= $_GET['publisher'] ?>">
+                    <?php endif; ?>
+                    <?php if(isset($_GET['status'])): ?>
+                        <input type="hidden" name="status" value="<?= $_GET['status'] ?>">
+                    <?php endif; ?>
+                </form>
+            </div>
+            <div class="col-md-4 mb-2">
+                <select class="form-control" id="filter-template" onchange="filterPages()">
+                    <option value="">All Templates</option>
+                    <?php 
+                    foreach($site_templates as $template) {
+                        $selected = (isset($_GET['temp']) && $_GET['temp'] == $template['template_id']) ? 'selected' : '';
+                        echo '<option value="'.$template['template_id'].'" '.$selected.'>'.$template['template_title'].'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Second Line - Status, Category, Author, Publisher -->
+    <div class="col-12">
+        <div class="row">
+            <div class="col-md-3 mb-2">
+                <select class="form-control" id="filter-status" onchange="filterPages()">
+                    <option value="">Status</option>
+                    <option value="1" <?= (isset($_GET['status']) && $_GET['status'] == '1' ? 'selected' : '') ?>>Published</option>
+                    <option value="0" <?= (isset($_GET['status']) && $_GET['status'] == '0' ? 'selected' : '') ?>>Draft</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <select class="form-control" id="filter-category" onchange="filterPages()">
+                    <option value="">Category</option>
+                    <?php 
+                    $categories = return_multiple_rows("SELECT * FROM category WHERE soft_delete = 0 ORDER BY catname");
+                    foreach($categories as $cat) {
+                        $selected = (isset($_GET['cat']) && $_GET['cat'] == $cat['catid']) ? 'selected' : '';
+                        echo '<option value="'.$cat['catid'].'" '.$selected.'>'.$cat['catname'].'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <select class="form-control" id="filter-author" onchange="filterPages()">
+                    <option value="">Author</option>
+                    <?php 
+                    foreach($users as $user) {
+                        $selected = (isset($_GET['author']) && $_GET['author'] == $user['id']) ? 'selected' : '';
+                        echo '<option value="'.$user['id'].'" '.$selected.'>'.$user['username'].'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="col-md-3 mb-2">
+                <select class="form-control" id="filter-publisher" onchange="filterPages()">
+                    <option value="">Publisher</option>
+                    <?php 
+                    foreach($users as $user) {
+                        $selected = (isset($_GET['publisher']) && $_GET['publisher'] == $user['id']) ? 'selected' : '';
+                        echo '<option value="'.$user['id'].'" '.$selected.'>'.$user['username'].'</option>';
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
 
                 <!-- DataTables Example -->
                 <div class="card mb-3">
@@ -159,15 +223,15 @@ $Pages = return_multiple_rows("SELECT *, pages.isactive as pages_isactive, pages
                                 <thead class="thead-dark">
                                     <tr>
                                         <th width="40px">ID</th>
-                                        <th width="150px">Author</th>
+                                        <th width="120px">Image</th>
                                         <th>Title</th>
                                         <th width="120px">Category</th>
-                                        <th width="100px">Status</th>
-                                        <th width="100px">Visibility</th>
-                                        <th width="100px">Featured</th>
-                                        <th width="100px">Views</th>
+                                        <th width="100px">Template</th>
+                                        <th width="80px">Status</th>
+                                        <th width="80px">Visibility</th>
+                                        <th width="80px">Views</th>
                                         <th width="120px">Last Modified</th>
-                                        <th width="100px">Actions</th>
+                                        <th width="120px">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -176,18 +240,12 @@ $Pages = return_multiple_rows("SELECT *, pages.isactive as pages_isactive, pages
                                         foreach($Pages as $page) {                        
                                             $author = isset($user_lookup[$page['pages_createdby']]) ? $user_lookup[$page['pages_createdby']] : null;
                                             $author_name = $author ? $author['username'] : 'System';
-                                            $author_image = $author && !empty($author['profile_pic']) ? 
-                                                BASE_URL.ABSOLUTE_IMAGEPATH.$author['profile_pic'] : 
-                                                'https://ui-avatars.com/api/?name='.urlencode($author_name).'&size=40';  
-
+                                            
                                             // Get publisher info (activatedby)
                                             $publisher = isset($user_lookup[$page['activatedby']]) ? $user_lookup[$page['activatedby']] : null;
                                             $publisher_name = $publisher ? $publisher['username'] : 'System';
-                                            $publisher_image = $publisher && !empty($publisher['profile_pic']) ? 
-                                                BASE_URL.ABSOLUTE_IMAGEPATH.$publisher['profile_pic'] : 
-                                                'https://ui-avatars.com/api/?name='.urlencode($publisher_name).'&size=40';
 
-                                                $same_user = ($page['pages_createdby'] == $page['activatedby']) && $page['pages_isactive'];
+                                            $same_user = ($page['pages_createdby'] == $page['activatedby']) && $page['pages_isactive'];
 
                                             $featured_class = $page['isFeatured'] ? 'featured-post' : '';
                                             $status_label = $page['pages_isactive'] ? 'Published' : 'Draft';
@@ -196,46 +254,28 @@ $Pages = return_multiple_rows("SELECT *, pages.isactive as pages_isactive, pages
                                             $visibility_label = $page['visibility'] ? 'Public' : 'Private';
                                             $visibility_class = $page['visibility'] ? 'success' : 'secondary';
                                             
-                                            $featured_label = $page['isFeatured'] ? 'Yes' : 'No';
-                                            $featured_status_class = $page['isFeatured'] ? 'success' : 'secondary';
-                                            
                                             $last_modified = date('M j, Y', strtotime($page['updatedon']));
+                                            
+                                            // Get template info
+                                            $template_info = null;
+                                            foreach($site_templates as $template) {
+                                                if($template['template_id'] == $page['site_template_id']) {
+                                                    $template_info = $template;
+                                                    break;
+                                                }
+                                            }
+                                            $template_name = $template_info ? $template_info['template_title'] : 'Unknown';
+                                            
+                                            // Featured image
+                                            $featured_image = !empty($page['featured_image']) ? 
+                                                $page['featured_image'] : 
+                                                BASE_URL.'assets/img/no-image-available.jpg';
                                             ?>
                                             <tr id="tr_<?=$page['pid']?>" class="<?=$featured_class?>">
                                                 <td><?=$page['pid']?></td>
-                                          <td>
-                                          <div class="d-flex flex-column">
-                                              <?php if($same_user): ?>
-                                                  <!-- Combined display when same user -->
-                                                  <div class="d-flex align-items-center">
-                                                      <img src="<?=$author_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$author_image?>">
-                                                      <div>
-                                                          <small class="text-muted d-block">Author & Published by</small>
-                                                          <span><?=$author_name?></span>
-                                                      </div>
-                                                  </div>
-                                              <?php else: ?>
-                                                  <!-- Creator -->
-                                                  <div class="d-flex align-items-center mb-2">
-                                                      <img src="<?=$author_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$author_name?>">
-                                                      <div>
-                                                          <small class="text-muted d-block">Author</small>
-                                                          <span><?=$author_name?></span>
-                                                      </div>
-                                                  </div>
-                                                  <!-- Publisher -->
-                                                  <?php if($page['pages_isactive'] && $page['activatedby']): ?>
-                                                  <div class="d-flex align-items-center">
-                                                      <img src="<?=$publisher_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$publisher_name?>">
-                                                      <div>
-                                                          <small class="text-muted d-block">Published by</small>
-                                                          <span><?=$publisher_name?></span>
-                                                      </div>
-                                                  </div>
-                                                  <?php endif; ?>
-                                              <?php endif; ?>
-                                          </div>
-                                      </td>
+                                                <td>
+                                                    <img src="<?=$featured_image?>" class="img-thumbnail" style="max-width: 100px; height: auto;" alt="Featured Image">
+                                                </td>
                                                 <td>
                                                     <strong><?=$page['page_title']?></strong>
                                                     <div class="text-muted small">/<?=$page['page_url']?></div>
@@ -244,13 +284,30 @@ $Pages = return_multiple_rows("SELECT *, pages.isactive as pages_isactive, pages
                                                     <span class="badge badge-info"><?=$page['catname']?></span>
                                                 </td>
                                                 <td>
-                                                    <span class="badge badge-<?=$status_class?>"><?=$status_label?></span>
+                                                    <span class="badge badge-secondary"><?=$template_name?></span>
                                                 </td>
+                                              
+                                                <td>
+                                                  <div class="d-flex align-items-center">
+                                                      <?php if ($has_status): ?>
+                                                          <!-- Show switch + badge -->
+                                                          <div class="custom-control custom-switch">
+                                                              <input type="checkbox" class="custom-control-input js-switch" 
+                                                                     id="status_switch_<?=$page['pid']?>" 
+                                                                     data-id="<?=$page['pid']?>"
+                                                                     <?= $page['pages_isactive'] ? 'checked' : '' ?>>
+                                                              <label class="custom-control-label" for="status_switch_<?=$page['pid']?>">
+                                                                  <span class="badge badge-<?=$status_class?> ml-2"><?=$status_label?></span>
+                                                              </label>
+                                                          </div>
+                                                      <?php else: ?>
+                                                          <!-- Show only badge (no switch) -->
+                                                          <span class="badge badge-<?=$status_class?>"><?=$status_label?></span>
+                                                      <?php endif; ?>
+                                                  </div>
+                                              </td>
                                                 <td>
                                                     <span class="badge badge-<?=$visibility_class?>"><?=$visibility_label?></span>
-                                                </td>
-                                                <td>
-                                                    <span class="badge badge-<?=$featured_status_class?>"><?=$featured_label?></span>
                                                 </td>
                                                 <td>
                                                     <span class="text-primary"><?=number_format($page['views'])?></span>
@@ -258,28 +315,46 @@ $Pages = return_multiple_rows("SELECT *, pages.isactive as pages_isactive, pages
                                                 <td>
                                                     <small class="text-muted"><?=$last_modified?></small>
                                                 </td>
-                                                <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Actions
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <a class="dropdown-item" href="editpage.php?id=<?=$page['pid']?>">
-                                                                <i class="fas fa-edit fa-fw"></i> Edit
-                                                            </a>
-                                                            <a class="dropdown-item" href="copypage.php?id=<?=$page['pid']?>">
-                                                                <i class="fas fa-copy fa-fw"></i> Duplicate
-                                                            </a>
-                                                            <a class="dropdown-item" target="_blank" href="<?=BASE_URL.$page['page_url']?>">
-                                                                <i class="fas fa-eye fa-fw"></i> View
-                                                            </a>
-                                                            <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item text-danger" onclick="delete_(<?=$page['pid']?>)">
-                                                                <i class="fas fa-trash fa-fw"></i> Delete
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </td>
+                        <td>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Actions
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <?php if($has_edit): ?>
+                                <a class="dropdown-item" href="editpage.php?id=<?=$page['pid']?>">
+                                    <i class="fas fa-edit fa-fw"></i> Edit
+                                </a>
+                                <?php endif; ?>
+                                
+                                <?php if($has_add): ?>
+                                <a class="dropdown-item" href="copypage.php?id=<?=$page['pid']?>">
+                                    <i class="fas fa-copy fa-fw"></i> Duplicate
+                                </a>
+                                <?php endif; ?>
+                                
+                                <?php if($has_view): ?>
+                                <a class="dropdown-item" target="_blank" href="<?=BASE_URL.$page['page_url']?>">
+                                    <i class="fas fa-eye fa-fw"></i> View
+                                </a>
+                                <?php endif; ?>
+                                
+                                <?php if($has_status): ?>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" onclick="toggleStatus(<?=$page['pid']?>, <?=$page['pages_isactive']?>)">
+                                    <i class="fas fa-power-off fa-fw"></i> <?=$page['pages_isactive'] ? 'Deactivate' : 'Activate'?>
+                                </a>
+                                <?php endif; ?>
+                                
+                                <?php if($has_delete): ?>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger" onclick="delete_(<?=$page['pid']?>)">
+                                    <i class="fas fa-trash fa-fw"></i> Delete
+                                </a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </td>
                                             </tr>
                                             <?php
                                         }
@@ -380,22 +455,54 @@ $Pages = return_multiple_rows("SELECT *, pages.isactive as pages_isactive, pages
         .page-link {
             color: #007bff;
         }
+        .img-thumbnail {
+            max-height: 60px;
+            object-fit: cover;
+        }
+
+      /*js switch*/
+        
+      .custom-control.custom-switch {
+      padding-left: 2.25rem;
+      min-height: 1.5rem; /* Ensure consistent height */
+      }
+
+      .custom-control.custom-switch .custom-control-label::before,
+      .custom-control.custom-switch .custom-control-label::after {
+      left: -2.25rem;
+      top: 0.25rem;
+      }
+
+      .custom-control.custom-switch .custom-control-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-left: 0.5rem; /* Space between switch and badge */
+      }
+
     </style>
+
+    <script type="text/javascript" src="js/page/pages.js"></script>
 
     <script>
     function filterPages() {
         const status = document.getElementById('filter-status').value;
         const category = document.getElementById('filter-category').value;
+        const template = document.getElementById('filter-template').value;
         const author = document.getElementById('filter-author').value;
         const publisher = document.getElementById('filter-publisher').value;
+        const search = "<?= isset($_GET['search']) ? $_GET['search'] : '' ?>";
         
         let url = '?page=1'; // Always reset to page 1 when filtering
         
         if (status) url += '&status=' + status;
         if (category) url += '&cat=' + category;
+        if (template) url += '&temp=' + template;
         if (author) url += '&author=' + author;
         if (publisher) url += '&publisher=' + publisher;
+        if (search) url += '&search=' + encodeURIComponent(search);
         
         window.location.href = url;
     }
+  
     </script>

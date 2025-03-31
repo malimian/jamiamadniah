@@ -4,28 +4,45 @@ var datatable_id = 'dataTable1';
 searchdatatable(datatable_id);
 
 
-    $(document).on("change", ".js-switch", function() {
+   $(document).on("change", ".js-switch", function() {
     var id = $(this).data("id");
+    var isChecked = $(this).is(':checked');
+    var $switch = $(this);
+    var $badge = $(this).closest('.custom-control').find('.badge');
+    
+    // Disable switch during processing
+    $switch.prop('disabled', true);
+    
+    // Show loading state
+    $badge.removeClass('badge-success badge-warning').addClass('badge-info').text('Updating...');
+    
     senddata(
         'post/page/pages.php',
         "POST", {
             id: id,
-            change_status: true
+            change_status: true,
+            new_status: isChecked ? 1 : 0
         },
         function(result) {
-            console.log(result);
+            // Success callback
+            $switch.prop('disabled', false);
+            if (isChecked) {
+                $badge.removeClass().addClass('badge badge-success').text('Published');
+            } else {
+                $badge.removeClass().addClass('badge badge-warning').text('Draft');
+            }
         },
         function(result) {
-            console.log(result);
+            // Error callback - revert switch state
+            $switch.prop('disabled', false);
+            $switch.prop('checked', !isChecked);
+            $badge.removeClass().addClass(isChecked ? 'badge-warning' : 'badge-success')
+                  .text(isChecked ? 'Draft' : 'Published');
+            
+            console.error("Status update failed:", result);
+            alert("Failed to update status. Please try again.");
         }
     );
-
-    if (!$(this).is(':checked')) {
-        $('#status_' + id).removeClass().addClass('badge badge-danger').html('In Active');
-    } else {
-        $('#status_' + id).removeClass().addClass('badge badge-success').html('Active');
-    }
-
 });
 
 
