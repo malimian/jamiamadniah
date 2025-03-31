@@ -131,7 +131,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                             <div class="row g-2">
                                 <?php foreach ($news_categories as $category) { ?>
                                     <div class="col-12">
-                                        <a href="#" class="link-hover btn btn-light w-100 rounded text-uppercase text-dark py-3">
+                                        <a href="<?php echo $category['cat_url']; ?>" class="link-hover btn btn-light w-100 rounded text-uppercase text-dark py-3">
                                             <?php echo $category['catname']; ?>
                                         </a>
                                     </div>
