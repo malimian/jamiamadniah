@@ -386,7 +386,7 @@ foreach ($news_categories as $new_category) {
             <!-- Life Style Section -->
             <div class="mt-5 lifestyle">
                 <div class="border-bottom mb-4">
-                    <h1 class="mb-4">Life Style</h1>
+                    <h1 class="mb-4">Top Stories: Politics, Economy, and Current Affairs</h1>
                 </div>
                 <div class="row g-4">
                     <?php
