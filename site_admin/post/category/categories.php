@@ -5,15 +5,47 @@ $tbl = "category";
 $tbl_id = "catid";
 $tbl_seq = "cat_sequence";
 
-// Database changes needed:
-// 1. Make sure 'showInNavBar' column exists (tinyint with default 1)
-// 2. Make sure 'ParentCategory' column exists (int with default 0)
-// 3. Make sure 'cat_sequence' column exists (int)
-// 4. Make sure 'isactive' column exists (tinyint with default 1)
-// 5. Make sure 'soft_delete' column exists (tinyint with default 0)
 
 // Add this at the top of your PHP file
 header('Content-Type: application/json');
+
+
+
+if(isset($_POST['change_status'])){
+
+$id= $_POST['id'];
+
+$sql ="UPDATE $tbl SET isactive = 1 - isactive  
+Where  $tbl_id = $id";
+
+echo Update($sql);
+
+}
+
+
+if(isset($_POST['change_status'])){
+
+$id= $_POST['id'];
+
+$sql ="UPDATE $tbl SET isactive = 1 - isactive  
+Where  $tbl_id = $id";
+
+echo Update($sql);
+
+}
+
+
+if (isset($_POST['delete'])) {
+
+$id= $_POST['id'];
+
+$sql ="UPDATE $tbl SET soft_delete = 1
+Where $tbl_id = $id";
+
+echo Update($sql);
+
+}
+
 
 // Modify your sequence change handler to return proper JSON
 if (isset($_POST['change_sequence'])) {
@@ -26,7 +58,7 @@ if (isset($_POST['change_sequence'])) {
     if (!$current) {
         echo json_encode(['success' => false, 'message' => 'Item not found']);
         exit;
-    }
+    } 
     
     $currentSeq = $current[$tbl_seq];
     $parentCategory = $current['ParentCategory'];

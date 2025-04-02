@@ -1,3 +1,4 @@
+
 <?php
 static $AND_gc = " AND soft_delete = 0";
 static $And_gc = " AND soft_delete = 0";
@@ -8,47 +9,58 @@ static $Where_gc = " Where soft_delete = 0";
 static $where_gc = " Where soft_delete = 0";
 
 
-function softdelete_check($query , $coulmns)
+/**
+ * Appends a soft delete condition to an SQL query.
+ *
+ * @param string $query   The SQL query.
+ * @param string $columns Comma-separated list of table aliases/column prefixes.
+ * @return string Modified SQL query with soft delete conditions.
+ */
+function softdelete_check($query, $columns)
 {
-	$coulmns = explode(',', $coulmns);
-	$return_query = $query;
-	$count = 0;
-	$q1 = strtolower($query);
-	   if(strpos($q1, 'where') !== false){
-		foreach ($coulmns as $single_column) {
-		$return_query .= " AND ".$single_column.".soft_delete = 0 ";
-		}
-		}else{
-		foreach ($coulmns as $single_column) {
-		if($count == 0) {$return_query .= " WHERE ".$single_column.".soft_delete = 0 "; $count++; }
-		else
-		$return_query .= " AND ".$single_column.".soft_delete = 0 ";
-		}
-	}
-
-	return $return_query;
+    $columnsArray = explode(',', $columns);
+    $returnQuery = $query;
+    $queryLower = strtolower($query);
+    
+    if (strpos($queryLower, 'where') !== false) {
+        foreach ($columnsArray as $column) {
+            $returnQuery .= " AND {$column}.soft_delete = 0";
+        }
+    } else {
+        $count = 0;
+        foreach ($columnsArray as $column) {
+            $returnQuery .= ($count == 0) 
+                ? " WHERE {$column}.soft_delete = 0" 
+                : " AND {$column}.soft_delete = 0";
+            $count++;
+        }
+    }
+    
+    return $returnQuery;
 }
 
-
-
-function softdelete1_check($query , $coulmns)
+/**
+ * Alternative function to append a soft delete condition to an SQL query.
+ *
+ * @param string $query   The SQL query.
+ * @param string $columns Comma-separated list of table aliases/column prefixes.
+ * @return string Modified SQL query with soft delete conditions.
+ */
+function softdelete1_check($query, $columns)
 {
-	$count = 0;
-	$q1 = strtolower($query);
-	
-	if(strpos($q1, 'where') !== false)
-	$return_query = $query;
-	else $return_query = $query." Where ";
-
-	$coulmns = explode(',', $coulmns);
-	
-	foreach ($coulmns as $single_column) {
-	if($count == 0) {$return_query .= $single_column.".soft_delete = 0 "; $count++; }
-	else
-		$return_query .= " AND ".$single_column.".soft_delete = 0 ";
- }
-	return $return_query;
+    $queryLower = strtolower($query);
+    $returnQuery = (strpos($queryLower, 'where') !== false) ? $query : $query . " WHERE ";
+    
+    $columnsArray = explode(',', $columns);
+    $count = 0;
+    
+    foreach ($columnsArray as $column) {
+        $returnQuery .= ($count == 0) 
+            ? "{$column}.soft_delete = 0" 
+            : " AND {$column}.soft_delete = 0";
+        $count++;
+    }
+    
+    return $returnQuery;
 }
-
-
 ?>
