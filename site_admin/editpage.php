@@ -4,8 +4,58 @@
    <?php include 'includes/navbar_search.php'; ?>
    <?php include 'includes/notification.php'; ?>
 
+<style type="text/css">
+    /* Improved toggle switch styling */
+    
+    .form-switch .form-check-label {
+        font-weight: normal;
+        user-select: none;
+        cursor: pointer;
+        vertical-align: middle;
+    }
+    
+    /* Enhanced simple textarea styling */
+    #simpleEditor {
+        min-height: 300px;
+        font-family: monospace;
+        line-height: 1.5;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+        resize: vertical;
+    }
+    
+    /* Better alignment for form elements */
+    .form-group.row {
+        align-items: center;
+        margin-bottom: 1.2rem;
+    }
+    
+    /* Consistent card styling */
+    .card {
+        margin-bottom: 20px;
+        border: 1px solid rgba(0,0,0,.125);
+        border-radius: 0.25rem;
+    }
+    
+    .card-header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid rgba(0,0,0,.125);
+        padding: 0.75rem 1.25rem;
+    }
+    
+    .card-body {
+        padding: 1.25rem;
+    }
+</style>
+
+
    <?php
    $page = return_single_row("SELECT * FROM pages WHERE pid = {$_GET['id']} $and_gc");
+   
+   $useCKEditor = (strpos($page['page_desc'], '</') !== false || strpos($page['page_desc'], '<') !== false);
+
    ?>
 
    <div id="wrapper">
@@ -54,9 +104,9 @@
                                 <i class="fa fa-code"></i> TEMPLATE
                             </a>
                         </li>
-                        <!-- Photo Gallery Tab -->
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#menu4">
+                        <!-- Media Tab -->
+                         <li class="nav-item">
+                            <a class="nav-link <?php echo (isset($_GET['media_type']) || isset($_GET['media_action'])) ? 'active' : ''; ?>" data-toggle="tab" href="#menu4" aria-selected="false">
                                 <i class="fa fa-image"></i> Media
                             </a>
                         </li>
@@ -128,28 +178,21 @@
                                 </div>
                             </div>
 
-                            <!-- Description -->
-                            <div class="form-group row">
-                                <label for="colFormLabel" class="col-sm-2 col-form-label">Description</label>
-                                <div class="col-sm-10">
-                                    <textarea class="form-control" id="editor1" name="editor1" required="required"><?php echo replaceTextArea($page['page_desc']); ?></textarea>
-                                    <div class="valid-feedback">Valid.</div>
-                                    <div class="invalid-feedback">Please fill out this field.</div>
-                                </div>
-                            </div>
+                           <!-- Description -->
+                                    <!-- Toggle Switch -->
+                                    <div class="form-check form-switch mb-2">
+                                            <input class="form-check-input" type="checkbox" id="editorToggle" <?php echo $useCKEditor ? 'checked' : ''; ?>>
+                                            <label class="form-check-label" for="editorToggle">Rich Text Editor</label>
+                                    </div>
 
-                            <!-- Show in Nav Bar -->
-                            <div class="form-group row">
-                                <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Show in Nav Bar</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control form-control-sm" id="showInNavbar" name="showInNavbar">
-                                        <option value="1" <?php if ($page['showInNavBar'] == 1) echo "selected"; ?>>YES</option>
-                                        <option value="0" <?php if ($page['showInNavBar'] != 1) echo "selected"; ?>>NO</option>
-                                    </select>
-                                </div>
-                            </div>
+                                    <!-- Textarea (initially hidden if using CKEditor) -->
+                                    <textarea class="form-control" id="simpleEditor" name="editor1" style="<?php echo $useCKEditor ? 'display:none;' : ''; ?>"><?php echo replaceTextArea($page['page_desc']); ?></textarea>
 
-                            <!-- Is Active -->
+                                    <!-- CKEditor Container (initially shown if using CKEditor) -->
+                                    <div id="ckeditorContainer" style="<?php echo !$useCKEditor ? 'display:none;' : ''; ?>">
+                                        <textarea class="form-control" id="editor1" name="editor1"><?php echo replaceTextArea($page['page_desc']); ?></textarea>
+                                    </div>
+
                         </div>
 
                         <!-- SEO Tab Content -->
@@ -229,12 +272,12 @@
 
                         <!-- Photo Gallery Tab Content -->
                         <div id="menu4" class="container tab-pane fade">
-                            <?php echo include_module('modules/media_tab_module.php', array('action' => "edit" , 'page' => array($page) )); ?>
+                            <?php echo include_module('modules/page/media_tab_module.php', array('action' => "edit" , 'page' => array($page) )); ?>
                         </div>
 
                         <!-- Shop Tab Content -->
                         <div id="menu5" class="container tab-pane fade">
-                            <?php echo include_module('modules/add_product_module.php', array('action' => "edit" , 'page' => array($page) )); ?>
+                            <?php echo include_module('modules/page/add_attributes_module.php', array('action' => "edit" , 'page' => array($page) )); ?>
                         </div>
                     </div>
                 
@@ -259,6 +302,15 @@
                                     </a>
                                 </div>
                         </div>
+                        <!-- Moved Show in Navbar here -->
+                        <div class="form-group mb-3">
+                            <label for="showInNavbar">Show in Navigation:</label>
+                            <select id="showInNavbar" class="form-control">
+                                <option value="1" <?= $page['showInNavBar'] == 1 ? 'selected' : '' ?>>Yes</option>
+                                <option value="0" <?= $page['showInNavBar'] != 1 ? 'selected' : '' ?>>No</option>
+                            </select>
+                        </div>
+                        
                         <div class="form-group">
                             <label for="postStatus">Status:</label>
                             <select id="is_active" name="is_active" class="form-control">

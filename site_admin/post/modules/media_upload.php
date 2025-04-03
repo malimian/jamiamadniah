@@ -1,5 +1,4 @@
 <?php 
-session_start();
 include '../../admin_connect.php';
 
 $path = __DIR__ . '/../../../'.ABSOLUTE_IMAGEPATH;

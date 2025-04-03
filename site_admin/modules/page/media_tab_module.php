@@ -1,0 +1,472 @@
+<?php 
+// Initialize variables
+$media_id = isset($_GET['media_id']) ? $_GET['media_id'] : null;
+$media_action = isset($_GET['media_action']) ? $_GET['media_action'] : null;
+$media_type = isset($_GET['media_type']) ? $_GET['media_type'] : null;
+
+// Fetch media data if in edit mode
+$edit_data = null;
+if ($media_id && $media_action == 'edit' && $media_type) {
+    switch($media_type) {
+        case 'image':
+            $edit_data = return_single_row("SELECT * FROM images WHERE i_id = " . $media_id);
+            break;
+        case 'video':
+            $edit_data = return_single_row("SELECT * FROM videos WHERE v_id = " . $media_id);
+            break;
+        case 'file':
+            $edit_data = return_single_row("SELECT * FROM page_files WHERE f_id = " . $media_id);
+            break;
+    }
+}
+?>
+
+<!-- Tab Navigation for Media -->
+<ul class="nav nav-tabs" id="mediaTabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link <?php echo (!$media_type || $media_type == 'image') ? 'active' : ''; ?>" id="image-tab" data-toggle="tab" href="#page-images" role="tab" aria-controls="page-images" aria-selected="<?php echo (!$media_type || $media_type == 'image') ? 'true' : 'false'; ?>">
+            <i class="fa fa-picture-o"></i> Images
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <?php echo ($media_type == 'video') ? 'active iambutasgoo' : ''; ?>" id="video-tab" data-toggle="tab" href="#page-videos" role="tab" aria-controls="page-videos" aria-selected="<?php echo ($media_type == 'video') ? 'true' : 'false'; ?>">
+            <i class="fa fa-video-camera"></i> Videos
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link <?php echo ($media_type == 'file') ? 'active' : ''; ?>" id="file-tab" data-toggle="tab" href="#tab-page-files" role="tab" aria-controls="tab-page-files" aria-selected="<?php echo ($media_type == 'file') ? 'true' : 'false'; ?>">
+            <i class="fa fa-file"></i> Files
+        </a>
+    </li>
+</ul>
+
+<!-- Tab Content for Media -->
+<div class="tab-content" id="mediaTabsContent">
+    <!-- Images Tab -->
+    <div class="tab-pane fade <?php echo (!$media_type || $media_type == 'image') ? 'show active' : ''; ?>" id="page-images" role="tabpanel" aria-labelledby="images-tab">
+        <?php if ($media_type == 'image' && $edit_data): ?>
+        <div class="card mb-3">
+            <div class="card-header">
+                <h6>Current Image</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $edit_data['i_name']; ?>" class="img-fluid img-thumbnail">
+                    </div>
+                    <div class="col-md-8">
+                        <table class="table table-sm">
+                            <tr>
+                                <th width="30%">Filename:</th>
+                                <td><?php echo htmlspecialchars($edit_data['i_name']); ?></td>
+                            </tr>
+                            <tr>
+                                <th>Uploaded:</th>
+                                <td><?php echo date('M d, Y H:i', strtotime($edit_data['createdon'])); ?></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <div class="custom-file mb-3">
+            <input type="file" class="custom-file-input" id="images" name="images[]" <?php echo ($media_type == 'image' && $edit_data) ? '' : 'multiple'; ?>>
+            <label class="custom-file-label" for="images">
+                <i class="fa fa-upload"></i> 
+                <?php if ($media_type == 'image' && $edit_data): ?>
+                Replace Image (Current: <?php echo htmlspecialchars($edit_data['i_name']); ?>)
+                <?php else: ?>
+                Choose Images
+                <?php endif; ?>
+            </label>
+        </div>
+        
+        <!-- Add image metadata fields -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="image_title">Image Title</label>
+                <input type="text" class="form-control" id="image_title" placeholder="Enter image title" value="<?php echo ($media_type == 'image' && $edit_data) ? htmlspecialchars($edit_data['i_title']) : ''; ?>">
+            </div>
+            <div class="col-md-6">
+                <label for="image_caption">Caption</label>
+                <input type="text" class="form-control" id="image_caption" placeholder="Enter caption" value="<?php echo ($media_type == 'image' && $edit_data) ? htmlspecialchars($edit_data['i_caption']) : ''; ?>">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="image_alttext">Alt Text</label>
+                <input type="text" class="form-control" id="image_alttext" placeholder="Enter alt text" value="<?php echo ($media_type == 'image' && $edit_data) ? htmlspecialchars($edit_data['i_alttext']) : ''; ?>">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="image_description">Description</label>
+                <textarea class="form-control" id="image_description" rows="3" placeholder="Enter description"><?php echo ($media_type == 'image' && $edit_data) ? htmlspecialchars($edit_data['i_description']) : ''; ?></textarea>
+            </div>
+        </div>
+        
+        <!-- Add Save/Update Images Buttons -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <?php if ($media_type == 'image' && $edit_data): ?>
+                <input type="hidden" id="edit_image_id" value="<?php echo $media_id; ?>">
+                <button id="updateImageBtn" class="btn btn-primary">
+                    <i class="fa fa-save"></i> Update Image
+                </button>
+                <a href="?id=<?php echo $page[0]['pid']; ?>&media_type=<?php echo $media_type;?>" class="btn btn-secondary">Cancel</a>
+                <?php else: ?>
+                <button id="saveImagesBtn" class="btn btn-success">
+                    <i class="fa fa-save"></i> Save New Images
+                </button>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <?php
+        $photogallery = return_multiple_rows("SELECT * FROM images WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0");
+
+        if (!empty($photogallery)) {
+        ?>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <tbody>
+                        <?php foreach ($photogallery as $photogallery_) { ?>
+                        <tr id="dr_<?php echo $photogallery_['i_id']; ?>">
+                            <td colspan="2" class="w-25">
+                                <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $photogallery_['i_name']; ?>" class="img-fluid img-thumbnail" alt="<?php echo htmlspecialchars($photogallery_['i_alttext']); ?>">
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-25"><i class="fa fa-file"></i> Name</th>
+                            <td><?php echo $photogallery_['i_name']; ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-tag"></i> Title</th>
+                            <td><?php echo htmlspecialchars($photogallery_['i_title']); ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-comment"></i> Caption</th>
+                            <td><?php echo htmlspecialchars($photogallery_['i_caption']); ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-edit"></i> Description</th>
+                            <td><?php echo htmlspecialchars($photogallery_['i_description']); ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-trash"></i> Actions</th>
+                            <td>
+                                <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $photogallery_['i_id']; ?>&media_action=edit&media_type=image" class="btn btn-primary btn-sm rounded-0" title="Edit">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                                <button onclick="delete_image(<?php echo $photogallery_['i_id']; ?>)" class="btn btn-danger btn-sm rounded-0" type="button" title="Delete">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2" style="height: 20px; background: #f8f9fa;"></td></tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php } ?>
+    </div>
+
+    <!-- Videos Tab -->
+    <div class="tab-pane fade <?php echo ($media_type == 'video') ? 'show active' : ''; ?>" id="page-videos" role="tabpanel" aria-labelledby="videos-tab">
+        <?php if ($media_type == 'video' && $edit_data): ?>
+        <div class="mb-3">
+            <h6>Current Video:</h6>
+            <video width="100%" controls style="max-height: 200px;">
+                <source src="<?php echo "../" . ABSOLUTE_VIDEOPATH . $edit_data['v_name']; ?>" type="video/mp4">
+                Your browser doesn't support HTML5 video.
+            </video>
+            <div class="mt-2">
+                <span class="badge badge-info">Filename: <?php echo htmlspecialchars($edit_data['v_name']); ?></span>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <h6>Current Thumbnail:</h6>
+            <?php if (!empty($edit_data['v_thumbnail'])): ?>
+            <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $edit_data['v_thumbnail']; ?>" class="img-thumbnail" style="max-height: 100px;">
+            <?php else: ?>
+            <div class="alert alert-warning">No thumbnail set</div>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
+
+        <div class="custom-file mb-3">
+            <input type="file" class="custom-file-input" id="videos" name="videos[]" <?php echo ($media_type == 'video' && $edit_data) ? '' : 'multiple'; ?>>
+            <label class="custom-file-label" for="videos">
+                <i class="fa fa-upload"></i> 
+                <?php if ($media_type == 'video' && $edit_data): ?>
+                Replace Video (Current: <?php echo htmlspecialchars($edit_data['v_name']); ?>)
+                <?php else: ?>
+                Choose Videos
+                <?php endif; ?>
+            </label>
+        </div>
+            
+        <!-- Add video metadata fields -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="video_title">Video Title</label>
+                <input type="text" class="form-control" id="video_title" placeholder="Enter video title" value="<?php echo ($media_type == 'video' && $edit_data) ? htmlspecialchars($edit_data['v_title']) : ''; ?>">
+            </div>
+            <div class="col-md-6">
+                <label for="video_thumbnail">Thumbnail (optional)</label>
+                <input type="file" class="form-control" id="video_thumbnail">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="video_description">Description</label>
+                <textarea class="form-control" id="video_description" rows="3" placeholder="Enter description"><?php echo ($media_type == 'video' && $edit_data) ? htmlspecialchars($edit_data['v_description']) : ''; ?></textarea>
+            </div>
+        </div>
+        
+        <!-- Add Save/Update Videos Buttons -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <?php if ($media_type == 'video' && $edit_data): ?>
+                <input type="hidden" id="edit_video_id" value="<?php echo $media_id; ?>">
+                <button id="updateVideoBtn" class="btn btn-primary">
+                    <i class="fa fa-save"></i> Update Video
+                </button>
+                <a href="?id=<?php echo $page[0]['pid']; ?>&media_type=<?php echo $media_type;?>" class="btn btn-secondary">Cancel</a>
+                <?php else: ?>
+                <button id="saveVideosBtn" class="btn btn-success">
+                    <i class="fa fa-save"></i> Save New Videos
+                </button>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <?php
+        $videogallery = return_multiple_rows("SELECT * FROM videos WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0");
+
+        if (!empty($videogallery)) {
+        ?>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <tbody>
+                        <?php foreach ($videogallery as $videogallery_) { ?>
+                        <tr id="dr_<?php echo $videogallery_['v_id']; ?>">
+                            <td colspan="2">
+                                <video width="100%" height="350px" controls>
+                                    <source src="<?php echo "../" . ABSOLUTE_VIDEOPATH . $videogallery_['v_name']; ?>" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-25"><i class="fa fa-file"></i> Name</th>
+                            <td><?php echo $videogallery_['v_name']; ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-tag"></i> Title</th>
+                            <td><?php echo htmlspecialchars($videogallery_['v_title']); ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-edit"></i> Description</th>
+                            <td><?php echo htmlspecialchars($videogallery_['v_description']); ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-trash"></i> Actions</th>
+                            <td>
+                                <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $videogallery_['v_id']; ?>&media_action=edit&media_type=video" class="btn btn-primary btn-sm rounded-0" title="Edit">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                                <button onclick="delete_video(<?php echo $videogallery_['v_id']; ?>)" class="btn btn-danger btn-sm rounded-0" type="button" title="Delete">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2" style="height: 20px; background: #f8f9fa;"></td></tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php } ?>
+    </div>
+
+    <!-- Files Tab -->
+    <div class="tab-pane fade <?php echo ($media_type == 'file') ? 'show active' : ''; ?>" id="tab-page-files" role="tabpanel" aria-labelledby="files-tab">
+        <?php if ($media_type == 'file' && $edit_data): ?>
+        <div class="mb-3">
+            <h6>Current File:</h6>
+            <a href="<?php echo "../" . ABSOLUTE_FILEPATH . $edit_data['f_name']; ?>" target="_blank" class="btn btn-primary">
+                <i class="fa fa-download"></i> Download Current File
+            </a>
+            <div class="mt-2">
+                <span class="badge badge-info">Filename: <?php echo htmlspecialchars($edit_data['f_name']); ?></span>
+                <span class="badge badge-info ml-2">Type: <?php echo pathinfo($edit_data['f_name'], PATHINFO_EXTENSION); ?></span>
+            </div>
+        </div>
+        <?php endif; ?>
+        
+        <div class="custom-file mb-3">
+            <input type="file" class="custom-file-input" id="page_files" name="page_files[]" <?php echo ($media_type == 'file' && $edit_data) ? '' : 'multiple'; ?>>
+            <label class="custom-file-label" for="page_files">
+                <i class="fa fa-upload"></i> 
+                <?php if ($media_type == 'file' && $edit_data): ?>
+                Replace File (Current: <?php echo htmlspecialchars($edit_data['f_name']); ?>)
+                <?php else: ?>
+                Choose Files
+                <?php endif; ?>
+            </label>
+        </div>
+        
+        <!-- Add file metadata fields -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="file_title">File Title</label>
+                <input type="text" class="form-control" id="file_title" placeholder="Enter file title" value="<?php echo ($media_type == 'file' && $edit_data) ? htmlspecialchars($edit_data['f_title']) : ''; ?>">
+            </div>
+            <div class="col-md-6">
+                <label for="file_download_link">Download Link (optional)</label>
+                <input type="text" class="form-control" id="file_download_link" placeholder="Enter custom download link" value="<?php echo ($media_type == 'file' && $edit_data) ? htmlspecialchars($edit_data['f_download_link']) : ''; ?>">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label for="file_description">Description</label>
+                <textarea class="form-control" id="file_description" rows="3" placeholder="Enter description"><?php echo ($media_type == 'file' && $edit_data) ? htmlspecialchars($edit_data['f_description']) : ''; ?></textarea>
+            </div>
+        </div>
+        
+        <!-- Add Save/Update Files Buttons -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <?php if ($media_type == 'file' && $edit_data): ?>
+                <input type="hidden" id="edit_file_id" value="<?php echo $media_id; ?>">
+                <button id="updateFileBtn" class="btn btn-primary">
+                    <i class="fa fa-save"></i> Update File
+                </button>
+                <a href="?id=<?php echo $page[0]['pid']; ?>&media_type=<?php echo $media_type;?>" class="btn btn-secondary">Cancel</a>
+                <?php else: ?>
+                <button id="saveFilesBtn" class="btn btn-success">
+                    <i class="fa fa-save"></i> Save New Files
+                </button>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <?php
+        $filegallery = return_multiple_rows("SELECT * FROM page_files WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0");
+
+        if (!empty($filegallery)) {
+        ?>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <tbody>
+                        <?php foreach ($filegallery as $filegallery_) { ?>
+                        <tr id="dr_<?php echo $filegallery_['f_id']; ?>">
+                            <td colspan="2">
+                                <a href="<?php echo "../" . ABSOLUTE_FILEPATH . $filegallery_['f_name']; ?>" target="_blank" class="btn btn-primary">
+                                    <i class="fa fa-download"></i> Download File
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="w-25"><i class="fa fa-file"></i> Name</th>
+                            <td><?php echo $filegallery_['f_name']; ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-tag"></i> Title</th>
+                            <td><?php echo htmlspecialchars($filegallery_['f_title']); ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-link"></i> Download Link</th>
+                            <td><?php echo htmlspecialchars($filegallery_['f_download_link']); ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-edit"></i> Description</th>
+                            <td><?php echo htmlspecialchars($filegallery_['f_description']); ?></td>
+                        </tr>
+                        <tr>
+                            <th><i class="fa fa-trash"></i> Actions</th>
+                            <td>
+                                <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $filegallery_['f_id']; ?>&media_action=edit&media_type=file" class="btn btn-primary btn-sm rounded-0" title="Edit">
+                                    <i class="fa fa-edit"></i> Edit
+                                </a>
+                                <button onclick="delete_file(<?php echo $filegallery_['f_id']; ?>)" class="btn btn-danger btn-sm rounded-0" type="button" title="Delete">
+                                    <i class="fa fa-trash"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                        <tr><td colspan="2" style="height: 20px; background: #f8f9fa;"></td></tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php } ?>
+    </div>
+</div>
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const mediaType = urlParams.get('media_type');
+    const mediaAction = urlParams.get('media_action');
+    
+    if (mediaType || mediaAction) {
+        // 1. Activate outer Media tab (#menu4)
+        const menu4Tab = document.querySelector('a[href="#menu4"]');
+        if (menu4Tab) {
+            // Remove active from all main tabs
+            document.querySelectorAll('.nav-tabs .nav-link').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activate Media tab
+            menu4Tab.classList.add('active');
+            
+            // Hide all main tab panes
+            document.querySelectorAll('.tab-content > .tab-pane').forEach(pane => {
+                pane.classList.remove('active', 'show');
+            });
+            
+            // Show Media pane
+            document.getElementById('menu4').classList.add('active', 'show');
+        }
+        
+        // 2. Activate specific media tab
+        if (mediaType) {
+            const tabId = mediaType + '-tab'; // Now matches 'image-tab', 'video-tab', 'file-tab'
+            const mediaTab = document.getElementById(tabId);
+            
+            if (mediaTab) {
+                // Remove active from all media tabs
+                document.querySelectorAll('#mediaTabs .nav-link').forEach(tab => {
+                    tab.classList.remove('active');
+                    tab.setAttribute('aria-selected', 'false');
+                });
+                
+                // Activate our media tab
+                mediaTab.classList.add('active');
+                mediaTab.setAttribute('aria-selected', 'true');
+                
+                // Hide all media panes
+                document.querySelectorAll('#mediaTabsContent .tab-pane').forEach(pane => {
+                    pane.classList.remove('show', 'active');
+                });
+                
+                // Show our media pane
+                const target = mediaTab.getAttribute('href');
+                document.querySelector(target).classList.add('show', 'active');
+            }
+        }
+    }
+    
+    // Initialize Bootstrap tabs
+    $('#mediaTabs a').on('click', function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+});
+</script>
+
+<script type="text/javascript" src="js/modules/page/module_media_tab.js"></script>

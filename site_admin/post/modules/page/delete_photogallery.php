@@ -1,5 +1,5 @@
 <?php
-require_once('../../admin_connect.php');
+require_once('../../../admin_connect.php');
 
 
 $tbl = "images";

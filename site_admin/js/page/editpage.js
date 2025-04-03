@@ -1,3 +1,135 @@
+// Add this code where you initialize your CKEditor or in your editpage.js
+
+$(document).ready(function() {
+    // Elements
+    const editorToggle = $('#editorToggle');
+    const simpleEditor = $('#simpleEditor');
+    const ckeditorContainer = $('#ckeditorContainer');
+    const ckeditorTextarea = $('#editor1');
+    
+    // Check if content contains HTML tags (better than checking textarea existence)
+    const hasHTML = /<\/?[a-z][\s\S]*>/i.test(simpleEditor.val());
+    
+    // Set initial state based on content
+    const shouldUseCKEditor = hasHTML;
+    editorToggle.prop('checked', shouldUseCKEditor);
+    
+    // Initialize the appropriate editor
+    if (shouldUseCKEditor) {
+        initializeCKEditor();
+    } else {
+        simpleEditor.show();
+        ckeditorContainer.hide();
+    }
+    
+    // Toggle handler
+    editorToggle.on('change', function() {
+        if ($(this).is(':checked')) {
+            switchToCKEditor();
+        } else {
+            switchToSimpleEditor();
+        }
+    });
+    
+    // Initialize CKEditor with proper configuration
+    function initializeCKEditor() {
+        try {
+            // Ensure CKEDITOR is loaded
+            if (typeof CKEDITOR === 'undefined') {
+                console.error('CKEditor is not loaded');
+                editorToggle.prop('checked', false).trigger('change');
+                return;
+            }
+            
+            // Initialize only if not already initialized
+            if (!CKEDITOR.instances.editor1) {
+                CKEDITOR.replace('editor1', {
+                    height: 300,
+                    filebrowserUploadUrl: "post/general/uploads.php?type=file",
+                    filebrowserImageUploadUrl: "post/general/uploads.php?type=image",
+                    removeButtons: 'Source,Save,NewPage,Preview,Print,Templates',
+                    removePlugins: 'elementspath',
+                    resize_enabled: false,
+                    extraPlugins: 'autogrow',
+                    autoGrow_minHeight: 200,
+                    autoGrow_maxHeight: 600,
+                    autoGrow_bottomSpace: 50,
+                    toolbarGroups: [
+                        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'] },
+                        { name: 'links' },
+                        { name: 'insert' },
+                        { name: 'styles' },
+                        { name: 'colors' },
+                        { name: 'tools' }
+                    ]
+                });
+                
+                // Handle CKEditor ready event
+                CKEDITOR.instances.editor1.on('instanceReady', function() {
+                    this.setData(simpleEditor.val());
+                });
+            }
+        } catch (e) {
+            console.error('CKEditor initialization failed:', e);
+            fallbackToSimpleEditor();
+        }
+    }
+    
+    // Switch to CKEditor view
+    function switchToCKEditor() {
+        simpleEditor.hide();
+        ckeditorContainer.show();
+        
+        // Initialize CKEditor if needed
+        if (!CKEDITOR.instances.editor1) {
+            initializeCKEditor();
+        } else {
+            // Update content if already initialized
+            CKEDITOR.instances.editor1.setData(simpleEditor.val());
+        }
+    }
+    
+    // Switch to simple textarea view
+    function switchToSimpleEditor() {
+        // Save CKEditor content if it exists
+        if (CKEDITOR.instances.editor1) {
+            simpleEditor.val(CKEDITOR.instances.editor1.getData());
+            try {
+                CKEDITOR.instances.editor1.destroy();
+            } catch (e) {
+                console.error('Error destroying CKEditor instance:', e);
+            }
+        }
+        
+        ckeditorContainer.hide();
+        simpleEditor.show();
+    }
+    
+    // Fallback to simple editor if CKEditor fails
+    function fallbackToSimpleEditor() {
+        editorToggle.prop('checked', false);
+        simpleEditor.show();
+        ckeditorContainer.hide();
+        alert('Rich text editor failed to load. Using basic editor instead.');
+    }
+    
+    // Handle form submission to ensure we get the right content
+    $(document).on('submit', 'form', function() {
+        // Get content from active editor
+        const isCKEditorActive = editorToggle.is(':checked') && CKEDITOR.instances.editor1;
+        const content = isCKEditorActive ? CKEDITOR.instances.editor1.getData() : simpleEditor.val();
+        
+        // Update the appropriate textarea
+        if (isCKEditorActive) {
+            ckeditorTextarea.val(content);
+        } else {
+            simpleEditor.val(content);
+        }
+    });
+});
+
+
 $('input[name="meta_keywords"]').amsifySuggestags({
     type: 'amsify'
 });
@@ -19,31 +151,6 @@ $('#page_title').on('input', function() {
     }
 });
 
-function createFormDataWithFiles(inputId, fieldName) {
-    const formData = new FormData();
-    var fileInput = document.getElementById(inputId);
-
-    if (!fileInput) {
-        console.error(`File input with ID '${inputId}' not found.`);
-        return formData;
-    }
-
-    if (!fileInput.files) {
-        console.error(`File input with ID '${inputId}' does not support multiple files.`);
-        return formData;
-    }
-
-    var totalfiles = fileInput.files.length;
-    console.log(`Total Files for ${inputId}: ${totalfiles}`);
-
-    for (var index = 0; index < totalfiles; index++) {
-        formData.append(fieldName, fileInput.files[index]);
-        console.log(`Appended file: ${fileInput.files[index].name}`);
-    }
-
-    return formData;
-}
-
 validateform(function() {
     // Existing fields
     var page_title = $('#page_title').val();
@@ -51,7 +158,6 @@ validateform(function() {
     var ctname = $('#ctname').val();
     var template_page = $('#template_page').val();
     var site_template = $('#site_template').val();
-    var editor1 = CKEDITOR.instances['editor1'].getData();
     var meta_title = $('#meta_title').val();
     var meta_keywords = $('#meta_keywords').val();
     var meta_desc = $('#meta_desc').val();
@@ -62,35 +168,41 @@ validateform(function() {
     var showInNavbar = $('#showInNavbar option:selected').val();
     var category_list = $('#category_list').children("option:selected").val();
 
+    var editorContent = $('#editorToggle').is(':checked') ? 
+          (CKEDITOR.instances.editor1 ? CKEDITOR.instances.editor1.getData() : $('#editor1').val()) : 
+          $('#simpleEditor').val();
+    
     var selectedcategory_list = [];
     $("#category_list input:checked").each(function() {
         selectedcategory_list.push($(this).attr('datachck-id'));
     });
 
-    // Collect dynamic attributes
+    // Collect dynamic attributes with proper multiselect handling
     var attributes = {};
     $('[name^="attribute["]').each(function() {
         var name = $(this).attr('name');
         var attrId = name.match(/\[(\d+)\]/)[1];
-        var value = $(this).val();
+        var value;
         
         if ($(this).is(':checkbox')) {
             value = $(this).is(':checked') ? '1' : '0';
+        } 
+        else if ($(this).hasClass('select2-multiple')) {
+            // Handle multiselect values
+            value = $(this).val() ? $(this).val().join(',') : '';
+        }
+        else {
+            value = $(this).val();
         }
         
-        attributes[attrId] = value;
+        // Only add if value exists (or is 0 for checkboxes)
+        if (value !== '' || ($(this).is(':checkbox') && value === '0')) {
+            attributes[attrId] = value;
+        }
     });
 
     // Create FormData object
     const formData = new FormData();
-
-    const imagesFormData = createFormDataWithFiles('images', 'images[]');
-    const videosFormData = createFormDataWithFiles('videos', 'videos[]');
-    const filesFormData = createFormDataWithFiles('page_files', 'page_files[]');
-
-    for (let [key, value] of imagesFormData.entries()) formData.append(key, value);
-    for (let [key, value] of videosFormData.entries()) formData.append(key, value);
-    for (let [key, value] of filesFormData.entries()) formData.append(key, value);
 
     // Append existing fields
     formData.append("page_title", page_title);
@@ -102,17 +214,17 @@ validateform(function() {
     formData.append("is_active", is_active);
     formData.append("postVisibility", postVisibility);
     formData.append("showInNavbar", showInNavbar);
-    formData.append("editor1", editor1);
+    formData.append("editor1", editorContent);
     formData.append("p_image", p_image);
     formData.append("meta_title", meta_title);
     formData.append("meta_keywords", meta_keywords);
     formData.append("meta_desc", meta_desc);
-    formData.append("selectedcategory_list", selectedcategory_list);
+    formData.append("selectedcategory_list", selectedcategory_list.join(','));
     formData.append("attributes", JSON.stringify(attributes));
     formData.append("page_id", page_id);
     formData.append("submit", true);
 
-    console.log(formData);
+    console.log([...formData]); // For debugging
 
     // Send data to server
     senddata_file(
@@ -139,23 +251,6 @@ validateform(function() {
     // Validation failed
     $('#error_id').empty().fadeIn(50).delay(1500).html('<div class="alert alert-warning alert-dismissible fade show" role="alert"> <strong>Alert !</strong> Please fill out all required field <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div>').fadeOut(10);
 });
-
-function delete_image(id) {
-    senddata(
-        'post/page/delete_photogallery.php',
-        "POST", {
-            id: id,
-            delete: true
-        },
-        function(result) {
-            console.log(result);
-            $("#dr_" + id).remove();
-        },
-        function(result) {
-            console.log(result);
-        }
-    );
-}
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('previewLink').addEventListener('click', function(event) {

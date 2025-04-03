@@ -1,3 +1,53 @@
+<style type="text/css">
+/* Select2 Multiselect Styling */
+.select2-container--default .select2-selection--multiple {
+    min-height: 38px;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0 5px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+    color: #495057;
+    padding: 0 5px;
+    margin-top: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #6c757d;
+    margin-right: 5px;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__clear {
+    margin-right: 10px;
+}
+
+/* Match the input group styling */
+.input-group .select2-container--default .select2-selection--multiple {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left: 0;
+}
+
+/* Error state styling */
+.is-invalid ~ .select2-container--default .select2-selection--multiple {
+    border-color: #dc3545;
+}
+
+.is-valid ~ .select2-container--default .select2-selection--multiple {
+    border-color: #28a745;
+}
+</style>
 <?php
 // modules/add_product_module.php
 
@@ -152,6 +202,23 @@ if ($page_id > 0) {
                                                    value="<?php echo htmlspecialchars($current_value); ?>" 
                                                    <?php echo $required; ?>>
                                             <?php break; ?>
+
+                                          <?php  case 'multiselect': 
+                                            $current_values = !empty($current_value) ? explode(',', $current_value) : []; ?>
+                                            <select class="form-control select2-multiple" 
+                                                    id="attr_<?php echo $attribute_id; ?>" 
+                                                    name="attribute[<?php echo $attribute_id; ?>][]" 
+                                                    multiple="multiple" <?php echo $required; ?>>
+                                                <?php if (isset($options_by_attribute[$attribute_id])): ?>
+                                                    <?php foreach ($options_by_attribute[$attribute_id] as $option): ?>
+                                                        <option value="<?php echo htmlspecialchars($option['option_value']); ?>" 
+                                                            <?php echo in_array($option['option_value'], $current_values) ? 'selected' : ''; ?>>
+                                                            <?php echo htmlspecialchars($option['option_label']); ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                <?php endif; ?>
+                                            </select>
+                                            <?php break; ?>
                                     <?php endswitch; ?>
                                 </div>
                             </div>
@@ -164,3 +231,27 @@ if ($page_id > 0) {
         <?php endforeach; ?>
     </div>
 </div>
+<script>
+$(document).ready(function() {
+    // Initialize Select2 for multiselect elements if they exist
+    if ($('.select2-multiple').length > 0) {
+        $('.select2-multiple').select2({
+            placeholder: "Select options",
+            allowClear: true,
+            width: '100%', // Make it full width
+            closeOnSelect: false // Keep dropdown open for multiple selections
+        });
+        
+        // Fix for input-group styling
+        $('.input-group .select2-container').css({
+            'flex': '1 1 auto',
+            'width': '1%',
+            'margin-bottom': '0'
+        });
+    }
+});
+</script>
+
+<!-- Add these for Select2 multiselect -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
