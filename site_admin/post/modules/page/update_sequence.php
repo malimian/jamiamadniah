@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (Update($updateSql)) {
                 $response = ['success' => true, 'message' => 'Sequence updated successfully'];
             } else {
-                $response = ['success' => false, 'message' => 'Failed to update sequence'];
+                $response = ['success' => false, 'message' => 'Failed to update sequence of video'];
             }
             
         } else {

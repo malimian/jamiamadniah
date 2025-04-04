@@ -146,81 +146,95 @@ if ($media_id && $media_action == 'edit' && $media_type) {
             </div>
         </div>
 
-              <?php
-        $photogallery = return_multiple_rows("SELECT * FROM images WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0 ORDER by i_sequence ASC");
+      <?php
+$photogallery = return_multiple_rows("SELECT * FROM images WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0 ORDER by i_sequence ASC");
 
-        if (!empty($photogallery)) {
-            foreach ($photogallery as $photogallery_) {
-        ?>
-        <div class="card mb-3" id="dr_<?php echo $photogallery_['i_id']; ?>">
-            <div class="card-body p-0">
-                <div class="row no-gutters">
-                    <!-- Image column (30% width) -->
-                    <div class="col-md-4 p-2">
-                        <div style="height: 134px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
-                            <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $photogallery_['i_name']; ?>" 
-                                 class="img-fluid img-thumbnail" 
-                                 style="max-height: 100%; max-width: 100%; object-fit: contain;"
-                                 alt="<?php echo htmlspecialchars($photogallery_['i_alttext']); ?>">
-                        </div>
-                    </div>
-                    
-                    <!-- Content column (70% width) -->
-                    <div class="col-md-8 p-3">
-                        <div class="d-flex align-items-center mb-2">
-                            <div class="mr-2 font-weight-bold"><i class="fa fa-sort"></i> Sequence:</div>
-                            <button onclick="moveUp('image', <?php echo $photogallery_['i_id']; ?>, <?php echo $page[0]['pid']; ?>, <?php echo $photogallery_['i_sequence']; ?>)" 
-                                    class="btn btn-sm btn-outline-primary mr-1">
-                                <i class="fa fa-arrow-up"></i> Up
-                            </button>
-                            <button onclick="moveDown('image', <?php echo $photogallery_['i_id']; ?>, <?php echo $page[0]['pid']; ?>, <?php echo $photogallery_['i_sequence']; ?>)" 
-                                    class="btn btn-sm btn-outline-primary mr-2">
-                                <i class="fa fa-arrow-down"></i> Down
-                            </button>
-                            <span class="badge badge-secondary"><?php echo $photogallery_['i_sequence']; ?></span>
-                        </div>
-                        
-                        <div class="row mb-1">
-                            <div class="col-3 font-weight-bold"><i class="fa fa-file"></i> Name:</div>
-                            <div class="col-9"><?php echo $photogallery_['i_name']; ?></div>
-                        </div>
-                        
-                        <div class="row mb-1">
-                            <div class="col-3 font-weight-bold"><i class="fa fa-tag"></i> Title:</div>
-                            <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_title']); ?></div>
-                        </div>
-                        
-                        <div class="row mb-1">
-                            <div class="col-3 font-weight-bold"><i class="fa fa-comment"></i> Caption:</div>
-                            <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_caption']); ?></div>
-                        </div>
-                        
-                        <div class="row mb-2">
-                            <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
-                            <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_description']); ?></div>
-                        </div>
-                        
-                        <div class="d-flex align-items-center">
-                            <div class="mr-2 font-weight-bold"><i class="fa fa-trash"></i> Actions:</div>
-                            <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $photogallery_['i_id']; ?>&media_action=edit&media_type=image" 
-                               class="btn btn-primary btn-sm rounded-0 mr-1" title="Edit">
-                                <i class="fa fa-edit"></i> Edit
-                            </a>
-                            <button onclick="delete_image(<?php echo $photogallery_['i_id']; ?>)" 
-                                    class="btn btn-danger btn-sm rounded-0" 
-                                    type="button" title="Delete">
-                                <i class="fa fa-trash"></i> Delete
-                            </button>
-                        </div>
-                    </div>
+if (!empty($photogallery)) {
+    foreach ($photogallery as $photogallery_) {
+?>
+<div class="card mb-3" id="dr_<?php echo $photogallery_['i_id']; ?>">
+    <div class="card-body p-0">
+        <div class="row no-gutters">
+            <!-- Image column (25% width) -->
+            <div class="col-md-3 p-2">
+                <div style="height: 134px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+                    <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $photogallery_['i_name']; ?>" 
+                         class="img-fluid img-thumbnail" 
+                         style="max-height: 100%; max-width: 100%; object-fit: contain;"
+                         alt="<?php echo htmlspecialchars($photogallery_['i_alttext']); ?>">
                 </div>
             </div>
-            <div class="card-footer py-1" style="background: #f8f9fa;"></div>
+            
+            <!-- Content column (50% width) -->
+            <div class="col-md-6 p-3">
+                <div class="row mb-1">
+                    <div class="col-3 font-weight-bold"><i class="fa fa-file"></i> Name:</div>
+                    <div class="col-9"><?php echo $photogallery_['i_name']; ?></div>
+                </div>
+                
+                <div class="row mb-1">
+                    <div class="col-3 font-weight-bold"><i class="fa fa-tag"></i> Title:</div>
+                    <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_title']); ?></div>
+                </div>
+                
+                <div class="row mb-1">
+                    <div class="col-3 font-weight-bold"><i class="fa fa-comment"></i> Caption:</div>
+                    <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_caption']); ?></div>
+                </div>
+                
+                <div class="row mb-1">
+                    <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
+                    <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_description']); ?></div>
+                </div>
+            </div>
+            
+            <!-- Actions column (25% width) -->
+            <div class="col-md-3 p-3 border-left">
+                <!-- Sequence controls -->
+                <div class="d-flex align-items-center mb-3">
+                    <div class="mr-2 font-weight-bold"><i class="fa fa-sort"></i> Sequence:</div>
+                    <span class="badge badge-secondary mr-2"><?php echo $photogallery_['i_sequence']; ?></span>
+                </div>
+                <div class="d-flex mb-3">
+                    <button class="btn btn-sm btn-outline-primary mr-1 move-btn flex-grow-1" 
+                            data-type="image" 
+                            data-id="<?php echo $photogallery_['i_id']; ?>" 
+                            data-pid="<?php echo $page[0]['pid']; ?>" 
+                            data-sequence="<?php echo $photogallery_['i_sequence']; ?>"
+                            data-direction="up">
+                        <i class="fa fa-arrow-up"></i> Up
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary move-btn flex-grow-1" 
+                            data-type="image" 
+                            data-id="<?php echo $photogallery_['i_id']; ?>" 
+                            data-pid="<?php echo $page[0]['pid']; ?>" 
+                            data-sequence="<?php echo $photogallery_['i_sequence']; ?>"
+                            data-direction="down">
+                        <i class="fa fa-arrow-down"></i> Down
+                    </button>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="d-flex flex-column">
+                    <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $photogallery_['i_id']; ?>&media_action=edit&media_type=image" 
+                       class="btn btn-primary btn-sm rounded-0 mb-2" title="Edit">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                    <button onclick="delete_image(<?php echo $photogallery_['i_id']; ?>)" 
+                            class="btn btn-danger btn-sm rounded-0" 
+                            type="button" title="Delete">
+                        <i class="fa fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
         </div>
-        <?php
-            }
-        }
-        ?>
+    </div>
+    <div class="card-footer py-1" style="background: #f8f9fa;"></div>
+</div>
+<?php
+    }
+}
+?>
     </div>
 
     <!-- Videos Tab -->
@@ -295,58 +309,123 @@ if ($media_id && $media_action == 'edit' && $media_type) {
         </div>
 
         <?php
-        $videogallery = return_multiple_rows("SELECT * FROM videos WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0");
+$videogallery = return_multiple_rows("SELECT * FROM videos WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0 ORDER by v_sequence ASC");
 
-        if (!empty($videogallery)) {
-        ?>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <tbody>
-                        <?php foreach ($videogallery as $videogallery_) { ?>
-                        <tr id="dr_<?php echo $videogallery_['v_id']; ?>">
-                            <td colspan="2">
-                                <div class="media-container">
-                                    <video width="100%" height="350px" controls>
-                                        <source src="<?php echo "../" . ABSOLUTE_VIDEOPATH . $videogallery_['v_name']; ?>" type="video/mp4">
-                                        Your browser does not support the video tag.
-                                    </video>
-                                    <?php if (!empty($videogallery_['v_thumbnail'])): ?>
-                                    <div class="video-thumbnail">
-                                        <img height="350px" src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $videogallery_['v_thumbnail']; ?>" class="img-thumbnail">
-                                    </div>
-                                    <?php endif; ?>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="w-25"><i class="fa fa-file"></i> Name</th>
-                            <td><?php echo $videogallery_['v_name']; ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-tag"></i> Title</th>
-                            <td><?php echo htmlspecialchars($videogallery_['v_title']); ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-edit"></i> Description</th>
-                            <td><?php echo htmlspecialchars($videogallery_['v_description']); ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-trash"></i> Actions</th>
-                            <td>
-                                <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $videogallery_['v_id']; ?>&media_action=edit&media_type=video" class="btn btn-primary btn-sm rounded-0" title="Edit">
-                                    <i class="fa fa-edit"></i> Edit
-                                </a>
-                                <button onclick="delete_video(<?php echo $videogallery_['v_id']; ?>)" class="btn btn-danger btn-sm rounded-0" type="button" title="Delete">
-                                    <i class="fa fa-trash"></i> Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr><td colspan="2" style="height: 20px; background: #f8f9fa;"></td></tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+if (!empty($videogallery)) {
+    foreach ($videogallery as $videogallery_) {
+?>
+<div class="card mb-3" id="dr_<?php echo $videogallery_['v_id']; ?>">
+    <div class="card-body p-0">
+        <div class="row no-gutters">
+            <!-- Video/Thumbnail column (25% width) -->
+            <div class="col-md-3 p-2">
+                <div style="height: 200px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+                    <?php if (!empty($videogallery_['v_thumbnail'])): ?>
+                        <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $videogallery_['v_thumbnail']; ?>" 
+                             class="img-fluid img-thumbnail" 
+                             style="max-height: 100%; max-width: 100%; object-fit: contain;"
+                             alt="Video thumbnail">
+                    <?php else: ?>
+                        <div class="text-center p-3">
+                            <i class="fa fa-video-camera fa-3x text-muted"></i>
+                            <p class="mt-2">No thumbnail</p>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div class="text-center mt-2">
+                    <a href="#" class="btn btn-sm btn-outline-secondary" data-toggle="modal" data-target="#videoModal<?php echo $videogallery_['v_id']; ?>">
+                        <i class="fa fa-play"></i> Play Video
+                    </a>
+                </div>
             </div>
-        <?php } ?>
+            
+            <!-- Content column (50% width) -->
+            <div class="col-md-6 p-3">
+                <div class="row mb-1">
+                    <div class="col-3 font-weight-bold"><i class="fa fa-file"></i> Name:</div>
+                    <div class="col-9"><?php echo $videogallery_['v_name']; ?></div>
+                </div>
+                
+                <div class="row mb-1">
+                    <div class="col-3 font-weight-bold"><i class="fa fa-tag"></i> Title:</div>
+                    <div class="col-9"><?php echo htmlspecialchars($videogallery_['v_title']); ?></div>
+                </div>
+                
+                <div class="row mb-1">
+                    <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
+                    <div class="col-9"><?php echo htmlspecialchars($videogallery_['v_description']); ?></div>
+                </div>
+            </div>
+            
+            <!-- Actions column (25% width) -->
+            <div class="col-md-3 p-3 border-left">
+                <!-- Sequence controls -->
+                <div class="d-flex align-items-center mb-3">
+                    <div class="mr-2 font-weight-bold"><i class="fa fa-sort"></i> Sequence:</div>
+                    <span class="badge badge-secondary mr-2"><?php echo $videogallery_['v_sequence']; ?></span>
+                </div>
+                <div class="d-flex mb-3">
+                    <button class="btn btn-sm btn-outline-primary mr-1 move-btn flex-grow-1" 
+                            data-type="video" 
+                            data-id="<?php echo $videogallery_['v_id']; ?>" 
+                            data-pid="<?php echo $page[0]['pid']; ?>" 
+                            data-sequence="<?php echo $videogallery_['v_sequence']; ?>"
+                            data-direction="up">
+                        <i class="fa fa-arrow-up"></i> Up
+                    </button>
+                    <button class="btn btn-sm btn-outline-primary move-btn flex-grow-1" 
+                            data-type="video" 
+                            data-id="<?php echo $videogallery_['v_id']; ?>" 
+                            data-pid="<?php echo $page[0]['pid']; ?>" 
+                            data-sequence="<?php echo $videogallery_['v_sequence']; ?>"
+                            data-direction="down">
+                        <i class="fa fa-arrow-down"></i> Down
+                    </button>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="d-flex flex-column">
+                    <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $videogallery_['v_id']; ?>&media_action=edit&media_type=video" 
+                       class="btn btn-primary btn-sm rounded-0 mb-2" title="Edit">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>
+                    <button onclick="delete_video(<?php echo $videogallery_['v_id']; ?>)" 
+                            class="btn btn-danger btn-sm rounded-0" 
+                            type="button" title="Delete">
+                        <i class="fa fa-trash"></i> Delete
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer py-1" style="background: #f8f9fa;"></div>
+</div>
+
+<!-- Video Modal -->
+<div class="modal fade" id="videoModal<?php echo $videogallery_['v_id']; ?>" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><?php echo htmlspecialchars($videogallery_['v_title']); ?></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <video width="100%" controls>
+                    <source src="<?php echo "../" . ABSOLUTE_VIDEOPATH . $videogallery_['v_name']; ?>" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+    }
+}
+?>
+
+
     </div>
 
     <!-- Files Tab -->
@@ -411,55 +490,102 @@ if ($media_id && $media_action == 'edit' && $media_type) {
             </div>
         </div>
 
-        <?php
-        $filegallery = return_multiple_rows("SELECT * FROM page_files WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0");
+              <?php
+        $filegallery = return_multiple_rows("SELECT * FROM page_files WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0 ORDER by f_sequence ASC");
 
         if (!empty($filegallery)) {
+            foreach ($filegallery as $filegallery_) {
         ?>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <tbody>
-                        <?php foreach ($filegallery as $filegallery_) { ?>
-                        <tr id="dr_<?php echo $filegallery_['f_id']; ?>">
-                            <td colspan="2">
-                                <a href="<?php echo "../" . ABSOLUTE_FILEPATH . $filegallery_['f_name']; ?>" target="_blank" class="btn btn-primary">
-                                    <i class="fa fa-download"></i> Download File
-                                </a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="w-25"><i class="fa fa-file"></i> Name</th>
-                            <td><?php echo $filegallery_['f_name']; ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-tag"></i> Title</th>
-                            <td><?php echo htmlspecialchars($filegallery_['f_title']); ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-link"></i> Download Link</th>
-                            <td><?php echo htmlspecialchars($filegallery_['f_download_link']); ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-edit"></i> Description</th>
-                            <td><?php echo htmlspecialchars($filegallery_['f_description']); ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-trash"></i> Actions</th>
-                            <td>
-                                <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $filegallery_['f_id']; ?>&media_action=edit&media_type=file" class="btn btn-primary btn-sm rounded-0" title="Edit">
-                                    <i class="fa fa-edit"></i> Edit
-                                </a>
-                                <button onclick="delete_file(<?php echo $filegallery_['f_id']; ?>)" class="btn btn-danger btn-sm rounded-0" type="button" title="Delete">
-                                    <i class="fa fa-trash"></i> Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr><td colspan="2" style="height: 20px; background: #f8f9fa;"></td></tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+        <div class="card mb-3" id="dr_<?php echo $filegallery_['f_id']; ?>">
+            <div class="card-body p-0">
+                <div class="row no-gutters">
+                    <!-- File icon column (25% width) -->
+                    <div class="col-md-3 p-3">
+                        <div style="height: 134px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+                            <div class="text-center">
+                                <i class="fa fa-file-o fa-4x text-muted"></i>
+                                <div class="mt-2">
+                                    <a href="<?php echo "../" . ABSOLUTE_FILEPATH . $filegallery_['f_name']; ?>" 
+                                       target="_blank" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-download"></i> Download
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Content column (50% width) -->
+                    <div class="col-md-6 p-3">
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-file"></i> Name:</div>
+                            <div class="col-9"><?php echo $filegallery_['f_name']; ?></div>
+                        </div>
+                        
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-tag"></i> Title:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($filegallery_['f_title']); ?></div>
+                        </div>
+                        
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-link"></i> Download Link:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($filegallery_['f_download_link']); ?></div>
+                        </div>
+                        
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($filegallery_['f_description']); ?></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions column (25% width) -->
+                    <div class="col-md-3 p-3 border-left">
+                        <!-- Sequence controls -->
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="mr-2 font-weight-bold"><i class="fa fa-sort"></i> Sequence:</div>
+                            <span class="badge badge-secondary mr-2"><?php echo $filegallery_['f_sequence']; ?></span>
+                        </div>
+                        <div class="d-flex mb-3">
+                            <button class="btn btn-sm btn-outline-primary mr-1 move-btn flex-grow-1" 
+                                    data-type="file" 
+                                    data-id="<?php echo $filegallery_['f_id']; ?>" 
+                                    data-pid="<?php echo $page[0]['pid']; ?>" 
+                                    data-sequence="<?php echo $filegallery_['f_sequence']; ?>"
+                                    data-direction="up">
+                                <i class="fa fa-arrow-up"></i> Up
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary move-btn flex-grow-1" 
+                                    data-type="file" 
+                                    data-id="<?php echo $filegallery_['f_id']; ?>" 
+                                    data-pid="<?php echo $page[0]['pid']; ?>" 
+                                    data-sequence="<?php echo $filegallery_['f_sequence']; ?>"
+                                    data-direction="down">
+                                <i class="fa fa-arrow-down"></i> Down
+                            </button>
+                        </div>
+                        
+                        <!-- Action buttons -->
+                        <div class="d-flex flex-column">
+                            <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $filegallery_['f_id']; ?>&media_action=edit&media_type=file" 
+                               class="btn btn-primary btn-sm rounded-0 mb-2" title="Edit">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                            <button onclick="delete_file(<?php echo $filegallery_['f_id']; ?>)" 
+                                    class="btn btn-danger btn-sm rounded-0" 
+                                    type="button" title="Delete">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        <?php } ?>
+            <div class="card-footer py-1" style="background: #f8f9fa;"></div>
+        </div>
+        <?php
+            }
+        }
+        ?>
+        
     </div>
 </div>
 

@@ -111,7 +111,7 @@ $(document).ready(function() {
         editorToggle.prop('checked', false);
         simpleEditor.show();
         ckeditorContainer.hide();
-        alert('Rich text editor failed to load. Using basic editor instead.');
+        showAlert('Rich text editor failed to load. Using basic editor instead.' , 'danger');
     }
     
     // Handle form submission to ensure we get the right content

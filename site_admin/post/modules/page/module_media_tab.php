@@ -16,6 +16,10 @@ if(isset($_POST['submit_media'])) {
                     $alttexts = clean($_POST['i_alttext']);
                     $descriptions = clean($_POST['i_description']);
 
+                    // Get last sequence number for images
+                    $get_last_sequence = (int)return_single_ans("SELECT MAX(i_sequence) FROM images WHERE pid = '$page_id'");
+                    $next_sequence = $get_last_sequence + 1;
+
                     for ($i = 0; $i < $countfiles; $i++) {
                         if ($_FILES['images']['error'][$i] == UPLOAD_ERR_OK) {
                             $filename = $_FILES['images']['name'][$i];
@@ -26,11 +30,12 @@ if(isset($_POST['submit_media'])) {
 
                             if (move_uploaded_file($_FILES['images']['tmp_name'][$i], '../../../../' . ABSOLUTE_IMAGEPATH . $newfilename)) {
                                 $sql = "INSERT INTO `images` 
-                                        (`pid`, `i_name`, `i_title`, `i_caption`, `i_alttext`, `i_description`, `isactive`, `soft_delete`) 
+                                        (`pid`, `i_name`, `i_title`, `i_caption`, `i_alttext`, `i_description`, `i_sequence`, `isactive`, `soft_delete`) 
                                         VALUES 
-                                        ('$page_id', '$newfilename', '$titles', '$captions', '$alttexts', '$descriptions', '1', '0')";
+                                        ('$page_id', '$newfilename', '$titles', '$captions', '$alttexts', '$descriptions', '$next_sequence', '1', '0')";
                                 
                                 $id = Insert($sql);
+                                $next_sequence++; // Increment sequence for next image
                             }
                         }
                     }
@@ -47,6 +52,10 @@ if(isset($_POST['submit_media'])) {
                     $titles = clean($_POST['v_title']);
                     $descriptions = clean($_POST['v_description']);
                     $thumbnail = 'NULL';
+
+                    // Get last sequence number for videos
+                    $get_last_sequence = (int)return_single_ans("SELECT MAX(v_sequence) FROM videos WHERE pid = '$page_id'");
+                    $next_sequence = $get_last_sequence + 1;
 
                     // Handle thumbnail if uploaded
                     if (isset($_FILES['v_thumbnail']) && $_FILES['v_thumbnail']['error'] != UPLOAD_ERR_NO_FILE) {
@@ -71,11 +80,12 @@ if(isset($_POST['submit_media'])) {
 
                             if (move_uploaded_file($_FILES['videos']['tmp_name'][$i], '../../../../' . ABSOLUTE_VIDEOPATH . $newfilename)) {
                                 $sql = "INSERT INTO `videos` 
-                                        (`pid`, `v_name`, `v_title`, `v_thumbnail`, `v_description`, `isactive`, `soft_delete`) 
+                                        (`pid`, `v_name`, `v_title`, `v_thumbnail`, `v_description`, `v_sequence`, `isactive`, `soft_delete`) 
                                         VALUES 
-                                        ('$page_id', '$newfilename', '$titles', $thumbnail, '$descriptions', '1', '0')";
+                                        ('$page_id', '$newfilename', '$titles', $thumbnail, '$descriptions', '$next_sequence', '1', '0')";
                                 
                                 $id = Insert($sql);
+                                $next_sequence++; // Increment sequence for next video
                             }
                         }
                     }
@@ -93,6 +103,10 @@ if(isset($_POST['submit_media'])) {
                     $download_links = clean($_POST['f_download_link']);
                     $descriptions = clean($_POST['f_description']);
 
+                    // Get last sequence number for files
+                    $get_last_sequence = (int)return_single_ans("SELECT MAX(f_sequence) FROM page_files WHERE pid = '$page_id'");
+                    $next_sequence = $get_last_sequence + 1;
+
                     for ($i = 0; $i < $countfiles; $i++) {
                         if ($_FILES['page_files']['error'][$i] == UPLOAD_ERR_OK) {
                             $filename = $_FILES['page_files']['name'][$i];
@@ -103,11 +117,12 @@ if(isset($_POST['submit_media'])) {
 
                             if (move_uploaded_file($_FILES['page_files']['tmp_name'][$i], '../../../../' . ABSOLUTE_FILEPATH . $newfilename)) {
                                 $sql = "INSERT INTO `page_files` 
-                                        (`pid`, `f_name`, `f_title`, `f_download_link`, `f_description`, `isactive`, `soft_delete`) 
+                                        (`pid`, `f_name`, `f_title`, `f_download_link`, `f_description`, `f_sequence`, `isactive`, `soft_delete`) 
                                         VALUES 
-                                        ('$page_id', '$newfilename', '$titles', '$download_links', '$descriptions', '1', '0')";
+                                        ('$page_id', '$newfilename', '$titles', '$download_links', '$descriptions', '$next_sequence', '1', '0')";
                                 
                                 $id = Insert($sql);
+                                $next_sequence++; // Increment sequence for next file
                             }
                         }
                     }

@@ -349,20 +349,6 @@ function refreshMediaTable(mediaType) {
         location.reload();
 }
 
-// Helper Functions
-function showAlert(message, type) {
-    const alertHtml = `
-        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
-            <strong>${type.charAt(0).toUpperCase() + type.slice(1)}!</strong> ${message}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-    `;
-    
-    $("#alert-container").html(alertHtml).fadeIn(300).delay(3000).fadeOut(500);
-}
-
 // Event Listeners
 $(document).ready(function() {
     // Save New Media handlers
@@ -409,36 +395,57 @@ $(document).ready(function() {
 
 
 
-function moveUp(type, id, pid, currentSequence) {
-    updateSequence(type, id, pid , currentSequence, 'up');
-}
+  // Handle all move buttons with a single event listener
+$(document).on('click', '.move-btn', function(e) {
+    e.preventDefault();
+    
+    const $btn = $(this);
+    const type = $btn.data('type');
+    const id = $btn.data('id');
+    const pid = $btn.data('pid');
+    const currentSequence = $btn.data('sequence');
+    const direction = $btn.data('direction');
+    
+    updateSequence(type, id, pid, currentSequence, direction);
+});
 
-function moveDown(type, id, pid, currentSequence) {
-    updateSequence(type, id,pid, currentSequence, 'down');
-}
+function updateSequence(mediaType, id, page_id, currentSequence, direction) {
+    // Validate inputs
+    if (!mediaType || !id || !page_id || currentSequence === undefined || !direction) {
+        showAlert('Invalid parameters for sequence update', 'danger');
+        return;
+    }
 
-function updateSequence(mediaType, id,page_id, currentSequence, direction) {
-   
     senddata(
         'post/modules/page/update_sequence.php',
-        "POST", {
+        "POST", 
+        {
             media_type: mediaType,
             id: id,
             direction: direction,
-            pid:page_id,
+            pid: page_id,
             current_sequence: currentSequence
         },
         function(result) {
-            if (result.success) {
-                showAlert('Sequence updated successfully', 'success');
-                refreshMediaTable(mediaType);
-            } else {
-                showAlert(result.message || 'Failed to update sequence', 'danger');
+            try {
+                // Parse the result if it's a string
+                const parsedResult = typeof result === 'string' ? JSON.parse(result) : result;
+                
+                if (parsedResult.success) {
+                    showAlert('Sequence updated successfully', 'success');
+                    // Refresh the page with the current parameters
+                    window.location = "?id=" + page_id + "&media_type=" + mediaType;
+                } else {
+                    showAlert(parsedResult.message || 'Failed to update sequence', 'danger');
+                }
+            } catch (e) {
+                console.error('Error parsing response:', e);
+                showAlert('Invalid response from server', 'danger');
             }
         },
         function(error) {
-            showAlert('Error updating sequence: ' + error, 'danger');
+            console.error('Update sequence error:', error);
+            showAlert('Error updating sequence: ' + (error.message || error), 'danger');
         }
     );
-    
 }
