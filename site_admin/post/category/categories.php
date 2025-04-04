@@ -10,19 +10,6 @@ $tbl_seq = "cat_sequence";
 header('Content-Type: application/json');
 
 
-
-if(isset($_POST['change_status'])){
-
-$id= $_POST['id'];
-
-$sql ="UPDATE $tbl SET isactive = 1 - isactive  
-Where  $tbl_id = $id";
-
-echo Update($sql);
-
-}
-
-
 if(isset($_POST['change_status'])){
 
 $id= $_POST['id'];
