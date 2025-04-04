@@ -223,6 +223,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                 <thead class="thead-dark">
                                     <tr>
                                         <th width="40px">ID</th>
+                                         <th width="150px">Author</th>
                                         <th width="120px">Image</th>
                                         <th>Title</th>
                                         <th width="120px">Category</th>
@@ -240,10 +241,18 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                         foreach($Pages as $page) {                        
                                             $author = isset($user_lookup[$page['pages_createdby']]) ? $user_lookup[$page['pages_createdby']] : null;
                                             $author_name = $author ? $author['username'] : 'System';
+
+                                            $author_image = $author && !empty($author['profile_pic']) ? 
+                                                BASE_URL.ABSOLUTE_IMAGEPATH.$author['profile_pic'] : 
+                                                'https://ui-avatars.com/api/?name='.urlencode($author_name).'&size=40';  
                                             
                                             // Get publisher info (activatedby)
                                             $publisher = isset($user_lookup[$page['activatedby']]) ? $user_lookup[$page['activatedby']] : null;
                                             $publisher_name = $publisher ? $publisher['username'] : 'System';
+
+                                             $publisher_image = $publisher && !empty($publisher['profile_pic']) ? 
+                                                BASE_URL.ABSOLUTE_IMAGEPATH.$publisher['profile_pic'] : 
+                                                'https://ui-avatars.com/api/?name='.urlencode($publisher_name).'&size=40';
 
                                             $same_user = ($page['pages_createdby'] == $page['activatedby']) && $page['pages_isactive'];
 
@@ -273,6 +282,39 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                             ?>
                                             <tr id="tr_<?=$page['pid']?>" class="<?=$featured_class?>">
                                                 <td><?=$page['pid']?></td>
+                                                     <td>
+                                          <div class="d-flex flex-column">
+                                              <?php if($same_user): ?>
+                                                  <!-- Combined display when same user -->
+                                                  <div class="d-flex align-items-center">
+                                                      <img src="<?=$author_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$author_image?>">
+                                                      <div>
+                                                          <small class="text-muted d-block">Author & Published by</small>
+                                                          <span><?=$author_name?></span>
+                                                      </div>
+                                                  </div>
+                                              <?php else: ?>
+                                                  <!-- Creator -->
+                                                  <div class="d-flex align-items-center mb-2">
+                                                      <img src="<?=$author_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$author_name?>">
+                                                      <div>
+                                                          <small class="text-muted d-block">Author</small>
+                                                          <span><?=$author_name?></span>
+                                                      </div>
+                                                  </div>
+                                                  <!-- Publisher -->
+                                                  <?php if($page['pages_isactive'] && $page['activatedby']): ?>
+                                                  <div class="d-flex align-items-center">
+                                                      <img src="<?=$publisher_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$publisher_name?>">
+                                                      <div>
+                                                          <small class="text-muted d-block">Published by</small>
+                                                          <span><?=$publisher_name?></span>
+                                                      </div>
+                                                  </div>
+                                                  <?php endif; ?>
+                                              <?php endif; ?>
+                                          </div>
+                                      </td>
                                                 <td>
                                                     <img src="<?=$featured_image?>" class="img-thumbnail" style="max-width: 100px; height: auto;" alt="Featured Image">
                                                 </td>

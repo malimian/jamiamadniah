@@ -70,6 +70,7 @@ function delete_file(id) {
 
 // Save New Media Functions
 function saveImages() {
+
     const formData = new FormData();
     formData.append("page_id", page_id);
     formData.append("submit_media", true);
@@ -345,11 +346,7 @@ function clearForm(mediaType) {
 }
 
 function refreshMediaTable(mediaType) {
-    // This could be improved to only refresh the specific table via AJAX
-    // For now, we'll do a full page reload
-    setTimeout(() => {
-        window.location.reload();
-    }, 1500);
+        location.reload();
 }
 
 // Helper Functions
@@ -409,3 +406,39 @@ $(document).ready(function() {
         $(this).next('.custom-file-label').addClass("selected").html(fileName);
     });
 });
+
+
+
+function moveUp(type, id, pid, currentSequence) {
+    updateSequence(type, id, pid , currentSequence, 'up');
+}
+
+function moveDown(type, id, pid, currentSequence) {
+    updateSequence(type, id,pid, currentSequence, 'down');
+}
+
+function updateSequence(mediaType, id,page_id, currentSequence, direction) {
+   
+    senddata(
+        'post/modules/page/update_sequence.php',
+        "POST", {
+            media_type: mediaType,
+            id: id,
+            direction: direction,
+            pid:page_id,
+            current_sequence: currentSequence
+        },
+        function(result) {
+            if (result.success) {
+                showAlert('Sequence updated successfully', 'success');
+                refreshMediaTable(mediaType);
+            } else {
+                showAlert(result.message || 'Failed to update sequence', 'danger');
+            }
+        },
+        function(error) {
+            showAlert('Error updating sequence: ' + error, 'danger');
+        }
+    );
+    
+}

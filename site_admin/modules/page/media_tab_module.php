@@ -1,3 +1,25 @@
+<style type="text/css">
+.media-container {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.video-thumbnail {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 120px;
+    background: white;
+    padding: 5px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+.video-thumbnail img {
+    max-width: 100%;
+    height: auto;
+}
+</style>
 <?php 
 // Initialize variables
 $media_id = isset($_GET['media_id']) ? $_GET['media_id'] : null;
@@ -72,7 +94,7 @@ if ($media_id && $media_action == 'edit' && $media_type) {
         <?php endif; ?>
 
         <div class="custom-file mb-3">
-            <input type="file" class="custom-file-input" id="images" name="images[]" <?php echo ($media_type == 'image' && $edit_data) ? '' : 'multiple'; ?>>
+            <input type="file" accept="image/*" class="custom-file-input" id="images" name="images[]" <?php echo ($media_type == 'image' && $edit_data) ? '' : 'multiple'; ?>>
             <label class="custom-file-label" for="images">
                 <i class="fa fa-upload"></i> 
                 <?php if ($media_type == 'image' && $edit_data): ?>
@@ -124,53 +146,81 @@ if ($media_id && $media_action == 'edit' && $media_type) {
             </div>
         </div>
 
-        <?php
-        $photogallery = return_multiple_rows("SELECT * FROM images WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0");
+              <?php
+        $photogallery = return_multiple_rows("SELECT * FROM images WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0 ORDER by i_sequence ASC");
 
         if (!empty($photogallery)) {
+            foreach ($photogallery as $photogallery_) {
         ?>
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover">
-                    <tbody>
-                        <?php foreach ($photogallery as $photogallery_) { ?>
-                        <tr id="dr_<?php echo $photogallery_['i_id']; ?>">
-                            <td colspan="2" class="w-25">
-                                <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $photogallery_['i_name']; ?>" class="img-fluid img-thumbnail" alt="<?php echo htmlspecialchars($photogallery_['i_alttext']); ?>">
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="w-25"><i class="fa fa-file"></i> Name</th>
-                            <td><?php echo $photogallery_['i_name']; ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-tag"></i> Title</th>
-                            <td><?php echo htmlspecialchars($photogallery_['i_title']); ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-comment"></i> Caption</th>
-                            <td><?php echo htmlspecialchars($photogallery_['i_caption']); ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-edit"></i> Description</th>
-                            <td><?php echo htmlspecialchars($photogallery_['i_description']); ?></td>
-                        </tr>
-                        <tr>
-                            <th><i class="fa fa-trash"></i> Actions</th>
-                            <td>
-                                <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $photogallery_['i_id']; ?>&media_action=edit&media_type=image" class="btn btn-primary btn-sm rounded-0" title="Edit">
-                                    <i class="fa fa-edit"></i> Edit
-                                </a>
-                                <button onclick="delete_image(<?php echo $photogallery_['i_id']; ?>)" class="btn btn-danger btn-sm rounded-0" type="button" title="Delete">
-                                    <i class="fa fa-trash"></i> Delete
-                                </button>
-                            </td>
-                        </tr>
-                        <tr><td colspan="2" style="height: 20px; background: #f8f9fa;"></td></tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+        <div class="card mb-3" id="dr_<?php echo $photogallery_['i_id']; ?>">
+            <div class="card-body p-0">
+                <div class="row no-gutters">
+                    <!-- Image column (30% width) -->
+                    <div class="col-md-4 p-2">
+                        <div style="height: 134px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+                            <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $photogallery_['i_name']; ?>" 
+                                 class="img-fluid img-thumbnail" 
+                                 style="max-height: 100%; max-width: 100%; object-fit: contain;"
+                                 alt="<?php echo htmlspecialchars($photogallery_['i_alttext']); ?>">
+                        </div>
+                    </div>
+                    
+                    <!-- Content column (70% width) -->
+                    <div class="col-md-8 p-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <div class="mr-2 font-weight-bold"><i class="fa fa-sort"></i> Sequence:</div>
+                            <button onclick="moveUp('image', <?php echo $photogallery_['i_id']; ?>, <?php echo $page[0]['pid']; ?>, <?php echo $photogallery_['i_sequence']; ?>)" 
+                                    class="btn btn-sm btn-outline-primary mr-1">
+                                <i class="fa fa-arrow-up"></i> Up
+                            </button>
+                            <button onclick="moveDown('image', <?php echo $photogallery_['i_id']; ?>, <?php echo $page[0]['pid']; ?>, <?php echo $photogallery_['i_sequence']; ?>)" 
+                                    class="btn btn-sm btn-outline-primary mr-2">
+                                <i class="fa fa-arrow-down"></i> Down
+                            </button>
+                            <span class="badge badge-secondary"><?php echo $photogallery_['i_sequence']; ?></span>
+                        </div>
+                        
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-file"></i> Name:</div>
+                            <div class="col-9"><?php echo $photogallery_['i_name']; ?></div>
+                        </div>
+                        
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-tag"></i> Title:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_title']); ?></div>
+                        </div>
+                        
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-comment"></i> Caption:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_caption']); ?></div>
+                        </div>
+                        
+                        <div class="row mb-2">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_description']); ?></div>
+                        </div>
+                        
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2 font-weight-bold"><i class="fa fa-trash"></i> Actions:</div>
+                            <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $photogallery_['i_id']; ?>&media_action=edit&media_type=image" 
+                               class="btn btn-primary btn-sm rounded-0 mr-1" title="Edit">
+                                <i class="fa fa-edit"></i> Edit
+                            </a>
+                            <button onclick="delete_image(<?php echo $photogallery_['i_id']; ?>)" 
+                                    class="btn btn-danger btn-sm rounded-0" 
+                                    type="button" title="Delete">
+                                <i class="fa fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        <?php } ?>
+            <div class="card-footer py-1" style="background: #f8f9fa;"></div>
+        </div>
+        <?php
+            }
+        }
+        ?>
     </div>
 
     <!-- Videos Tab -->
@@ -198,7 +248,7 @@ if ($media_id && $media_action == 'edit' && $media_type) {
         <?php endif; ?>
 
         <div class="custom-file mb-3">
-            <input type="file" class="custom-file-input" id="videos" name="videos[]" <?php echo ($media_type == 'video' && $edit_data) ? '' : 'multiple'; ?>>
+            <input accept="video/*" type="file" class="custom-file-input" id="videos" name="videos[]" <?php echo ($media_type == 'video' && $edit_data) ? '' : 'multiple'; ?>>
             <label class="custom-file-label" for="videos">
                 <i class="fa fa-upload"></i> 
                 <?php if ($media_type == 'video' && $edit_data): ?>
@@ -255,10 +305,17 @@ if ($media_id && $media_action == 'edit' && $media_type) {
                         <?php foreach ($videogallery as $videogallery_) { ?>
                         <tr id="dr_<?php echo $videogallery_['v_id']; ?>">
                             <td colspan="2">
-                                <video width="100%" height="350px" controls>
-                                    <source src="<?php echo "../" . ABSOLUTE_VIDEOPATH . $videogallery_['v_name']; ?>" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
+                                <div class="media-container">
+                                    <video width="100%" height="350px" controls>
+                                        <source src="<?php echo "../" . ABSOLUTE_VIDEOPATH . $videogallery_['v_name']; ?>" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                    <?php if (!empty($videogallery_['v_thumbnail'])): ?>
+                                    <div class="video-thumbnail">
+                                        <img height="350px" src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $videogallery_['v_thumbnail']; ?>" class="img-thumbnail">
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -308,7 +365,7 @@ if ($media_id && $media_action == 'edit' && $media_type) {
         <?php endif; ?>
         
         <div class="custom-file mb-3">
-            <input type="file" class="custom-file-input" id="page_files" name="page_files[]" <?php echo ($media_type == 'file' && $edit_data) ? '' : 'multiple'; ?>>
+            <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z" class="custom-file-input" id="page_files" name="page_files[]" <?php echo ($media_type == 'file' && $edit_data) ? '' : 'multiple'; ?>>
             <label class="custom-file-label" for="page_files">
                 <i class="fa fa-upload"></i> 
                 <?php if ($media_type == 'file' && $edit_data): ?>
