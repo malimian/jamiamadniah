@@ -59,10 +59,9 @@ function initializeSwitches() {
     });
 }
 
-// Function to initialize DataTable
 var searchdatatable = function(id){
     var oTable = $('#'+id).DataTable({
-        "pageLength": 50,
+        "paging": false, // This disables pagination
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
@@ -80,7 +79,7 @@ var searchdatatable = function(id){
         oTable.search($(this).val()).draw();
     });
 
-    // Reinitialize switches after DataTable is redrawn (on page change or sorting)
+    // Reinitialize switches after DataTable is redrawn
     oTable.on('draw', function() {
         initializeSwitches();
     });
@@ -88,7 +87,6 @@ var searchdatatable = function(id){
     // Initial switch initialization when DataTable is first created
     initializeSwitches();
 };
-
 
 
 

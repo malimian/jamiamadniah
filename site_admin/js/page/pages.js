@@ -8,13 +8,13 @@ searchdatatable(datatable_id);
     var id = $(this).data("id");
     var isChecked = $(this).is(':checked');
     var $switch = $(this);
-    var $badge = $(this).closest('.custom-control').find('.badge');
+    var $statusBadge = $(this).siblings('.badge'); // Changed to find sibling badge
     
     // Disable switch during processing
     $switch.prop('disabled', true);
     
     // Show loading state
-    $badge.removeClass('badge-success badge-warning').addClass('badge-info').text('Updating...');
+    $statusBadge.removeClass('badge-success badge-info').addClass('badge-info').text('Updating...');
     
     senddata(
         'post/page/pages.php',
@@ -27,16 +27,16 @@ searchdatatable(datatable_id);
             // Success callback
             $switch.prop('disabled', false);
             if (isChecked) {
-                $badge.removeClass().addClass('badge badge-success').text('Published');
+                $statusBadge.removeClass().addClass('badge badge-success').text('Published');
             } else {
-                $badge.removeClass().addClass('badge badge-warning').text('Draft');
+                $statusBadge.removeClass().addClass('badge badge-warning').text('Draft');
             }
         },
         function(result) {
             // Error callback - revert switch state
             $switch.prop('disabled', false);
             $switch.prop('checked', !isChecked);
-            $badge.removeClass().addClass(isChecked ? 'badge-warning' : 'badge-success')
+            $statusBadge.removeClass().addClass(isChecked ? 'badge-warning' : 'badge-success')
                   .text(isChecked ? 'Draft' : 'Published');
             
             console.error("Status update failed:", result);
@@ -44,7 +44,6 @@ searchdatatable(datatable_id);
         }
     );
 });
-
 
 function delete_(id) {
 

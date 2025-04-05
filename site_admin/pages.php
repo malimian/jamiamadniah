@@ -9,8 +9,7 @@ $status_filter = "";
 $search_filter = "";
 $page_link = "";
 $current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
-$per_page = 50;
-
+$per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 50;
 
 // Template filter
 if(isset($_GET['temp']) && !empty($_GET['temp'])) {
@@ -62,7 +61,7 @@ $total_result = return_single_row($total_query);
 $total_items = $total_result['total'];
 
 // Calculate pagination
-$total_pages = ceil($total_items / $per_page);
+$total_pages = ($per_page > 0) ? ceil($total_items / $per_page) : 1;
 $offset = ($current_page - 1) * $per_page;
 
 // Get all users
@@ -73,11 +72,16 @@ foreach ($users as $user) {
 }
 
 // Get paginated data - make sure to include activatedby in your SELECT
-$Pages = return_multiple_rows("SELECT *, pages.isactive as pages_isactive, pages.createdby as pages_createdby, pages.activatedby 
+$query = "SELECT *, pages.isactive as pages_isactive, pages.createdby as pages_createdby, pages.activatedby 
     FROM pages LEFT JOIN category ON pages.catid = category.catid 
     WHERE pages.soft_delete = 0 AND category.soft_delete = 0 $template $category $author_filter $publisher_filter $status_filter $search_filter
-    ORDER BY pages.catid, pages_sequence ASC 
-    LIMIT $offset, $per_page");
+    ORDER BY pages.catid, pages_sequence ASC";
+    
+if ($per_page > 0) {
+    $query .= " LIMIT $offset, $per_page";
+}
+
+$Pages = return_multiple_rows($query);
 
 $site_templates = return_multiple_rows("Select * from og_template Where isactive = 1 and soft_delete = 0 ");
 ?>
@@ -112,101 +116,106 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
 
                 <hr>
 
-            <!-- Search and Filter Options -->
-<div class="row mb-3">
-    <!-- First Line - Search and Template -->
-    <div class="col-12 mb-2">
-        <div class="row">
-            <div class="col-md-8 mb-2">
-                <form method="get" action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="search" placeholder="Search by title..." 
-                            value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
+                <!-- Search and Filter Options -->
+                <div class="row mb-3">
+                    <!-- First Line - Search and Template -->
+                    <div class="col-12 mb-2">
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <form method="get" action="">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="search" placeholder="Search by title..." 
+                                            value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="submit">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- Keep other filter parameters -->
+                                    <?php if(isset($_GET['temp'])): ?>
+                                        <input type="hidden" name="temp" value="<?= $_GET['temp'] ?>">
+                                    <?php endif; ?>
+                                    <?php if(isset($_GET['cat'])): ?>
+                                        <input type="hidden" name="cat" value="<?= $_GET['cat'] ?>">
+                                    <?php endif; ?>
+                                    <?php if(isset($_GET['author'])): ?>
+                                        <input type="hidden" name="author" value="<?= $_GET['author'] ?>">
+                                    <?php endif; ?>
+                                    <?php if(isset($_GET['publisher'])): ?>
+                                        <input type="hidden" name="publisher" value="<?= $_GET['publisher'] ?>">
+                                    <?php endif; ?>
+                                    <?php if(isset($_GET['status'])): ?>
+                                        <input type="hidden" name="status" value="<?= $_GET['status'] ?>">
+                                    <?php endif; ?>
+                                </form>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <select class="form-control" id="filter-template" onchange="filterPages()">
+                                    <option value="">All Templates</option>
+                                    <?php 
+                                    foreach($site_templates as $template) {
+                                        $selected = (isset($_GET['temp']) && $_GET['temp'] == $template['template_id']) ? 'selected' : '';
+                                        echo '<option value="'.$template['template_id'].'" '.$selected.'>'.$template['template_title'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <button class="btn btn-outline-secondary btn-block" onclick="resetFilters()">
+                                    <i class="fas fa-undo"></i> Reset Filters
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <!-- Keep other filter parameters -->
-                    <?php if(isset($_GET['temp'])): ?>
-                        <input type="hidden" name="temp" value="<?= $_GET['temp'] ?>">
-                    <?php endif; ?>
-                    <?php if(isset($_GET['cat'])): ?>
-                        <input type="hidden" name="cat" value="<?= $_GET['cat'] ?>">
-                    <?php endif; ?>
-                    <?php if(isset($_GET['author'])): ?>
-                        <input type="hidden" name="author" value="<?= $_GET['author'] ?>">
-                    <?php endif; ?>
-                    <?php if(isset($_GET['publisher'])): ?>
-                        <input type="hidden" name="publisher" value="<?= $_GET['publisher'] ?>">
-                    <?php endif; ?>
-                    <?php if(isset($_GET['status'])): ?>
-                        <input type="hidden" name="status" value="<?= $_GET['status'] ?>">
-                    <?php endif; ?>
-                </form>
-            </div>
-            <div class="col-md-4 mb-2">
-                <select class="form-control" id="filter-template" onchange="filterPages()">
-                    <option value="">All Templates</option>
-                    <?php 
-                    foreach($site_templates as $template) {
-                        $selected = (isset($_GET['temp']) && $_GET['temp'] == $template['template_id']) ? 'selected' : '';
-                        echo '<option value="'.$template['template_id'].'" '.$selected.'>'.$template['template_title'].'</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Second Line - Status, Category, Author, Publisher -->
-    <div class="col-12">
-        <div class="row">
-            <div class="col-md-3 mb-2">
-                <select class="form-control" id="filter-status" onchange="filterPages()">
-                    <option value="">Status</option>
-                    <option value="1" <?= (isset($_GET['status']) && $_GET['status'] == '1' ? 'selected' : '') ?>>Published</option>
-                    <option value="0" <?= (isset($_GET['status']) && $_GET['status'] == '0' ? 'selected' : '') ?>>Draft</option>
-                </select>
-            </div>
-            <div class="col-md-3 mb-2">
-                <select class="form-control" id="filter-category" onchange="filterPages()">
-                    <option value="">Category</option>
-                    <?php 
-                    $categories = return_multiple_rows("SELECT * FROM category WHERE soft_delete = 0 ORDER BY catname");
-                    foreach($categories as $cat) {
-                        $selected = (isset($_GET['cat']) && $_GET['cat'] == $cat['catid']) ? 'selected' : '';
-                        echo '<option value="'.$cat['catid'].'" '.$selected.'>'.$cat['catname'].'</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="col-md-3 mb-2">
-                <select class="form-control" id="filter-author" onchange="filterPages()">
-                    <option value="">Author</option>
-                    <?php 
-                    foreach($users as $user) {
-                        $selected = (isset($_GET['author']) && $_GET['author'] == $user['id']) ? 'selected' : '';
-                        echo '<option value="'.$user['id'].'" '.$selected.'>'.$user['username'].'</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="col-md-3 mb-2">
-                <select class="form-control" id="filter-publisher" onchange="filterPages()">
-                    <option value="">Publisher</option>
-                    <?php 
-                    foreach($users as $user) {
-                        $selected = (isset($_GET['publisher']) && $_GET['publisher'] == $user['id']) ? 'selected' : '';
-                        echo '<option value="'.$user['id'].'" '.$selected.'>'.$user['username'].'</option>';
-                    }
-                    ?>
-                </select>
-            </div>
-        </div>
-    </div>
-</div>
+                    
+                    <!-- Second Line - Status, Category, Author, Publisher -->
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-md-3 mb-2">
+                                <select class="form-control" id="filter-status" onchange="filterPages()">
+                                    <option value="">Status</option>
+                                    <option value="1" <?= (isset($_GET['status']) && $_GET['status'] == '1' ? 'selected' : '') ?>>Published</option>
+                                    <option value="0" <?= (isset($_GET['status']) && $_GET['status'] == '0' ? 'selected' : '') ?>>Draft</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <select class="form-control" id="filter-category" onchange="filterPages()">
+                                    <option value="">Category</option>
+                                    <?php 
+                                    $categories = return_multiple_rows("SELECT * FROM category WHERE soft_delete = 0 ORDER BY catname");
+                                    foreach($categories as $cat) {
+                                        $selected = (isset($_GET['cat']) && $_GET['cat'] == $cat['catid']) ? 'selected' : '';
+                                        echo '<option value="'.$cat['catid'].'" '.$selected.'>'.$cat['catname'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <select class="form-control" id="filter-author" onchange="filterPages()">
+                                    <option value="">Author</option>
+                                    <?php 
+                                    foreach($users as $user) {
+                                        $selected = (isset($_GET['author']) && $_GET['author'] == $user['id']) ? 'selected' : '';
+                                        echo '<option value="'.$user['id'].'" '.$selected.'>'.$user['username'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-2">
+                                <select class="form-control" id="filter-publisher" onchange="filterPages()">
+                                    <option value="">Publisher</option>
+                                    <?php 
+                                    foreach($users as $user) {
+                                        $selected = (isset($_GET['publisher']) && $_GET['publisher'] == $user['id']) ? 'selected' : '';
+                                        echo '<option value="'.$user['id'].'" '.$selected.'>'.$user['username'].'</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- DataTables Example -->
                 <div class="card mb-3">
@@ -214,7 +223,16 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                         <i class="fas fa-table"></i>
                         Pages List
                         <div class="float-right">
-                            <span class="badge badge-primary">Showing <?php echo min($offset + 1, $total_items); ?>-<?php echo min($offset + $per_page, $total_items); ?> of <?php echo $total_items; ?></span>
+                            <div class="d-flex align-items-center">
+                                <span class="badge badge-primary mr-2">Showing <?php echo ($per_page > 0) ? min($offset + 1, $total_items) : 1; ?>-<?php echo ($per_page > 0) ? min($offset + $per_page, $total_items) : $total_items; ?> of <?php echo $total_items; ?></span>
+                                <select class="form-control form-control-sm" id="per_page" onchange="changePerPage()" style="width: 100px;">
+                                    <option value="10" <?= $per_page == 10 ? 'selected' : '' ?>>10</option>
+                                    <option value="25" <?= $per_page == 25 ? 'selected' : '' ?>>25</option>
+                                    <option value="50" <?= $per_page == 50 ? 'selected' : '' ?>>50</option>
+                                    <option value="100" <?= $per_page == 100 ? 'selected' : '' ?>>100</option>
+                                    <option value="0" <?= $per_page == 0 ? 'selected' : '' ?>>All</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -223,7 +241,8 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                 <thead class="thead-dark">
                                     <tr>
                                         <th width="40px">ID</th>
-                                         <th width="150px">Author</th>
+                                        <th width="50px">Order</th>
+                                        <th width="150px">Author</th>
                                         <th width="120px">Image</th>
                                         <th>Title</th>
                                         <th width="120px">Category</th>
@@ -282,39 +301,45 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                             ?>
                                             <tr id="tr_<?=$page['pid']?>" class="<?=$featured_class?>">
                                                 <td><?=$page['pid']?></td>
-                                                     <td>
-                                          <div class="d-flex flex-column">
-                                              <?php if($same_user): ?>
-                                                  <!-- Combined display when same user -->
-                                                  <div class="d-flex align-items-center">
-                                                      <img src="<?=$author_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$author_image?>">
-                                                      <div>
-                                                          <small class="text-muted d-block">Author & Published by</small>
-                                                          <span><?=$author_name?></span>
-                                                      </div>
-                                                  </div>
-                                              <?php else: ?>
-                                                  <!-- Creator -->
-                                                  <div class="d-flex align-items-center mb-2">
-                                                      <img src="<?=$author_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$author_name?>">
-                                                      <div>
-                                                          <small class="text-muted d-block">Author</small>
-                                                          <span><?=$author_name?></span>
-                                                      </div>
-                                                  </div>
-                                                  <!-- Publisher -->
-                                                  <?php if($page['pages_isactive'] && $page['activatedby']): ?>
-                                                  <div class="d-flex align-items-center">
-                                                      <img src="<?=$publisher_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$publisher_name?>">
-                                                      <div>
-                                                          <small class="text-muted d-block">Published by</small>
-                                                          <span><?=$publisher_name?></span>
-                                                      </div>
-                                                  </div>
-                                                  <?php endif; ?>
-                                              <?php endif; ?>
-                                          </div>
-                                      </td>
+                                                <td>
+                                                    <input type="number" class="form-control form-control-sm sequence-input" 
+                                                           value="<?=$page['pages_sequence']?>" 
+                                                           data-id="<?=$page['pid']?>"
+                                                           style="width: 60px;">
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex flex-column">
+                                                        <?php if($same_user): ?>
+                                                            <!-- Combined display when same user -->
+                                                            <div class="d-flex align-items-center">
+                                                                <img src="<?=$author_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$author_image?>">
+                                                                <div>
+                                                                    <small class="text-muted d-block">Author & Published by</small>
+                                                                    <span><?=$author_name?></span>
+                                                                </div>
+                                                            </div>
+                                                        <?php else: ?>
+                                                            <!-- Creator -->
+                                                            <div class="d-flex align-items-center mb-2">
+                                                                <img src="<?=$author_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$author_name?>">
+                                                                <div>
+                                                                    <small class="text-muted d-block">Author</small>
+                                                                    <span><?=$author_name?></span>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Publisher -->
+                                                            <?php if($page['pages_isactive'] && $page['activatedby']): ?>
+                                                            <div class="d-flex align-items-center">
+                                                                <img src="<?=$publisher_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$publisher_name?>">
+                                                                <div>
+                                                                    <small class="text-muted d-block">Published by</small>
+                                                                    <span><?=$publisher_name?></span>
+                                                                </div>
+                                                            </div>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <img src="<?=$featured_image?>" class="img-thumbnail" style="max-width: 100px; height: auto;" alt="Featured Image">
                                                 </td>
@@ -330,24 +355,20 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                 </td>
                                               
                                                 <td>
-                                                  <div class="d-flex align-items-center">
-                                                      <?php if ($has_status): ?>
-                                                          <!-- Show switch + badge -->
-                                                          <div class="custom-control custom-switch">
-                                                              <input type="checkbox" class="custom-control-input js-switch" 
-                                                                     id="status_switch_<?=$page['pid']?>" 
-                                                                     data-id="<?=$page['pid']?>"
-                                                                     <?= $page['pages_isactive'] ? 'checked' : '' ?>>
-                                                              <label class="custom-control-label" for="status_switch_<?=$page['pid']?>">
-                                                                  <span class="badge badge-<?=$status_class?> ml-2"><?=$status_label?></span>
-                                                              </label>
-                                                          </div>
-                                                      <?php else: ?>
-                                                          <!-- Show only badge (no switch) -->
-                                                          <span class="badge badge-<?=$status_class?>"><?=$status_label?></span>
-                                                      <?php endif; ?>
-                                                  </div>
-                                              </td>
+                                                    <div class="d-flex align-items-center">
+                                                        <?php if ($has_status): ?>
+                                                            <?php if ($page['pages_isactive'] == 1): ?>
+                                                                <span id="status_<?=$page['pid']?>" class="badge badge-success">Published</span>
+                                                                <input type="checkbox" data-id="<?=$page['pid']?>" class="js-switch" checked />
+                                                            <?php else: ?>
+                                                                <span id="status_<?=$page['pid']?>" class="badge badge-warning">Draft</span>
+                                                                <input type="checkbox" data-id="<?=$page['pid']?>" class="js-switch" />
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <span class="badge badge-<?=$status_class?>"><?=$status_label?></span>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </td>
                                                 <td>
                                                     <span class="badge badge-<?=$visibility_class?>"><?=$visibility_label?></span>
                                                 </td>
@@ -357,70 +378,70 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                 <td>
                                                     <small class="text-muted"><?=$last_modified?></small>
                                                 </td>
-                        <td>
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Actions
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <?php if($has_edit): ?>
-                                <a class="dropdown-item" href="editpage.php?id=<?=$page['pid']?>">
-                                    <i class="fas fa-edit fa-fw"></i> Edit
-                                </a>
-                                <?php endif; ?>
-                                
-                                <?php if($has_add): ?>
-                                <a class="dropdown-item" href="copypage.php?id=<?=$page['pid']?>">
-                                    <i class="fas fa-copy fa-fw"></i> Duplicate
-                                </a>
-                                <?php endif; ?>
-                                
-                                <?php if($has_view): ?>
-                                <a class="dropdown-item" target="_blank" href="<?=BASE_URL.$page['page_url']?>">
-                                    <i class="fas fa-eye fa-fw"></i> View
-                                </a>
-                                <?php endif; ?>
-                                
-                                <?php if($has_status): ?>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" onclick="toggleStatus(<?=$page['pid']?>, <?=$page['pages_isactive']?>)">
-                                    <i class="fas fa-power-off fa-fw"></i> <?=$page['pages_isactive'] ? 'Deactivate' : 'Activate'?>
-                                </a>
-                                <?php endif; ?>
-                                
-                                <?php if($has_delete): ?>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item text-danger" onclick="delete_(<?=$page['pid']?>)">
-                                    <i class="fas fa-trash fa-fw"></i> Delete
-                                </a>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    </td>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            Actions
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                            <?php if($has_edit): ?>
+                                                            <a class="dropdown-item" href="editpage.php?id=<?=$page['pid']?>">
+                                                                <i class="fas fa-edit fa-fw"></i> Edit
+                                                            </a>
+                                                            <?php endif; ?>
+                                                            
+                                                            <?php if($has_add): ?>
+                                                            <a class="dropdown-item" href="copypage.php?id=<?=$page['pid']?>">
+                                                                <i class="fas fa-copy fa-fw"></i> Duplicate
+                                                            </a>
+                                                            <?php endif; ?>
+                                                            
+                                                            <?php if($has_view): ?>
+                                                            <a class="dropdown-item" target="_blank" href="<?=BASE_URL.$page['page_url']?>">
+                                                                <i class="fas fa-eye fa-fw"></i> View
+                                                            </a>
+                                                            <?php endif; ?>
+                                                            
+                                                            <?php if($has_status): ?>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item" href="#" onclick="toggleStatus(<?=$page['pid']?>, <?=$page['pages_isactive']?>)">
+                                                                <i class="fas fa-power-off fa-fw"></i> <?=$page['pages_isactive'] ? 'Deactivate' : 'Activate'?>
+                                                            </a>
+                                                            <?php endif; ?>
+                                                            
+                                                            <?php if($has_delete): ?>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item text-danger" onclick="delete_(<?=$page['pid']?>)">
+                                                                <i class="fas fa-trash fa-fw"></i> Delete
+                                                            </a>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </td>
                                             </tr>
                                             <?php
                                         }
                                     } else {
-                                        echo '<tr><td colspan="10" class="text-center">No pages found</td></tr>';
+                                        echo '<tr><td colspan="12" class="text-center">No pages found</td></tr>';
                                     }
                                     ?>
                                 </tbody>
                             </table>
                             
                             <!-- Pagination Controls -->
-                            <?php if($total_pages > 1): ?>
+                            <?php if($total_pages > 1 && $per_page > 0): ?>
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
                                     <!-- First Page Link -->
                                     <li class="page-item <?= ($current_page == 1) ? 'disabled' : '' ?>">
-                                        <a class="page-link" href="?page=1<?=$page_link?>" aria-label="First">
+                                        <a class="page-link" href="?page=1<?=$page_link?>&per_page=<?=$per_page?>" aria-label="First">
                                             <span aria-hidden="true">&laquo;&laquo;</span>
                                         </a>
                                     </li>
                                     
                                     <!-- Previous Page Link -->
                                     <li class="page-item <?= ($current_page == 1) ? 'disabled' : '' ?>">
-                                        <a class="page-link" href="?page=<?=($current_page - 1)?><?=$page_link?>" aria-label="Previous">
+                                        <a class="page-link" href="?page=<?=($current_page - 1)?><?=$page_link?>&per_page=<?=$per_page?>" aria-label="Previous">
                                             <span aria-hidden="true">&laquo;</span>
                                         </a>
                                     </li>
@@ -442,20 +463,20 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                     // Show page numbers
                                     for($i = $start_page; $i <= $end_page; $i++): ?>
                                         <li class="page-item <?= ($i == $current_page) ? 'active' : '' ?>">
-                                            <a class="page-link" href="?page=<?=$i?><?=$page_link?>"><?=$i?></a>
+                                            <a class="page-link" href="?page=<?=$i?><?=$page_link?>&per_page=<?=$per_page?>"><?=$i?></a>
                                         </li>
                                     <?php endfor; ?>
                                     
                                     <!-- Next Page Link -->
                                     <li class="page-item <?= ($current_page == $total_pages) ? 'disabled' : '' ?>">
-                                        <a class="page-link" href="?page=<?=($current_page + 1)?><?=$page_link?>" aria-label="Next">
+                                        <a class="page-link" href="?page=<?=($current_page + 1)?><?=$page_link?>&per_page=<?=$per_page?>" aria-label="Next">
                                             <span aria-hidden="true">&raquo;</span>
                                         </a>
                                     </li>
                                     
                                     <!-- Last Page Link -->
                                     <li class="page-item <?= ($current_page == $total_pages) ? 'disabled' : '' ?>">
-                                        <a class="page-link" href="?page=<?=$total_pages?><?=$page_link?>" aria-label="Last">
+                                        <a class="page-link" href="?page=<?=$total_pages?><?=$page_link?>&per_page=<?=$per_page?>" aria-label="Last">
                                             <span aria-hidden="true">&raquo;&raquo;</span>
                                         </a>
                                     </li>
@@ -501,27 +522,13 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
             max-height: 60px;
             object-fit: cover;
         }
-
-      /*js switch*/
-        
-      .custom-control.custom-switch {
-      padding-left: 2.25rem;
-      min-height: 1.5rem; /* Ensure consistent height */
-      }
-
-      .custom-control.custom-switch .custom-control-label::before,
-      .custom-control.custom-switch .custom-control-label::after {
-      left: -2.25rem;
-      top: 0.25rem;
-      }
-
-      .custom-control.custom-switch .custom-control-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding-left: 0.5rem; /* Space between switch and badge */
-      }
-
+        .sequence-input {
+            text-align: center;
+        }
+        .sequence-input:focus {
+            border-color: #80bdff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
     </style>
 
     <script type="text/javascript" src="js/page/pages.js"></script>
@@ -534,6 +541,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
         const author = document.getElementById('filter-author').value;
         const publisher = document.getElementById('filter-publisher').value;
         const search = "<?= isset($_GET['search']) ? $_GET['search'] : '' ?>";
+        const per_page = document.getElementById('per_page').value;
         
         let url = '?page=1'; // Always reset to page 1 when filtering
         
@@ -543,8 +551,54 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
         if (author) url += '&author=' + author;
         if (publisher) url += '&publisher=' + publisher;
         if (search) url += '&search=' + encodeURIComponent(search);
+        if (per_page) url += '&per_page=' + per_page;
         
         window.location.href = url;
     }
-  
+    
+    function resetFilters() {
+        window.location.href = '?page=1&per_page=<?=$per_page?>';
+    }
+    
+    function changePerPage() {
+        const per_page = document.getElementById('per_page').value;
+        let url = '?page=1&per_page=' + per_page;
+        
+        // Preserve existing filters
+        <?php 
+        $preserve_params = ['temp', 'cat', 'author', 'publisher', 'status', 'search'];
+        foreach($preserve_params as $param) {
+            echo "if('".(isset($_GET[$param]) ? $_GET[$param] : '')."') url += '&$param=".(isset($_GET[$param]) ? $_GET[$param] : '')."';";
+        }
+        ?>
+        
+        window.location.href = url;
+    }
+    
+    // Handle sequence changes
+    $(document).on('change', '.sequence-input', function() {
+        const page_id = $(this).data('id');
+        const new_sequence = $(this).val();
+        
+        $.ajax({
+            url: 'post/page/update_sequence.php',
+            method: 'POST',
+            data: {
+                page_id: page_id,
+                new_sequence: new_sequence
+            },
+            success: function(response) {
+                const result = JSON.parse(response);
+                if(result.success) {
+                    toastr.success('Sequence updated successfully');
+                } else {
+                    toastr.error('Failed to update sequence');
+                    // Revert the input value if needed
+                }
+            },
+            error: function() {
+                toastr.error('Error updating sequence');
+            }
+        });
+    });
     </script>
