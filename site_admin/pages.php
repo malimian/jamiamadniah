@@ -230,6 +230,8 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                     <option value="25" <?= $per_page == 25 ? 'selected' : '' ?>>25</option>
                                     <option value="50" <?= $per_page == 50 ? 'selected' : '' ?>>50</option>
                                     <option value="100" <?= $per_page == 100 ? 'selected' : '' ?>>100</option>
+                                    <option value="200" <?= $per_page == 200 ? 'selected' : '' ?>>200</option>
+                                    <option value="500" <?= $per_page == 500 ? 'selected' : '' ?>>500</option>
                                     <option value="0" <?= $per_page == 0 ? 'selected' : '' ?>>All</option>
                                 </select>
                             </div>
@@ -296,16 +298,24 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                             
                                             // Featured image
                                             $featured_image = !empty($page['featured_image']) ? 
-                                                $page['featured_image'] : 
+                                                (filter_var($page['featured_image'], FILTER_VALIDATE_URL) ? 
+                                                    $page['featured_image'] : 
+                                                    BASE_URL.ABSOLUTE_IMAGEPATH.$page['featured_image']) : 
                                                 BASE_URL.'assets/img/no-image-available.jpg';
+
                                             ?>
                                             <tr id="tr_<?=$page['pid']?>" class="<?=$featured_class?>">
                                                 <td><?=$page['pid']?></td>
-                                                <td>
-                                                    <input type="number" class="form-control form-control-sm sequence-input" 
-                                                           value="<?=$page['pages_sequence']?>" 
-                                                           data-id="<?=$page['pid']?>"
-                                                           style="width: 60px;">
+                                             <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <button class="btn btn-sm btn-outline-primary mr-2" onclick="changeSequence(<?=$page['pid']?>, 'up')">
+                                                            <i class="fa fa-arrow-up"></i>
+                                                        </button>
+                                                        <span id="seq_<?=$page['pid']?>"><?=$page["pages_sequence"]?></span>
+                                                        <button class="btn btn-sm btn-outline-primary ml-2" onclick="changeSequence(<?=$page['pid']?>, 'down')">
+                                                            <i class="fa fa-arrow-down"></i>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex flex-column">
@@ -534,6 +544,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
     <script type="text/javascript" src="js/page/pages.js"></script>
 
     <script>
+
     function filterPages() {
         const status = document.getElementById('filter-status').value;
         const category = document.getElementById('filter-category').value;
@@ -575,30 +586,4 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
         window.location.href = url;
     }
     
-    // Handle sequence changes
-    $(document).on('change', '.sequence-input', function() {
-        const page_id = $(this).data('id');
-        const new_sequence = $(this).val();
-        
-        $.ajax({
-            url: 'post/page/update_sequence.php',
-            method: 'POST',
-            data: {
-                page_id: page_id,
-                new_sequence: new_sequence
-            },
-            success: function(response) {
-                const result = JSON.parse(response);
-                if(result.success) {
-                    toastr.success('Sequence updated successfully');
-                } else {
-                    toastr.error('Failed to update sequence');
-                    // Revert the input value if needed
-                }
-            },
-            error: function() {
-                toastr.error('Error updating sequence');
-            }
-        });
-    });
     </script>

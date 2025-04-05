@@ -11,6 +11,7 @@ var currentMediaPath = null; // Global variable to store the path
 
 
 function OpenMediaGallery(textbox_id, path) {
+   
     $('#textcopied').val('');
     
     // Store the path in the hidden field
@@ -32,6 +33,7 @@ function OpenMediaGallery(textbox_id, path) {
     if ($('#textcopied').val() != "") {
         $('.btn-use').show();
     }
+    
 }
 
 function load_images() {

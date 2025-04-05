@@ -169,7 +169,7 @@
                                 <div class="col-sm-10">
                                     <div class="form-inline">
                                         <input type="text" value="<?php echo $page['featured_image']; ?>" class="form-control col-sm-10" id="p_image" placeholder="Choose Image" name="p_image">
-                                        <button class="btn btn-primary form-control col-sm-2" onclick="OpenMediaGallery('p_image')" type="button">
+                                        <button class="btn btn-primary form-control col-sm-2" onclick="OpenMediaGallery('p_image' , 'page')" type="button">
                                             <i class="fa fa-picture-o"></i>&nbsp;Gallery
                                         </button>
                                         <div class="valid-feedback">Valid.</div>

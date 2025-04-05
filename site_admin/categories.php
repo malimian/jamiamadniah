@@ -1,4 +1,61 @@
-<?php include 'includes/header.php';?>
+<?php include 'includes/header.php';
+
+// Initialize variables
+$parent_category_filter = "";
+$show_in_navbar_filter = "";
+$status_filter = "";
+$search_filter = "";
+$page_link = "";
+$current_page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+$per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 10;
+
+// Parent Category filter
+if(isset($_GET['parent_category']) && !empty($_GET['parent_category'])) {
+    $parent_category_id = intval($_GET['parent_category']);
+    $parent_category_filter = " AND ParentCategory = $parent_category_id ";
+    $page_link .="&parent_category=".$parent_category_id;
+}
+
+// Show in NavBar filter
+if(isset($_GET['show_in_navbar']) && $_GET['show_in_navbar'] !== '') {
+    $show_in_navbar = intval($_GET['show_in_navbar']);
+    $show_in_navbar_filter = " AND showInNavBar = $show_in_navbar ";
+    $page_link .="&show_in_navbar=".$show_in_navbar;
+}
+
+// Status filter
+if(isset($_GET['status']) && $_GET['status'] !== '') {
+    $status = intval($_GET['status']);
+    $status_filter = " AND isactive = $status ";
+    $page_link .="&status=".$status;
+}
+
+// Search filter
+if(isset($_GET['search']) && !empty($_GET['search'])) {
+    $search = trim($_GET['search']);
+    $search_filter = " AND catname LIKE '%".$conn->real_escape_string($search)."%' ";
+    $page_link .="&search=".urlencode($search);
+}
+
+// Get total count
+$total_query = "SELECT COUNT(*) as total FROM category WHERE soft_delete = 0 $parent_category_filter $show_in_navbar_filter $status_filter $search_filter";
+$total_result = return_single_row($total_query);
+$total_items = $total_result['total'];
+
+// Calculate pagination
+$total_pages = ($per_page > 0) ? ceil($total_items / $per_page) : 1;
+$offset = ($current_page - 1) * $per_page;
+
+// Get paginated data
+$query = "SELECT * FROM category WHERE soft_delete = 0 $parent_category_filter $show_in_navbar_filter $status_filter $search_filter ORDER BY cat_sequence ASC";
+if ($per_page > 0) {
+    $query .= " LIMIT $offset, $per_page";
+}
+$categories = return_multiple_rows($query);
+
+// Get all parent categories for filter dropdown
+$parentCategories = return_multiple_rows("SELECT catid, catname FROM category WHERE ParentCategory = 0 AND soft_delete = 0 ORDER BY catname");
+?>
 
 <body id="page-top">
     <?php include 'setting/company_name.php';?>
@@ -28,47 +85,81 @@
 
                 <hr>
 
-                <!-- Filter Section -->
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <form id="filterForm">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Parent Category</label>
-                                        <select class="form-control" name="parent_category" id="parent_category">
-                                            <option value="">All Categories</option>
-                                            <?php 
-                                            $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WHERE ParentCategory = 0 AND soft_delete = 0 ORDER BY catname");
-                                            foreach($parentCategories as $cat) {
-                                                echo '<option value="'.$cat['catid'].'">'.$cat['catname'].'</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label>Show in NavBar</label>
-                                        <select class="form-control" name="show_in_navbar" id="show_in_navbar">
-                                            <option value="">All</option>
-                                            <option value="1">Yes</option>
-                                            <option value="0">No</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 d-flex align-items-end">
-                                    <button type="button" class="btn btn-primary mr-2" onclick="applyFilters()">
-                                        <i class="fa fa-filter"></i> Apply Filters
-                                    </button>
-                                    <button type="button" class="btn btn-secondary" onclick="resetFilters()">
-                                        <i class="fa fa-times"></i> Reset
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+              <!-- Filter and Search Section -->
+<div class="card mb-4">
+    <div class="card-body p-3">
+        <!-- First Row of Filters -->
+        <div class="row mb-3">
+            <div class="col-md-4 mb-2 mb-md-0">
+                <div class="form-group mb-0">
+                    <label class="font-weight-bold">Parent Category</label>
+                    <select class="form-control filter-select" id="filter-parent-category">
+                        <option value="">All Categories</option>
+                        <?php foreach($parentCategories as $cat): ?>
+                        <option value="<?=$cat['catid']?>" <?=(isset($_GET['parent_category']) && $_GET['parent_category'] == $cat['catid']) ? 'selected' : '' ?>>
+                            <?=htmlspecialchars($cat['catname'])?>
+                        </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3 mb-2 mb-md-0">
+                <div class="form-group mb-0">
+                    <label class="font-weight-bold">Show in NavBar</label>
+                    <select class="form-control filter-select" id="filter-show-navbar">
+                        <option value="">All</option>
+                        <option value="1" <?=(isset($_GET['show_in_navbar']) && $_GET['show_in_navbar'] == '1') ? 'selected' : '' ?>>Yes</option>
+                        <option value="0" <?=(isset($_GET['show_in_navbar']) && $_GET['show_in_navbar'] == '0') ? 'selected' : '' ?>>No</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3 mb-2 mb-md-0">
+                <div class="form-group mb-0">
+                    <label class="font-weight-bold">Status</label>
+                    <select class="form-control filter-select" id="filter-status">
+                        <option value="">All</option>
+                        <option value="1" <?=(isset($_GET['status']) && $_GET['status'] == '1') ? 'selected' : '' ?>>Active</option>
+                        <option value="0" <?=(isset($_GET['status']) && $_GET['status'] == '0') ? 'selected' : '' ?>>Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Second Row of Filters -->
+        <div class="row align-items-end">
+            <div class="col-md-2 col-6 mb-2 mb-md-0">
+                <div class="form-group mb-0">
+                    <label class="font-weight-bold">Items Per Page</label>
+                    <select class="form-control" id="per-page">
+                        <option value="10" <?=$per_page == 10 ? 'selected' : ''?>>10</option>
+                        <option value="25" <?=$per_page == 25 ? 'selected' : ''?>>25</option>
+                        <option value="50" <?=$per_page == 50 ? 'selected' : ''?>>50</option>
+                        <option value="100" <?=$per_page == 100 ? 'selected' : ''?>>100</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-7 col-12 mb-2 mb-md-0">
+                <div class="form-group mb-0">
+                    <label class="font-weight-bold">Search Category</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="search" placeholder="Search category..." 
+                               value="<?=isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''?>">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" id="search-button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="col-md-3 col-6 text-md-right text-left">
+                <button type="button" class="btn btn-outline-secondary" onclick="resetFilters()">
+                    <i class="fas fa-redo mr-1"></i> Reset Filters
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
                 <!-- Menu Table -->
                 <div class="table-responsive">
@@ -86,9 +177,8 @@
                         </thead>
                         <tbody>
                             <?php 
-                            $categories = return_multiple_rows("SELECT * FROM category $where_gc ORDER BY cat_sequence ASC");
-                            foreach($categories as $category) {
-                                static $count = 1;
+                            $count = $offset + 1; // Start numbering from the correct position
+                            foreach($categories as $category): 
                             ?> 
                             <tr id="tr_<?=$category['catid']?>">
                                 <td><?=$count++;?></td>
@@ -150,12 +240,135 @@
                                     </div>
                                 </td>
                             </tr>
-                            <?php } ?>      
+                            <?php endforeach; ?>      
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Pagination -->
+                <?php if ($total_pages > 1): ?>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item <?= ($current_page <= 1) ? 'disabled' : '' ?>">
+                            <a class="page-link" href="<?= getPaginationLink(1) ?>" aria-label="First">
+                                <span aria-hidden="true">&laquo;&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item <?= ($current_page <= 1) ? 'disabled' : '' ?>">
+                            <a class="page-link" href="<?= getPaginationLink($current_page - 1) ?>" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        
+                        <?php
+                        // Show page numbers
+                        $start_page = max(1, $current_page - 2);
+                        $end_page = min($total_pages, $current_page + 2);
+                        
+                        if ($start_page > 1) {
+                            echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                        }
+                        
+                        for ($i = $start_page; $i <= $end_page; $i++) {
+                            echo '<li class="page-item ' . ($i == $current_page ? 'active' : '') . '">';
+                            echo '<a class="page-link" href="' . getPaginationLink($i) . '">' . $i . '</a>';
+                            echo '</li>';
+                        }
+                        
+                        if ($end_page < $total_pages) {
+                            echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                        }
+                        ?>
+                        
+                        <li class="page-item <?= ($current_page >= $total_pages) ? 'disabled' : '' ?>">
+                            <a class="page-link" href="<?= getPaginationLink($current_page + 1) ?>" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item <?= ($current_page >= $total_pages) ? 'disabled' : '' ?>">
+                            <a class="page-link" href="<?= getPaginationLink($total_pages) ?>" aria-label="Last">
+                                <span aria-hidden="true">&raquo;&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <?php endif; ?>
             </div>
             <!-- /.container-fluid -->
+
+            <?php
+            // Helper function to generate pagination links with current filters
+            function getPaginationLink($page) {
+                global $page_link, $per_page;
+                $link = "?page=$page&per_page=$per_page";
+                
+                // Preserve all existing filters
+                $preserve_params = ['parent_category', 'show_in_navbar', 'status', 'search'];
+                foreach($preserve_params as $param) {
+                    if(isset($_GET[$param])) {
+                        $link .= "&$param=".urlencode($_GET[$param]);
+                    }
+                }
+                
+                return $link;
+            }
+            ?>
+
+            <script type="text/javascript" src="js/category/categories.js"></script>
+           <script>
+                    // Apply filters automatically when dropdowns change
+                    document.querySelectorAll('.filter-select').forEach(select => {
+                        select.addEventListener('change', filterCategories);
+                    });
+
+                    // Apply filters when search button is clicked or Enter is pressed
+                    document.getElementById('search-button').addEventListener('click', filterCategories);
+                    document.getElementById('search').addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            filterCategories();
+                        }
+                    });
+
+                    // Apply filters when items per page changes
+                    document.getElementById('per-page').addEventListener('change', changePerPage);
+
+                    function filterCategories() {
+                        const parentCategory = document.getElementById('filter-parent-category').value;
+                        const showInNavbar = document.getElementById('filter-show-navbar').value;
+                        const status = document.getElementById('filter-status').value;
+                        const search = document.getElementById('search').value;
+                        const perPage = document.getElementById('per-page').value;
+                        
+                        let url = '?page=1&per_page=' + perPage;
+                        
+                        if (parentCategory) url += '&parent_category=' + parentCategory;
+                        if (showInNavbar) url += '&show_in_navbar=' + showInNavbar;
+                        if (status) url += '&status=' + status;
+                        if (search) url += '&search=' + encodeURIComponent(search);
+                        
+                        window.location.href = url;
+                    }
+
+                    function resetFilters() {
+                        const perPage = document.getElementById('per-page').value;
+                        window.location.href = '?page=1&per_page=' + perPage;
+                    }
+
+                    function changePerPage() {
+                        const perPage = document.getElementById('per-page').value;
+                        let url = '?page=1&per_page=' + perPage;
+                        
+                        // Preserve existing filters
+                        <?php 
+                        $preserve_params = ['parent_category', 'show_in_navbar', 'status', 'search'];
+                        foreach($preserve_params as $param) {
+                            echo "if('".(isset($_GET[$param]) ? $_GET[$param] : '')."') url += '&$param=".(isset($_GET[$param]) ? $_GET[$param] : '')."';";
+                        }
+                        ?>
+                        
+                        window.location.href = url;
+                    }
+                    </script>
 
             <div id="deletemodal"></div>
             <?php include 'includes/footer_copyright.php';?>
@@ -165,253 +378,5 @@
     <!-- /#wrapper -->
 
     <?php include 'includes/footer.php';?>
-<script>
-$(document).ready(function() {
-    // Initialize switches
-    initSwitches();
-    
-    // Apply filters from URL if present
-    const urlParams = new URLSearchParams(window.location.search);
-    if(urlParams.has('parent_category')) {
-        $('#parent_category').val(urlParams.get('parent_category'));
-    }
-    if(urlParams.has('show_in_navbar')) {
-        $('#show_in_navbar').val(urlParams.get('show_in_navbar'));
-    }
-    
-    if($('#parent_category').val() || $('#show_in_navbar').val()) {
-        applyFilters();
-    }
-});
-
-// Filter functions
-function applyFilters() {
-    const parentCategory = $('#parent_category').val();
-    const showInNavbar = $('#show_in_navbar').val();
-    
-    // Update URL without reloading
-    const urlParams = new URLSearchParams();
-    if(parentCategory) urlParams.set('parent_category', parentCategory);
-    if(showInNavbar) urlParams.set('show_in_navbar', showInNavbar);
-    window.history.replaceState({}, '', `${location.pathname}?${urlParams}`);
-    
-    // Show loading indicator
-    $('#categoryTableBody').html('<tr><td colspan="7" class="text-center"><i class="fa fa-spinner fa-spin"></i> Loading...</td></tr>');
-    
-    // Send filter request to server
-    $.ajax({
-        url: 'post/category/categories.php',
-        type: 'POST',
-        data: {
-            filter_categories: true,
-            parent_category: parentCategory,
-            show_in_navbar: showInNavbar
-        },
-        success: function(response) {
-            try {
-                const data = JSON.parse(response);
-                renderTable(data);
-            } catch(e) {
-                console.error('Error parsing response:', e);
-                $('#categoryTableBody').html('<tr><td colspan="7" class="text-center text-danger">Error loading data</td></tr>');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-            $('#categoryTableBody').html('<tr><td colspan="7" class="text-center text-danger">Error loading data</td></tr>');
-        }
-    });
-}
-
-function renderTable(categories) {
-    let html = '';
-    
-    if(categories.length > 0) {
-        categories.forEach((category, index) => {
-            html += `
-            <tr id="tr_${category.catid}">
-                <td>${index + 1}</td>
-                <td>${escapeHtml(category.catname)}</td>
-                <td>
-                    <div class="d-flex align-items-center">
-                        <button class="btn btn-sm btn-outline-primary mr-2" onclick="changeSequence(${category.catid}, 'up')">
-                            <i class="fa fa-arrow-up"></i>
-                        </button>
-                        <span id="seq_${category.catid}">${category.cat_sequence}</span>
-                        <button class="btn btn-sm btn-outline-primary ml-2" onclick="changeSequence(${category.catid}, 'down')">
-                            <i class="fa fa-arrow-down"></i>
-                        </button>
-                    </div>
-                </td>
-                <td>
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input navbar-switch" 
-                               id="navbar_${category.catid}" 
-                               data-id="${category.catid}"
-                               ${category.showInNavBar == 1 ? 'checked' : ''}>
-                        <label class="custom-control-label" for="navbar_${category.catid}"></label>
-                    </div>
-                </td>
-                <td>${category.parent_name ? escapeHtml(category.parent_name) : 'Parent'}</td>
-                <td>
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input js-switch" 
-                               id="status_switch_${category.catid}" 
-                               data-id="${category.catid}"
-                               ${category.isactive == 1 ? 'checked' : ''}>
-                        <label class="custom-control-label" for="status_switch_${category.catid}">
-                            <span id="status_${category.catid}" class="badge ${category.isactive == 1 ? 'badge-success' : 'badge-danger'}">
-                                ${category.isactive == 1 ? 'Active' : 'Inactive'}
-                            </span>
-                        </label>
-                    </div>
-                </td>
-                <td>
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" 
-                                id="dropdownMenuButton_${category.catid}" 
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fas fa-cog"></i>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_${category.catid}">
-                            <a class="dropdown-item" href="editmenue.php?id=${category.catid}&action=edit">
-                                <i class="fa fa-edit mr-2"></i>Edit
-                            </a>
-                            <a class="dropdown-item text-danger" onclick="delete_(${category.catid})">
-                                <i class="fa fa-trash mr-2"></i>Delete
-                            </a>
-                        </div>
-                    </div>
-                </td>
-            </tr>`;
-        });
-    } else {
-        html = '<tr><td colspan="7" class="text-center">No records found</td></tr>';
-    }
-    
-    $('#categoryTableBody').html(html);
-    initSwitches(); // Reinitialize switches for new elements
-}
-
-function resetFilters() {
-    $('#filterForm')[0].reset();
-    window.history.replaceState({}, '', location.pathname);
-    applyFilters(); // Reload without filters
-}
-
-// Initialize switches
-function initSwitches() {
-    $('.js-switch').off('change').on('change', function() {
-        const id = $(this).data("id");
-        const isActive = $(this).is(':checked') ? 1 : 0;
-        
-        $.ajax({
-            url: 'post/category/categories.php',
-            type: 'POST',
-            data: {
-                id: id,
-                change_status: true,
-                isactive: isActive
-            },
-            success: function() {
-                $('#status_'+id).removeClass('badge-success badge-danger')
-                               .addClass(isActive ? 'badge-success' : 'badge-danger')
-                               .text(isActive ? 'Active' : 'Inactive');
-            },
-            error: function() {
-                $(this).prop('checked', !isActive);
-            }
-        });
-    });
-    
-    $('.navbar-switch').off('change').on('change', function() {
-        const id = $(this).data("id");
-        const showInNavbar = $(this).is(':checked') ? 1 : 0;
-        
-        $.ajax({
-            url: 'post/category/categories.php',
-            type: 'POST',
-            data: {
-                id: id,
-                change_navbar: true,
-                showInNavBar: showInNavbar
-            },
-            error: function() {
-                $(this).prop('checked', !showInNavbar);
-            }
-        });
-    });
-}
-
-// Sequence change handler - fixed version
-function changeSequence(id, direction) {
-    const row = $('#tr_' + id);
-    const currentSeq = parseInt(row.find('td:eq(2) span').text());
-    
-    $.ajax({
-        url: 'post/category/categories.php',
-        type: 'POST',
-        dataType: 'json', // Explicitly tell jQuery to expect JSON
-        data: {
-            id: id,
-            change_sequence: true,
-            direction: direction
-        },
-        success: function(data) { // data is already parsed JSON
-            if (data.success) {
-                // Update sequence numbers in UI
-                row.find('td:eq(2) span').text(data.new_sequence);
-                
-                if (direction === 'up') {
-                    const prevRow = row.prev();
-                    if (prevRow.length && data.other_id) {
-                        prevRow.find('td:eq(2) span').text(data.other_new_sequence);
-                        row.insertBefore(prevRow);
-                    }
-                } else if (direction === 'down') {
-                    const nextRow = row.next();
-                    if (nextRow.length && data.other_id) {
-                        nextRow.find('td:eq(2) span').text(data.other_new_sequence);
-                        row.insertAfter(nextRow);
-                    }
-                }
-                
-                showNotification('success', 'Sequence updated successfully');
-            } else {
-                showNotification('info', data.message || 'No changes made');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', status, error);
-            showNotification('danger', 'Failed to update sequence');
-            
-            // For debugging - check the actual response
-            console.log('Server response:', xhr.responseText);
-        }
-    });
-}
-
-
-// Helper functions
-function escapeHtml(unsafe) {
-    return unsafe
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-function showNotification(type, message) {
-    const notification = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
-        ${message}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>`;
-    $('#notification-container').html(notification);
-}
-
-</script>
 </body>
 </html>

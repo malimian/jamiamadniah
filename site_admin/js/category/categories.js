@@ -1,9 +1,4 @@
 
-var datatable_id = 'dataTable';
-
-searchdatatable(datatable_id);
-
-
     // Ensure event listeners are applied even after page changes using event delegation
     $(document).on("change", ".js-switch", function() {
         var id = $(this).data("id");
@@ -58,45 +53,50 @@ function delete_(id) {
 }
 
 
-function change_seq(id , val){
-  var html = '';
-  html +=' <div class="input-group">';
-  html +='<input type="text" id="updated_seq_'+id+'" value="'+val+'" class="form-control">';
-  html +='<span class="input-group-btn">';
-  html +='  <button class="btn btn-primary btn-md" type="button" onclick="save_seq('+id+')" >Save</button>';
-  html +='</span>';
-  html +='</div>';
-  $('#seq_'+id).html(html);
-}
-
-function save_seq(id){
-var newval = $('#updated_seq_'+id).val();
- senddata(
-            'post/category/categories.php',
-            "POST", {
-                id: id,
-                sequence : newval,
-                updatesequence: true
-            },
-            function(result) {
-                console.log(result);
-                $('#seq_'+id).empty();
-                $('#seq_'+id).html(newval);
-                $('#'+datatable_id).DataTable().destroy();
+// Sequence change handler - fixed version
+function changeSequence(id, direction) {
+    const row = $('#tr_' + id);
+    const currentSeq = parseInt(row.find('td:eq(2) span').text());
+    
+    $.ajax({
+        url: 'post/category/categories.php',
+        type: 'POST',
+        dataType: 'json', // Explicitly tell jQuery to expect JSON
+        data: {
+            id: id,
+            change_sequence: true,
+            direction: direction
+        },
+        success: function(data) { // data is already parsed JSON
+            if (data.success) {
+                // Update sequence numbers in UI
+                row.find('td:eq(2) span').text(data.new_sequence);
                 
-                $('#'+datatable_id).DataTable( {
-                "order": [[ 2, "asc" ]],
-                "pageLength": 50,
-                dom: 'Bfrtip',
-                buttons: [
-                'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-
-                });
-            },
-            function(result) {
-                console.log(result);
+                if (direction === 'up') {
+                    const prevRow = row.prev();
+                    if (prevRow.length && data.other_id) {
+                        prevRow.find('td:eq(2) span').text(data.other_new_sequence);
+                        row.insertBefore(prevRow);
+                    }
+                } else if (direction === 'down') {
+                    const nextRow = row.next();
+                    if (nextRow.length && data.other_id) {
+                        nextRow.find('td:eq(2) span').text(data.other_new_sequence);
+                        row.insertAfter(nextRow);
+                    }
+                }
+                
+                showAlert('Sequence updated' , 'success');
+            } else {
+                showAlert(data.message || 'No changes made' , 'info');
             }
-        );
-
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            showAlert('Failed to update sequence' , 'danger');
+            
+            // For debugging - check the actual response
+            console.log('Server response:', xhr.responseText);
+        }
+    });
 }
