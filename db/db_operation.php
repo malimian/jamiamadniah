@@ -1,96 +1,122 @@
 <?php
 
-function return_single_ans(string $sql): mixed
-{
+/**
+ * Fetch a single value from the first row of a query result
+ * 
+ * @param string $sql The SQL query to execute
+ * @return mixed|null The first value from the first row or null if no results
+ */
+function return_single_ans($sql) {
     global $conn;
-    $bt = debug_backtrace();
-    $result = $conn->query($sql);
     
-    if ($result === TRUE || $result === false) {
-        return debug_($bt, $sql);
+    if ($result = $conn->query($sql)) {
+        if ($row = $result->fetch_row()) {
+            $result->free();
+            return $row[0];
+        }
+        $result->free();
+        return null;
     }
     
-    if ($result->num_rows > 0) {
+    // Only generate backtrace if needed (for errors)
+    return debug_(debug_backtrace(), $sql);
+}
+
+/**
+ * Fetch a single associative array row from a query result
+ * 
+ * @param string $sql The SQL query to execute
+ * @return array|null Associative array of row data or null if no results
+ */
+function return_single_row($sql) {
+    global $conn;
+    
+    if ($result = $conn->query($sql)) {
         $row = $result->fetch_assoc();
-        return reset($row);
+        $result->free();
+        return $row ?: null;
     }
     
-    return null;
+    return debug_(debug_backtrace(), $sql);
 }
 
-function return_single_row(string $sql): ?array
-{
+/**
+ * Fetch all rows from a query result as an array of associative arrays
+ * 
+ * @param string $sql The SQL query to execute
+ * @return array Array of associative arrays (empty array if no results)
+ */
+function return_multiple_rows($sql) {
     global $conn;
-    $bt = debug_backtrace();
-    $result = $conn->query($sql);
+    $rows = [];
     
-    if ($result === TRUE || $result === false) {
-        return debug_($bt, $sql);
+    if ($result = $conn->query($sql)) {
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        $result->free();
+    } else {
+        return debug_(debug_backtrace(), $sql);
     }
     
-    if ($result->num_rows > 0) {
-        return $result->fetch_assoc();
-    }
-    
-    return null;
+    return $rows;
 }
 
-function return_multiple_rows(string $sql): array
-{
-    $arr = [];
-    global $conn;
-    $bt = debug_backtrace();
-    $result = $conn->query($sql);
-    
-    if ($result === TRUE || $result === false) {
-        return debug_($bt, $sql);
-    }
-    
-    while ($row = $result->fetch_assoc()) {
-        $arr[] = $row;
-    }
-    
-    return $arr;
-}
-
-function escape(string $string): string
-{
+/**
+ * Escape a string for safe SQL usage
+ * 
+ * @param string $string The string to escape
+ * @return string The escaped string
+ */
+function escape($string) {
     global $conn;
     return $conn->real_escape_string($string);
 }
 
-function Insert(string $sql): int|false
-{
+/**
+ * Execute an INSERT query and return the last insert ID
+ * 
+ * @param string $sql The INSERT query to execute
+ * @return int|false The insert ID or false on failure
+ */
+function Insert($sql) {
     global $conn;
-    $bt = debug_backtrace();
     
-    if ($conn->query($sql) === TRUE) {
+    if ($conn->query($sql) === true) {
         return $conn->insert_id;
     }
     
-    return debug_($bt, $sql);
+    return debug_(debug_backtrace(), $sql);
 }
 
-function Update(string $sql): int|false
-{
+/**
+ * Execute an UPDATE query and return affected rows count
+ * 
+ * @param string $sql The UPDATE query to execute
+ * @return int|false Number of affected rows or false on failure
+ */
+function Update($sql) {
     global $conn;
-    $bt = debug_backtrace();
     
-    if ($conn->query($sql) === TRUE) {
+    if ($conn->query($sql) === true) {
         return $conn->affected_rows;
     }
     
-    return debug_($bt, $sql);
+    return debug_(debug_backtrace(), $sql);
 }
 
-function Delete(string $sql): int|false
-{
+/**
+ * Execute a DELETE query and return affected rows count
+ * 
+ * @param string $sql The DELETE query to execute
+ * @return int|false Number of affected rows or false on failure
+ */
+function Delete($sql) {
     global $conn;
-    $bt = debug_backtrace();
     
-    if ($conn->query($sql) === TRUE) {
+    if ($conn->query($sql) === true) {
         return $conn->affected_rows;
     }
     
-    return debug_($bt, $sql);
+    return debug_(debug_backtrace(), $sql);
 }
