@@ -9,26 +9,6 @@ var currentMediaPath = null; // Global variable to store the path
    MEDIA GALLERY FUNCTIONS
    ========================================== */
 
-// function OpenMediaGallery(textbox_id, path) {
-//     $('#textcopied').val('');
-    
-//     // Store the path in global variable
-//     currentMediaPath = path || null;
-    
-//     if (typeof textbox_id !== 'undefined') {
-//         $('.btn-use').show();   
-//         $('#textcopied').val(textbox_id);
-//     } else {
-//         $('.btn-use').hide();
-//     }
-    
-//     $('#MediaGalleryModal').modal('toggle');
-    
-//     if ($('#textcopied').val() != "") {
-//         $('.btn-use').show();
-//     }
-// }
-
 
 function OpenMediaGallery(textbox_id, path) {
     $('#textcopied').val('');
@@ -66,6 +46,11 @@ function load_images() {
                 image_count_ = 0;
 
                 $.each(result, function(i, item) {
+
+                    if(currentMediaPath && currentMediaPath != null && currentMediaPath !== '' ){
+                        item.file_name = currentMediaPath+"/"+item.file_name;
+                    }
+
                     html_gallery_ += show_images_gallery(item.file_name, item.file_path, i);
                     html_list_ += show_images_list(item.file_name, item.file_path, item.file_info, i);
                     image_count_ = i;
@@ -148,13 +133,16 @@ $('.btn-use').click(function(){
 });
 
 function Use_image_url(url) {
+
     $('#'+$('#textcopied').val()).val(url);
     $('#MediaGalleryModal').modal('toggle');
 }
 
 function Use_image_id(id) {
     var url = $('#media_gallery_url_'+id).val();
+    
     $('#'+$('#textcopied').val()).val(url);
+
     $('#MediaGalleryModal').modal('toggle');
 }
 
