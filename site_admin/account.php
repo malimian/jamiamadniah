@@ -130,7 +130,8 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label>&nbsp;</label>
-                    <button class="btn btn-primary btn-block" onclick="OpenMediaGallery('p_image')" type="button">
+                    <!-- input id , path (optional) -->
+                    <button class="btn btn-primary btn-block" onclick="OpenMediaGallery('p_image' , 'profile_pics')" type="button">
                         <i class="fa fa-picture-o"></i>&nbsp;Gallery
                     </button>
                 </div>

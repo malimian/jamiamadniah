@@ -209,6 +209,7 @@
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
 }
+
   </style>
   <div class="modal media-gallery-modal-custom" id="MediaGalleryModal" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-xl MediaGalleryModal-dialog" role="document">
@@ -250,6 +251,7 @@
                 <button class="btn btn-primary m-0 rounded-pill px-4 upload_image_module_btn media-upload-btn-custom" type="button">Upload</button>
               </div>
             </div>
+            <input type="hidden" id="mediaGalleryPath">
             <div class="container tab-pane fade" id="menu1_gallery">
               <div class="mt-2 mb-5">
               <div class="input-group form-group"> 
