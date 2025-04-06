@@ -217,13 +217,49 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                     </div>
                 </div>
 
-                <!-- DataTables Example -->
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <i class="fas fa-table"></i>
-                        Pages List
-                        <div class="float-right">
+               <div class="card mb-3">
+        <div class="card-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <i class="fas fa-table"></i>
+                    Pages List
+                </div>
                             <div class="d-flex align-items-center">
+                                <!-- Bulk Actions Dropdown -->
+                                <div class="dropdown mr-2">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="bulkActionsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Bulk Actions
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="bulkActionsDropdown">
+                                        <a class="dropdown-item" href="#" onclick="bulkAction('delete')"><i class="fas fa-trash fa-fw"></i> Delete Selected</a>
+                                        <a class="dropdown-item" href="#" onclick="bulkAction('publish')"><i class="fas fa-check-circle fa-fw"></i> Publish Selected</a>
+                                        <a class="dropdown-item" href="#" onclick="bulkAction('unpublish')"><i class="fas fa-times-circle fa-fw"></i> Unpublish Selected</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#" onclick="bulkAction('feature')"><i class="fas fa-star fa-fw"></i> Feature Selected</a>
+                                        <a class="dropdown-item" href="#" onclick="bulkAction('unfeature')"><i class="fas fa-star-half-alt fa-fw"></i> Unfeature Selected</a>
+                                    </div>
+                                </div>
+                    
+                                <!-- Tag Assignment Dropdown -->
+                                <div class="dropdown mr-2">
+                                    <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="assignTagsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Assign Tags
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="assignTagsDropdown">
+                                        <div class="px-3 py-2">
+                                            <select class="form-control form-control-sm" id="tagSelection">
+                                                <option value="">Select Tag</option>
+                                                <option value="danger">Danger</option>
+                                                <option value="warning">Warning</option>
+                                                <option value="success">Success</option>
+                                                <option value="info">Info</option>
+                                                <option value="primary">Primary</option>
+                                                <option value="secondary">Secondary</option>
+                                            </select>
+                                            <button class="btn btn-sm btn-primary btn-block mt-2" onclick="assignTags()">Apply</button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <span class="badge badge-primary mr-2">Showing <?php echo ($per_page > 0) ? min($offset + 1, $total_items) : 1; ?>-<?php echo ($per_page > 0) ? min($offset + $per_page, $total_items) : $total_items; ?> of <?php echo $total_items; ?></span>
                                 <select class="form-control form-control-sm" id="per_page" onchange="changePerPage()" style="width: 100px;">
                                     <option value="10" <?= $per_page == 10 ? 'selected' : '' ?>>10</option>
@@ -242,6 +278,9 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                             <table class="table table-bordered table-hover" id="dataTable1" width="100%" cellspacing="0">
                                 <thead class="thead-dark">
                                     <tr>
+                                        <th width="40px">
+                                            <input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)">
+                                        </th>
                                         <th width="40px">ID</th>
                                         <th width="50px">Order</th>
                                         <th width="150px">Author</th>
@@ -306,7 +345,10 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
 
                                             ?>
                                             <tr id="tr_<?=$page['pid']?>" class="<?=$featured_class?>">
-                                                <td><?=$page['pid']?></td>
+                                            <td>
+                                                <input type="checkbox" class="page-checkbox" value="<?=$page['pid']?>">
+                                            </td>
+                                             <td><?=$page['pid']?></td>
                                              <td>
                                                     <div class="d-flex align-items-center">
                                                         <button class="btn btn-sm btn-outline-primary mr-2" onclick="changeSequence(<?=$page['pid']?>, 'up')">
@@ -456,6 +498,25 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                     ?>
                                 </tbody>
                             </table>
+
+                              <!-- Bulk Actions Footer -->
+                            <div class="d-flex justify-content-between align-items-center mt-3">
+                                <div>
+                                    <span id="selectedCount">0</span> items selected
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-danger mr-2" onclick="bulkAction('delete')">
+                                        <i class="fas fa-trash fa-fw"></i> Delete
+                                    </button>
+                                    <button class="btn btn-sm btn-success mr-2" onclick="bulkAction('publish')">
+                                        <i class="fas fa-check-circle fa-fw"></i> Publish
+                                    </button>
+                                    <button class="btn btn-sm btn-warning" onclick="bulkAction('unpublish')">
+                                        <i class="fas fa-times-circle fa-fw"></i> Unpublish
+                                    </button>
+                                </div>
+                            </div>
+                            
                             
                             <!-- Pagination Controls -->
                             <?php if($total_pages > 1 && $per_page > 0): ?>
@@ -630,4 +691,111 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
         window.location.href = url;
     }
     
+    </script>
+
+    <script>
+    // Bulk Actions Functionality
+    function toggleSelectAll(source) {
+        const checkboxes = document.querySelectorAll('.page-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = source.checked;
+        });
+        updateSelectedCount();
+    }
+
+    function updateSelectedCount() {
+        const selected = document.querySelectorAll('.page-checkbox:checked');
+        document.getElementById('selectedCount').textContent = selected.length;
+    }
+
+    function getSelectedPages() {
+        const selected = [];
+        document.querySelectorAll('.page-checkbox:checked').forEach(checkbox => {
+            selected.push(checkbox.value);
+        });
+        return selected;
+    }
+function bulkAction(action) {
+    const selected = getSelectedPages();
+    if (selected.length === 0) {
+        showAlert('Please select at least one page' , 'warning');
+        return;
+    }
+
+    if (action === 'delete' && !confirm('Are you sure you want to delete the selected pages?')) {
+        return;
+    }
+
+    // Use your senddata function instead of fetch
+    senddata(
+        'post/page/bulk_action.php',
+        "POST", 
+        {
+            bulk_action: action,
+            pages: selected
+        },
+        function(result) {
+            // Success callback
+            if (result.success) {
+                showAlert(result.message);
+                location.reload();
+            } else {
+                showAlert('Error: ' + (result.message || 'Action failed') , 'danger');
+            }
+        },
+        function(error) {
+            // Error callback
+            console.error('Error:', error);
+            showAlert('An error occurred during bulk action' , 'danger');
+        }
+    );
+}
+
+function assignTags() {
+    const selected = getSelectedPages();
+    if (selected.length === 0) {
+        showAlert('Please select at least one page' , 'warning');
+        return;
+    }
+
+    const tag = document.getElementById('tagSelection').value;
+    if (!tag) {
+        showAlert('Please select a tag' , 'warning');
+        return;
+    }
+
+    // Use your senddata function instead of fetch
+    senddata(
+        'post/page/bulk_action.php',
+        "POST", 
+        {
+            assign_tag: true,
+            tag: tag,
+            pages: selected
+        },
+        function(result) {
+            // Success callback
+            if (result.success) {
+                alert(result.message);
+                location.reload();
+            } else {
+                alert('Error: ' + (result.message || 'Tag assignment failed'));
+            }
+        },
+        function(error) {
+            // Error callback
+            console.error('Error:', error);
+            alert('An error occurred during tag assignment');
+        }
+    );
+}
+
+    // Update selected count when checkboxes change
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.page-checkbox');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedCount);
+        });
+    });
+
     </script>
