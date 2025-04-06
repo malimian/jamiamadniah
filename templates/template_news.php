@@ -39,6 +39,8 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
     display: none;
 }
 </style>
+
+
 <!-- Single Product Start -->
 <div class="container-fluid py-5">
     <div class="container py-5">

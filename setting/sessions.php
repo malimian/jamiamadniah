@@ -24,5 +24,10 @@ if(!headers_sent()){
             $_SESSION['country'] = "";
     }
 
+
+    if (!isset($_SESSION['content_alert'])) {
+            $_SESSION['content_alert'] = "";
+    }
+
     
 }
