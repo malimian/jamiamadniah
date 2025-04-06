@@ -499,7 +499,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                 </tbody>
                             </table>
 
-                              <!-- Bulk Actions Footer -->
+                            <!-- Bulk Actions Footer -->
                             <div class="d-flex justify-content-between align-items-center mt-3">
                                 <div>
                                     <span id="selectedCount">0</span> items selected
