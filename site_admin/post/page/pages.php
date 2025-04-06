@@ -92,6 +92,16 @@ if (isset($_POST['change_sequence'])) {
 
 
 
+if(isset($_POST['update_notes'])) {
+    $id = (int)$_POST['id'];
+    $notes = isset($_POST['notes']) ? trim($_POST['notes']) : '';
+    
+    $sql = "UPDATE $tbl SET notes = " . ($notes ? "'" . escape($notes) . "'" : "NULL") . " 
+            WHERE $tbl_id = $id";
+    
+    echo Update($sql);
+}
+
 
 
 ?>

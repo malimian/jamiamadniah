@@ -116,3 +116,59 @@ function changeSequence(id, direction) {
         }
     });
 }
+
+
+// Notes editing functionality
+        $(document).on('click', '.edit-notes', function(e) {
+            e.preventDefault();
+            const pageId = $(this).data('id');
+            const notesContainer = $('#notes_' + pageId);
+            const currentNotes = notesContainer.find('.notes-content').text().trim();
+            
+            // Replace with textarea
+            notesContainer.html(`
+                <textarea class="form-control mb-2" rows="3" id="notes_text_${pageId}">${currentNotes}</textarea>
+                <button class="btn btn-sm btn-success save-notes mr-1" data-id="${pageId}">Save</button>
+                <button class="btn btn-sm btn-secondary cancel-notes" data-id="${pageId}">Cancel</button>
+            `);
+        });
+
+        $(document).on('click', '.save-notes', function() {
+            const pageId = $(this).data('id');
+            const newNotes = $('#notes_text_' + pageId).val();
+            
+            senddata(
+                'post/page/pages.php',
+                "POST", {
+                    id: pageId,
+                    update_notes: true,
+                    notes: newNotes
+                },
+                function(result) {
+                    // Success callback
+                    const notesContainer = $('#notes_' + pageId);
+                    if(newNotes.trim()) {
+                        notesContainer.html(`
+                            <div class="notes-content">
+                                ${newNotes.replace(/\n/g, '<br>')}
+                                <small><a href="#" class="edit-notes" data-id="${pageId}">Edit</a></small>
+                            </div>
+                        `);
+                    } else {
+                        notesContainer.html(`
+                            <small><a href="#" class="edit-notes" data-id="${pageId}">Add notes</a></small>
+                        `);
+                    }
+                },
+                function(result) {
+                    // Error callback
+                    alert("Failed to update notes. Please try again.");
+                    console.error("Notes update failed:", result);
+                }
+            );
+        });
+
+        $(document).on('click', '.cancel-notes', function() {
+            // Just reload the page to get the original state
+            location.reload();
+        });

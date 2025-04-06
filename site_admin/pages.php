@@ -252,6 +252,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                         <th width="80px">Status</th>
                                         <th width="80px">Visibility</th>
                                         <th width="80px">Views</th>
+                                        <th width="150px">Notes</th>
                                         <th width="120px">Last Modified</th>
                                         <th width="120px">Actions</th>
                                     </tr>
@@ -384,6 +385,24 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                 </td>
                                                 <td>
                                                     <span class="text-primary"><?=number_format($page['views'])?></span>
+                                                </td>
+                                                <td>
+                                                    <div class="notes-container" id="notes_<?=$page['pid']?>">
+                                                        <?php if(!empty($page['notes'])): ?>
+                                                            <div class="notes-content">
+                                                                <?=nl2br(htmlspecialchars($page['notes']))?>
+                                                                <?php if($has_edit): ?>
+                                                                    <small><a href="#" class="edit-notes" data-id="<?=$page['pid']?>">Edit</a></small>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        <?php else: ?>
+                                                            <?php if($has_edit): ?>
+                                                                <small><a href="#" class="edit-notes" data-id="<?=$page['pid']?>">Add notes</a></small>
+                                                            <?php else: ?>
+                                                                <small class="text-muted">No notes</small>
+                                                            <?php endif; ?>
+                                                        <?php endif; ?>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <small class="text-muted"><?=$last_modified?></small>
@@ -539,6 +558,31 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
             border-color: #80bdff;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
+
+        /* Notes CSS*/
+
+        .notes-content {
+            background: #f8f9fa;
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            word-wrap: break-word;
+        }
+
+        .notes-content small {
+            font-size: 0.8em;
+        }
+
+        .edit-notes {
+            color: #6c757d;
+            text-decoration: underline;
+        }
+
+        .edit-notes:hover {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
     </style>
 
     <script type="text/javascript" src="js/page/pages.js"></script>
