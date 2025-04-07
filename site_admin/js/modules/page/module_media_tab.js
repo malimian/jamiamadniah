@@ -349,50 +349,64 @@ function refreshMediaTable(mediaType) {
         location.reload();
 }
 
-// Event Listeners
+
+// Event Listeners - Improved Version
 $(document).ready(function() {
-    // Save New Media handlers
-    $('#saveImagesBtn').click(function(e) {
+    // Save Media handlers - More specific targeting
+    $('button#saveImagesBtn').on('click', function(e) {
         e.preventDefault();
+        e.stopPropagation(); // Prevent event bubbling
         saveImages();
     });
     
-    $('#saveVideosBtn').click(function(e) {
+    $('button#saveVideosBtn').on('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         saveVideos();
     });
     
-    $('#saveFilesBtn').click(function(e) {
+    $('button#saveFilesBtn').on('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         saveFiles();
     });
     
-    // Update Existing Media handlers
-    $('#updateImageBtn').click(function(e) {
+    // Update Media handlers
+    $('button#updateImageBtn').on('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         updateImage();
     });
     
-    $('#updateVideoBtn').click(function(e) {
+    $('button#updateVideoBtn').on('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         updateVideo();
     });
     
-    $('#updateFileBtn').click(function(e) {
+    $('button#updateFileBtn').on('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
         updateFile();
     });
     
-    // Update file input labels to show selected file names
-    $('.custom-file-input').on('change', function() {
+    // File input handling - More specific selector
+    $('input.custom-file-input').on('change', function() {
         let fileName = $(this).val().split('\\').pop();
-        if ($(this)[0].files.length > 1) {
-            fileName = $(this)[0].files.length + ' files selected';
+        if (this.files.length > 1) {
+            fileName = this.files.length + ' files selected';
         }
         $(this).next('.custom-file-label').addClass("selected").html(fileName);
     });
+    
+    // Prevent form submission on Enter key in text inputs
+    $('form input[type="text"]').on('keypress', function(e) {
+        if (e.which === 13) { // Enter key
+            e.preventDefault();
+            return false;
+        }
+    });
 });
-
 
 
   // Handle all move buttons with a single event listener
