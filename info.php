@@ -61,6 +61,19 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && isset(
 
 }
 
+if(isset($_SESSION['user'])) { 
+    
+    $module_actions = isset($_SESSION['user']['module_actions']) ? $_SESSION['user']['module_actions'] : []; $action_ids = array_column($module_actions, 'og_moduleactions_id'); 
+        
+        $has_edit = in_array(3, $action_ids); 
+        
+        if($has_edit) { 
+
+            echo '<button style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background-color:#4CAF50;color:white;padding:12px 25px;border-radius:30px;z-index:9999;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,0.3);font-family:Arial,sans-serif;font-size:14px;border:none;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;" target="_blank" onclick="location.href=\''.SITE_ADMIN.'/editpage.php?id='.$content['pid'].'\'"><i class="fa fa-edit" style="margin-right:8px;"></i>Edit</button>'; 
+
+            } 
+}
+
 
 // Add header if specified in the content
 if (!empty($content['header'])) {
