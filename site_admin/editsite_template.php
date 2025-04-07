@@ -1,4 +1,21 @@
-<?php include 'includes/header.php';?>
+<?php 
+include 'admin_connect.php';
+
+// With additional libraries
+$extra_libs = [];
+
+AdminHeader(
+    "dashboard Admin", 
+    "", 
+    $extra_libs,
+    null,
+    '
+
+    '
+);
+
+?>
+
 <!-- CodeMirror CSS -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" />
 
@@ -82,8 +99,6 @@
 </style>
 
 <body id="page-top">
-   <?php include 'setting/company_name.php';?>
-   <?php include 'includes/navbar_search.php';?>
    <?php include 'includes/notification.php';?>
    <?php
          $site_template = return_single_row("Select * from site_template Where st_id = ".$_GET['id']." $and_gc ");

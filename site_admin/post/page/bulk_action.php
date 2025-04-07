@@ -58,18 +58,12 @@ try {
         echo json_encode(['success' => true, 'message' => $message]);
         
     } elseif (isset($_POST['assign_tag']) && isset($_POST['pages']) && isset($_POST['tag'])) {
-        // Handle tag assignment
-        $validTags = ['danger', 'warning', 'success', 'info', 'primary', 'secondary'];
-        if (!in_array($_POST['tag'], $validTags)) {
-            echo json_encode(['success' => false, 'message' => 'Invalid tag']);
-            exit;
-        }
         
         $pageIds = is_array($_POST['pages']) ? array_map('intval', $_POST['pages']) : [intval($_POST['pages'])];
         $placeholders = implode(',', $pageIds);
         $tag = escape($_POST['tag']);
         
-        $sql = "UPDATE pages SET tag = '$tag' WHERE pid IN ($placeholders)";
+        $sql = "UPDATE pages SET personal_tags = '$tag' WHERE pid IN ($placeholders)";
         $result = Update($sql);
         
         if ($result === false) {

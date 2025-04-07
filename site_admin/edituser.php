@@ -1,13 +1,23 @@
 <?php 
-include 'includes/header.php';
+include 'admin_connect.php';
+
+// With additional libraries
+$extra_libs = [];
+
+AdminHeader(
+    "dashboard Admin", 
+    "", 
+    $extra_libs,
+    null,
+    '
+
+    '
+);
+
 $id  = decrypt_($_GET['id']);
 ?>
 
 <body id="page-top">
-
-     <?php include 'setting/company_name.php';?>
-
-     <?php include 'includes/navbar_search.php';?>
 
       <?php include 'includes/notification.php';?>
    

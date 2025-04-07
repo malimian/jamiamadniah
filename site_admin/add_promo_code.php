@@ -1,5 +1,20 @@
-<?php include 'includes/header.php';?>
+<?php 
+include 'admin_connect.php';
 
+// With additional libraries
+$extra_libs = [];
+
+AdminHeader(
+    "Gallery", 
+    "", 
+    $extra_libs,
+    null,
+    '
+
+    '
+);
+
+?>
 <body id="page-top">
 
      <?php include 'setting/company_name.php';?>

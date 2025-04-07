@@ -1,4 +1,20 @@
-<?php include 'includes/header.php';?>
+<?php 
+include 'admin_connect.php';
+
+// With additional libraries
+$extra_libs = [];
+
+AdminHeader(
+    "dashboard Admin", 
+    "", 
+    $extra_libs,
+    null,
+    '
+
+    '
+);
+
+?>
 
 <body id="page-top">
 

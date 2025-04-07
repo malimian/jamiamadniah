@@ -1,7 +1,21 @@
-<?php include 'includes/header.php';?>
+<?php 
+include 'admin_connect.php';
+
+// With additional libraries
+$extra_libs = [];
+
+AdminHeader(
+    "Gallery", 
+    "", 
+    $extra_libs,
+    null,
+    '
+
+    '
+);
+
+?>
 <body id="page-top">
-   <?php include 'setting/company_name.php';?>
-   <?php include 'includes/navbar_search.php';?>
    <?php include 'includes/notification.php';?>
    <div id="wrapper">
    <?php include 'includes/sidebar.php'; ?>

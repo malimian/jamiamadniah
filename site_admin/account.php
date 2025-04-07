@@ -1,14 +1,16 @@
-<?php include 'includes/header.php';?>
+<?php 
+include 'admin_connect.php';
 
-<body id="page-top">
+// With additional libraries
+$extra_libs = [];
 
-     <?php include 'setting/company_name.php';?>
-
-     <?php include 'includes/navbar_search.php';?>
-
-      <?php include 'includes/notification.php';?>
-   
-      <style>
+AdminHeader(
+    "Account", 
+    "Account Settings", 
+    $extra_libs,
+    null,
+    '
+    <style>
         .form-group label {
             font-weight: bold;
         }
@@ -18,6 +20,15 @@
             border: none;
         }
     </style>
+
+    '
+);
+
+?>
+
+<body id="page-top">
+
+      <?php include 'includes/notification.php';?>
 
   <div id="wrapper">
 
@@ -187,15 +198,13 @@
     </div>
 </form>
     </div>
-      
-      <!--Profile  -->
-      <script type="text/javascript" src="js/account/account.js"></script>
-      
+            
        </div>
    
    </div>
       <!-- /.container-fluid -->
 
+        <script src="js/account/account.js"></script>
 
          <?php include 'includes/footer_copyright.php';?>
 
