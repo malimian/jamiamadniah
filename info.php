@@ -41,40 +41,6 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
 
 
 
-// Handle the content alert for logged-in users
-if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && isset($_SESSION['user'])) {
-    
-    $alert_message = "Content Visibility Notice\n";
-
-    if ($content['page_visibility'] == 0) {
-        $alert_message .= "This page is currently set to private and is not visible to public users.\n";
-    }
-
-    if ($content['page_active'] == 0) {
-        $alert_message .= "This page is currently in draft and unpublished.\n";
-    }
-
-    $alert_message .= "Only admins and CMS users can access this page.\n";
-
-    // Output both CSS and HTML for the alert
-    echo '<div style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background-color: #ff0000; color: white; padding: 15px 25px; border-radius: 5px; z-index: 9999; max-width: 80%; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); white-space: pre-line; font-family: Arial, sans-serif; font-size: 14px; animation: fadeIn 0.5s;">'.$alert_message.'</div>';
-
-}
-
-if(isset($_SESSION['user'])) { 
-    
-    $module_actions = isset($_SESSION['user']['module_actions']) ? $_SESSION['user']['module_actions'] : []; $action_ids = array_column($module_actions, 'og_moduleactions_id'); 
-        
-        $has_edit = in_array(3, $action_ids); 
-        
-        if($has_edit) { 
-
-            echo '<button style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background-color:#4CAF50;color:white;padding:12px 25px;border-radius:30px;z-index:9999;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,0.3);font-family:Arial,sans-serif;font-size:14px;border:none;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;" target="_blank" onclick="location.href=\''.SITE_ADMIN.'/editpage.php?id='.$content['pid'].'\'"><i class="fa fa-edit" style="margin-right:8px;"></i>Edit</button>'; 
-
-            } 
-}
-
-
 // Add header if specified in the content
 if (!empty($content['header'])) {
     $header[] = $content['header'];
@@ -163,4 +129,41 @@ if (!empty($script)) {
 if (!empty($footer)) {
     echo replace_sysvari(front_footer($footer));
 }
+
+
+
+
+// Handle the content alert for logged-in users
+if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && isset($_SESSION['user'])) {
+    
+    $alert_message = "Content Visibility Notice\n";
+
+    if ($content['page_visibility'] == 0) {
+        $alert_message .= "This page is currently set to private and is not visible to public users.\n";
+    }
+
+    if ($content['page_active'] == 0) {
+        $alert_message .= "This page is currently in draft and unpublished.\n";
+    }
+
+    $alert_message .= "Only admins and CMS users can access this page.\n";
+
+    // Output both CSS and HTML for the alert
+    echo '<div style="position: fixed; bottom: 20px; left: 70%; transform: translateX(-50%); background-color: #ff0000; color: white; padding: 15px 25px; border-radius: 5px; z-index: 9999; max-width: 80%; text-align: center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); white-space: pre-line; font-family: Arial, sans-serif; font-size: 14px; animation: fadeIn 0.5s;">'.$alert_message.'</div>';
+
+}
+
+if(isset($_SESSION['user'])) { 
+    
+    $module_actions = isset($_SESSION['user']['module_actions']) ? $_SESSION['user']['module_actions'] : []; $action_ids = array_column($module_actions, 'og_moduleactions_id'); 
+        
+        $has_edit = in_array(3, $action_ids); 
+        
+        if($has_edit) { 
+
+            echo '<button style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background-color:#4CAF50;color:white;padding:12px 25px;border-radius:30px;z-index:9999;text-align:center;box-shadow:0 4px 8px rgba(0,0,0,0.3);font-family:Arial,sans-serif;font-size:14px;border:none;cursor:pointer;transition:all 0.3s;display:flex;align-items:center;justify-content:center;" target="_blank" onclick="location.href=\''.SITE_ADMIN.'/editpage.php?id='.$content['pid'].'\'"><i class="fa fa-edit" style="margin-right:8px;"></i>Edit</button>'; 
+
+            } 
+}
+
 ?>

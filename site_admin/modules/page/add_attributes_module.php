@@ -81,9 +81,6 @@ foreach ($all_options as $option) {
 
 $tabs = return_multiple_rows("Select * from page_attributes Where template_id = $template_id and isactive = 1 and soft_delete = 0 Group by tab_group");
 
-print_r($tabs);
-
-
 // Organize attributes by tab
 $tab_attributes = [];
 foreach ($attributes as $attr) {
@@ -105,33 +102,33 @@ if ($page_id > 0) {
 ?>
 
 <div class="container mt-5">
-    <!-- Tabs Navigation -->
-    <ul class="nav nav-tabs" id="productTabs" role="tablist">
-        <?php foreach ($tabs as $tab_id => $tab): ?>
-            <li class="nav-item">
-                <a class="nav-link <?php echo $tab_id === 'basic' ? 'active' : ''; ?>" 
-                   id="<?php echo $tab_id; ?>-tab" data-toggle="tab" href="#<?php echo $tab_id; ?>" 
-                   role="tab" aria-controls="<?php echo $tab_id; ?>" 
-                   aria-selected="<?php echo $tab_id === 'basic' ? 'true' : 'false'; ?>">
-                    <i class="<?php echo $tab['icon_class']; ?>"></i> <?php echo $tab['tab_name']; ?>
-                </a>
-            </li>
-        <?php endforeach; ?>
-    </ul>
+   <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs" id="productTabs" role="tablist">
+            <?php foreach ($tabs as $index => $tab): ?>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo $index === 0 ? 'active' : ''; ?>" 
+                       id="<?php echo $tab['tab_group']; ?>-tab" data-toggle="tab" href="#<?php echo $tab['tab_group']; ?>" 
+                       role="tab" aria-controls="<?php echo $tab['tab_group']; ?>" 
+                       aria-selected="<?php echo $index === 0 ? 'true' : 'false'; ?>">
+                        <i class="<?php echo $tab['icon_class']; ?>"></i> <?php echo $tab['tab_name']; ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
 
     <!-- Tab Content -->
     <div class="tab-content" id="productTabsContent">
-        <?php foreach ($tabs as $tab_id => $tab): ?>
-            <div class="tab-pane fade <?php echo $tab_id === 'basic' ? 'show active' : ''; ?>" 
-                 id="<?php echo $tab_id; ?>" role="tabpanel" aria-labelledby="<?php echo $tab_id; ?>-tab">
+        <?php foreach ($tabs as $index => $tab): ?>
+            <div class="tab-pane fade <?php echo $index === 'basic' ? 'show active' : ''; ?>" 
+                 id="<?php echo $tab['tab_group']; ?>" role="tabpanel" aria-labelledby="<?php echo $tab['tab_group']; ?>-tab">
                 
-                <?php if (isset($tab_attributes[$tab_id])): ?>
-                    <?php foreach ($tab_attributes[$tab_id] as $attribute): 
-                        $attribute_id = $attribute['id'];
-                        $current_value = isset($attribute_values[$attribute_id]) ? $attribute_values[$attribute_id] : $attribute['default_value'];
-                        $required = $attribute['is_required'] ? 'required' : '';
-                        $icon_class = $attribute['icon_class'] ?? 'fa fa-circle';
-                    ?>
+                     <?php if (isset($tab_attributes[$tab['tab_group']])): ?>
+                        <?php foreach ($tab_attributes[$tab['tab_group']] as $attribute): 
+                            $attribute_id = $attribute['id'];
+                            $current_value = isset($attribute_values[$attribute_id]) ? $attribute_values[$attribute_id] : $attribute['default_value'];
+                            $required = $attribute['is_required'] ? 'required' : '';
+                            $icon_class = $attribute['icon_class'] ?? 'fa fa-circle';
+                        ?>
                         <div class="form-group row">
                             <label for="attr_<?php echo $attribute_id; ?>" class="col-sm-2 col-form-label">
                                 <?php echo htmlspecialchars($attribute['attribute_label']); ?>
@@ -202,7 +199,7 @@ if ($page_id > 0) {
                                             <?php break; ?>
 
                                         <?php case 'image': ?>
-                                            <input type="text" placeholder="Choose Image" name="p_image" class="form-control" id="attr_<?php echo $attribute_id; ?>" 
+                                            <input type="text" placeholder="Choose Image" name="attribute[<?php echo $attribute_id; ?>]" class="form-control" id="attr_<?php echo $attribute_id; ?>" 
                                                    name="attribute[<?php echo $attribute_id; ?>]" 
                                                    value="<?php echo htmlspecialchars($current_value); ?>" 
                                                    <?php echo $required; ?>>
