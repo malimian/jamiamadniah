@@ -245,13 +245,13 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
                                             <i class="fas fa-cog"></i>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_<?=$category['catid']?>">
-                                            <?php if(canEdit($category['isSystemOperated'])): ?>
+                                            <?php if( $has_edit && canEdit($category['isSystemOperated'])): ?>
                                             <a class="dropdown-item" href="editmenue.php?id=<?=$category['catid']?>&action=edit">
                                                 <i class="fa fa-edit mr-2"></i>Edit
                                             </a>
                                             <?php endif; ?>
                                             
-                                            <?php if(canDelete($category['isSystemOperated'])): ?>
+                                            <?php if($has_delete && canDelete($category['isSystemOperated'])): ?>
                                             <a class="dropdown-item text-danger" onclick="delete_(<?=$category['catid']?>)">
                                                 <i class="fa fa-trash mr-2"></i>Delete
                                             </a>

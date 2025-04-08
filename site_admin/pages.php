@@ -85,7 +85,7 @@ foreach ($users as $user) {
 }
 
 // Get paginated data - make sure to include activatedby in your SELECT
-$query = "SELECT *, pages.isactive as pages_isactive, pages.createdby as pages_createdby, pages.activatedby 
+$query = "SELECT *, pages.isactive as pages_isactive, pages.createdby as pages_createdby, pages.activatedby, pages.isSystemOperated as page_isSystemOperated
     FROM pages LEFT JOIN category ON pages.catid = category.catid 
     WHERE pages.soft_delete = 0 AND category.soft_delete = 0 $template $category $author_filter $publisher_filter $status_filter $search_filter
     ORDER BY pages.catid, pages_sequence ASC";
@@ -461,45 +461,49 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                     <small class="text-muted"><?=$last_modified?></small>
                                                 </td>
                                                 <td>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            Actions
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                            <?php if($has_edit): ?>
-                                                            <a class="dropdown-item" href="editpage.php?id=<?=$page['pid']?>">
-                                                                <i class="fas fa-edit fa-fw"></i> Edit
-                                                            </a>
-                                                            <?php endif; ?>
-                                                            
-                                                            <?php if($has_add): ?>
-                                                            <a class="dropdown-item" href="copypage.php?id=<?=$page['pid']?>">
-                                                                <i class="fas fa-copy fa-fw"></i> Duplicate
-                                                            </a>
-                                                            <?php endif; ?>
-                                                            
-                                                            <?php if($has_view): ?>
-                                                            <a class="dropdown-item" target="_blank" href="<?=BASE_URL.$page['page_url']?>">
-                                                                <i class="fas fa-eye fa-fw"></i> View
-                                                            </a>
-                                                            <?php endif; ?>
-                                                            
-                                                            <?php if($has_status): ?>
-                                                            <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item" href="#" onclick="toggleStatus(<?=$page['pid']?>, <?=$page['pages_isactive']?>)">
-                                                                <i class="fas fa-power-off fa-fw"></i> <?=$page['pages_isactive'] ? 'Deactivate' : 'Activate'?>
-                                                            </a>
-                                                            <?php endif; ?>
-                                                            
-                                                            <?php if($has_delete): ?>
-                                                            <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item text-danger" onclick="delete_(<?=$page['pid']?>)">
-                                                                <i class="fas fa-trash fa-fw"></i> Delete
-                                                            </a>
-                                                            <?php endif; ?>
-                                                        </div>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Actions
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                        <!-- Edit Action -->
+                                                        <?php 
+                                                        if($has_edit && canEdit($page['page_isSystemOperated'])): ?>
+                                                        <a class="dropdown-item" href="editpage.php?id=<?=$page['pid']?>">
+                                                            <i class="fas fa-edit fa-fw"></i> Edit
+                                                        </a>
+                                                        <?php endif; ?>
+                                                        
+                                                        <!-- Duplicate Action -->
+                                                        <?php if($has_add && canEdit($page['page_isSystemOperated'])): ?>
+                                                        <a class="dropdown-item" href="copypage.php?id=<?=$page['pid']?>">
+                                                            <i class="fas fa-copy fa-fw"></i> Duplicate
+                                                        </a>
+                                                        <?php endif; ?>
+                                                        
+                                                        <!-- Always show View -->
+                                                        <a class="dropdown-item" target="_blank" href="<?=BASE_URL.$page['page_url']?>">
+                                                            <i class="fas fa-eye fa-fw"></i> View
+                                                        </a>
+                                                        
+                                                        <!-- Status Toggle -->
+                                                        <?php if($has_status && canActivate($page['page_isSystemOperated'])): ?>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#" onclick="toggleStatus(<?=$page['pid']?>, <?=$page['pages_isactive']?>)">
+                                                            <i class="fas fa-power-off fa-fw"></i> <?=$page['pages_isactive'] ? 'Deactivate' : 'Activate'?>
+                                                        </a>
+                                                        <?php endif; ?>
+                                                        
+                                                        <!-- Delete Action -->
+                                                        <?php if($has_delete && canDelete($page['page_isSystemOperated'])): ?>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item text-danger" onclick="delete_(<?=$page['pid']?>)">
+                                                            <i class="fas fa-trash fa-fw"></i> Delete
+                                                        </a>
+                                                        <?php endif; ?>
                                                     </div>
-                                                </td>
+                                                </div>
+                                            </td>
                                             </tr>
                                             <?php
                                         }
