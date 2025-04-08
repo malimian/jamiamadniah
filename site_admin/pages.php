@@ -5,7 +5,6 @@ include 'admin_connect.php';
 $extra_libs = [
     '<link href="css/pages.css" rel="stylesheet">',
     '<script src="js/page/bulk_action.js"></script>',
-    '<script src="js/page/pages.js"></script>',
 ];
 
 AdminHeader(
@@ -662,6 +661,9 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
         }
 
     </style>
+
+    <script type="text/javascript" src="js/page/pages.js"></script>
+
 
     <script>
 
