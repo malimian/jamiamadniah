@@ -56,6 +56,8 @@ $action = isset($params['action']) ? $params['action'] : 'add';
 $page_id = isset($page[0]['pid']) ? $page[0]['pid'] : 0;
 $template_id = isset($page[0]['template_id']) ? $page[0]['template_id'] : 0;
 
+$isrich_textarea = false;
+
 // 1. First fetch just the attributes
 $attributes = return_multiple_rows("
     SELECT pa.* 
@@ -157,7 +159,20 @@ if ($page_id > 0) {
                                                       name="attribute[<?php echo $attribute_id; ?>]" 
                                                       <?php echo $required; ?> rows="3"><?php echo htmlspecialchars($current_value); ?></textarea>
                                             <?php break; ?>
-                                        
+                                                                            
+                                     <?php case 'richtextarea':
+                                     $isrich_textarea = true;
+                                      ?>
+                                        <textarea class="form-control" id="attr_<?php echo $attribute_id; ?>" 
+                                                      name="attribute[<?php echo $attribute_id; ?>]" 
+                                                      <?php echo $required; ?> rows="3"><?php echo htmlspecialchars($current_value); ?></textarea>
+                                        <script type="text/javascript">
+                                            $(document).ready(function() {
+                                              $('#attr_<?php echo $attribute_id; ?>').trumbowyg();
+                                            });
+                                        </script>
+                                      <?php break; ?>
+
                                     <?php    case 'select': ?>
                                             <select class="form-control" id="attr_<?php echo $attribute_id; ?>" 
                                                     name="attribute[<?php echo $attribute_id; ?>]" <?php echo $required; ?>>
@@ -236,6 +251,15 @@ if ($page_id > 0) {
         <?php endforeach; ?>
     </div>
 </div>
+
+<?php 
+
+if($isrich_textarea){
+    echo '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/trumbowyg@2.25.1/dist/ui/trumbowyg.min.css">';
+    echo '<script src="https://cdn.jsdelivr.net/npm/trumbowyg@2.25.1/dist/trumbowyg.min.js"></script>';
+}
+
+?>
 <script>
 $(document).ready(function() {
     // Initialize Select2 for multiselect elements if they exist
