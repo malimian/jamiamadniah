@@ -54,14 +54,14 @@
 // Get the action and page data from the parameters
 $action = isset($params['action']) ? $params['action'] : 'add';
 $page_id = isset($page[0]['pid']) ? $page[0]['pid'] : 0;
-$site_template_id = isset($page[0]['site_template_id']) ? $page[0]['site_template_id'] : 0;
+$template_id = isset($page[0]['template_id']) ? $page[0]['template_id'] : 0;
 
 // 1. First fetch just the attributes
 $attributes = return_multiple_rows("
     SELECT pa.* 
     FROM page_attributes pa
-    WHERE pa.is_active = 1 
-    AND (pa.site_template_id IS NULL OR pa.site_template_id = $site_template_id)
+    WHERE pa.isactive = 1 
+    AND (pa.template_id IS NULL OR pa.template_id = $template_id)
     ORDER BY pa.sort_order
 ");
 
@@ -78,13 +78,13 @@ foreach ($all_options as $option) {
     $options_by_attribute[$option['attribute_id']][] = $option;
 }
 
-// Define tabs structure
-$tabs = [
-    'basic' => ['name' => 'Basic Info', 'icon' => 'fa fa-info-circle'],
-    'details' => ['name' => 'Details', 'icon' => 'fa fa-list-alt'],
-    'shipping' => ['name' => 'Shipping & Policies', 'icon' => 'fa fa-truck'],
-    'flags' => ['name' => 'Flags', 'icon' => 'fa fa-flag']
-];
+echo "Select tab_name from page_attributes Where template_id = $template_id and isactive = 1 and soft_delete = 0";
+
+
+$tabs = return_multiple_rows("Select tab_name from page_attributes Where template_id = $template_id and isactive = 1 and soft_delete = 0");
+
+print_r($tabs);
+
 
 // Organize attributes by tab
 $tab_attributes = [];
@@ -115,7 +115,7 @@ if ($page_id > 0) {
                    id="<?php echo $tab_id; ?>-tab" data-toggle="tab" href="#<?php echo $tab_id; ?>" 
                    role="tab" aria-controls="<?php echo $tab_id; ?>" 
                    aria-selected="<?php echo $tab_id === 'basic' ? 'true' : 'false'; ?>">
-                    <i class="<?php echo $tab['icon']; ?>"></i> <?php echo $tab['name']; ?>
+                    <i class="<?php echo $tab['icon_class']; ?>"></i> <?php echo $tab['tab_name']; ?>
                 </a>
             </li>
         <?php endforeach; ?>
