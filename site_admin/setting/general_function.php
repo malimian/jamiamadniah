@@ -589,3 +589,17 @@ function timeAgo($datetime) {
     if ($diff->i > 0) return $diff->i . " minute" . ($diff->i > 1 ? "s" : "") . " ago";
     return "Just now";
 }
+
+
+// Permission functions
+function canEdit($isSystemOperated) {
+    return in_array($isSystemOperated, [1, 4, 6 ,0]);
+}
+
+function canActivate($isSystemOperated) {
+    return in_array($isSystemOperated, [2, 4, 5 ,0]);
+}
+
+function canDelete($isSystemOperated) {
+    return in_array($isSystemOperated, [3, 5, 6 ,0]);
+}

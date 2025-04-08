@@ -14,6 +14,7 @@ AdminHeader(
     '
 );
 
+
 // Initialize variables
 $parent_category_filter = "";
 $show_in_navbar_filter = "";
@@ -90,7 +91,7 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
                 <!-- Page Content -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h1 class="page-header mb-0">List of Menu</h1>
-                    <a href="addmenue.php?action=add" class="btn btn-danger btn-md">
+                    <a href="editmenue.php?action=add" class="btn btn-danger btn-md">
                         <i class="fa fa-plus"></i> Add Menu
                     </a>
                 </div>
@@ -226,7 +227,8 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
                                         <input type="checkbox" class="custom-control-input js-switch" 
                                                id="status_switch_<?=$category['catid']?>" 
                                                data-id="<?=$category['catid']?>"
-                                               <?=$category['isactive'] == 1 ? 'checked' : ''?>>
+                                               <?=($category['isactive'] == 1 && canActivate($category['isSystemOperated'])) ? 'checked' : ''?>
+                                               <?=!canActivate($category['isSystemOperated']) ? 'disabled' : ''?>>
                                         <label class="custom-control-label" for="status_switch_<?=$category['catid']?>">
                                             <span id="status_<?=$category['catid']?>" class="badge <?=$category['isactive'] == 1 ? 'badge-success' : 'badge-danger'?>">
                                                 <?=$category['isactive'] == 1 ? 'Active' : 'Inactive'?>
@@ -234,6 +236,7 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
                                         </label>
                                     </div>
                                 </td>
+
                                 <td>
                                     <div class="dropdown">
                                         <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" 
@@ -242,15 +245,20 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
                                             <i class="fas fa-cog"></i>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_<?=$category['catid']?>">
+                                            <?php if(canEdit($category['isSystemOperated'])): ?>
                                             <a class="dropdown-item" href="editmenue.php?id=<?=$category['catid']?>&action=edit">
                                                 <i class="fa fa-edit mr-2"></i>Edit
                                             </a>
+                                            <?php endif; ?>
+                                            
+                                            <?php if(canDelete($category['isSystemOperated'])): ?>
                                             <a class="dropdown-item text-danger" onclick="delete_(<?=$category['catid']?>)">
                                                 <i class="fa fa-trash mr-2"></i>Delete
                                             </a>
+                                            <?php endif; ?>
                                         </div>
                                     </div>
-                                </td>
+                            </td>
                             </tr>
                             <?php endforeach; ?>      
                         </tbody>
