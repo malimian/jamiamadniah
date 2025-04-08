@@ -3,8 +3,7 @@ include 'admin_connect.php';
 
 // With additional libraries
 $extra_libs = [
-    '<link href="css/pages.css" rel="stylesheet">',
-    '<script src="js/page/bulk_action.js"></script>',
+    '<link href="css/page/pages.css" rel="stylesheet">'
 ];
 
 AdminHeader(
@@ -604,65 +603,8 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
 
     <?php include 'includes/footer.php';?>
 
-    <style>
-        .featured-post {
-            background-color: #f8f9fa;
-        }
-        .table-hover tbody tr:hover {
-            background-color: rgba(0,0,0,.02);
-        }
-        .badge {
-            font-weight: 500;
-        }
-        .pagination {
-            margin-top: 20px;
-        }
-        .page-item.active .page-link {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-        .page-link {
-            color: #007bff;
-        }
-        .img-thumbnail {
-            max-height: 60px;
-            object-fit: cover;
-        }
-        .sequence-input {
-            text-align: center;
-        }
-        .sequence-input:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-
-        /* Notes CSS*/
-
-        .notes-content {
-            background: #f8f9fa;
-            padding: 8px;
-            border-radius: 4px;
-            margin-bottom: 5px;
-            word-wrap: break-word;
-        }
-
-        .notes-content small {
-            font-size: 0.8em;
-        }
-
-        .edit-notes {
-            color: #6c757d;
-            text-decoration: underline;
-        }
-
-        .edit-notes:hover {
-            color: #0056b3;
-            text-decoration: none;
-        }
-
-    </style>
-
     <script type="text/javascript" src="js/page/pages.js"></script>
+    <script src="js/page/bulk_action.js"></script>
 
 
     <script>

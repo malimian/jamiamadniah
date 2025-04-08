@@ -78,10 +78,8 @@ foreach ($all_options as $option) {
     $options_by_attribute[$option['attribute_id']][] = $option;
 }
 
-echo "Select tab_name from page_attributes Where template_id = $template_id and isactive = 1 and soft_delete = 0";
 
-
-$tabs = return_multiple_rows("Select tab_name from page_attributes Where template_id = $template_id and isactive = 1 and soft_delete = 0");
+$tabs = return_multiple_rows("Select * from page_attributes Where template_id = $template_id and isactive = 1 and soft_delete = 0 Group by tab_group");
 
 print_r($tabs);
 
@@ -201,6 +199,16 @@ if ($page_id > 0) {
                                                    name="attribute[<?php echo $attribute_id; ?>]" 
                                                    value="<?php echo htmlspecialchars($current_value); ?>" 
                                                    <?php echo $required; ?>>
+                                            <?php break; ?>
+
+                                        <?php case 'image': ?>
+                                            <input type="text" placeholder="Choose Image" name="p_image" class="form-control" id="attr_<?php echo $attribute_id; ?>" 
+                                                   name="attribute[<?php echo $attribute_id; ?>]" 
+                                                   value="<?php echo htmlspecialchars($current_value); ?>" 
+                                                   <?php echo $required; ?>>
+                                                    <button class="btn btn-primary form-control col-sm-2" onclick="OpenMediaGallery('attr_<?php echo $attribute_id; ?>' , 'page/attr')" type="button">
+                                                    <i class="fa fa-picture-o"></i>&nbsp;Gallery
+                                                    </button>
                                             <?php break; ?>
 
                                           <?php  case 'multiselect': 
