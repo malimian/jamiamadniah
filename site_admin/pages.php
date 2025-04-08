@@ -253,13 +253,13 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                 </div>
                     
                                 <!-- Tag Assignment Dropdown -->
-                                <div class="dropdown mr-2">
+                               <div class="dropdown mr-2">
                                     <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" id="assignTagsDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         Assign Tags
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="assignTagsDropdown">
-                                        <div class="px-3 py-2">
-                                            <select class="form-control form-control-sm" id="tagSelection">
+                                        <div class="px-3 py-2" onclick="event.stopPropagation()">
+                                            <select class="form-control form-control-sm" id="tagSelection" onclick="event.stopPropagation()">
                                                 <option value="">Select Tag</option>
                                                 <option value="danger">Danger</option>
                                                 <option value="warning">Warning</option>
@@ -268,7 +268,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                 <option value="primary">Primary</option>
                                                 <option value="secondary">Secondary</option>
                                             </select>
-                                            <button class="btn btn-sm btn-primary btn-block mt-2" onclick="assignTags()">Apply</button>
+                                            <button class="btn btn-sm btn-primary btn-block mt-2" onclick="assignTags(); event.stopPropagation()">Apply</button>
                                         </div>
                                     </div>
                                 </div>
@@ -708,4 +708,23 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
         window.location.href = url;
     }
     
+    </script>
+
+    <script type="text/javascript">
+        // Prevent dropdown from closing when clicking inside
+document.getElementById('assignTagsDropdown').addEventListener('hide.bs.dropdown', function (e) {
+    if (e.clickEvent && e.clickEvent.target.closest('.dropdown-menu')) {
+        e.preventDefault();
+    }
+});
+
+function assignTags() {
+    // Your existing assignTags function code
+    // ...
+    
+    // Optionally close the dropdown after applying
+    $('.dropdown').removeClass('show');
+    $('.dropdown-menu').removeClass('show');
+}
+
     </script>
