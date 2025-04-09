@@ -212,6 +212,9 @@ AdminHeader(
             <?php include 'includes/footer_copyright.php'; ?>
         </div>
     </div>
+    <?php 
+
+    ?>
 
     <?php include 'includes/footer.php'; ?>
 </body>

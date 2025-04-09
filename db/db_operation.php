@@ -48,16 +48,14 @@ function return_single_row($sql) {
  */
 function return_multiple_rows($sql) {
     global $conn;
-    $rows = [];
     
-    if ($result = $conn->query($sql)) {
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        $result->free();
-    } else {
+    $result = $conn->query($sql);
+    if (!$result) {
         return debug_(debug_backtrace(), $sql);
     }
+    
+    $rows = $result->fetch_all(MYSQLI_ASSOC);
+    $result->free();
     
     return $rows;
 }
@@ -68,6 +66,7 @@ function return_multiple_rows($sql) {
  * @param string $string The string to escape
  * @return string The escaped string
  */
+
 function escape($string) {
     global $conn;
     return $conn->real_escape_string($string);

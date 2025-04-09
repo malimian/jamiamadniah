@@ -127,7 +127,7 @@ function changeSequence(id, direction) {
             
             // Replace with textarea
             notesContainer.html(`
-                <textarea class="form-control mb-2" rows="3" id="notes_text_${pageId}">${currentNotes}</textarea>
+                <textarea class="form-control mb-2" rows="10" cols="10" id="notes_text_${pageId}">${currentNotes}</textarea>
                 <button class="btn btn-sm btn-success save-notes mr-1" data-id="${pageId}">Save</button>
                 <button class="btn btn-sm btn-secondary cancel-notes" data-id="${pageId}">Cancel</button>
             `);

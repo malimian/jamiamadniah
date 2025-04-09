@@ -16,8 +16,6 @@ AdminHeader(
 
 ?>
 <body id="page-top">
-   <?php include 'setting/company_name.php';?>
-   <?php include 'includes/navbar_search.php';?>
    <?php include 'includes/notification.php';?>
    <div id="wrapper">
    <?php include 'includes/sidebar.php'; ?>

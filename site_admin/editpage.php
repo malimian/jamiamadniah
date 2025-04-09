@@ -67,6 +67,22 @@ AdminHeader(
 
 
    <?php
+
+   // Validate page ID
+    if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
+        ?>
+        <div class="container mt-5">
+            <div class="alert alert-danger">
+                <h4 class="alert-heading">Invalid Page ID</h4>
+                <p>The page ID is missing or invalid. Please check the URL and try again.</p>
+                <hr>
+                <p class="mb-0"><a href="pages.php" class="alert-link">Return to pages list</a></p>
+            </div>
+        </div>
+        <?php
+        exit;
+    }
+
    $page = return_single_row("SELECT * FROM pages WHERE pid = {$_GET['id']} $and_gc");
    
    $useCKEditor = (strpos($page['page_desc'], '</') !== false || strpos($page['page_desc'], '<') !== false);

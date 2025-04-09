@@ -119,10 +119,10 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                 <h3 class="page-header">
                     All Pages (<?php echo $total_items; ?>)
                     <?php if($has_add): ?>
-                    <a href="addpage.php?<?php echo $page_link;?>" style="float:right;color: #fff" class="btn btn-danger btn-md">
-                        <i class="fa fa-plus">&nbsp;</i>Add New
-                    </a>
-                    <?php endif; ?>
+                        <a href="#" style="float:right;color: #fff" class="btn btn-danger btn-md" data-toggle="modal" data-target="#addPageModal">
+                            <i class="fa fa-plus">&nbsp;</i>Add New
+                        </a>
+                        <?php endif; ?>
                 </h3>
 
                 <hr>
@@ -604,6 +604,12 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
             <?php include 'includes/footer_copyright.php';?>
         </div>
     </div>
+
+    <?php include 'modules/page/add_page_module.php';?>
+
+      <!-- /#Gallery Plugin -->
+      <?php echo include_module('modules/upload_image.php', null); ?>
+
 
     <?php include 'includes/footer.php';?>
 
