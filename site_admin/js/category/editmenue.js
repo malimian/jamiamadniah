@@ -55,8 +55,8 @@ validateform(function() {
             if (response.status === 'success') {
                 // Show success message
                 var successMessage = (action === 'edit') ? 
-                    'Menu Item Updated Successfully' : 
-                    'Menu Item Added Successfully';
+                    'Menu Item Updated' : 
+                    'Menu Item Added';
                 
                 $('#error_id').html(`
                     <div class="alert alert-success alert-dismissible fade show" role="alert">

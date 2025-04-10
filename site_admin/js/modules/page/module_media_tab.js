@@ -16,7 +16,7 @@ $(document).ready(function() {
                 change_status: true
             },
             function(result) {
-                console.log("Status updated successfully", result);
+                console.log("Status updated", result);
                 // Update the status badge immediately
                 $('#status_' + id)
                     .removeClass()
@@ -53,7 +53,7 @@ function deleteMedia(mediaType, id) {
             },
             function(result) {
                 if (result.success) {
-                    showAlert(`${mediaName.charAt(0).toUpperCase() + mediaName.slice(1)} deleted successfully`, 'success');
+                    showAlert(`${mediaName.charAt(0).toUpperCase() + mediaName.slice(1)} deleted `, 'success');
                     $("#dr_" + id).remove();
                 } else {
                     showAlert(result.message || `Failed to delete ${mediaName}`, 'danger');
@@ -250,7 +250,7 @@ function saveMedia(formData, mediaType) {
         "POST",
         formData,
         function(result) {
-            console.log('Media saved successfully');
+            console.log('Media saved ');
             console.log(result);
             
             try {
@@ -258,7 +258,7 @@ function saveMedia(formData, mediaType) {
                 const response = typeof result === 'string' ? JSON.parse(result) : result;
                 
                 if (response.success || response > 0) {
-                    showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} saved successfully!`, 'success');
+                    showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} saved!`, 'success');
                     clearForm(mediaType);
                     refreshMediaTable(mediaType);
                 } else {
@@ -267,7 +267,7 @@ function saveMedia(formData, mediaType) {
             } catch (e) {
                 // Handle non-JSON responses
                 if (result > 0) {
-                    showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} saved successfully!`, 'success');
+                    showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} saved!`, 'success');
                     clearForm(mediaType);
                     refreshMediaTable(mediaType);
                 } else {
@@ -297,7 +297,7 @@ function updateMedia(formData, mediaType) {
         "POST",
         formData,
         function(result) {
-            console.log('Media updated successfully');
+            console.log('Media updated');
             console.log(result);
             
             try {
@@ -305,7 +305,7 @@ function updateMedia(formData, mediaType) {
                 const response = typeof result === 'string' ? JSON.parse(result) : result;
                 
                 if (response.success || response > 0) {
-                    showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} updated successfully!`, 'success');
+                    showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} updated!`, 'success');
                     setTimeout(() => {
                         window.location.reload();
                     }, 1500);
@@ -315,7 +315,7 @@ function updateMedia(formData, mediaType) {
             } catch (e) {
                 // Handle non-JSON responses
                 if (result > 0) {
-                    showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} updated successfully!`, 'success');
+                    showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} updated!`, 'success');
                     setTimeout(() => {
                         window.location.reload();
                     }, 1500);
@@ -458,7 +458,7 @@ function updateSequence(mediaType, id, page_id, currentSequence, direction) {
                 const parsedResult = typeof result === 'string' ? JSON.parse(result) : result;
                 
                 if (parsedResult.success) {
-                    showAlert('Sequence updated successfully', 'success');
+                    showAlert('Sequence updated ', 'success');
                     // Refresh the page with the current parameters
                     window.location = "?id=" + page_id + "&media_type=" + mediaType;
                 } else {
