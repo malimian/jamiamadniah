@@ -49,7 +49,7 @@ if (isset($_POST['change_status'])) {
             $sql = "UPDATE $table SET isactive = $is_active WHERE $id_field = '$id'";
             
             if (Update($sql)) {
-                $response = ['success' => true, 'message' => 'Status updated successfully'];
+                $response = ['success' => true, 'message' => 'Status updated'];
             } else {
                 $response = ['success' => false, 'message' => 'Failed to update status'];
             }
@@ -107,7 +107,7 @@ try {
                     WHERE i_id = '$media_id'";
             
             if (Update($sql)) {
-                $response = ['success' => true, 'message' => 'Image updated successfully'];
+                $response = ['success' => true, 'message' => 'Image updated'];
             } else {
                 $response = ['success' => false, 'message' => 'Failed to update image'];
             }
@@ -165,7 +165,7 @@ try {
                     WHERE v_id = '$media_id'";
             
             if (Update($sql)) {
-                $response = ['success' => true, 'message' => 'Video updated successfully'];
+                $response = ['success' => true, 'message' => 'Video updated'];
             } else {
                 $response = ['success' => false, 'message' => 'Failed to update video'];
             }
@@ -205,7 +205,7 @@ try {
                     WHERE f_id = '$media_id'";
             
             if (Update($sql)) {
-                $response = ['success' => true, 'message' => 'File updated successfully'];
+                $response = ['success' => true, 'message' => 'File updated '];
             } else {
                 $response = ['success' => false, 'message' => 'Failed to update file'];
             }
