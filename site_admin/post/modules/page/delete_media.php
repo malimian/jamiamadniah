@@ -76,7 +76,7 @@ if (isset($_POST['delete']) && isset($_POST['media_type']) && isset($_POST['id']
     // Delete database record
     $sql = "DELETE FROM $tbl WHERE $tbl_id = $id";
     if (Delete($sql)) {
-        $response = ['success' => true, 'message' => ucfirst($media_type) . ' deleted successfully'];
+        $response = ['success' => true, 'message' => ucfirst($media_type) . ' deleted'];
     } else {
         $response['message'] = 'Failed to delete database record';
     }
