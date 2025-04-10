@@ -147,86 +147,100 @@ if ($media_id && $media_action == 'edit' && $media_type) {
         </div>
 
       <?php
-$photogallery = return_multiple_rows("SELECT * FROM images WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0 ORDER by i_sequence ASC");
+$photogallery = return_multiple_rows("SELECT * FROM images WHERE pid = " . $page[0]['pid'] . " AND soft_delete = 0 ORDER by i_sequence ASC");
 
 if (!empty($photogallery)) {
     foreach ($photogallery as $photogallery_) {
 ?>
-<div class="card mb-3" id="dr_<?php echo $photogallery_['i_id']; ?>">
-    <div class="card-body p-0">
-        <div class="row no-gutters">
-            <!-- Image column (25% width) -->
-            <div class="col-md-3 p-2">
-                <div style="height: 134px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
-                    <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $photogallery_['i_name']; ?>" 
-                         class="img-fluid img-thumbnail" 
-                         style="max-height: 100%; max-width: 100%; object-fit: contain;"
-                         alt="<?php echo htmlspecialchars($photogallery_['i_alttext']); ?>">
+        <div class="card mb-3" id="dr_<?php echo $photogallery_['i_id']; ?>">
+            <div class="card-body p-0">
+                <div class="row no-gutters">
+                    <!-- Image column (25% width) -->
+                    <div class="col-md-3 p-2">
+                        <div style="height: 134px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+                            <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $photogallery_['i_name']; ?>" 
+                                 class="img-fluid img-thumbnail" 
+                                 style="max-height: 100%; max-width: 100%; object-fit: contain;"
+                                 alt="<?php echo htmlspecialchars($photogallery_['i_alttext']); ?>">
+                        </div>
+                    </div>
+                    
+                    <!-- Content column (50% width) -->
+                    <div class="col-md-6 p-3">
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-file"></i> Name:</div>
+                            <div class="col-9"><?php echo $photogallery_['i_name']; ?></div>
+                        </div>
+                        
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-tag"></i> Title:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_title']); ?></div>
+                        </div>
+                        
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-comment"></i> Caption:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_caption']); ?></div>
+                        </div>
+                        
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_description']); ?></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Actions column (25% width) -->
+                   <div class="col-md-3 p-3 border-left">
+                    <!-- Sequence controls -->
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="mr-2 font-weight-bold"><i class="fa fa-sort"></i> Sequence:</div>
+                        <span class="badge badge-secondary mr-2"><?php echo $photogallery_['i_sequence']; ?></span>
+                    </div>
+                    <div class="d-flex mb-3">
+                        <button class="btn btn-sm btn-outline-primary mr-1 move-btn flex-grow-1" 
+                                data-type="image" 
+                                data-id="<?php echo $photogallery_['i_id']; ?>" 
+                                data-pid="<?php echo $page[0]['pid']; ?>" 
+                                data-sequence="<?php echo $photogallery_['i_sequence']; ?>"
+                                data-direction="up">
+                            <i class="fa fa-arrow-up"></i> Up
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary move-btn flex-grow-1" 
+                                data-type="image" 
+                                data-id="<?php echo $photogallery_['i_id']; ?>" 
+                                data-pid="<?php echo $page[0]['pid']; ?>" 
+                                data-sequence="<?php echo $photogallery_['i_sequence']; ?>"
+                                data-direction="down">
+                            <i class="fa fa-arrow-down"></i> Down
+                        </button>
+                    </div>
+                    
+                    <!-- Status toggle -->
+                    <div class="d-flex align-items-center mb-2">
+                        <?php
+                        if ($photogallery_['isactive'] == 1) {
+                            echo '<span id="status_'.$photogallery_['i_id'].'" class="badge badge-success mr-2">Active</span>
+                            <input type="checkbox" data-id="'.$photogallery_['i_id'].'" data-type="image" class="js-switch" checked />';
+                        } else {
+                            echo '<span id="status_'.$photogallery_['i_id'].'" class="badge badge-danger mr-2">Inactive</span>
+                            <input type="checkbox" data-id="'.$photogallery_['i_id'].'" data-type="image" class="js-switch" />';
+                        }
+                        ?>
+                    </div>
+                    
+                    <!-- Action buttons -->
+                    <div class="d-flex flex-column">
+                        <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $photogallery_['i_id']; ?>&media_action=edit&media_type=image" 
+                           class="btn btn-primary btn-sm rounded-0 mb-2" title="Edit">
+                            <i class="fa fa-edit"></i> Edit
+                        </a>
+                        <button onclick="delete_image(<?php echo $photogallery_['i_id']; ?>)" 
+                                class="btn btn-danger btn-sm rounded-0" 
+                                type="button" title="Delete">
+                            <i class="fa fa-trash"></i> Delete
+                        </button>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Content column (50% width) -->
-            <div class="col-md-6 p-3">
-                <div class="row mb-1">
-                    <div class="col-3 font-weight-bold"><i class="fa fa-file"></i> Name:</div>
-                    <div class="col-9"><?php echo $photogallery_['i_name']; ?></div>
-                </div>
-                
-                <div class="row mb-1">
-                    <div class="col-3 font-weight-bold"><i class="fa fa-tag"></i> Title:</div>
-                    <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_title']); ?></div>
-                </div>
-                
-                <div class="row mb-1">
-                    <div class="col-3 font-weight-bold"><i class="fa fa-comment"></i> Caption:</div>
-                    <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_caption']); ?></div>
-                </div>
-                
-                <div class="row mb-1">
-                    <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
-                    <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_description']); ?></div>
-                </div>
-            </div>
-            
-            <!-- Actions column (25% width) -->
-            <div class="col-md-3 p-3 border-left">
-                <!-- Sequence controls -->
-                <div class="d-flex align-items-center mb-3">
-                    <div class="mr-2 font-weight-bold"><i class="fa fa-sort"></i> Sequence:</div>
-                    <span class="badge badge-secondary mr-2"><?php echo $photogallery_['i_sequence']; ?></span>
-                </div>
-                <div class="d-flex mb-3">
-                    <button class="btn btn-sm btn-outline-primary mr-1 move-btn flex-grow-1" 
-                            data-type="image" 
-                            data-id="<?php echo $photogallery_['i_id']; ?>" 
-                            data-pid="<?php echo $page[0]['pid']; ?>" 
-                            data-sequence="<?php echo $photogallery_['i_sequence']; ?>"
-                            data-direction="up">
-                        <i class="fa fa-arrow-up"></i> Up
-                    </button>
-                    <button class="btn btn-sm btn-outline-primary move-btn flex-grow-1" 
-                            data-type="image" 
-                            data-id="<?php echo $photogallery_['i_id']; ?>" 
-                            data-pid="<?php echo $page[0]['pid']; ?>" 
-                            data-sequence="<?php echo $photogallery_['i_sequence']; ?>"
-                            data-direction="down">
-                        <i class="fa fa-arrow-down"></i> Down
-                    </button>
-                </div>
-                
-                <!-- Action buttons -->
-                <div class="d-flex flex-column">
-                    <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $photogallery_['i_id']; ?>&media_action=edit&media_type=image" 
-                       class="btn btn-primary btn-sm rounded-0 mb-2" title="Edit">
-                        <i class="fa fa-edit"></i> Edit
-                    </a>
-                    <button onclick="delete_image(<?php echo $photogallery_['i_id']; ?>)" 
-                            class="btn btn-danger btn-sm rounded-0" 
-                            type="button" title="Delete">
-                        <i class="fa fa-trash"></i> Delete
-                    </button>
-                </div>
-            </div>
+
         </div>
     </div>
     <div class="card-footer py-1" style="background: #f8f9fa;"></div>
@@ -309,7 +323,7 @@ if (!empty($photogallery)) {
         </div>
 
         <?php
-$videogallery = return_multiple_rows("SELECT * FROM videos WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0 ORDER by v_sequence ASC");
+$videogallery = return_multiple_rows("SELECT * FROM videos WHERE pid = " . $page[0]['pid'] . " AND soft_delete = 0 ORDER by v_sequence ASC");
 
 if (!empty($videogallery)) {
     foreach ($videogallery as $videogallery_) {
@@ -382,6 +396,19 @@ if (!empty($videogallery)) {
                         <i class="fa fa-arrow-down"></i> Down
                     </button>
                 </div>
+
+                    <!-- Status toggle for videos -->
+                    <div class="d-flex align-items-center mb-2">
+                        <?php
+                        if ($videogallery_['isactive'] == 1) {
+                            echo '<span id="status_'.$videogallery_['v_id'].'" class="badge badge-success mr-2">Active</span>
+                            <input type="checkbox" data-id="'.$videogallery_['v_id'].'" data-type="video" class="js-switch" checked />';
+                        } else {
+                            echo '<span id="status_'.$videogallery_['v_id'].'" class="badge badge-danger mr-2">Inactive</span>
+                            <input type="checkbox" data-id="'.$videogallery_['v_id'].'" data-type="video" class="js-switch" />';
+                        }
+                        ?>
+                    </div>
                 
                 <!-- Action buttons -->
                 <div class="d-flex flex-column">
@@ -491,7 +518,7 @@ if (!empty($videogallery)) {
         </div>
 
               <?php
-        $filegallery = return_multiple_rows("SELECT * FROM page_files WHERE pid = " . $page[0]['pid'] . " AND isactive = 1 AND soft_delete = 0 ORDER by f_sequence ASC");
+        $filegallery = return_multiple_rows("SELECT * FROM page_files WHERE pid = " . $page[0]['pid'] . " AND soft_delete = 0 ORDER by f_sequence ASC");
 
         if (!empty($filegallery)) {
             foreach ($filegallery as $filegallery_) {
@@ -564,6 +591,19 @@ if (!empty($videogallery)) {
                             </button>
                         </div>
                         
+
+                        <!-- Status toggle for files -->
+                            <div class="d-flex align-items-center mb-2">
+                                <?php
+                                if ($filegallery_['isactive'] == 1) {
+                                    echo '<span id="status_'.$filegallery_['f_id'].'" class="badge badge-success mr-2">Active</span>
+                                    <input type="checkbox" data-id="'.$filegallery_['f_id'].'" data-type="file" class="js-switch" checked />';
+                                } else {
+                                    echo '<span id="status_'.$filegallery_['f_id'].'" class="badge badge-danger mr-2">Inactive</span>
+                                    <input type="checkbox" data-id="'.$filegallery_['f_id'].'" data-type="file" class="js-switch" />';
+                                }
+                                ?>
+                            </div>
                         <!-- Action buttons -->
                         <div class="d-flex flex-column">
                             <a href="?id=<?php echo $page[0]['pid']; ?>&media_id=<?php echo $filegallery_['f_id']; ?>&media_action=edit&media_type=file" 

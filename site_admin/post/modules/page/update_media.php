@@ -13,6 +13,56 @@ $page_id = isset($_POST['page_id']) ? clean($_POST['page_id']) : null;
 $media_type = isset($_POST['media_type']) ? clean($_POST['media_type']) : null;
 $media_id = isset($_POST['media_id']) ? clean($_POST['media_id']) : null;
 
+
+// Handle status change request from js-switch
+if (isset($_POST['change_status'])) {
+
+    $response = ['success' => false, 'message' => 'Unknown error'];
+    $id = isset($_POST['id']) ? clean($_POST['id']) : null;
+    $media_type = isset($_POST['media_type']) ? clean($_POST['media_type']) : null;
+    $is_active = isset($_POST['is_active']) ? (int)$_POST['is_active'] : 0;
+        
+        if (!$id || !$media_type) {
+            $response['message'] = 'Missing required parameters';
+            echo json_encode($response);
+            exit;
+        }
+
+        try {
+            switch ($media_type) {
+                case 'image':
+                    $table = 'images';
+                    $id_field = 'i_id';
+                    break;
+                case 'video':
+                    $table = 'videos';
+                    $id_field = 'v_id';
+                    break;
+                case 'file':
+                    $table = 'page_files';
+                    $id_field = 'f_id';
+                    break;
+                default:
+                    throw new Exception('Invalid media type');
+            }
+
+            $sql = "UPDATE $table SET isactive = $is_active WHERE $id_field = '$id'";
+            
+            if (Update($sql)) {
+                $response = ['success' => true, 'message' => 'Status updated successfully'];
+            } else {
+                $response = ['success' => false, 'message' => 'Failed to update status'];
+            }
+        } catch (Exception $e) {
+            $response = ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+        }
+
+        echo json_encode($response);
+    exit;
+}
+
+
+
 if (!$page_id || !$media_type || !$media_id) {
     $response['message'] = 'Missing required parameters';
     echo json_encode($response);

@@ -1,71 +1,83 @@
-// Delete Functions
-function delete_image(id) {
-    if (confirm('Are you sure you want to delete this image?')) {
+$(document).ready(function() {
+    initializeSwitches();
+
+    $(document).on("change", ".js-switch", function() {
+        var id = $(this).data("id");
+        var mediaType = $(this).data("type"); // Get media type from data attribute
+        var isChecked = $(this).is(':checked');
+        
+        // Send AJAX request to update status
         senddata(
-            'post/modules/page/delete_photogallery.php',
+            'post/modules/page/update_media.php', // Your endpoint
             "POST", {
                 id: id,
+                media_type: mediaType,
+                is_active: isChecked ? 1 : 0,
+                change_status: true
+            },
+            function(result) {
+                console.log("Status updated successfully", result);
+                // Update the status badge immediately
+                $('#status_' + id)
+                    .removeClass()
+                    .addClass('badge ' + (isChecked ? 'badge-success' : 'badge-danger'))
+                    .html(isChecked ? 'Active' : 'Inactive');
+            },
+            function(error) {
+                console.error("Error updating status:", error);
+                // Revert the switch if error occurs
+                $(this).prop('checked', !isChecked).trigger('change');
+            }
+        );
+    });
+});
+
+
+// Common delete function
+function deleteMedia(mediaType, id) {
+    const mediaNames = {
+        image: 'image',
+        video: 'video',
+        file: 'file'
+    };
+    
+    const mediaName = mediaNames[mediaType];
+    
+    if (confirm(`Are you sure you want to delete this ${mediaName}?`)) {
+        senddata(
+            'post/modules/page/delete_media.php',
+            "POST", {
+                id: id,
+                media_type: mediaType,
                 delete: true
             },
             function(result) {
                 if (result.success) {
-                    showAlert('Image deleted successfully', 'success');
+                    showAlert(`${mediaName.charAt(0).toUpperCase() + mediaName.slice(1)} deleted successfully`, 'success');
                     $("#dr_" + id).remove();
                 } else {
-                    showAlert(result.message || 'Failed to delete image', 'danger');
+                    showAlert(result.message || `Failed to delete ${mediaName}`, 'danger');
                 }
             },
             function(error) {
-                showAlert('Error deleting image: ' + error, 'danger');
+                showAlert(`Error deleting ${mediaName}: ` + error, 'danger');
             }
         );
     }
+}
+
+
+// Keep original functions for backward compatibility
+function delete_image(id) {
+    deleteMedia('image', id);
 }
 
 function delete_video(id) {
-    if (confirm('Are you sure you want to delete this video?')) {
-        senddata(
-            'post/modules/page/delete_video.php',
-            "POST", {
-                id: id,
-                delete: true
-            },
-            function(result) {
-                if (result.success) {
-                    showAlert('Video deleted successfully', 'success');
-                    $("#dr_" + id).remove();
-                } else {
-                    showAlert(result.message || 'Failed to delete video', 'danger');
-                }
-            },
-            function(error) {
-                showAlert('Error deleting video: ' + error, 'danger');
-            }
-        );
-    }
+    deleteMedia('video', id);
 }
 
 function delete_file(id) {
-    if (confirm('Are you sure you want to delete this file?')) {
-        senddata(
-            'post/modules/page/delete_file.php',
-            "POST", {
-                id: id,
-                delete: true
-            },
-            function(result) {
-                if (result.success) {
-                    showAlert('File deleted successfully', 'success');
-                    $("#dr_" + id).remove();
-                } else {
-                    showAlert(result.message || 'Failed to delete file', 'danger');
-                }
-            },
-            function(error) {
-                showAlert('Error deleting file: ' + error, 'danger');
-            }
-        );
-    }
+    deleteMedia('file', id);
 }
 
 // Save New Media Functions
@@ -463,3 +475,4 @@ function updateSequence(mediaType, id, page_id, currentSequence, direction) {
         }
     );
 }
+
