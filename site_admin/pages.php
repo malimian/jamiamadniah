@@ -409,7 +409,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                 </td>
                                                 <td>
                                                     <strong><?=$page['page_title']?></strong>
-                                                    <div class="text-muted small">/<?=$page['page_url']?></div>
+                                                    <a href="<?=BASE_URL.$page['page_url']?>" class="text-muted small">/<?=$page['page_url']?></a>
                                                 </td>
                                                 <td>
                                                     <span class="badge badge-info"><?=$page['catname']?></span>

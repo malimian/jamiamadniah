@@ -147,7 +147,7 @@ $catname = $content['catname'];
                     <h2 class="mb-4">Latest <?php echo $catname; ?> News</h2>
                     <div class="row">
                         <?php
-                        $latest_category_news = return_multiple_rows("SELECT * FROM pages WHERE catid = $catid AND isactive = 1 AND soft_delete = 0 AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") ORDER BY createdon DESC LIMIT 6");
+                        $latest_category_news = return_multiple_rows("SELECT * FROM pages WHERE catid = $catid AND isactive = 1 AND soft_delete = 0 AND template_id = 7 AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") ORDER BY createdon DESC LIMIT 6");
                         
                         foreach ($latest_category_news as $news) {
                             $not_show_more_then_once[] = $news['pid'];

@@ -53,6 +53,7 @@ if (isset($_GET['category'])) {
                         $page_meta_keywords = remove_utf($article_author) . "," . $category . ",ibspotlight";
                         $featured_image = $article_urlToImage;
                         $article_read_time = estimateReadingTime($article_content);
+                        $isactive = 1;
 
                         // Insert with proper sequence number
                         $insert_result = Insert("INSERT INTO `pages` (
@@ -62,7 +63,7 @@ if (isset($_GET['category'])) {
                         ) VALUES (
                             '$cat_id', '$site_template_id', '$template_id', '$slug', '$article_title',
                             '$article_content', '$article_title', '$page_meta_keywords', '$article_description',
-                            '$current_sequence', '0', '$featured_image', '$article_url', '$article_author', '$article_read_time'
+                            '$current_sequence', '$isactive', '$featured_image', '$article_url', '$article_author', '$article_read_time'
                         )");
 
                         if ($insert_result) {
