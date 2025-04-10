@@ -295,7 +295,7 @@ foreach ($news_categories as $new_category) {
                         foreach ($categories as $index => $category) {
                             $category_news = return_multiple_rows("SELECT * FROM pages WHERE catid = " . $category['catid'] . " AND isactive = 1 AND soft_delete = 0
                              AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-
+                             AND template_id = 7
                              ORDER BY createdon DESC LIMIT 5");
                         ?>
                             <div id="tab-<?php echo $index + 1; ?>" class="tab-pane fade show p-0 <?php echo $index === 0 ? 'active' : ''; ?>">
