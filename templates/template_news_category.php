@@ -217,7 +217,7 @@ $catname = $content['catname'];
                     </div>
                     <div class="card-body">
                         <?php
-                        $trending_news = return_multiple_rows("SELECT * FROM pages WHERE catid = $catid AND isactive = 1 AND soft_delete = 0 AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") ORDER BY views DESC LIMIT 5");
+                        $trending_news = return_multiple_rows("SELECT * FROM pages WHERE catid = $catid AND isactive = 1 AND soft_delete = 0 AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") and template_id = 7 ORDER BY views DESC LIMIT 5");
                         
                         foreach ($trending_news as $news) {
                             $not_show_more_then_once[] = $news['pid'];
