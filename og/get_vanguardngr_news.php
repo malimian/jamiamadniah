@@ -116,13 +116,44 @@ if (!empty($content)) {
                     $site_template_id = 1;
                     $template_id = 7;
 
-                    $page_meta_keywords = remove_utf($article_author) . "," . $primaryCategory . ",ibspotlight";
+                 $page_meta_keywords = remove_utf($article_author) . "," . $primaryCategory . ",ibspotlight";
                     $featured_image = $article_urlToImage;
                     $article_read_time = estimateReadingTime($article_content);
-                    $page_meta_desc =  mb_strimwidth(cleanContent($article_content), 0, 200, "...");
-                    
-                    echo Insert("INSERT INTO `pages` (`catid`, `site_template_id`, `template_id`, `page_url`, `page_title`, `sku`, `UniqueCode`, `inventory_number`, `barcode`, `plistprice`, `pprice`, `whole_sale_unit_price`, `stock_status`, `stock_qty`, `new_arrivals`, `featured_product`, `on_sale`, `best_seller`, `trending_item`, `hot_item`, `header`, `page_desc`, `page_meta_title`, `page_meta_keywords`, `page_meta_desc`, `pages_sequence`, `isactive`, `featured_image`, `isFeatured`, `views`, `showInNavBar`, `createdby`, `createdon`, `updatedon`, `soft_delete`, `article_url`, `article_author` , `article_read`) 
-                        VALUES ('$cat_id', '$site_template_id', '$template_id', '$slug', '$article_title', NULL, NULL, NULL, NULL, '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', NULL, '$article_content', '$article_title', '$page_meta_keywords', '$page_meta_desc', '1', '1', '$featured_image', '0', '0', '0', '0', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP(), '0', '$article_url', '$article_author', '$article_read_time')");
+                    $page_meta_desc = mb_strimwidth(cleanContent($article_content), 0, 200, "...");
+
+                    echo Insert("INSERT INTO `pages` (
+                        `catid`, 
+                        `site_template_id`, 
+                        `template_id`, 
+                        `page_url`, 
+                        `page_title`, 
+                        `page_desc`, 
+                        `page_meta_title`, 
+                        `page_meta_keywords`, 
+                        `page_meta_desc`, 
+                        `pages_sequence`, 
+                        `isactive`, 
+                        `featured_image`, 
+                        `article_url`, 
+                        `article_author`, 
+                        `article_read`
+                    ) VALUES (
+                        '$cat_id', 
+                        '$site_template_id', 
+                        '$template_id', 
+                        '$slug', 
+                        '$article_title',
+                        '$article_content', 
+                        '$article_title', 
+                        '$page_meta_keywords', 
+                        '$page_meta_desc',
+                        '1', 
+                        '1', 
+                        '$featured_image', 
+                        '$article_url', 
+                        '$article_author', 
+                        '$article_read_time'
+                    )");
                 }
             }
         } else {
