@@ -131,24 +131,6 @@ AdminHeader(
         color: var(--success-color);
     }
 
-    /* Buttons */
-    .btn {
-        border-radius: 0.35rem;
-        padding: 0.5rem 1.25rem;
-        font-weight: 500;
-        transition: all 0.3s;
-    }
-
-    .btn-primary {
-        background-color: var(--primary-color);
-        border-color: var(--primary-color);
-    }
-
-    .btn-primary:hover {
-        background-color: #2e59d9;
-        border-color: #2653d4;
-    }
-
     /* Form group spacing */
     .form-group.row {
         align-items: center;
@@ -252,7 +234,7 @@ AdminHeader(
                         <!-- Shop Tab -->
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#menu5">
-                                <i class="fa fa-shopping-cart"></i> Shop
+                                <i class="fa fa-plus"></i> Adds On
                             </a>
                         </li>
                     </ul>

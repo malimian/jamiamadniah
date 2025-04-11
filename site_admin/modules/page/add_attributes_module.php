@@ -108,7 +108,7 @@ if ($page_id > 0) {
         <ul class="nav nav-tabs" id="productTabs" role="tablist">
             <?php foreach ($tabs as $index => $tab): ?>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo $index === 0 ? 'active' : ''; ?>" 
+                    <a class="nav-link" 
                        id="<?php echo $tab['tab_group']; ?>-tab" data-toggle="tab" href="#<?php echo $tab['tab_group']; ?>" 
                        role="tab" aria-controls="<?php echo $tab['tab_group']; ?>" 
                        aria-selected="<?php echo $index === 0 ? 'true' : 'false'; ?>">
