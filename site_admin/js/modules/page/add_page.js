@@ -15,6 +15,54 @@ $(document).ready(function() {
         }
     });
 
+
+
+
+    // Handle duplicate page click
+    $('.duplicate-page').click(function(e) {
+        e.preventDefault();
+        var pageId = $(this).data('pageid');
+        
+        // Fetch page data using senddata function
+        senddata(
+            'post/page/getpagedata.php',
+            "POST", 
+            {
+                page_id: pageId,
+                get_data: true
+            },
+            function(result) {
+                if(result.status === 'success') {
+                    // Populate the modal with the page data
+                    $('#modalPageTitle').val(result.data.page_title + ' (Copy)');
+                    $('#modalCtname').val(result.data.ctname);
+                    
+                    // Generate new URL based on copied title
+                    var newUrl = result.data.page_url.replace('.html', '-copy.html');
+                    $('#modalPageUrl').val(newUrl);
+                    
+                    // Uncheck the URL lock checkbox
+                    $('#modalCheckUrl').prop('checked', false);
+                    
+                    // Set other fields
+                    $('#modalPImage').val(result.data.p_image);
+                    $('#modalSiteTemplate').val(result.data.site_template);
+                    $('#modalTemplatePage').val(result.data.template_page);
+                    
+                    // Show the modal
+                    $('#addPageModal').modal('show');
+                } else {
+                    showAlert('Error: ' + result.message, 'danger');
+                }
+            },
+            function(error) {
+                showAlert('Error fetching page data: ' + error, 'danger');
+            }
+        );
+    });
+    
+
+
     function handlePageSave(shouldEditAfterSave) {
         var form = $('#addPageForm')[0];
         

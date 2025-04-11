@@ -1,6 +1,27 @@
 <?php
 require_once('../../admin_connect.php');
 
+// Check if user has Add permission (og_moduleactions_id = 2)
+$hasAddPermission = false;
+if (isset($_SESSION['user']['module_actions'])) {
+    foreach ($_SESSION['user']['module_actions'] as $action) {
+        if ($action['og_moduleactions_id'] == 2 && $action['title'] == 'Add') {
+            $hasAddPermission = true;
+            break;
+        }
+    }
+}
+
+if (!$hasAddPermission) {
+
+    echo json_encode([
+            'status' => 'error',
+            'message' => 'You do not have permission to add/duplicate pages'
+        ]);
+    exit;
+}
+
+
 if (isset($_POST['submit'])) {
     // Required field validation
     $required_fields = ['page_title', 'page_url', 'ctname', 'template_page', 'site_template'];
@@ -54,6 +75,7 @@ if (isset($_POST['submit'])) {
         $response = [
             'status' => 'success',
             'page_id' => $id,
+            'page_title' => $page_title,
             'url_adjusted' => $url_adjusted,
             'original_url' => $original_url,
             'final_url' => $final_url,
@@ -62,19 +84,17 @@ if (isset($_POST['submit'])) {
                 'edit' => 'editpage.php?id='.$id
             ]
         ];
-
-        // Add detailed page info if needed
-        if ($url_adjusted) {
+            
             $page_details = return_single_row("SELECT 
                 p.*, c.catname, st.st_name as site_template_name,
-                og.template_title as page_template_name
+                og.template_title as page_template_name , page_title
                 FROM pages p
                 LEFT JOIN category c ON p.catid = c.catid
                 LEFT JOIN site_template st ON p.site_template_id = st.st_id
                 LEFT JOIN og_template og ON p.template_id = og.template_id
                 WHERE p.pid = $id");
+
             $response['details'] = $page_details;
-        }
 
         echo json_encode($response);
     } else {

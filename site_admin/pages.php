@@ -27,7 +27,7 @@ $per_page = isset($_GET['per_page']) ? intval($_GET['per_page']) : 50;
 // Template filter
 if(isset($_GET['temp']) && !empty($_GET['temp'])) {
     $temp_id = $_GET['temp'];
-    $template = " AND pages.site_template_id = $temp_id ";
+    $template = " AND pages.template_id = $temp_id ";
     $page_link .="&temp=".$temp_id;
 }
 
@@ -340,7 +340,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                             // Get template info
                                             $template_info = null;
                                             foreach($site_templates as $template) {
-                                                if($template['template_id'] == $page['site_template_id']) {
+                                                if($template['template_id'] == $page['template_id']) {
                                                     $template_info = $template;
                                                     break;
                                                 }
@@ -476,7 +476,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                         
                                                         <!-- Duplicate Action -->
                                                         <?php if($has_add && canEdit($page['page_isSystemOperated'])): ?>
-                                                        <a class="dropdown-item" href="copypage.php?id=<?=$page['pid']?>">
+                                                        <a class="dropdown-item duplicate-page" href="#" data-pageid="<?=$page['pid']?>">
                                                             <i class="fas fa-copy fa-fw"></i> Duplicate
                                                         </a>
                                                         <?php endif; ?>
