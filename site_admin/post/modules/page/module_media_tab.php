@@ -40,7 +40,7 @@ if(isset($_POST['submit_media'])) {
                         }
                     }
                     
-                    $response = ['success' => true, 'message' => 'Images saved successfully'];
+                    $response = ['success' => true, 'message' => 'Images saved'];
                 } else {
                     $response = ['success' => false, 'message' => 'No images selected'];
                 }
@@ -90,7 +90,7 @@ if(isset($_POST['submit_media'])) {
                         }
                     }
                     
-                    $response = ['success' => true, 'message' => 'Videos saved successfully'];
+                    $response = ['success' => true, 'message' => 'Videos saved'];
                 } else {
                     $response = ['success' => false, 'message' => 'No videos selected'];
                 }
@@ -127,7 +127,7 @@ if(isset($_POST['submit_media'])) {
                         }
                     }
                     
-                    $response = ['success' => true, 'message' => 'Files saved successfully'];
+                    $response = ['success' => true, 'message' => 'Files saved'];
                 } else {
                     $response = ['success' => false, 'message' => 'No files selected'];
                 }

@@ -6,13 +6,7 @@ $(document).ready(function() {
     const simpleEditor = $('#simpleEditor');
     const ckeditorContainer = $('#ckeditorContainer');
     const ckeditorTextarea = $('#editor1');
-    
-    // Check if content contains HTML tags (better than checking textarea existence)
-    const hasHTML = /<\/?[a-z][\s\S]*>/i.test(simpleEditor.val());
-    
-    // Set initial state based on content
-    const shouldUseCKEditor = hasHTML;
-    editorToggle.prop('checked', shouldUseCKEditor);
+    const shouldUseCKEditor = editorToggle.is(':checked');
     
     // Initialize the appropriate editor
     if (shouldUseCKEditor) {
@@ -21,7 +15,8 @@ $(document).ready(function() {
         simpleEditor.show();
         ckeditorContainer.hide();
     }
-    
+
+
     // Toggle handler
     editorToggle.on('change', function() {
         if ($(this).is(':checked')) {
@@ -138,11 +133,35 @@ function process(value) {
     return value == undefined ? '' : value.replace(/[^a-z0-9_]+/gi, '-').replace(/^-|-$/g, '').toLowerCase();
 }
 
-$('#check_url').click(function() {
-    if (document.getElementById('check_url').checked) $("#page_url").attr("readonly", false);
-    else $("#page_url").attr("readonly", true);
-});
+// $('#check_url').click(function() {
+//     if (document.getElementById('check_url').checked) $("#page_url").attr("readonly", false);
+//     else $("#page_url").attr("readonly", true);
+// });
 
+
+$(document).ready(function() {
+    // Initialize lock state
+    $('#page_url').prop('readonly', true);
+    
+    $('#check_url').change(function() {
+        const isUnlocked = this.checked;
+        
+        // Toggle readonly and styling
+        $('#page_url')
+            .prop('readonly', !isUnlocked)
+            .toggleClass('bg-light', isUnlocked);
+        
+        // Update icon
+        $('#urlLockIcon')
+            .toggleClass('fa-lock', !isUnlocked)
+            .toggleClass('fa-lock-open text-success', isUnlocked);
+        
+        // Focus field when unlocked
+        if (isUnlocked) {
+            $('#page_url').focus().select();
+        }
+    }).trigger('change'); // Initialize state
+});
 $('#page_title').on('input', function() {
     if (document.getElementById('check_url').checked) {
         var result = process($('#page_title').val());
@@ -167,6 +186,7 @@ validateform(function() {
     var postVisibility = $('#postVisibility option:selected').val();
     var showInNavbar = $('#showInNavbar option:selected').val();
     var category_list = $('#category_list').children("option:selected").val();
+    const useCKEditor = $('#editorToggle').is(':checked')? 1 : 0;
 
     var editorContent = $('#editorToggle').is(':checked') ? 
           (CKEDITOR.instances.editor1 ? CKEDITOR.instances.editor1.getData() : $('#editor1').val()) : 
@@ -219,6 +239,7 @@ validateform(function() {
     formData.append("meta_title", meta_title);
     formData.append("meta_keywords", meta_keywords);
     formData.append("meta_desc", meta_desc);
+    formData.append("useCKEditor", useCKEditor);
     formData.append("selectedcategory_list", selectedcategory_list.join(','));
     formData.append("attributes", JSON.stringify(attributes));
     formData.append("page_id", page_id);

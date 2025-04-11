@@ -19,6 +19,8 @@ if(isset($_POST['submit'])) {
     $is_active = $_POST['is_active'];
     $postVisibility = $_POST['postVisibility'];
     $page_id = $_POST['page_id'];
+    $useCKEditor = (int)$_POST['useCKEditor'];
+
 
     $sql = "UPDATE `pages` SET 
         `page_url` = '$page_url',
@@ -34,7 +36,8 @@ if(isset($_POST['submit'])) {
         `featured_image` = '$p_image',
         `isactive` = '$is_active',
         `visibility` = '$postVisibility',
-        `updatedon` = NOW(),
+        `useCKEditor` = '$useCKEditor',
+        `updatedon` = NOW(), 
         `catid` = '$ctname'
         WHERE `pages`.`pid` = ".$page_id;
 

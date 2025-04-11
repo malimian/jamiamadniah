@@ -70,7 +70,7 @@ try {
             throw new Exception("Tag assignment failed");
         }
         
-        echo json_encode(['success' => true, 'message' => 'Tag assigned successfully']);
+        echo json_encode(['success' => true, 'message' => 'Tag assigned']);
         
     } elseif (isset($_POST['change_status'])) {
         // Handle status change

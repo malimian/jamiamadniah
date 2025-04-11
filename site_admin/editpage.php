@@ -20,34 +20,29 @@ AdminHeader(
    <?php include 'includes/notification.php'; ?>
 
 <style type="text/css">
-    /* Improved toggle switch styling */
-    
+    /* Modern Color Scheme */
+    :root {
+        --primary-color: #4e73df;
+        --secondary-color: #858796;
+        --success-color: #1cc88a;
+        --info-color: #36b9cc;
+        --warning-color: #f6c23e;
+        --danger-color: #e74a3b;
+        --light-color: #f8f9fc;
+        --dark-color: #5a5c69;
+    }
+
     .form-switch .form-check-label {
-        font-weight: normal;
+        font-weight: 500;
         user-select: none;
         cursor: pointer;
         vertical-align: middle;
+        margin-left: 0.5rem;
+        color: var(--dark-color);
     }
-    
-    /* Enhanced simple textarea styling */
-    #simpleEditor {
-        min-height: 300px;
-        font-family: monospace;
-        line-height: 1.5;
-        padding: 15px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        background-color: #f9f9f9;
-        resize: vertical;
-    }
-    
-    /* Better alignment for form elements */
-    .form-group.row {
-        align-items: center;
-        margin-bottom: 1.2rem;
-    }
-    
-    /* Consistent card styling */
+
+
+      /* Consistent card styling */
     .card {
         margin-bottom: 20px;
         border: 1px solid rgba(0,0,0,.125);
@@ -62,6 +57,119 @@ AdminHeader(
     
     .card-body {
         padding: 1.25rem;
+    }
+
+    /* Tab styling */
+    .nav-tabs {
+        border-bottom: 2px solid #e3e6f0;
+    }
+
+    .nav-tabs .nav-link {
+        border: none;
+        color: var(--secondary-color);
+        font-weight: 600;
+        padding: 1rem 1.5rem;
+        transition: all 0.3s;
+    }
+
+    .nav-tabs .nav-link:hover {
+        color: var(--primary-color);
+        border-bottom: 2px solid var(--primary-color);
+    }
+
+    .nav-tabs .nav-link.active {
+        color: var(--primary-color);
+        background: transparent;
+        border-bottom: 2px solid var(--primary-color);
+    }
+
+    /* Editor styling */
+    #simpleEditor {
+        min-height: 300px;
+        font-family: 'SFMono-Regular', Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        line-height: 1.6;
+        padding: 1rem;
+        border: 1px solid #d1d3e2;
+        border-radius: 0.35rem;
+        background-color: #f8f9fc;
+        resize: vertical;
+        transition: all 0.3s;
+    }
+
+    #simpleEditor:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.25);
+    }
+
+    /* URL Lock Toggle */
+    .url-lock-toggle {
+        cursor: pointer;
+        padding: 0.5rem;
+        border: 1px solid #d1d3e2;
+        border-radius: 0.35rem;
+        background-color: #f8f9fc;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: calc(2.25rem + 2px);
+        width: 100%;
+        transition: all 0.3s ease;
+    }
+
+    .url-lock-toggle:hover {
+        background-color: #e3e6f0;
+        border-color: #b7b9cc;
+    }
+
+    .url-lock-toggle #urlLockIcon {
+        font-size: 1.1rem;
+        color: var(--dark-color);
+        transition: all 0.3s;
+    }
+
+    #check_url:checked ~ #urlLockIcon {
+        color: var(--success-color);
+    }
+
+    /* Buttons */
+    .btn {
+        border-radius: 0.35rem;
+        padding: 0.5rem 1.25rem;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
+
+    .btn-primary {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+
+    .btn-primary:hover {
+        background-color: #2e59d9;
+        border-color: #2653d4;
+    }
+
+    /* Form group spacing */
+    .form-group.row {
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Validation feedback */
+    .valid-feedback {
+        color: var(--success-color);
+    }
+
+    .invalid-feedback {
+        color: var(--danger-color);
+    }
+
+    /* Page header */
+    .page-header {
+        padding-bottom: 1rem;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid #e3e6f0;
+        color: var(--dark-color);
     }
 </style>
 
@@ -85,7 +193,7 @@ AdminHeader(
 
    $page = return_single_row("SELECT * FROM pages WHERE pid = {$_GET['id']} $and_gc");
    
-   $useCKEditor = (strpos($page['page_desc'], '</') !== false || strpos($page['page_desc'], '<') !== false);
+    $useCKEditor = isset($page['useCKEditor']) ? (int)$page['useCKEditor'] : 0;
 
    ?>
 
@@ -182,15 +290,21 @@ AdminHeader(
                                     </select>
                                 </div>
                             </div>
-
                             <!-- URL -->
-                            <div class="form-group row">
-                                <label for="colFormLabel" class="col-sm-2 col-form-label">URL</label>
+                           <div class="form-group row align-items-center">
+                                <label for="page_url" class="col-sm-2 col-form-label">URL</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" id="page_url" required="required" placeholder="Page URL" name="page_url" value="<?php echo $page['page_url']; ?>" readonly>
+                                    <input type="text" class="form-control" id="page_url" required placeholder="Page URL" 
+                                           name="page_url" value="<?php echo htmlspecialchars($page['page_url']); ?>" readonly>
                                 </div>
                                 <div class="col-sm-2">
-                                    <input type="checkbox" class="form-control minecheck" id="check_url" />
+                                    <div class="d-flex align-items-center h-100">
+                                        <label class="url-lock-toggle m-0">
+                                            <input type="checkbox" class="d-none" id="check_url">
+                                            <i class="fas fa-lock" id="urlLockIcon"></i>
+                                            <span class="sr-only">Toggle URL editing</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
 
@@ -211,17 +325,22 @@ AdminHeader(
 
                            <!-- Description -->
                                     <!-- Toggle Switch -->
-                                    <div class="form-check form-switch mb-2">
-                                            <input class="form-check-input" type="checkbox" id="editorToggle" <?php echo $useCKEditor ? 'checked' : ''; ?>>
-                                            <label class="form-check-label" for="editorToggle">Rich Text Editor</label>
+                                   <div class="form-check form-switch mb-2">
+                                        <input class="form-check-input" type="checkbox" id="editorToggle" <?php echo $useCKEditor === 1 ? 'checked' : ''; ?>>
+                                        <label class="form-check-label" for="editorToggle">Rich Text Editor</label>
                                     </div>
 
                                     <!-- Textarea (initially hidden if using CKEditor) -->
-                                    <textarea class="form-control" id="simpleEditor" name="editor1" style="<?php echo $useCKEditor ? 'display:none;' : ''; ?>"><?php echo replaceTextArea($page['page_desc']); ?></textarea>
+                                    <textarea class="form-control" id="simpleEditor" name="editor1" style="<?php echo $useCKEditor === 1 ? 'display:none;' : ''; ?>"><?php 
+                                        // Remove indentation to avoid whitespace issues
+                                        echo replaceTextArea($page['page_desc']); 
+                                    ?></textarea>
 
                                     <!-- CKEditor Container (initially shown if using CKEditor) -->
-                                    <div id="ckeditorContainer" style="<?php echo !$useCKEditor ? 'display:none;' : ''; ?>">
-                                        <textarea class="form-control" id="editor1" name="editor1"><?php echo replaceTextArea($page['page_desc']); ?></textarea>
+                                    <div id="ckeditorContainer" style="<?php echo $useCKEditor !== 1 ? 'display:none;' : ''; ?>">
+                                        <textarea class="form-control" id="editor1" name="editor1"><?php 
+                                            echo replaceTextArea($page['page_desc']); 
+                                        ?></textarea>
                                     </div>
 
                         </div>
