@@ -33,8 +33,14 @@ $(document).ready(function() {
             },
             function(result) {
                 if(result.status === 'success') {
+                    // Change modal title to indicate duplication
+                    var originalTitle = result.data.page_title;
+                    $('#addPageModalLabel')
+                        .text('Duplicate Page: ' + originalTitle)
+                        .attr('data-original-title', originalTitle);
+                    
                     // Populate the modal with the page data
-                    $('#modalPageTitle').val(result.data.page_title + ' (Copy)');
+                    $('#modalPageTitle').val(originalTitle + ' (Copy)');
                     $('#modalCtname').val(result.data.ctname);
                     
                     // Generate new URL based on copied title
@@ -45,7 +51,9 @@ $(document).ready(function() {
                     $('#modalCheckUrl').prop('checked', false);
                     
                     // Set other fields
-                    $('#modalPImage').val(result.data.p_image);
+                    if(result.data.p_image) {
+                        $('#modalPImage').val(result.data.p_image);
+                    }
                     $('#modalSiteTemplate').val(result.data.site_template);
                     $('#modalTemplatePage').val(result.data.template_page);
                     
@@ -59,6 +67,12 @@ $(document).ready(function() {
                 showAlert('Error fetching page data: ' + error, 'danger');
             }
         );
+    });
+
+    // Reset modal title when closed
+    $('#addPageModal').on('hidden.bs.modal', function() {
+        var defaultTitle = $('#addPageModalLabel').data('default-title');
+        $('#addPageModalLabel').text(defaultTitle);
     });
     
 
