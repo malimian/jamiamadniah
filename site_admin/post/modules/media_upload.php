@@ -43,7 +43,7 @@ if (isset($_POST['upload_image'])) {
         }
 
         // Upload the file
-        $file_name = upload_image($fullPath);
+        $file_name = upload_image($fullPath , 1200, 800, 500);
         if (!$file_name) {
             throw new Exception('File upload failed');
         }

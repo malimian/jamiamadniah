@@ -307,7 +307,7 @@ function updateMedia(formData, mediaType) {
                 if (response.success || response > 0) {
                     showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} updated!`, 'success');
                     setTimeout(() => {
-                        window.location.reload();
+                        refreshMediaTable(mediaType);
                     }, 1500);
                 } else {
                     showAlert(response.message || `Failed to update ${mediaType}`, 'danger');
@@ -317,7 +317,7 @@ function updateMedia(formData, mediaType) {
                 if (result > 0) {
                     showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} updated!`, 'success');
                     setTimeout(() => {
-                        window.location.reload();
+                        refreshMediaTable(mediaType);
                     }, 1500);
                 } else {
                     showAlert(`Failed to update ${mediaType}`, 'danger');
@@ -357,8 +357,40 @@ function clearForm(mediaType) {
     }
 }
 
+/**
+ * Refreshes the media table while preserving all GET parameters
+ * @param {string} mediaType - The type of media being refreshed
+ */
 function refreshMediaTable(mediaType) {
-        location.reload();
+
+    if(mediaType == "images")
+        mediaType = "image";
+
+    if(mediaType == "videos")
+        mediaType = "video";
+
+    if(mediaType == "files")
+        mediaType = "file";
+
+    // Get current URL object
+    const url = new URL(window.location.href);
+    
+    // Update or add media_type parameter
+    url.searchParams.set('media_type', mediaType);
+    
+    // Preserve all existing GET parameters
+    const params = new URLSearchParams(window.location.search);
+    params.forEach((value, key) => {
+        if (key !== 'media_type') { // Skip if already set above
+            url.searchParams.set(key, value);
+        }
+    });
+    
+    // Add cache busting parameter to prevent stale content
+    url.searchParams.set('_', Date.now());
+    
+    // Reload the page while maintaining scroll position
+    window.location.href = url.toString();
 }
 
 

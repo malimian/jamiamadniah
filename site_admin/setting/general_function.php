@@ -404,25 +404,127 @@ function isImage($pathToFile)
 }
 
 
-function upload_image($target_dir){
+// function upload_image($target_dir){
 
-  $file_name = 'file';
+//   $file_name = 'file';
 
-  if(!isImage($_FILES[$file_name]["tmp_name"])) return 0;
+//   if(!isImage($_FILES[$file_name]["tmp_name"])) return 0;
 
-  $temp = explode(".", $_FILES[$file_name]["name"]);
+//   $temp = explode(".", $_FILES[$file_name]["name"]);
 
-  $newfilename  =  $temp[0]."_".uniqid().'.'.end($temp);
+//   $newfilename  =  $temp[0]."_".uniqid().'.'.end($temp);
 
-  $newfilename = clean($newfilename);
+//   $newfilename = clean($newfilename);
 
-  if (move_uploaded_file($_FILES[$file_name]["tmp_name"], $target_dir . $newfilename))
-    return  $newfilename;
- else
-    return 0;
+//   if (move_uploaded_file($_FILES[$file_name]["tmp_name"], $target_dir . $newfilename))
+//     return  $newfilename;
+//  else
+//     return 0;
 
+// }
+
+
+/**
+ * Enhanced image upload with validation and optimization
+ * 
+ * @param string $target_dir Upload directory (must end with /)
+ * @param int $max_width Maximum allowed width in pixels (0 = no resize)
+ * @param int $max_height Maximum allowed height in pixels (0 = no resize)
+ * @param int $max_size_kb Maximum file size in KB (default 500KB)
+ * @return string|int Filename on success, 0 on failure
+ */
+function upload_image($target_dir, $max_width = 1200, $max_height = 800, $max_size_kb = 500) {
+    $file_name = 'file';
+    
+    // Validate input file exists
+    if (!isset($_FILES[$file_name])) {
+        return 0;
+    }
+
+    $file = $_FILES[$file_name];
+    $temp_file = $file['tmp_name'];
+    
+    // Validate it's an actual image
+    if (!isImage($temp_file)) {
+        return 0;
+    }
+
+    // Validate file size
+    $max_size_bytes = $max_size_kb * 1024;
+    if ($file['size'] > $max_size_bytes) {
+        return 0;
+    }
+
+    // Generate secure filename
+    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    $safe_name = substr(preg_replace('/[^a-z0-9_-]/i', '', pathinfo($file['name'], PATHINFO_FILENAME)), 0, 50);
+    $new_filename = $safe_name . '_' . uniqid() . '.webp'; // Default to WebP
+    
+    // Create target directory if needed
+    if (!file_exists($target_dir)) {
+        mkdir($target_dir, 0755, true);
+    }
+
+    // Process image based on type
+    try {
+        $image_info = getimagesize($temp_file);
+        $mime_type = $image_info['mime'];
+        
+        // Create image resource
+        switch ($mime_type) {
+            case 'image/jpeg':
+                $source = imagecreatefromjpeg($temp_file);
+                break;
+            case 'image/png':
+                $source = imagecreatefrompng($temp_file);
+                break;
+            case 'image/gif':
+                $source = imagecreatefromgif($temp_file);
+                break;
+            case 'image/webp':
+                $source = imagecreatefromwebp($temp_file);
+                break;
+            default:
+                return 0;
+        }
+
+        // Get original dimensions
+        $width = imagesx($source);
+        $height = imagesy($source);
+        
+        // Calculate new dimensions if resizing needed
+        if ($max_width > 0 && $max_height > 0 && ($width > $max_width || $height > $max_height)) {
+            $ratio = min($max_width/$width, $max_height/$height);
+            $new_width = round($width * $ratio);
+            $new_height = round($height * $ratio);
+            
+            // Create new image canvas
+            $new_image = imagecreatetruecolor($new_width, $new_height);
+            
+            // Preserve transparency for PNG/GIF
+            if ($mime_type == 'image/png' || $mime_type == 'image/gif') {
+                imagecolortransparent($new_image, imagecolorallocatealpha($new_image, 0, 0, 0, 127));
+                imagealphablending($new_image, false);
+                imagesavealpha($new_image, true);
+            }
+            
+            // Resize image
+            imagecopyresampled($new_image, $source, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+            imagedestroy($source);
+            $source = $new_image;
+        }
+        
+        // Save as optimized WebP (75% quality)
+        $result = imagewebp($source, $target_dir . $new_filename, 75);
+        imagedestroy($source);
+        
+        return $result ? $new_filename : 0;
+        
+    } catch (Exception $e) {
+        error_log("Image upload error: " . $e->getMessage());
+        return 0;
+    }
 }
-
 
 function upload_mutiple_image( $file_name , $target_dir){
 
