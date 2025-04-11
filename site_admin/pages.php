@@ -605,7 +605,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
         </div>
     </div>
 
-    <?php include 'modules/page/add_page_module.php';?>
+      <?php echo include_module('modules/page/add_page_module.php', null); ?>
 
       <!-- /#Gallery Plugin -->
       <?php echo include_module('modules/upload_image.php', null); ?>

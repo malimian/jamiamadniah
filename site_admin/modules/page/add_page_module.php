@@ -31,6 +31,11 @@
                                 <i class="fa fa-code mr-2"></i>Template Settings
                             </a>
                         </li>
+                        <li class="nav-item d-none" id="duplicateOptionsTab">
+                            <a class="nav-link" data-toggle="tab" href="#modalDuplicateOptionsTab">
+                                <i class="fas fa-clone mr-2"></i>Duplicate Options
+                            </a>
+                        </li>
                     </ul>
 
                     <!-- Tab panes -->
@@ -52,7 +57,7 @@
                                 <div class="col-sm-10">
                                     <select class="form-control select2" id="modalCtname" required name="ctname">
                                         <?php 
-                                        $categories = return_multiple_rows("SELECT catname, catid FROM category $where_gc AND isactive = 1");
+                                        $categories = return_multiple_rows("SELECT catname, catid FROM category Where soft_delete = 0 AND isactive = 1");
                                         foreach ($categories as $category) {
                                             $catname = htmlspecialchars($category['catname'], ENT_QUOTES, 'UTF-8');
                                             $catid = (int)$category['catid'];
@@ -108,7 +113,7 @@
                                 <div class="col-sm-10">
                                     <select class="form-control select2" id="modalSiteTemplate" required name="site_template">
                                         <?php
-                                        $site_templates = return_multiple_rows("SELECT st_id, st_name FROM site_template $where_gc AND isactive = 1");
+                                        $site_templates = return_multiple_rows("SELECT st_id, st_name FROM site_template Where soft_delete = 0  AND isactive = 1");
                                         foreach ($site_templates as $site_template) {
                                             echo "<option value='{$site_template['st_id']}'>{$site_template['st_name']}</option>";
                                         }
@@ -123,12 +128,75 @@
                                 <div class="col-sm-10">
                                     <select class="form-control select2" id="modalTemplatePage" required name="template_page">
                                         <?php
-                                        $og_templates = return_multiple_rows("SELECT template_title, template_id FROM og_template $where_gc AND isactive = 1");
+                                        $og_templates = return_multiple_rows("SELECT template_title, template_id FROM og_template Where soft_delete = 0  AND isactive = 1");
                                         foreach ($og_templates as $og_template) {
                                             echo "<option value='{$og_template['template_id']}'>{$og_template['template_title']}</option>";
                                         }
                                         ?>
                                     </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- DUPLICATE OPTIONS Tab Content -->
+                        <div id="modalDuplicateOptionsTab" class="container tab-pane fade">
+                            <div class="alert alert-warning">
+                                <i class="fas fa-exclamation-triangle mr-2"></i> Select which elements you want to copy from the original page.
+                            </div>
+                            
+                            <!-- Media Files Options -->
+                            <div class="card mb-3">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-images mr-2"></i>Media Files
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="copyAllMedia" name="copy_all_media" checked>
+                                            <label class="custom-control-label" for="copyAllMedia">Copy all media files</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="pl-4">
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="copyImages" name="copy_images" checked>
+                                                <label class="custom-control-label" for="copyImages">Copy images</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="copyVideos" name="copy_videos" checked>
+                                                <label class="custom-control-label" for="copyVideos">Copy videos</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="copyDocuments" name="copy_documents" checked>
+                                                <label class="custom-control-label" for="copyDocuments">Copy documents/files</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Addons Options -->
+                            <div class="card">
+                                <div class="card-header bg-light">
+                                    <h5 class="mb-0">
+                                        <i class="fas fa-puzzle-piece mr-2"></i>Addons & Modules
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" id="copyAddons" name="copy_addons" checked>
+                                            <label class="custom-control-label" for="copyAddons">Copy all addons/modules</label>
+                                        </div>
+                                        <small class="form-text text-muted">This includes all associated addon data and settings</small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -146,9 +214,8 @@
                     <i class="fas fa-edit mr-1"></i> Save & Edit
                 </button>
             </div>
-        </div>
+        </div> 
     </div>
 </div>
 
 <script type="text/javascript" src="js/modules/page/add_page.js"></script>
-<!-- New Page Modal -->
