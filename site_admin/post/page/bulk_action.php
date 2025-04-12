@@ -19,7 +19,7 @@ try {
         
         switch ($_POST['bulk_action']) {
             case 'delete':
-                $sql = "UPDATE pages SET soft_delete = 1 , deletedby = '$uid' WHERE pid IN ($placeholders)";
+                $sql = "UPDATE pages SET soft_delete = 1 , deletedby = '$uid' , deletedon = NOW() WHERE pid IN ($placeholders)";
                 $result = Update($sql);
                 $message = 'Selected pages have been deleted';
                 break;
