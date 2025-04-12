@@ -249,26 +249,57 @@
 $(document).ready(function() {
     let fieldCount = 1;
     
+    // Initialize functions on page load
+    initializePage();
+
+    function initializePage() {
+        // Load initial sections table
+        loadSectionsTable();
+        
+        // Initialize switches if any exist
+        if ($('.js-switch').length > 0) {
+            initializeSwitches();
+        }
+    }
+
     // Add new field
     $('#add-field').click(function() {
-        const newField = `
-        <div class="field-group card mb-3">
+        const newField = createFieldHtml(fieldCount);
+        $('#fields-container').append(newField);
+        fieldCount++;
+    });
+
+    // Helper function to create field HTML
+    function createFieldHtml(index, fieldData = {}) {
+        const fieldTypes = <?php echo json_encode(array_column($fieldTypes, 'field_type')); ?>;
+        const tabGroups = <?php echo json_encode(array_column($tabGroups, 'tab_group')); ?>;
+        
+        const fieldName = fieldData.name || '';
+        const fieldLabel = fieldData.label || '';
+        const fieldType = fieldData.type || 'text';
+        const tabGroup = fieldData.tab_group || '';
+        const fieldOrder = fieldData.order || index;
+        const isRequired = fieldData.required || false;
+        const isNewTabGroup = tabGroup && !tabGroups.includes(tabGroup);
+
+        return `
+        <div class="field-group card mb-3" ${fieldData.id ? `data-field-id="${fieldData.id}"` : ''}>
             <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <label>Field Name</label>
-                        <input type="text" name="fields[${fieldCount}][name]" placeholder="e.g., weight" class="form-control" required>
+                        <input type="text" name="fields[${index}][name]" value="${fieldName}" placeholder="e.g., weight" class="form-control" required>
                     </div>
                     <div class="col-md-4">
                         <label>Field Label</label>
-                        <input type="text" name="fields[${fieldCount}][label]" placeholder="e.g., Weight" class="form-control" required>
+                        <input type="text" name="fields[${index}][label]" value="${fieldLabel}" placeholder="e.g., Weight" class="form-control" required>
                     </div>
                     <div class="col-md-4">
                         <label>Field Type</label>
-                        <select name="fields[${fieldCount}][type]" class="form-control" required>
-                            <?php foreach ($fieldTypes as $type): ?>
-                            <option value="<?= $type['field_type'] ?>"><?= ucfirst($type['field_type']) ?></option>
-                            <?php endforeach; ?>
+                        <select name="fields[${index}][type]" class="form-control" required>
+                            ${fieldTypes.map(type => 
+                                `<option value="${type}" ${type === fieldType ? 'selected' : ''}>${type.charAt(0).toUpperCase() + type.slice(1)}</option>`
+                            ).join('')}
                         </select>
                     </div>
                 </div>
@@ -276,22 +307,31 @@ $(document).ready(function() {
                 <div class="row mb-3">
                     <div class="col-md-4">
                         <label>Tab Group</label>
-                        <select name="fields[${fieldCount}][tab_group]" class="form-control">
-                            <?php foreach ($tabGroups as $group): ?>
-                            <option value="<?= $group['tab_group'] ?>"><?= ucfirst($group['tab_group']) ?></option>
-                            <?php endforeach; ?>
-                            <option value="new">+ Create New Group</option>
+                        <select name="fields[${index}][tab_group]" class="form-control">
+                            <option value="">-- Select Group --</option>
+                            ${tabGroups.map(group => 
+                                `<option value="${group}" ${group === tabGroup && !isNewTabGroup ? 'selected' : ''}>${group.charAt(0).toUpperCase() + group.slice(1)}</option>`
+                            ).join('')}
+                            <option value="new" ${isNewTabGroup ? 'selected' : ''}>+ Create New Group</option>
                         </select>
-                        <input type="text" name="fields[${fieldCount}][new_tab_group]" class="form-control mt-2" placeholder="New Group Name" style="display:none;">
+                        <input type="text" name="fields[${index}][new_tab_group]" 
+                               class="form-control mt-2" 
+                               placeholder="New Group Name" 
+                               value="${isNewTabGroup ? tabGroup : ''}"
+                               style="${isNewTabGroup ? '' : 'display:none;'}"
+                               ${isNewTabGroup ? 'required' : ''}>
                     </div>
                     <div class="col-md-2">
                         <label>Order</label>
-                        <input type="number" name="fields[${fieldCount}][order]" class="form-control" value="${fieldCount}">
+                        <input type="number" name="fields[${index}][order]" class="form-control" value="${fieldOrder}">
                     </div>
                     <div class="col-md-4">
                         <div class="form-check mt-4">
-                            <input type="checkbox" name="fields[${fieldCount}][required]" id="field${fieldCount}_required" class="form-check-input">
-                            <label for="field${fieldCount}_required" class="form-check-label">Required Field</label>
+                            <input type="checkbox" name="fields[${index}][required]" 
+                                   id="field${index}_required" 
+                                   class="form-check-input" 
+                                   ${isRequired ? 'checked' : ''}>
+                            <label for="field${index}_required" class="form-check-label">Required Field</label>
                         </div>
                     </div>
                     <div class="col-md-2 text-right">
@@ -302,10 +342,7 @@ $(document).ready(function() {
                 </div>
             </div>
         </div>`;
-        
-        $('#fields-container').append(newField);
-        fieldCount++;
-    });
+    }
 
     // Toggle new tab group input
     $(document).on('change', 'select[name*="[tab_group]"]', function() {
@@ -349,10 +386,20 @@ $(document).ready(function() {
                 isValid = false;
                 return false; // break loop
             }
+            
+            // Validate new tab group if selected
+            const tabGroupSelect = $(this).find('[name*="[tab_group]"]');
+            if (tabGroupSelect.val() === 'new') {
+                const newTabGroup = $(this).find('[name*="[new_tab_group]"]').val().trim();
+                if (newTabGroup === '') {
+                    isValid = false;
+                    return false;
+                }
+            }
         });
 
         if (!isValid) {
-            showAlert('Please fill out all field names and labels', 'danger');
+            showAlert('Please fill out all required field information', 'danger');
             return;
         }
 
@@ -378,6 +425,13 @@ $(document).ready(function() {
                 order: $(this).find('[name*="[order]"]').val(),
                 required: $(this).find('[name*="[required]"]').is(':checked') ? 1 : 0
             };
+            
+            // Include field ID if editing existing field
+            const fieldId = $(this).data('field-id');
+            if (fieldId) {
+                field.id = fieldId;
+            }
+            
             formData.fields.push(field);
         });
 
@@ -386,62 +440,7 @@ $(document).ready(function() {
             function(result) {
                 if(result.success) {
                     // Reset form
-                    $('#section_name').val('');
-                    $('#page_id').val('');
-                    $('#fields-container').html(`
-                        <div class="field-group card mb-3">
-                            <div class="card-body">
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label>Field Name</label>
-                                        <input type="text" name="fields[0][name]" placeholder="e.g., weight" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label>Field Label</label>
-                                        <input type="text" name="fields[0][label]" placeholder="e.g., Weight" class="form-control" required>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label>Field Type</label>
-                                        <select name="fields[0][type]" class="form-control" required>
-                                            <?php foreach ($fieldTypes as $type): ?>
-                                            <option value="<?= $type['field_type'] ?>"><?= ucfirst($type['field_type']) ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="row mb-3">
-                                    <div class="col-md-4">
-                                        <label>Tab Group</label>
-                                        <select name="fields[0][tab_group]" class="form-control">
-                                            <?php foreach ($tabGroups as $group): ?>
-                                            <option value="<?= $group['tab_group'] ?>"><?= ucfirst($group['tab_group']) ?></option>
-                                            <?php endforeach; ?>
-                                            <option value="new">+ Create New Group</option>
-                                        </select>
-                                        <input type="text" name="fields[0][new_tab_group]" class="form-control mt-2" placeholder="New Group Name" style="display:none;">
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label>Order</label>
-                                        <input type="number" name="fields[0][order]" class="form-control" value="0">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-check mt-4">
-                                            <input type="checkbox" name="fields[0][required]" id="field0_required" class="form-check-input">
-                                            <label for="field0_required" class="form-check-label">Required Field</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 text-right">
-                                        <button type="button" class="btn btn-danger remove-field mt-4">
-                                            <i class="fas fa-trash"></i> Remove
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `);
-                    fieldCount = 1;
-                    
+                    resetSectionForm();
                     showAlert(result.message, 'success');
                     
                     // Refresh sections dropdown and table
@@ -460,45 +459,62 @@ $(document).ready(function() {
         );
     });
     
+    function resetSectionForm() {
+        $('#section_name').val('');
+        $('#page_id').val('');
+        $('#fields-container').html(createFieldHtml(0));
+        fieldCount = 1;
+    }
+    
     // Load entries when section is selected
     $('#section-select').change(function() {
         const section_id = $(this).val();
         
         if(section_id) {
-            $('#entries-container').html('<div class="text-center my-4"><i class="fas fa-spinner fa-spin"></i> Loading entries...</div>');
-            
-            $.ajax({
-                url: 'post/modules/page/dynamic_sections/load_entries.php',
-                type: 'POST',
-                dataType: 'json',
-                data: { section_id: section_id },
-                success: function(result) {
-                    if(result.success && result.html) {
-                        $('#entries-container').html(result.html);
-                    } else {
-                        showAlert(result.message || 'No entries found', 'info');
-                        $('#entries-container').html('<div class="alert alert-info">No entries found for this section</div>');
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Error:', status, error);
-                    const errorMsg = xhr.responseJSON && xhr.responseJSON.message 
-                        ? xhr.responseJSON.message 
-                        : 'Failed to load entries. Please try again.';
-                    
-                    showAlert(errorMsg, 'danger');
-                    $('#entries-container').html(`
-                        <div class="alert alert-danger">
-                            ${errorMsg}
-                            <button class="btn btn-sm btn-secondary ml-2" onclick="retryLoadEntries()">Retry</button>
-                        </div>
-                    `);
-                }
-            });
+            loadSectionEntries(section_id);
         } else {
             $('#entries-container').html('<div class="alert alert-info">Please select a section</div>');
         }
     });
+    
+    function loadSectionEntries(section_id) {
+        $('#entries-container').html('<div class="text-center my-4"><i class="fas fa-spinner fa-spin"></i> Loading entries...</div>');
+        
+        $.ajax({
+            url: 'post/modules/page/dynamic_sections/load_entries.php',
+            type: 'POST',
+            dataType: 'json',
+            data: { section_id: section_id },
+            success: function(result) {
+                if(result.success && result.html) {
+                    $('#entries-container').html(result.html);
+                    initializeEntryComponents();
+                } else {
+                    showAlert(result.message || 'No entries found', 'info');
+                    $('#entries-container').html('<div class="alert alert-info">No entries found for this section</div>');
+                }
+            },
+            error: handleAjaxError
+        });
+    }
+    
+    function initializeEntryComponents() {
+        // Initialize any plugins for new content
+        if(typeof CKEDITOR !== 'undefined') {
+            $('.rich-text-editor').each(function() {
+                CKEDITOR.replace(this.id);
+            });
+        }
+        
+        // Initialize tooltips if needed
+        $('[data-toggle="tooltip"]').tooltip();
+        
+        // Initialize datepickers if any
+        $('.datepicker').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true
+        });
+    }
     
     // Load sections table
     function loadSectionsTable() {
@@ -509,17 +525,48 @@ $(document).ready(function() {
             success: function(result) {
                 if(result.success && result.html) {
                     $('#sections-table tbody').html(result.html);
+                    initializeSwitches();
                 } else {
                     showAlert(result.message || 'Failed to load sections', 'danger');
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error:', status, error);
-                showAlert('Failed to load sections. Please try again.', 'danger');
-            }
+            error: handleAjaxError
         });
     }
     
+    // Initialize switches for active/inactive
+    function initializeSwitches() {
+        $('.js-switch').each(function() {
+            const switchery = new Switchery(this, {
+                size: 'small',
+                color: '#1AB394',
+                secondaryColor: '#ED5565'
+            });
+            
+            $(this).on('change', function() {
+                const sectionId = $(this).data('id');
+                const isActive = $(this).is(':checked') ? 1 : 0;
+                
+                $.ajax({
+                    url: 'post/modules/page/dynamic_sections/update_section_status.php',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        section_id: sectionId,
+                        is_active: isActive
+                    },
+                    success: function(result) {
+                        if(!result.success) {
+                            showAlert(result.message || 'Failed to update status', 'danger');
+                            // Revert the switch
+                            $(this).prop('checked', !isActive).trigger('change');
+                        }
+                    },
+                    error: handleAjaxError
+                });
+            });
+        });
+    }
     
     // Edit section
     $(document).on('click', '.edit-section', function() {
@@ -540,10 +587,7 @@ $(document).ready(function() {
                     $('#edit-section-content').html('<div class="alert alert-danger">' + (result.message || 'Failed to load section data') + '</div>');
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error:', status, error);
-                $('#edit-section-content').html('<div class="alert alert-danger">Failed to load section data. Please try again.</div>');
-            }
+            error: handleAjaxError
         });
     });
     
@@ -566,10 +610,7 @@ $(document).ready(function() {
                     $('#view-fields-content').html('<div class="alert alert-danger">' + (result.message || 'Failed to load fields') + '</div>');
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error:', status, error);
-                $('#view-fields-content').html('<div class="alert alert-danger">Failed to load fields. Please try again.</div>');
-            }
+            error: handleAjaxError
         });
     });
     
@@ -580,7 +621,8 @@ $(document).ready(function() {
             section_id: sectionId,
             section_name: $('#edit_section_name').val(),
             page_id: $('#edit_page_id').val(),
-            fields: []
+            fields: [],
+            deleted_fields: []
         };
         
         // Validate
@@ -593,6 +635,11 @@ $(document).ready(function() {
             showAlert('Valid Page ID is required', 'danger', '#edit-section-content');
             return;
         }
+        
+        // Collect deleted fields
+        $('input[name="deleted_fields[]"]').each(function() {
+            formData.deleted_fields.push($(this).val());
+        });
         
         // Collect fields
         $('.edit-field-group').each(function(index) {
@@ -620,6 +667,12 @@ $(document).ready(function() {
                     $('#editSectionModal').modal('hide');
                     loadSectionsTable();
                     refreshSectionsDropdown();
+                    
+                    // Reload entries if viewing this section
+                    const currentSection = $('#section-select').val();
+                    if (currentSection == sectionId) {
+                        loadSectionEntries(sectionId);
+                    }
                 } else {
                     showAlert(result.message || 'Failed to update section', 'danger', '#edit-section-content');
                 }
@@ -645,14 +698,18 @@ $(document).ready(function() {
                         showAlert(result.message, 'success');
                         loadSectionsTable();
                         refreshSectionsDropdown();
+                        
+                        // Clear entries if viewing this section
+                        const currentSection = $('#section-select').val();
+                        if (currentSection == sectionId) {
+                            $('#entries-container').html('<div class="alert alert-info">Please select a section</div>');
+                            $('#section-select').val('');
+                        }
                     } else {
                         showAlert(result.message || 'Failed to delete section', 'danger');
                     }
                 },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Error:', status, error);
-                    showAlert('Failed to delete section. Please try again.', 'danger');
-                }
+                error: handleAjaxError
             });
         }
     });
@@ -660,59 +717,7 @@ $(document).ready(function() {
     // Add new field in edit modal
     $(document).on('click', '#add-edit-field', function() {
         const fieldCount = $('.edit-field-group').length;
-        const newField = `
-        <div class="edit-field-group card mb-3" data-field-id="0">
-            <div class="card-body">
-                <input type="hidden" name="edit_fields[${fieldCount}][id]" value="0">
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label>Field Name</label>
-                        <input type="text" name="edit_fields[${fieldCount}][name]" placeholder="e.g., weight" class="form-control" required>
-                    </div>
-                    <div class="col-md-4">
-                        <label>Field Label</label>
-                        <input type="text" name="edit_fields[${fieldCount}][label]" placeholder="e.g., Weight" class="form-control" required>
-                    </div>
-                    <div class="col-md-4">
-                        <label>Field Type</label>
-                        <select name="edit_fields[${fieldCount}][type]" class="form-control" required>
-                            <?php foreach ($fieldTypes as $type): ?>
-                            <option value="<?= $type['field_type'] ?>"><?= ucfirst($type['field_type']) ?></option>
-                            <?php endforeach; ?>
-                        </select>
-                    </div>
-                </div>
-                
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label>Tab Group</label>
-                        <select name="edit_fields[${fieldCount}][tab_group]" class="form-control">
-                            <?php foreach ($tabGroups as $group): ?>
-                            <option value="<?= $group['tab_group'] ?>"><?= ucfirst($group['tab_group']) ?></option>
-                            <?php endforeach; ?>
-                            <option value="new">+ Create New Group</option>
-                        </select>
-                        <input type="text" name="edit_fields[${fieldCount}][new_tab_group]" class="form-control mt-2" placeholder="New Group Name" style="display:none;">
-                    </div>
-                    <div class="col-md-2">
-                        <label>Order</label>
-                        <input type="number" name="edit_fields[${fieldCount}][order]" class="form-control" value="${fieldCount}">
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-check mt-4">
-                            <input type="checkbox" name="edit_fields[${fieldCount}][required]" id="edit_field${fieldCount}_required" class="form-check-input">
-                            <label for="edit_field${fieldCount}_required" class="form-check-label">Required Field</label>
-                        </div>
-                    </div>
-                    <div class="col-md-2 text-right">
-                        <button type="button" class="btn btn-danger remove-edit-field mt-4">
-                            <i class="fas fa-trash"></i> Remove
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>`;
-        
+        const newField = createFieldHtml(fieldCount);
         $('#edit-fields-container').append(newField);
     });
     
@@ -726,7 +731,6 @@ $(document).ready(function() {
         $(this).closest('.edit-field-group').remove();
     });
 
-    
     // Function to refresh sections dropdown
     function refreshSectionsDropdown() {
         $.ajax({
@@ -736,6 +740,7 @@ $(document).ready(function() {
             success: function(result) {
                 if(result.success) {
                     const $select = $('#section-select');
+                    const currentValue = $select.val();
                     $select.empty().append('<option value="">-- Select Section --</option>');
                     
                     $.each(result.sections, function(index, section) {
@@ -744,19 +749,36 @@ $(document).ready(function() {
                             text: section.section_name + ' (Page ' + section.page_id + ')'
                         }));
                     });
+                    
+                    // Restore selected value if still available
+                    if (currentValue && $select.find('option[value="' + currentValue + '"]').length) {
+                        $select.val(currentValue);
+                    }
                 } else {
                     console.error('Failed to load sections:', result.message);
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error:', status, error);
-            }
+            error: handleAjaxError
         });
+    }
+    
+    // Common error handler
+    function handleAjaxError(xhr, status, error) {
+        console.error('AJAX Error:', status, error);
+        const errorMsg = xhr.responseJSON && xhr.responseJSON.message 
+            ? xhr.responseJSON.message 
+            : 'Failed to complete the operation. Please try again.';
+        
+        showAlert(errorMsg, 'danger');
+        return errorMsg;
     }
     
     // Retry function for entries loading
     window.retryLoadEntries = function() {
-        $('#section-select').trigger('change');
+        const sectionId = $('#section-select').val();
+        if (sectionId) {
+            loadSectionEntries(sectionId);
+        }
     };
 });
 </script>
