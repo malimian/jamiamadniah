@@ -10,13 +10,16 @@ if (!isset($_SESSION['user']) || !$has_edit) {
 
 try {
     if (isset($_POST['bulk_action']) && isset($_POST['pages'])) {
+        
+        $uid = $_SESSION['user']['id'];
+
         // Handle bulk actions
         $pageIds = is_array($_POST['pages']) ? array_map('intval', $_POST['pages']) : [intval($_POST['pages'])];
         $placeholders = implode(',', $pageIds);
         
         switch ($_POST['bulk_action']) {
             case 'delete':
-                $sql = "UPDATE pages SET soft_delete = 1 WHERE pid IN ($placeholders)";
+                $sql = "UPDATE pages SET soft_delete = 1 , deletedby = '$uid' WHERE pid IN ($placeholders)";
                 $result = Update($sql);
                 $message = 'Selected pages have been deleted';
                 break;

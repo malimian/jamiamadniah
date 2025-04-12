@@ -5,6 +5,7 @@ require_once('../../admin_connect.php');
 $tbl = "pages";
 $tbl_id = "pid";
 $tbl_seq = "pages_sequence";
+$uid = $_SESSION['user']['id'];
 
 
 if(isset($_POST['change_status'])){
@@ -23,7 +24,7 @@ if (isset($_POST['delete'])) {
 
 $id= $_POST['id'];
 
-$sql ="UPDATE $tbl SET soft_delete = 1
+$sql ="UPDATE $tbl SET soft_delete = 1 , deletedby = '$uid' , deletedon = NOW()
 Where $tbl_id = $id";
 
 echo Update($sql);

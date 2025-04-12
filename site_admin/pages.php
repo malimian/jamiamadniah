@@ -122,7 +122,14 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                         <a href="#" style="float:right;color: #fff" class="btn btn-danger btn-md" data-toggle="modal" data-target="#addPageModal">
                             <i class="fa fa-plus">&nbsp;</i>Add New
                         </a>
+                    <?php endif; ?>
+
+                     <?php if($has_delete): ?>
+                            <a href="deleted_pages.php" style="float:right;color: #fff; margin-right: 10px;" class="btn btn-warning btn-md">
+                                <i class="fa fa-trash-restore">&nbsp;</i>Restore Deleted
+                            </a>
                         <?php endif; ?>
+                        
                 </h3>
 
                 <hr>
