@@ -231,10 +231,16 @@ AdminHeader(
                                 <i class="fa fa-image"></i> Media
                             </a>
                         </li>
-                        <!-- Shop Tab -->
+                        <!-- Adds On Tab -->
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#menu5">
                                 <i class="fa fa-plus"></i> Adds On
+                            </a>
+                        </li>
+                        <!-- Adds On Tab -->
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#menu6">
+                                <i class="fa fa-plus"></i> Parameters
                             </a>
                         </li>
                     </ul>
@@ -407,10 +413,16 @@ AdminHeader(
                             <?php echo include_module('modules/page/media_tab_module.php', array('action' => "edit" , 'page' => array($page) )); ?>
                         </div>
 
-                        <!-- Shop Tab Content -->
+                        <!-- Addson Tab Content -->
                         <div id="menu5" class="container tab-pane fade">
                             <?php echo include_module('modules/page/add_attributes_module.php', array('action' => "edit" , 'page' => array($page) )); ?>
                         </div>
+
+                         <!-- Parameters Tab Content -->
+                        <div id="menu6" class="container tab-pane fade">
+                            <?php echo include_module('modules/page/dynamic_sections_module.php', array('action' => "edit" , 'page' => array($page) )); ?>
+                        </div>
+
                     </div>
                 
                 <script type="text/javascript">
