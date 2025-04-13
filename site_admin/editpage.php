@@ -238,11 +238,6 @@ AdminHeader(
                             </a>
                         </li>
                         <!-- Adds On Tab -->
-                        <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#menu6">
-                                <i class="fa fa-plus"></i> Parameters
-                            </a>
-                        </li>
                     </ul>
 
                     <!-- Tab panes -->
