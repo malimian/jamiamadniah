@@ -469,43 +469,83 @@ AdminHeader(
                         </div>
                     </div>
                 </div>
-                <!-- Page Categories Section -->
+        <!-- Page Categories Section -->
                 <div class="card mb-3">
-                    <div class="card-header">
-                        <h5 class="card-title">Page Categories</h5>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Page Categories</h5>
+                        <a class="btn btn-sm btn-outline-secondary maximize-categories" title="Maximize">
+                            <i class="fas fa-expand"></i>
+                        </a>
                     </div>
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <div class="col-lg" id="category_list">
+                    <div class="card-body p-0">
+                        <div class="form-group row m-0">
+                            <div class="col-lg p-3" id="category_list" style="max-height: 300px; overflow-x: hidden; overflow-y: auto;">
                                 <?php
-                               // Fetch selected categories for the current page
-                                    $selected_categories = return_multiple_rows("SELECT cat_id FROM page_category WHERE page_id = " . $page['pid'] . " AND isactive = 1 AND soft_delete = 0");
+                                // Fetch selected categories for the current page
+                                $selected_categories = return_multiple_rows("SELECT cat_id FROM page_category WHERE page_id = " . $page['pid'] . " AND isactive = 1 AND soft_delete = 0");
 
-                                    // Extract cat_id values into a simple array
-                                    $selected_cat_ids = array_column($selected_categories, 'cat_id');
+                                // Extract cat_id values into a simple array
+                                $selected_cat_ids = array_column($selected_categories, 'cat_id');
 
-                                    // Build the menu structure
-                                    $menus = array(
-                                        'items' => array(),
-                                        'parents' => array()
-                                    );
+                                // Build the menu structure
+                                $menus = array(
+                                    'items' => array(),
+                                    'parents' => array()
+                                );
 
-                                    // Fetch all categories
-                                    $p_cats = return_multiple_rows("SELECT catid, catname, cat_url, ParentCategory FROM category WHERE isactive = 1 AND soft_delete = 0");
+                                // Fetch all categories
+                                $p_cats = return_multiple_rows("SELECT catid, catname, cat_url, ParentCategory FROM category WHERE isactive = 1 AND soft_delete = 0");
 
-                                    // Populate the menu structure
-                                    foreach ($p_cats as $p_cat) {
-                                        $menus['items'][$p_cat['catid']] = $p_cat;
-                                        $menus['parents'][$p_cat['ParentCategory']][] = $p_cat['catid'];
-                                    }
+                                // Populate the menu structure
+                                foreach ($p_cats as $p_cat) {
+                                    $menus['items'][$p_cat['catid']] = $p_cat;
+                                    $menus['parents'][$p_cat['ParentCategory']][] = $p_cat['catid'];
+                                }
 
-                                    // Render the multi-level checkbox structure
-                                    echo createmulltilevelcheckbox(0, $menus, $selected_cat_ids);
+                                // Render the multi-level checkbox structure
+                                echo createmulltilevelcheckbox(0, $menus, $selected_cat_ids);
                                 ?>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <style>
+                    .maximized-categories {
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: 1050;
+                        background: white;
+                        overflow: auto;
+                    }
+                    .maximized-categories #category_list {
+                        max-height: none !important;
+                        height: calc(100vh - 100px) !important;
+                    }
+                </style>
+
+                <script>
+                $(document).ready(function() {
+                    $('.maximize-categories').click(function() {
+                        const card = $(this).closest('.card');
+                        const isMaximized = card.hasClass('maximized-categories');
+                        
+                        if (isMaximized) {
+                            card.removeClass('maximized-categories');
+                            $(this).html('<i class="fas fa-expand"></i>');
+                            $(this).attr('title', 'Maximize');
+                        } else {
+                            card.addClass('maximized-categories');
+                            $(this).html('<i class="fas fa-compress"></i>');
+                            $(this).attr('title', 'Minimize');
+                        }
+                    });
+                });
+                </script>
+
             </div>
             </form>
         </div>

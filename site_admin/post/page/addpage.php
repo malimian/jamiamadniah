@@ -72,6 +72,74 @@ if (isset($_POST['submit'])) {
     if ($id > 0) {
         // If duplicating a page, copy the selected elements
         if ($original_page_id > 0) {
+
+             // First, get all data from the original page
+            $original_page = return_single_row("SELECT * FROM pages WHERE pid = $original_page_id and soft_delete = 0 ");
+            
+            if ($original_page) {
+                // Update the new page with all data from original (except auto-increment fields and unique fields)
+                $update_sql = "UPDATE pages SET
+                    catid = '" . (int)$original_page['catid'] . "',
+                    site_template_id = '" . (int)$original_page['site_template_id'] . "',
+                    template_id = '" . (int)$original_page['template_id'] . "',
+                    header = '" . escape($original_page['header']) . "',
+                    page_desc = '" . escape($original_page['page_desc']) . "',
+                    page_meta_title = '" . escape($original_page['page_meta_title']) . "',
+                    page_meta_keywords = '" . escape($original_page['page_meta_keywords']) . "',
+                    page_meta_desc = '" . escape($original_page['page_meta_desc']) . "',
+                    pages_sequence = '" . (float)$original_page['pages_sequence'] . "',
+                    isactive = '" . (int)$original_page['isactive'] . "',
+                    activatedby = '" . (int)$original_page['activatedby'] . "',
+                    visibility = '" . (int)$original_page['visibility'] . "',
+                    featured_image = '" . escape($original_page['featured_image']) . "',
+                    isFeatured = '" . (int)$original_page['isFeatured'] . "',
+                    notes = '" . escape($original_page['notes']) . "',
+                    personal_tags = '" . escape($original_page['personal_tags']) . "',
+                    showInNavBar = '" . (int)$original_page['showInNavBar'] . "',
+                    isSystemOperated = '" . (int)$original_page['isSystemOperated'] . "',
+                    useCKEditor = '" . (int)$original_page['useCKEditor'] . "',
+                    updatedon = NOW()
+                    WHERE pid = $id";
+                    
+                Update($update_sql);
+            }
+
+
+                    // Copy page_attribute_values
+                        $attributes = return_multiple_rows("
+                            SELECT attribute_id, attribute_value 
+                            FROM page_attribute_values 
+                            WHERE page_id = $original_page_id
+                        ");
+                        
+                        foreach ($attributes as $attribute) {
+                            $sql = "INSERT INTO page_attribute_values 
+                                    (page_id, attribute_id, attribute_value) 
+                                    VALUES 
+                                    ('$id', 
+                                     '" . (int)$attribute['attribute_id'] . "', 
+                                     '" . escape($attribute['attribute_value']) . "')";
+                            Insert($sql);
+                        }
+
+             // Copy page_category entries
+                $categories = return_multiple_rows("
+                    SELECT cat_id, isactive 
+                    FROM page_category 
+                    WHERE page_id = $original_page_id AND soft_delete = 0
+                ");
+                
+                foreach ($categories as $category) {
+                    $sql = "INSERT INTO page_category 
+                            (page_id, cat_id, isactive, soft_delete) 
+                            VALUES 
+                            ('$id', 
+                             '" . (int)$category['cat_id'] . "', 
+                             '" . (int)$category['isactive'] . "', 
+                             '0')";
+                    Insert($sql);
+                }
+
             $copy_images = isset($_POST['copy_images']) && $_POST['copy_images'] == 1;
             $copy_videos = isset($_POST['copy_videos']) && $_POST['copy_videos'] == 1;
             $copy_documents = isset($_POST['copy_documents']) && $_POST['copy_documents'] == 1;
