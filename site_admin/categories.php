@@ -190,80 +190,152 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
                         </thead>
                         <tbody>
                             <?php 
-                            $count = $offset + 1; // Start numbering from the correct position
-                            foreach($categories as $category): 
-                            ?> 
-                            <tr id="tr_<?=$category['catid']?>">
-                                <td><?=$count++;?></td>
-                                <td><?=htmlspecialchars($category["catname"])?></td>
-                                <td>
-                                    <div class="d-flex align-items-center">
-                                        <button class="btn btn-sm btn-outline-primary mr-2" onclick="changeSequence(<?=$category['catid']?>, 'up')">
-                                            <i class="fa fa-arrow-up"></i>
-                                        </button>
-                                        <span id="seq_<?=$category['catid']?>"><?=$category["cat_sequence"]?></span>
-                                        <button class="btn btn-sm btn-outline-primary ml-2" onclick="changeSequence(<?=$category['catid']?>, 'down')">
-                                            <i class="fa fa-arrow-down"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input navbar-switch" 
-                                               id="navbar_<?=$category['catid']?>" 
-                                               data-id="<?=$category['catid']?>"
-                                               <?=$category['showInNavBar'] == 1 ? 'checked' : ''?>>
-                                        <label class="custom-control-label" for="navbar_<?=$category['catid']?>"></label>
-                                    </div>
-                                </td>
-                                <td>
-                                    <?php
-                                    $pc = return_single_ans("SELECT catname FROM category WHERE catid = ".$category['ParentCategory']." AND soft_delete = 0");
-                                    echo ($pc == "0" || empty($pc)) ? "Parent" : htmlspecialchars($pc);
+                            // First, organize categories into a hierarchical structure
+                            $categoryTree = [];
+                            foreach($categories as $category) {
+                                $parentId = $category['ParentCategory'];
+                                if (!isset($categoryTree[$parentId])) {
+                                    $categoryTree[$parentId] = [];
+                                }
+                                $categoryTree[$parentId][] = $category;
+                            }
+                            
+                            // Function to display categories recursively
+                            function displayCategories($parentId, $categories, $categoryTree, &$count, $level = 0) {
+                                if (!isset($categories[$parentId])) return;
+                                
+                                foreach ($categories[$parentId] as $category) {
+                                    $hasChildren = isset($categoryTree[$category['catid']]) && !empty($categoryTree[$category['catid']]);
+                                    $indent = str_repeat('&nbsp;&nbsp;&nbsp;&nbsp;', $level);
                                     ?>
-                                </td>
-                                <td>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input js-switch" 
-                                               id="status_switch_<?=$category['catid']?>" 
-                                               data-id="<?=$category['catid']?>"
-                                               <?=($category['isactive'] == 1 && canActivate($category['isSystemOperated'])) ? 'checked' : ''?>
-                                               <?=!canActivate($category['isSystemOperated']) ? 'disabled' : ''?>>
-                                        <label class="custom-control-label" for="status_switch_<?=$category['catid']?>">
-                                            <span id="status_<?=$category['catid']?>" class="badge <?=$category['isactive'] == 1 ? 'badge-success' : 'badge-danger'?>">
-                                                <?=$category['isactive'] == 1 ? 'Active' : 'Inactive'?>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" 
-                                                id="dropdownMenuButton_<?=$category['catid']?>" 
-                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-cog"></i>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_<?=$category['catid']?>">
-                                            <?php if( $has_edit && canEdit($category['isSystemOperated'])): ?>
-                                            <a class="dropdown-item" href="editmenue.php?id=<?=$category['catid']?>&action=edit">
-                                                <i class="fa fa-edit mr-2"></i>Edit
-                                            </a>
+                                    <tr id="tr_<?=$category['catid']?>" class="<?= $level > 0 ? 'child-row' : '' ?>">
+                                        <td><?=$count++;?></td>
+                                        <td>
+                                            <?= $indent ?>
+                                            <?php if ($hasChildren): ?>
+                                                <i class="fas fa-caret-down toggle-children" data-id="<?=$category['catid']?>" style="cursor:pointer;"></i>
+                                            <?php else: ?>
+                                                <i class="fas fa-minus" style="opacity:0.3;"></i>
                                             <?php endif; ?>
-                                            
-                                            <?php if($has_delete && canDelete($category['isSystemOperated'])): ?>
-                                            <a class="dropdown-item text-danger" onclick="delete_(<?=$category['catid']?>)">
-                                                <i class="fa fa-trash mr-2"></i>Delete
-                                            </a>
-                                            <?php endif; ?>
-                                        </div>
-                                    </div>
-                            </td>
-                            </tr>
-                            <?php endforeach; ?>      
+                                            <?=htmlspecialchars($category["catname"])?>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <button class="btn btn-sm btn-outline-primary mr-2" onclick="changeSequence(<?=$category['catid']?>, 'up')">
+                                                    <i class="fa fa-arrow-up"></i>
+                                                </button>
+                                                <span id="seq_<?=$category['catid']?>"><?=$category["cat_sequence"]?></span>
+                                                <button class="btn btn-sm btn-outline-primary ml-2" onclick="changeSequence(<?=$category['catid']?>, 'down')">
+                                                    <i class="fa fa-arrow-down"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input navbar-switch" 
+                                                       id="navbar_<?=$category['catid']?>" 
+                                                       data-id="<?=$category['catid']?>"
+                                                       <?=$category['showInNavBar'] == 1 ? 'checked' : ''?>>
+                                                <label class="custom-control-label" for="navbar_<?=$category['catid']?>"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <?php
+                                            $pc = return_single_ans("SELECT catname FROM category WHERE catid = ".$category['ParentCategory']." AND soft_delete = 0");
+                                            echo ($pc == "0" || empty($pc)) ? "Parent" : htmlspecialchars($pc);
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" class="custom-control-input js-switch" 
+                                                       id="status_switch_<?=$category['catid']?>" 
+                                                       data-id="<?=$category['catid']?>"
+                                                       <?=($category['isactive'] == 1 && canActivate($category['isSystemOperated'])) ? 'checked' : ''?>
+                                                       <?=!canActivate($category['isSystemOperated']) ? 'disabled' : ''?>>
+                                                <label class="custom-control-label" for="status_switch_<?=$category['catid']?>">
+                                                    <span id="status_<?=$category['catid']?>" class="badge <?=$category['isactive'] == 1 ? 'badge-success' : 'badge-danger'?>">
+                                                        <?=$category['isactive'] == 1 ? 'Active' : 'Inactive'?>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" 
+                                                        id="dropdownMenuButton_<?=$category['catid']?>" 
+                                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fas fa-cog"></i>
+                                                </button>
+                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_<?=$category['catid']?>">
+                                                    <?php if( $has_edit && canEdit($category['isSystemOperated'])): ?>
+                                                    <a class="dropdown-item" href="editmenue.php?id=<?=$category['catid']?>&action=edit">
+                                                        <i class="fa fa-edit mr-2"></i>Edit
+                                                    </a>
+                                                    <?php endif; ?>
+                                                    
+                                                    <?php if($has_delete && canDelete($category['isSystemOperated'])): ?>
+                                                    <a class="dropdown-item text-danger" onclick="delete_(<?=$category['catid']?>)">
+                                                        <i class="fa fa-trash mr-2"></i>Delete
+                                                    </a>
+                                                    <?php endif; ?>
+                                                    
+                                                    <?php if($has_add && $level < 3): ?>
+                                                    <a class="dropdown-item text-success" href="editmenue.php?parent_id=<?=$category['catid']?>&action=add">
+                                                        <i class="fa fa-plus mr-2"></i>Add Child
+                                                    </a>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php
+                                    // Display children recursively
+                                    if ($hasChildren) {
+                                        echo '<tbody class="child-rows child-rows-'.$category['catid'].'" style="display:none;">';
+                                        displayCategories($category['catid'], $categoryTree, $categoryTree, $count, $level + 1);
+                                        echo '</tbody>';
+                                    }
+                                }
+                            }
+                            
+                            // Start displaying from root categories (parent_id = 0)
+                            $count = $offset + 1;
+                            displayCategories(0, $categoryTree, $categoryTree, $count);
+                            ?>
                         </tbody>
                     </table>
                 </div>
+
+                <script>
+                // Toggle child rows visibility
+                $(document).on('click', '.toggle-children', function() {
+                    const parentId = $(this).data('id');
+                    const childRows = $('.child-rows-' + parentId);
+                    const icon = $(this);
+                    
+                    if (childRows.is(':visible')) {
+                        childRows.hide();
+                        icon.removeClass('fa-caret-down').addClass('fa-caret-right');
+                    } else {
+                        childRows.show();
+                        icon.removeClass('fa-caret-right').addClass('fa-caret-down');
+                    }
+                });
+
+                // Initialize - show only top level categories by default
+                $(document).ready(function() {
+                    $('.child-rows').hide();
+                });
+                </script>
+
+                <style>
+                .child-row {
+                    background-color: rgba(0,0,0,0.02);
+                }
+                .child-row td:first-child {
+                    padding-left: <?= 20 + ($level * 20) ?>px;
+                }
+                </style>
 
                 <!-- Pagination -->
                 <?php if ($total_pages > 1): ?>

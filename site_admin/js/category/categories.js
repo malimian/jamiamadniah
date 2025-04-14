@@ -52,51 +52,97 @@ function delete_(id) {
     $('#custommodal').modal('toggle');
 }
 
-
-// Sequence change handler - fixed version
+// Sequence change handler - improved version for hierarchical tables
 function changeSequence(id, direction) {
     const row = $('#tr_' + id);
     const currentSeq = parseInt(row.find('td:eq(2) span').text());
+    const parentId = row.data('parent-id') || 0; // Get parent ID if available
+    
+    // Get all siblings (including self) at the same level
+    const siblings = row.closest('tbody').find(`tr[data-parent-id="${parentId}"]`);
+    const currentIndex = siblings.index(row);
+    
+    // Validate move direction
+    if ((direction === 'up' && currentIndex === 0) || 
+        (direction === 'down' && currentIndex === siblings.length - 1)) {
+        showAlert('Cannot move further in this direction', 'info');
+        return;
+    }
     
     $.ajax({
         url: 'post/category/categories.php',
         type: 'POST',
-        dataType: 'json', // Explicitly tell jQuery to expect JSON
+        dataType: 'json',
         data: {
             id: id,
+            parent_id: parentId, // Include parent ID in request
             change_sequence: true,
             direction: direction
         },
-        success: function(data) { // data is already parsed JSON
+        success: function(data) {
             if (data.success) {
                 // Update sequence numbers in UI
                 row.find('td:eq(2) span').text(data.new_sequence);
                 
+                // Get the target row (either previous or next sibling at same level)
+                let targetRow;
                 if (direction === 'up') {
-                    const prevRow = row.prev();
-                    if (prevRow.length && data.other_id) {
-                        prevRow.find('td:eq(2) span').text(data.other_new_sequence);
-                        row.insertBefore(prevRow);
-                    }
-                } else if (direction === 'down') {
-                    const nextRow = row.next();
-                    if (nextRow.length && data.other_id) {
-                        nextRow.find('td:eq(2) span').text(data.other_new_sequence);
-                        row.insertAfter(nextRow);
+                    targetRow = siblings.eq(currentIndex - 1);
+                } else {
+                    targetRow = siblings.eq(currentIndex + 1);
+                }
+                
+                // Update the target row's sequence
+                if (targetRow.length && data.other_id) {
+                    targetRow.find('td:eq(2) span').text(data.other_new_sequence);
+                    
+                    // Move the row in the DOM
+                    if (direction === 'up') {
+                        row.insertBefore(targetRow);
+                    } else {
+                        row.insertAfter(targetRow);
                     }
                 }
                 
-                showAlert('Sequence updated' , 'success');
+                showAlert('Sequence updated', 'success');
             } else {
-                showAlert(data.message || 'No changes made' , 'info');
+                showAlert(data.message || 'No changes were made', 'info');
             }
         },
         error: function(xhr, status, error) {
             console.error('AJAX Error:', status, error);
-            showAlert('Failed to update sequence' , 'danger');
             
-            // For debugging - check the actual response
-            console.log('Server response:', xhr.responseText);
+            // Try to parse the response for more detailed error info
+            let errorMsg = 'Failed to update sequence';
+            try {
+                const response = JSON.parse(xhr.responseText);
+                if (response.message) {
+                    errorMsg = response.message;
+                }
+            } catch (e) {
+                console.log('Raw server response:', xhr.responseText);
+            }
+            
+            showAlert(errorMsg, 'danger');
         }
     });
 }
+
+// Initialize table with parent-id data attributes
+$(document).ready(function() {
+    // Add data-parent-id to all rows
+    $('table#catetable tbody tr').each(function() {
+        const parentCellText = $(this).find('td:eq(4)').text().trim();
+        const parentId = parentCellText === 'Parent' ? 0 : 
+                         parseInt(parentCellText) || 0;
+        $(this).attr('data-parent-id', parentId);
+    });
+    
+    // Handle sequence arrows
+    $('.sequence-up, .sequence-down').on('click', function() {
+        const row = $(this).closest('tr');
+        const id = row.attr('id').replace('tr_', '');
+        const direction = $(this).hasClass('sequence-up') ? 'up' : 'down';
+        changeSequence(id, direction);
+    });
+});
