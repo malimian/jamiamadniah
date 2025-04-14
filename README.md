@@ -1,7 +1,7 @@
 # ibSpotlight CMS Updates (Last 7 Days)
 
 ## 📅 Latest Updates
-**Last Updated**: [Insert Date]  
+**Last Updated**: 14/04/2025
 
 ### 🚀 New Features
 1. **Custom Editor Integration**  
@@ -46,7 +46,7 @@
 
 # ibSpotlight CMS | HAT INC Product Updates
 **Official Product of [HAT INC](https://www.hatinco.com)**  
-*Last Updated: [Insert Date] (7-Day Changelog)*
+*Last Updated: 14/04/2025 (7-Day Changelog)*
 
 ![HAT INC Logo](https://www.hatinco.com/images/logo.png)
 
@@ -63,7 +63,7 @@
 1. **Security**
    - Implemented HAT INC Security Protocol #HC-142
    - Added IP-based access throttling (30 req/sec)
-   
+
 # For HAT INC Production Servers
 hat-deploy --module=ibspotlight --version=2.1.7 --env=prod
 
