@@ -15,7 +15,7 @@ try {
     // Check permissions and get page data
     $page = return_single_row("SELECT p.* FROM pages p 
                              JOIN category c ON p.catid = c.catid 
-                             WHERE p.pid = $pageId AND p.isactive = 1");
+                             WHERE p.pid = $pageId AND p.soft_delete = 0");
     
     if (!$page) {
         throw new Exception('Page not found');
