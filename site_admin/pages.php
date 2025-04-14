@@ -366,6 +366,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                             <td>
                                                 <input type="checkbox" class="page-checkbox" value="<?=$page['pid']?>">
                                             </td>
+                                            
                                              <td><?=$page['pid']?></td>
                                              <td>
                                                     <div class="d-flex align-items-center">
@@ -415,8 +416,56 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                     <img src="<?=$featured_image?>" class="img-thumbnail" style="max-width: 100px; height: auto;" alt="Featured Image">
                                                 </td>
                                                 <td>
-                                                    <strong><?=$page['page_title']?></strong>
-                                                    <a target="_blank" href="<?=BASE_URL.$page['page_url']?>" class="text-muted small">/<?=$page['page_url']?></a>
+                                                    <div class="d-flex flex-column">
+                                                        <div>
+                                                            <strong><?=$page['page_title']?></strong>
+                                                            <a target="_blank" href="<?=BASE_URL.$page['page_url']?>" class="text-muted small">/<?=$page['page_url']?></a>
+                                                        </div>
+                                                        
+                                                        <?php
+                                                        // Get counts for each content type (optimized - fetch these in your initial query)
+                                                        $image_count = $page['image_count'] ?? return_single_ans("SELECT COUNT(*) FROM images WHERE pid = {$page['pid']} AND soft_delete = 0");
+                                                        $video_count = $page['video_count'] ?? return_single_ans("SELECT COUNT(*) FROM videos WHERE pid = {$page['pid']} AND soft_delete = 0");
+                                                        $file_count = $page['file_count'] ?? return_single_ans("SELECT COUNT(*) FROM page_files WHERE pid = {$page['pid']} AND soft_delete = 0");
+                                                        $attribute_count = $page['attribute_count'] ?? return_single_ans("SELECT COUNT(*) FROM page_attribute_values WHERE page_id = {$page['pid']}");
+                                                        $has_tags = !empty($page['personal_tags']) ? 1 : 0;
+                                                        
+                                                        // Only show if any counts exist
+                                                        if ($image_count > 0 || $video_count > 0 || $file_count > 0 || $attribute_count > 0 || $has_tags):
+                                                        ?>
+                                                        <div class="d-flex flex-wrap mt-1" style="gap: 3px; font-size: 0.75rem;">
+                                                            <?php if($image_count > 0): ?>
+                                                            <span class="badge badge-primary" data-toggle="tooltip" title="<?=$image_count?> images">
+                                                                <i class="fas fa-image"></i> <?=$image_count?>
+                                                            </span>
+                                                            <?php endif; ?>
+                                                            
+                                                            <?php if($video_count > 0): ?>
+                                                            <span class="badge badge-info" data-toggle="tooltip" title="<?=$video_count?> videos">
+                                                                <i class="fas fa-video"></i> <?=$video_count?>
+                                                            </span>
+                                                            <?php endif; ?>
+                                                            
+                                                            <?php if($file_count > 0): ?>
+                                                            <span class="badge badge-secondary" data-toggle="tooltip" title="<?=$file_count?> files">
+                                                                <i class="fas fa-file"></i> <?=$file_count?>
+                                                            </span>
+                                                            <?php endif; ?>
+                                                            
+                                                            <?php if($attribute_count > 0): ?>
+                                                            <span class="badge badge-warning" data-toggle="tooltip" title="<?=$attribute_count?> attributes">
+                                                                <i class="fas fa-tags"></i> <?=$attribute_count?>
+                                                            </span>
+                                                            <?php endif; ?>
+                                                            
+                                                            <?php if($has_tags): ?>
+                                                            <span class="badge badge-success" data-toggle="tooltip" title="Has custom tags">
+                                                                <i class="fas fa-tag"></i>
+                                                            </span>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                        <?php endif; ?>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <span class="badge badge-info"><?=$page['catname']?></span>
