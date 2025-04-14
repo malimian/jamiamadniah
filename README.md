@@ -44,5 +44,29 @@
 3. **Actionable Details** - Git commands, pending tasks  
 4. **Professional Format** - Emojis, clean sections  
 
+# ibSpotlight CMS | HAT INC Product Updates
+**Official Product of [HAT INC](https://www.hatinco.com)**  
+*Last Updated: [Insert Date] (7-Day Changelog)*
+
+![HAT INC Logo](https://www.hatinco.com/images/logo.png)
+
+## 🚀 Latest Enhancements (Past 7 Days)
+
+### ✨ New Features
+| Feature | Description | Tech Specs |
+|---------|-------------|------------|
+| **HAT Editor v1.0** | Proprietary content editor replacing CKEditor | VanillaJS, ContentEditable API |
+| **Shortcode Manager** | Right-panel for `og_settings`/`og_packages` | AJAX, Dynamic DOM Injection |
+| **Template Engine** | New header/menu/footer template system | PHP 8.1+, MySQL Optimized |
+
+### ⚙️ Technical Upgrades
+1. **Security**
+   - Implemented HAT INC Security Protocol #HC-142
+   - Added IP-based access throttling (30 req/sec)
+   
+# For HAT INC Production Servers
+hat-deploy --module=ibspotlight --version=2.1.7 --env=prod
+
+
 
 
