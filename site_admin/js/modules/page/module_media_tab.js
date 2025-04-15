@@ -1,14 +1,36 @@
 $(document).ready(function() {
     initializeSwitches();
 
+    // Handle section creation for all media types
+    $(document).on('click', '.add-section-btn', function() {
+        const target = $(this).data('target');
+        $('#newSectionModal').data('target', target).modal('show');
+    });
+    
+    $('#saveNewSectionBtn').click(function() {
+        const newSection = $('#new_section_name').val().trim();
+        if (newSection) {
+            const target = $('#newSectionModal').data('target');
+            // Add the new option to the select
+            $('#' + target).append($('<option>', {
+                value: newSection,
+                text: newSection,
+                selected: true
+            }));
+            
+            // Close modal and clear input
+            $('#new_section_name').val('');
+            $('#newSectionModal').modal('hide');
+        }
+    });
+
     $(document).on("change", ".js-switch", function() {
         var id = $(this).data("id");
-        var mediaType = $(this).data("type"); // Get media type from data attribute
+        var mediaType = $(this).data("type");
         var isChecked = $(this).is(':checked');
         
-        // Send AJAX request to update status
         senddata(
-            'post/modules/page/update_media.php', // Your endpoint
+            'post/modules/page/update_media.php',
             "POST", {
                 id: id,
                 media_type: mediaType,
@@ -17,7 +39,6 @@ $(document).ready(function() {
             },
             function(result) {
                 console.log("Status updated", result);
-                // Update the status badge immediately
                 $('#status_' + id)
                     .removeClass()
                     .addClass('badge ' + (isChecked ? 'badge-success' : 'badge-danger'))
@@ -25,13 +46,11 @@ $(document).ready(function() {
             },
             function(error) {
                 console.error("Error updating status:", error);
-                // Revert the switch if error occurs
                 $(this).prop('checked', !isChecked).trigger('change');
             }
         );
     });
 });
-
 
 // Common delete function
 function deleteMedia(mediaType, id) {
@@ -66,27 +85,20 @@ function deleteMedia(mediaType, id) {
     }
 }
 
-
-// Keep original functions for backward compatibility
-function delete_image(id) {
-    deleteMedia('image', id);
-}
-
-function delete_video(id) {
-    deleteMedia('video', id);
-}
-
-function delete_file(id) {
-    deleteMedia('file', id);
-}
+// Original delete functions
+function delete_image(id) { deleteMedia('image', id); }
+function delete_video(id) { deleteMedia('video', id); }
+function delete_file(id) { deleteMedia('file', id); }
 
 // Save New Media Functions
 function saveImages() {
-
     const formData = new FormData();
     formData.append("page_id", page_id);
     formData.append("submit_media", true);
     formData.append("media_type", 'images');
+    
+    // Add section to form data
+    formData.append("section_name", $('#image_section').val());
     
     // Append image metadata
     formData.append("i_title", $('#image_title').val());
@@ -94,13 +106,11 @@ function saveImages() {
     formData.append("i_alttext", $('#image_alttext').val());
     formData.append("i_description", $('#image_description').val());
     
-    // Validate files
     if ($('#images')[0].files.length === 0) {
         showAlert('Please select at least one image to upload', 'warning');
         return;
     }
     
-    // Append files
     const images = $('#images')[0].files;
     for (let i = 0; i < images.length; i++) {
         formData.append("images[]", images[i]);
@@ -115,23 +125,22 @@ function saveVideos() {
     formData.append("submit_media", true);
     formData.append("media_type", 'videos');
     
-    // Append video metadata
+    // Add section to form data
+    formData.append("section_name", $('#video_section').val());
+    
     formData.append("v_title", $('#video_title').val());
     formData.append("v_description", $('#video_description').val());
     
-    // Validate files
     if ($('#videos')[0].files.length === 0) {
         showAlert('Please select at least one video to upload', 'warning');
         return;
     }
     
-    // Append files
     const videos = $('#videos')[0].files;
     for (let i = 0; i < videos.length; i++) {
         formData.append("videos[]", videos[i]);
     }
     
-    // Append thumbnail if selected
     if ($('#video_thumbnail')[0].files.length > 0) {
         formData.append("v_thumbnail", $('#video_thumbnail')[0].files[0]);
     }
@@ -145,18 +154,18 @@ function saveFiles() {
     formData.append("submit_media", true);
     formData.append("media_type", 'files');
     
-    // Append file metadata
+    // Add section to form data
+    formData.append("section_name", $('#file_section').val());
+    
     formData.append("f_title", $('#file_title').val());
     formData.append("f_download_link", $('#file_download_link').val());
     formData.append("f_description", $('#file_description').val());
     
-    // Validate files
     if ($('#page_files')[0].files.length === 0) {
         showAlert('Please select at least one file to upload', 'warning');
         return;
     }
     
-    // Append files
     const files = $('#page_files')[0].files;
     for (let i = 0; i < files.length; i++) {
         formData.append("page_files[]", files[i]);
@@ -175,13 +184,14 @@ function updateImage() {
     formData.append("action", 'update');
     formData.append("media_id", imageId);
     
-    // Append image metadata
+    // Add section to form data
+    formData.append("section_name", $('#image_section').val());
+    
     formData.append("i_title", $('#image_title').val());
     formData.append("i_caption", $('#image_caption').val());
     formData.append("i_alttext", $('#image_alttext').val());
     formData.append("i_description", $('#image_description').val());
     
-    // Append new image file if selected
     if ($('#images')[0].files.length > 0) {
         formData.append("image", $('#images')[0].files[0]);
     }
@@ -198,16 +208,16 @@ function updateVideo() {
     formData.append("action", 'update');
     formData.append("media_id", videoId);
     
-    // Append video metadata
+    // Add section to form data
+    formData.append("section_name", $('#video_section').val());
+    
     formData.append("v_title", $('#video_title').val());
     formData.append("v_description", $('#video_description').val());
     
-    // Append new video file if selected
     if ($('#videos')[0].files.length > 0) {
         formData.append("video", $('#videos')[0].files[0]);
     }
     
-    // Append new thumbnail if selected
     if ($('#video_thumbnail')[0].files.length > 0) {
         formData.append("thumbnail", $('#video_thumbnail')[0].files[0]);
     }
@@ -224,12 +234,13 @@ function updateFile() {
     formData.append("action", 'update');
     formData.append("media_id", fileId);
     
-    // Append file metadata
+    // Add section to form data
+    formData.append("section_name", $('#file_section').val());
+    
     formData.append("f_title", $('#file_title').val());
     formData.append("f_download_link", $('#file_download_link').val());
     formData.append("f_description", $('#file_description').val());
     
-    // Append new file if selected
     if ($('#page_files')[0].files.length > 0) {
         formData.append("file", $('#page_files')[0].files[0]);
     }
@@ -242,7 +253,6 @@ function saveMedia(formData, mediaType) {
     const $btn = $(`#save${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}Btn`);
     const btnText = $btn.html();
     
-    // Disable button and show loading state
     $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Saving...');
     
     senddata_file(
@@ -250,11 +260,7 @@ function saveMedia(formData, mediaType) {
         "POST",
         formData,
         function(result) {
-            console.log('Media saved ');
-            console.log(result);
-            
             try {
-                // Parse the response if it's JSON
                 const response = typeof result === 'string' ? JSON.parse(result) : result;
                 
                 if (response.success || response > 0) {
@@ -265,7 +271,6 @@ function saveMedia(formData, mediaType) {
                     showAlert(response.message || `Failed to save ${mediaType}`, 'danger');
                 }
             } catch (e) {
-                // Handle non-JSON responses
                 if (result > 0) {
                     showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} saved!`, 'success');
                     clearForm(mediaType);
@@ -276,8 +281,6 @@ function saveMedia(formData, mediaType) {
             }
         },
         function(error) {
-            console.log('Failed to save media');
-            console.log(error);
             showAlert(`Error saving ${mediaType}: ${error}`, 'danger');
         }
     ).always(function() {
@@ -289,7 +292,6 @@ function updateMedia(formData, mediaType) {
     const $btn = $(`#update${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}Btn`);
     const btnText = $btn.html();
     
-    // Disable button and show loading state
     $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
     
     senddata_file(
@@ -297,11 +299,7 @@ function updateMedia(formData, mediaType) {
         "POST",
         formData,
         function(result) {
-            console.log('Media updated');
-            console.log(result);
-            
             try {
-                // Parse the response if it's JSON
                 const response = typeof result === 'string' ? JSON.parse(result) : result;
                 
                 if (response.success || response > 0) {
@@ -313,7 +311,6 @@ function updateMedia(formData, mediaType) {
                     showAlert(response.message || `Failed to update ${mediaType}`, 'danger');
                 }
             } catch (e) {
-                // Handle non-JSON responses
                 if (result > 0) {
                     showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} updated!`, 'success');
                     setTimeout(() => {
@@ -325,8 +322,6 @@ function updateMedia(formData, mediaType) {
             }
         },
         function(error) {
-            console.log('Failed to update media');
-            console.log(error);
             showAlert(`Error updating ${mediaType}: ${error}`, 'danger');
         }
     ).always(function() {
@@ -357,49 +352,22 @@ function clearForm(mediaType) {
     }
 }
 
-/**
- * Refreshes the media table while preserving all GET parameters
- * @param {string} mediaType - The type of media being refreshed
- */
 function refreshMediaTable(mediaType) {
+    if(mediaType == "images") mediaType = "image";
+    if(mediaType == "videos") mediaType = "video";
+    if(mediaType == "files") mediaType = "file";
 
-    if(mediaType == "images")
-        mediaType = "image";
-
-    if(mediaType == "videos")
-        mediaType = "video";
-
-    if(mediaType == "files")
-        mediaType = "file";
-
-    // Get current URL object
     const url = new URL(window.location.href);
-    
-    // Update or add media_type parameter
     url.searchParams.set('media_type', mediaType);
-    
-    // Preserve all existing GET parameters
-    const params = new URLSearchParams(window.location.search);
-    params.forEach((value, key) => {
-        if (key !== 'media_type') { // Skip if already set above
-            url.searchParams.set(key, value);
-        }
-    });
-    
-    // Add cache busting parameter to prevent stale content
     url.searchParams.set('_', Date.now());
-    
-    // Reload the page while maintaining scroll position
     window.location.href = url.toString();
 }
 
-
-// Event Listeners - Improved Version
+// Event Listeners
 $(document).ready(function() {
-    // Save Media handlers - More specific targeting
     $('button#saveImagesBtn').on('click', function(e) {
         e.preventDefault();
-        e.stopPropagation(); // Prevent event bubbling
+        e.stopPropagation();
         saveImages();
     });
     
@@ -415,7 +383,6 @@ $(document).ready(function() {
         saveFiles();
     });
     
-    // Update Media handlers
     $('button#updateImageBtn').on('click', function(e) {
         e.preventDefault();
         e.stopPropagation();
@@ -434,7 +401,6 @@ $(document).ready(function() {
         updateFile();
     });
     
-    // File input handling - More specific selector
     $('input.custom-file-input').on('change', function() {
         let fileName = $(this).val().split('\\').pop();
         if (this.files.length > 1) {
@@ -443,17 +409,15 @@ $(document).ready(function() {
         $(this).next('.custom-file-label').addClass("selected").html(fileName);
     });
     
-    // Prevent form submission on Enter key in text inputs
     $('form input[type="text"]').on('keypress', function(e) {
-        if (e.which === 13) { // Enter key
+        if (e.which === 13) {
             e.preventDefault();
             return false;
         }
     });
 });
 
-
-  // Handle all move buttons with a single event listener
+// Handle move buttons
 $(document).on('click', '.move-btn', function(e) {
     e.preventDefault();
     
@@ -468,7 +432,6 @@ $(document).on('click', '.move-btn', function(e) {
 });
 
 function updateSequence(mediaType, id, page_id, currentSequence, direction) {
-    // Validate inputs
     if (!mediaType || !id || !page_id || currentSequence === undefined || !direction) {
         showAlert('Invalid parameters for sequence update', 'danger');
         return;
@@ -486,25 +449,71 @@ function updateSequence(mediaType, id, page_id, currentSequence, direction) {
         },
         function(result) {
             try {
-                // Parse the result if it's a string
                 const parsedResult = typeof result === 'string' ? JSON.parse(result) : result;
                 
                 if (parsedResult.success) {
                     showAlert('Sequence updated ', 'success');
-                    // Refresh the page with the current parameters
                     window.location = "?id=" + page_id + "&media_type=" + mediaType;
                 } else {
                     showAlert(parsedResult.message || 'Failed to update sequence', 'danger');
                 }
             } catch (e) {
-                console.error('Error parsing response:', e);
                 showAlert('Invalid response from server', 'danger');
             }
         },
         function(error) {
-            console.error('Update sequence error:', error);
             showAlert('Error updating sequence: ' + (error.message || error), 'danger');
         }
     );
 }
 
+// Tab initialization
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const mediaType = urlParams.get('media_type');
+    const mediaAction = urlParams.get('media_action');
+    
+    if (mediaType || mediaAction) {
+        const menu4Tab = document.querySelector('a[href="#menu4"]');
+        if (menu4Tab) {
+            document.querySelectorAll('.nav-tabs .nav-link').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            menu4Tab.classList.add('active');
+            
+            document.querySelectorAll('.tab-content > .tab-pane').forEach(pane => {
+                pane.classList.remove('active', 'show');
+            });
+            
+            document.getElementById('menu4').classList.add('active', 'show');
+        }
+        
+        if (mediaType) {
+            const tabId = mediaType + '-tab';
+            const mediaTab = document.getElementById(tabId);
+            
+            if (mediaTab) {
+                document.querySelectorAll('#mediaTabs .nav-link').forEach(tab => {
+                    tab.classList.remove('active');
+                    tab.setAttribute('aria-selected', 'false');
+                });
+                
+                mediaTab.classList.add('active');
+                mediaTab.setAttribute('aria-selected', 'true');
+                
+                document.querySelectorAll('#mediaTabsContent .tab-pane').forEach(pane => {
+                    pane.classList.remove('show', 'active');
+                });
+                
+                const target = mediaTab.getAttribute('href');
+                document.querySelector(target).classList.add('show', 'active');
+            }
+        }
+    }
+    
+    $('#mediaTabs a').on('click', function(e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
+});

@@ -93,6 +93,38 @@ if ($media_id && $media_action == 'edit' && $media_type) {
         </div>
         <?php endif; ?>
 
+        <!-- Add section to image -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="image_section">Section (optional)</label>
+                    <div class="input-group">
+                        <select class="form-control" id="image_section">
+                            <option value="">-- No section --</option>
+                            <?php
+                            if ($media_type == 'image' && $edit_data && !empty($edit_data['section_name'])) {
+                                $selected_section = htmlspecialchars($edit_data['section_name']);
+                            } else {
+                                $selected_section = '';
+                            }
+
+                            // Get unique sections for images only
+                            $sections = return_multiple_rows("SELECT DISTINCT section_name FROM images WHERE pid = ".$page[0]['pid']." AND soft_delete = 0 AND section_name IS NOT NULL AND section_name != '' ORDER BY section_name ASC");
+
+                            foreach ($sections as $section) {
+                                $section_name = $section['section_name'];
+                                $selected = ($section_name == $selected_section) ? 'selected' : '';
+                                echo '<option value="'.htmlspecialchars($section_name).'" '.$selected.'>'.htmlspecialchars($section_name).'</option>';
+                            }
+                            ?>
+                        </select>
+                        <button type="button" class="btn btn-outline-secondary add-section-btn" data-target="image_section">
+                            <i class="fa fa-plus"></i> New
+                        </button>
+                    </div>
+                </div>
+            </div>
+        <!-- Add section to image -->
+
         <div class="custom-file mb-3">
             <input type="file" accept="image/*" class="custom-file-input" id="images" name="images[]" <?php echo ($media_type == 'image' && $edit_data) ? '' : 'multiple'; ?>>
             <label class="custom-file-label" for="images">
@@ -105,6 +137,7 @@ if ($media_id && $media_action == 'edit' && $media_type) {
             </label>
         </div>
         
+
         <!-- Add image metadata fields -->
         <div class="row mb-3">
             <div class="col-md-6">
@@ -186,6 +219,14 @@ if (!empty($photogallery)) {
                             <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
                             <div class="col-9"><?php echo htmlspecialchars($photogallery_['i_description']); ?></div>
                         </div>
+
+                         <?php if (!empty($photogallery_['section_name'])): ?>
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-folder"></i> Section:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($photogallery_['section_name']); ?></div>
+                        </div>
+                        <?php endif; ?>
+                        
                     </div>
                     
                     <!-- Actions column (25% width) -->
@@ -275,6 +316,36 @@ if (!empty($photogallery)) {
         </div>
         <?php endif; ?>
 
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="video_section">Section (optional)</label>
+                <div class="input-group">
+                    <select class="form-control" id="video_section">
+                        <option value="">-- No section --</option>
+                        <?php
+                        if ($media_type == 'video' && $edit_data && !empty($edit_data['section_name'])) {
+                            $selected_section = htmlspecialchars($edit_data['section_name']);
+                        } else {
+                            $selected_section = '';
+                        }
+
+                        // Get unique sections for this page
+                        $sections = return_multiple_rows("SELECT DISTINCT section_name FROM videos WHERE pid = ".$page[0]['pid']." AND soft_delete = 0 AND section_name IS NOT NULL AND section_name != ''");
+
+                        foreach ($sections as $section) {
+                            $section_name = $section['section_name'];
+                            $selected = ($section_name == $selected_section) ? 'selected' : '';
+                            echo '<option value="'.htmlspecialchars($section_name).'" '.$selected.'>'.htmlspecialchars($section_name).'</option>';
+                        }
+                        ?>
+                    </select>
+                    <button type="button" class="btn btn-outline-secondary add-section-btn" data-target="video_section">
+                        <i class="fa fa-plus"></i> New
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="custom-file mb-3">
             <input accept="video/*" type="file" class="custom-file-input" id="videos" name="videos[]" <?php echo ($media_type == 'video' && $edit_data) ? '' : 'multiple'; ?>>
             <label class="custom-file-label" for="videos">
@@ -286,6 +357,8 @@ if (!empty($photogallery)) {
                 <?php endif; ?>
             </label>
         </div>
+
+        <!-- Add section to video -->
             
         <!-- Add video metadata fields -->
         <div class="row mb-3">
@@ -369,6 +442,14 @@ if (!empty($videogallery)) {
                     <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
                     <div class="col-9"><?php echo htmlspecialchars($videogallery_['v_description']); ?></div>
                 </div>
+
+                <?php if (!empty($videogallery_['section_name'])): ?>
+                <div class="row mb-1">
+                    <div class="col-3 font-weight-bold"><i class="fa fa-folder"></i> Section:</div>
+                    <div class="col-9"><?php echo htmlspecialchars($videogallery_['section_name']); ?></div>
+                </div>
+                <?php endif; ?>
+
             </div>
             
             <!-- Actions column (25% width) -->
@@ -469,6 +550,38 @@ if (!empty($videogallery)) {
             </div>
         </div>
         <?php endif; ?>
+
+
+        <!-- Add section to file -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="file_section">Section (optional)</label>
+                <div class="input-group">
+                    <select class="form-control" id="file_section">
+                        <option value="">-- No section --</option>
+                        <?php
+                        if ($media_type == 'file' && $edit_data && !empty($edit_data['section_name'])) {
+                            $selected_section = htmlspecialchars($edit_data['section_name']);
+                        } else {
+                            $selected_section = '';
+                        }
+
+                        // Get unique sections for this page
+                        $sections = return_multiple_rows("SELECT DISTINCT section_name FROM page_files WHERE pid = ".$page[0]['pid']." AND soft_delete = 0 AND section_name IS NOT NULL AND section_name != ''");
+
+                        foreach ($sections as $section) {
+                            $section_name = $section['section_name'];
+                            $selected = ($section_name == $selected_section) ? 'selected' : '';
+                            echo '<option value="'.htmlspecialchars($section_name).'" '.$selected.'>'.htmlspecialchars($section_name).'</option>';
+                        }
+                        ?>
+                    </select>
+                    <button type="button" class="btn btn-outline-secondary add-section-btn" data-target="file_section">
+                        <i class="fa fa-plus"></i> New
+                    </button>
+                </div>
+            </div>
+        </div>
         
         <div class="custom-file mb-3">
             <input type="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.zip,.rar,.7z" class="custom-file-input" id="page_files" name="page_files[]" <?php echo ($media_type == 'file' && $edit_data) ? '' : 'multiple'; ?>>
@@ -563,6 +676,14 @@ if (!empty($videogallery)) {
                             <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
                             <div class="col-9"><?php echo htmlspecialchars($filegallery_['f_description']); ?></div>
                         </div>
+
+                        <?php if (!empty($filegallery_['section_name'])): ?>
+                        <div class="row mb-1">
+                            <div class="col-3 font-weight-bold"><i class="fa fa-folder"></i> Section:</div>
+                            <div class="col-9"><?php echo htmlspecialchars($filegallery_['section_name']); ?></div>
+                        </div>
+                        <?php endif; ?>
+
                     </div>
                     
                     <!-- Actions column (25% width) -->
@@ -629,67 +750,58 @@ if (!empty($videogallery)) {
     </div>
 </div>
 
-<script type="text/javascript">
-document.addEventListener('DOMContentLoaded', function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const mediaType = urlParams.get('media_type');
-    const mediaAction = urlParams.get('media_action');
-    
-    if (mediaType || mediaAction) {
-        // 1. Activate outer Media tab (#menu4)
-        const menu4Tab = document.querySelector('a[href="#menu4"]');
-        if (menu4Tab) {
-            // Remove active from all main tabs
-            document.querySelectorAll('.nav-tabs .nav-link').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Activate Media tab
-            menu4Tab.classList.add('active');
-            
-            // Hide all main tab panes
-            document.querySelectorAll('.tab-content > .tab-pane').forEach(pane => {
-                pane.classList.remove('active', 'show');
-            });
-            
-            // Show Media pane
-            document.getElementById('menu4').classList.add('active', 'show');
-        }
-        
-        // 2. Activate specific media tab
-        if (mediaType) {
-            const tabId = mediaType + '-tab'; // Now matches 'image-tab', 'video-tab', 'file-tab'
-            const mediaTab = document.getElementById(tabId);
-            
-            if (mediaTab) {
-                // Remove active from all media tabs
-                document.querySelectorAll('#mediaTabs .nav-link').forEach(tab => {
-                    tab.classList.remove('active');
-                    tab.setAttribute('aria-selected', 'false');
-                });
-                
-                // Activate our media tab
-                mediaTab.classList.add('active');
-                mediaTab.setAttribute('aria-selected', 'true');
-                
-                // Hide all media panes
-                document.querySelectorAll('#mediaTabsContent .tab-pane').forEach(pane => {
-                    pane.classList.remove('show', 'active');
-                });
-                
-                // Show our media pane
-                const target = mediaTab.getAttribute('href');
-                document.querySelector(target).classList.add('show', 'active');
-            }
-        }
-    }
-    
-    // Initialize Bootstrap tabs
-    $('#mediaTabs a').on('click', function(e) {
-        e.preventDefault();
-        $(this).tab('show');
+
+<!-- Modal for adding new section -->
+<div class="modal fade" id="newSectionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="new_section_name" class="form-label">Section Name</label>
+                    <input type="text" class="form-control" id="new_section_name">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveNewSectionBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for adding new section -->
+<script>
+
+$(document).ready(function() {
+    // Handle new section button click for all media types
+    $(document).on('click', '.add-section-btn', function() {
+        const target = $(this).data('target');
+        $('#newSectionModal').data('target', target).modal('show');
     });
-});
+    
+    // Save new section
+    $('#saveNewSectionBtn').click(function() {
+        const newSection = $('#new_section_name').val().trim();
+        if (newSection) {
+            const target = $('#newSectionModal').data('target');
+            // Add the new option to the select
+            $('#' + target).append($('<option>', {
+                value: newSection,
+                text: newSection,
+                selected: true
+            }));
+            
+            // Close modal and clear input
+            $('#new_section_name').val('');
+            $('#newSectionModal').modal('hide');
+        }
+    });
+    
+
 </script>
+
 
 <script type="text/javascript" src="js/modules/page/module_media_tab.js"></script>
