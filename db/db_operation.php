@@ -119,3 +119,13 @@ function Delete($sql) {
     
     return debug_(debug_backtrace(), $sql);
 }
+
+// Function to clean input data
+function clean($data) {
+    global $conn;
+    $data = trim($data);
+    $data = stripslashes($data);
+    $data = htmlspecialchars($data);
+    $data = mysqli_real_escape_string($conn, $data);
+    return $data;
+}

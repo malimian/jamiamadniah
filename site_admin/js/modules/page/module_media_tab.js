@@ -291,9 +291,9 @@ function saveMedia(formData, mediaType) {
 function updateMedia(formData, mediaType) {
     const $btn = $(`#update${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)}Btn`);
     const btnText = $btn.html();
-    
+
     $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin"></i> Updating...');
-    
+
     senddata_file(
         'post/modules/page/update_media.php',
         "POST",
@@ -301,7 +301,7 @@ function updateMedia(formData, mediaType) {
         function(result) {
             try {
                 const response = typeof result === 'string' ? JSON.parse(result) : result;
-                
+
                 if (response.success || response > 0) {
                     showAlert(`${mediaType.charAt(0).toUpperCase() + mediaType.slice(1)} updated!`, 'success');
                     setTimeout(() => {
@@ -320,13 +320,19 @@ function updateMedia(formData, mediaType) {
                     showAlert(`Failed to update ${mediaType}`, 'danger');
                 }
             }
+            // **Move the reset logic here for success**
+            $btn.prop('disabled', false).html(btnText);
         },
         function(error) {
             showAlert(`Error updating ${mediaType}: ${error}`, 'danger');
+            // **Move the reset logic here for error**
+            $btn.prop('disabled', false).html(btnText);
         }
-    ).always(function() {
-        $btn.prop('disabled', false).html(btnText);
-    });
+        // **Remove the always block**
+        // ).always(function() {
+        //     $btn.prop('disabled', false).html(btnText);
+        // });
+    );
 }
 
 function clearForm(mediaType) {

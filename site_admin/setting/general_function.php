@@ -257,12 +257,6 @@ function md5_($value)
     return md5(md5($value.$secret_key));
 }
 
-
-function clean($string){
-	$string = trim(preg_replace('/\s\s+/', ' ', $string));
-	return $string;
-}
-
 // Function to strip HTML tags and clean up content
 function cleanContent($content) {
     // Remove HTML tags
