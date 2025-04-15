@@ -523,3 +523,30 @@ document.addEventListener('DOMContentLoaded', function() {
         $(this).tab('show');
     });
 });
+
+
+$(document).ready(function() {
+    // Handle new section button click for all media types
+    $(document).on('click', '.add-section-btn', function() {
+        const target = $(this).data('target');
+        $('#newSectionModal').data('target', target).modal('show');
+    });
+    
+    // Save new section
+    $('#saveNewSectionBtn').click(function() {
+        const newSection = $('#new_section_name').val().trim();
+        if (newSection) {
+            const target = $('#newSectionModal').data('target');
+            // Add the new option to the select
+            $('#' + target).append($('<option>', {
+                value: newSection,
+                text: newSection,
+                selected: true
+            }));
+            
+            // Close modal and clear input
+            $('#new_section_name').val('');
+            $('#newSectionModal').modal('hide');
+        }
+    });
+});

@@ -419,104 +419,280 @@ function isImage($pathToFile)
 
 
 /**
- * Enhanced image upload with validation and optimization
- * 
+ * Enhanced image upload with validation and optimization, returning JSON error responses.
+ *
  * @param string $target_dir Upload directory (must end with /)
  * @param int $max_width Maximum allowed width in pixels (0 = no resize)
  * @param int $max_height Maximum allowed height in pixels (0 = no resize)
  * @param int $max_size_kb Maximum file size in KB (default 500KB)
- * @return string|int Filename on success, 0 on failure
+ * @return string|string JSON encoded error message on failure, filename on success
  */
-function upload_image($target_dir, $max_width = 1200, $max_height = 800, $max_size_kb = 500) {
+/**
+ * Enhanced image upload with validation and optimization, returning JSON error responses.
+ *
+ * @param string $target_dir Upload directory (must end with /)
+ * @param int $max_width Maximum allowed width in pixels (0 = no resize)
+ * @param int $max_height Maximum allowed height in pixels (0 = no resize)
+ * @param int $max_size_kb Maximum file size in KB (default 500KB)
+ * @return string JSON encoded response with success/error information
+ */
+function upload_image($target_dir, $max_width = 1920, $max_height = 1080, $max_size_kb = 2048, $quality = 85) {
     $file_name = 'file';
-    
-    // Validate input file exists
-    if (!isset($_FILES[$file_name])) {
-        return 0;
-    }
+    $response = [
+        'success' => false,
+        'error' => '',
+        'details' => [
+            'code' => null,
+            'message' => '',
+            'file' => null,
+            'size' => null,
+            'target_dir' => $target_dir,
+            'max_dimensions' => "{$max_width}x{$max_height}",
+            'max_size_kb' => $max_size_kb
+        ]
+    ];
 
-    $file = $_FILES[$file_name];
-    $temp_file = $file['tmp_name'];
-    
-    // Validate it's an actual image
-    if (!isImage($temp_file)) {
-        return 0;
-    }
-
-    // Validate file size
-    $max_size_bytes = $max_size_kb * 1024;
-    if ($file['size'] > $max_size_bytes) {
-        return 0;
-    }
-
-    // Generate secure filename
-    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    $safe_name = substr(preg_replace('/[^a-z0-9_-]/i', '', pathinfo($file['name'], PATHINFO_FILENAME)), 0, 50);
-    $new_filename = $safe_name . '_' . uniqid() . '.webp'; // Default to WebP
-    
-    // Create target directory if needed
-    if (!file_exists($target_dir)) {
-        mkdir($target_dir, 0755, true);
-    }
-
-    // Process image based on type
     try {
-        $image_info = getimagesize($temp_file);
-        $mime_type = $image_info['mime'];
-        
-        // Create image resource
-        switch ($mime_type) {
-            case 'image/jpeg':
-                $source = imagecreatefromjpeg($temp_file);
-                break;
-            case 'image/png':
-                $source = imagecreatefrompng($temp_file);
-                break;
-            case 'image/gif':
-                $source = imagecreatefromgif($temp_file);
-                break;
-            case 'image/webp':
-                $source = imagecreatefromwebp($temp_file);
-                break;
-            default:
-                return 0;
+        // Validate input file exists
+        if (!isset($_FILES[$file_name])) {
+            $response['error'] = 'No file was uploaded.';
+            $response['details']['code'] = 'NO_FILE';
+            return json_encode($response);
         }
 
-        // Get original dimensions
+        $file = $_FILES[$file_name];
+        $response['details']['file'] = $file['name'];
+        $response['details']['size'] = round($file['size'] / 1024, 2) . 'KB';
+        $temp_file = $file['tmp_name'];
+
+        // Validate for upload errors
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            $upload_errors = [
+                UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the server limit.',
+                UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the form limit.',
+                UPLOAD_ERR_PARTIAL => 'The file was only partially uploaded.',
+                UPLOAD_ERR_NO_FILE => 'No file was uploaded.',
+                UPLOAD_ERR_NO_TMP_DIR => 'Missing temporary upload directory.',
+                UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk.',
+                UPLOAD_ERR_EXTENSION => 'File upload stopped by extension.'
+            ];
+            $response['error'] = $upload_errors[$file['error']] ?? 'Unknown upload error.';
+            $response['details']['code'] = 'UPLOAD_ERROR_' . $file['error'];
+            return json_encode($response);
+        }
+
+        // Validate file exists in temp location
+        if (!file_exists($temp_file)) {
+            $response['error'] = 'Uploaded file not found.';
+            $response['details']['code'] = 'FILE_MISSING';
+            return json_encode($response);
+        }
+
+        // Validate it's an actual image
+        $image_info = @getimagesize($temp_file);
+        if ($image_info === false) {
+            $response['error'] = 'Invalid image file.';
+            $response['details']['code'] = 'INVALID_IMAGE';
+            return json_encode($response);
+        }
+
+        // Validate against extremely large dimensions
+        if ($image_info[0] > 5000 || $image_info[1] > 5000) {
+            $response['error'] = 'Image dimensions are too large. Maximum allowed is 5000x5000 pixels.';
+            $response['details']['code'] = 'DIMENSIONS_TOO_LARGE';
+            $response['details']['original_dimensions'] = "{$image_info[0]}x{$image_info[1]}";
+            return json_encode($response);
+        }
+
+        // Validate file size
+        $max_size_bytes = $max_size_kb * 1024;
+        if ($file['size'] > $max_size_bytes) {
+            $response['error'] = 'File too large.';
+            $response['details']['code'] = 'FILE_TOO_LARGE';
+            $response['details']['message'] = sprintf(
+                'File size (%sKB) exceeds maximum allowed size of %sKB.',
+                round($file['size'] / 1024, 2),
+                $max_size_kb
+            );
+            return json_encode($response);
+        }
+
+        // Generate secure filename
+        $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $safe_name = substr(preg_replace('/[^a-z0-9_-]/i', '', pathinfo($file['name'], PATHINFO_FILENAME)), 0, 50);
+        $new_filename = $safe_name . '_' . uniqid();
+        $response['details']['original_extension'] = $extension;
+
+        // Create target directory if needed
+        if (!file_exists($target_dir)) {
+            if (!@mkdir($target_dir, 0755, true)) {
+                $response['error'] = 'Directory creation failed.';
+                $response['details']['code'] = 'DIRECTORY_ERROR';
+                return json_encode($response);
+            }
+        }
+
+        // Check if target directory is writable
+        if (!is_writable($target_dir)) {
+            $response['error'] = 'Directory not writable.';
+            $response['details']['code'] = 'DIRECTORY_PERMISSION';
+            return json_encode($response);
+        }
+
+        // Process image based on type
+        $mime_type = $image_info['mime'];
+        $response['details']['image_type'] = $mime_type;
+        $response['details']['original_dimensions'] = [
+            'width' => $image_info[0],
+            'height' => $image_info[1]
+        ];
+
+        // Create image resource with palette conversion if needed
+        $source = null;
+        switch ($mime_type) {
+            case 'image/jpeg':
+                $source = @imagecreatefromjpeg($temp_file);
+                $new_filename .= '.jpg';
+                break;
+            case 'image/png':
+                $source = @imagecreatefrompng($temp_file);
+                if ($source && !imageistruecolor($source)) {
+                    $truecolor = imagecreatetruecolor(imagesx($source), imagesy($source));
+                    imagecopy($truecolor, $source, 0, 0, 0, 0, imagesx($source), imagesy($source));
+                    imagedestroy($source);
+                    $source = $truecolor;
+                }
+                $new_filename .= '.png';
+                break;
+            case 'image/gif':
+                $source = @imagecreatefromgif($temp_file);
+                if ($source) {
+                    $truecolor = imagecreatetruecolor(imagesx($source), imagesy($source));
+                    imagecopy($truecolor, $source, 0, 0, 0, 0, imagesx($source), imagesy($source));
+                    imagedestroy($source);
+                    $source = $truecolor;
+                }
+                $new_filename .= '.gif';
+                break;
+            case 'image/webp':
+                $source = @imagecreatefromwebp($temp_file);
+                $new_filename .= '.webp';
+                break;
+            default:
+                $response['error'] = 'Unsupported image format.';
+                $response['details']['code'] = 'UNSUPPORTED_FORMAT';
+                return json_encode($response);
+        }
+
+        if ($source === false) {
+            $response['error'] = 'Image processing failed.';
+            $response['details']['code'] = 'IMAGE_PROCESSING';
+            return json_encode($response);
+        }
+
+        // Calculate new dimensions if resizing needed
         $width = imagesx($source);
         $height = imagesy($source);
-        
-        // Calculate new dimensions if resizing needed
-        if ($max_width > 0 && $max_height > 0 && ($width > $max_width || $height > $max_height)) {
-            $ratio = min($max_width/$width, $max_height/$height);
+        $needs_resize = ($max_width > 0 && $width > $max_width) || ($max_height > 0 && $height > $max_height);
+        $response['details']['resize_required'] = $needs_resize;
+
+        if ($needs_resize) {
+            $ratio = min($max_width / $width, $max_height / $height);
             $new_width = round($width * $ratio);
             $new_height = round($height * $ratio);
-            
-            // Create new image canvas
+
+            $response['details']['new_dimensions'] = [
+                'width' => $new_width,
+                'height' => $new_height
+            ];
+
             $new_image = imagecreatetruecolor($new_width, $new_height);
-            
-            // Preserve transparency for PNG/GIF
+            if ($new_image === false) {
+                $response['error'] = 'Image resizing failed.';
+                $response['details']['code'] = 'IMAGE_RESIZING';
+                imagedestroy($source);
+                return json_encode($response);
+            }
+
+            // Preserve transparency
             if ($mime_type == 'image/png' || $mime_type == 'image/gif') {
                 imagecolortransparent($new_image, imagecolorallocatealpha($new_image, 0, 0, 0, 127));
                 imagealphablending($new_image, false);
                 imagesavealpha($new_image, true);
             }
-            
-            // Resize image
-            imagecopyresampled($new_image, $source, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+
+            if (!imagecopyresampled($new_image, $source, 0, 0, 0, 0, $new_width, $new_height, $width, $height)) {
+                $response['error'] = 'Image resampling failed.';
+                $response['details']['code'] = 'IMAGE_RESAMPLING';
+                imagedestroy($source);
+                imagedestroy($new_image);
+                return json_encode($response);
+            }
+
             imagedestroy($source);
             $source = $new_image;
         }
-        
-        // Save as optimized WebP (75% quality)
-        $result = imagewebp($source, $target_dir . $new_filename, 75);
+
+        // Save the image with appropriate format and quality
+        $destination = $target_dir . $new_filename;
+        $saved = false;
+
+        // Try WebP first if supported
+        if (function_exists('imagewebp')) {
+            $saved = @imagewebp($source, $destination, $quality);
+            if ($saved) {
+                $response['details']['format_used'] = 'webp';
+            }
+        }
+
+        // Fallback to original format if WebP fails
+        if (!$saved) {
+            switch ($mime_type) {
+                case 'image/jpeg':
+                    $saved = @imagejpeg($source, $destination, $quality);
+                    break;
+                case 'image/png':
+                    $saved = @imagepng($source, $destination, round(9 * (100 - $quality) / 100));
+                    break;
+                case 'image/gif':
+                    $saved = @imagegif($source, $destination);
+                    break;
+            }
+            $response['details']['format_used'] = $extension;
+        }
+
         imagedestroy($source);
-        
-        return $result ? $new_filename : 0;
-        
+
+        if (!$saved) {
+            $response['error'] = 'Failed to save processed image.';
+            $response['details']['code'] = 'IMAGE_SAVE_FAILED';
+            return json_encode($response);
+        }
+
+        // Verify the saved file
+        if (!file_exists($destination)) {
+            $response['error'] = 'Image verification failed.';
+            $response['details']['code'] = 'IMAGE_VERIFICATION';
+            return json_encode($response);
+        }
+
+        // Success response
+        $response['success'] = true;
+        $response['filename'] = $new_filename;
+        $response['details']['file_path'] = $destination;
+        $response['details']['file_size'] = round(filesize($destination) / 1024, 2) . 'KB';
+        $response['details']['quality'] = $quality;
+        unset($response['error']);
+
+        return json_encode($response);
+
     } catch (Exception $e) {
         error_log("Image upload error: " . $e->getMessage());
-        return 0;
+        $response['error'] = 'An unexpected error occurred during image processing.';
+        $response['details']['code'] = 'UNEXPECTED_ERROR';
+        $response['details']['exception'] = get_class($e);
+        $response['details']['error_message'] = $e->getMessage();
+        return json_encode($response);
     }
 }
 
