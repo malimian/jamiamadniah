@@ -172,18 +172,19 @@ AdminHeader("Manage Page Template Attributes", "", $extra_libs);
                               </div>
                             </div>
 
-                                <!-- Attribute Type Selection -->
-                                <div class="form-group">
-                                  <label for="attribute_type">Attribute Type:</label>
-                                  <select class="form-control" name="attribute_type" id="attribute_type" required>
-                                    <option value="">-- Select Type --</option>
-                                    <?php foreach ($enum_values as $type): ?>
-                                      <option value="<?= htmlspecialchars($type, ENT_QUOTES, 'UTF-8') ?>">
-                                        <?= ucfirst(htmlspecialchars($type, ENT_QUOTES, 'UTF-8')) ?>
-                                      </option>
-                                    <?php endforeach; ?>
-                                  </select>
-                                </div>
+                            <div class="form-group row">
+                              <label for="attribute_type" class="col-md-3 col-form-label">Attribute Type:</label>
+                              <div class="col-md-9">
+                                <select class="form-control" name="attribute_type" id="attribute_type" required>
+                                  <option value="">-- Select Type --</option>
+                                  <?php foreach ($enum_values as $type): ?>
+                                    <option value="<?= htmlspecialchars($type, ENT_QUOTES, 'UTF-8') ?>">
+                                      <?= ucfirst(htmlspecialchars($type, ENT_QUOTES, 'UTF-8')) ?>
+                                    </option>
+                                  <?php endforeach; ?>
+                                </select>
+                              </div>
+                            </div>
 
                             <div class="form-group row">
                               <label for="icon_class" class="col-md-3 col-form-label">Icon Class:</label>
@@ -199,28 +200,32 @@ AdminHeader("Manage Page Template Attributes", "", $extra_libs);
                         </div>
 
                         <!-- Attribute Options Section (for select type) -->
-                         <div id="select-options-section" style="display: none;">
-                          <div class="form-group">
-                            <label>Select Options:</label>
-                            <div id="option-container">
-                              <!-- Initial empty row -->
-                              <div class="form-row mb-2 option-row">
-                                <div class="col">
-                                  <input type="text" class="form-control" name="option_label[]" placeholder="Display Label">
-                                </div>
-                                <div class="col">
-                                  <input type="text" class="form-control" name="option_value[]" placeholder="Stored Value">
-                                </div>
-                                <div class="col-auto">
-                                  <button type="button" class="btn btn-sm btn-danger remove-option" disabled>
-                                    <i class="fas fa-times"></i>
-                                  </button>
+                        <div class="card mb-4" id="select-options-section" style="display:none;">
+                          <div class="card-header bg-info text-white">
+                            <h5 class="mb-0">Select Options</h5>
+                          </div>
+                          <div class="card-body">
+                            <div class="form-group">
+                              <label>Add Options for Select/Dropdown</label>
+                              <div id="option-container">
+                                <div class="option-row form-row mb-2">
+                                  <div class="col">
+                                    <input type="text" class="form-control" name="option_label[]" placeholder="Display Label" required>
+                                  </div>
+                                  <div class="col">
+                                    <input type="text" class="form-control" name="option_value[]" placeholder="Stored Value" required>
+                                  </div>
+                                  <div class="col-auto">
+                                    <button type="button" class="btn btn-danger remove-option" disabled>
+                                      <i class="fas fa-times"></i>
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
+                              <button type="button" class="btn btn-secondary mt-2" id="add-option">
+                                <i class="fas fa-plus mr-1"></i> Add Option
+                              </button>
                             </div>
-                            <button type="button" class="btn btn-secondary btn-sm mt-2" id="add-option">
-                              <i class="fas fa-plus"></i> Add Option
-                            </button>
                           </div>
                         </div>
 
@@ -470,46 +475,77 @@ AdminHeader("Manage Page Template Attributes", "", $extra_libs);
     </script>
 
 
-<script>
+    <script>
 $(document).ready(function() {
-  // Show/hide options section based on attribute type
+  // Toggle select options section when attribute type changes
   $('#attribute_type').change(function() {
     if ($(this).val() === 'select') {
       $('#select-options-section').show();
+      // Ensure at least one option exists
+      if ($('.option-row').length === 0) {
+        addOptionRow();
+      }
     } else {
       $('#select-options-section').hide();
     }
   });
 
   // Add new option row
-  $('#add-option').click(function() {
-    const newRow = `
-      <div class="form-row mb-2 option-row">
+  $('#add-option').click(addOptionRow);
+
+  function addOptionRow() {
+    const row = `
+      <div class="option-row form-row mb-2">
         <div class="col">
-          <input type="text" class="form-control" name="option_label[]" placeholder="Display Label">
+          <input type="text" class="form-control" name="option_label[]" placeholder="Display Label" required>
         </div>
         <div class="col">
-          <input type="text" class="form-control" name="option_value[]" placeholder="Stored Value">
+          <input type="text" class="form-control" name="option_value[]" placeholder="Stored Value" required>
         </div>
         <div class="col-auto">
-          <button type="button" class="btn btn-sm btn-danger remove-option">
+          <button type="button" class="btn btn-danger remove-option">
             <i class="fas fa-times"></i>
           </button>
         </div>
       </div>`;
-    $('#option-container').append(newRow);
+    $('#option-container').append(row);
     
-    // Enable all remove buttons
-    $('.remove-option').prop('disabled', false);
-  });
+    // Enable all remove buttons except if it's the only one
+    $('.remove-option').prop('disabled', $('.option-row').length === 1);
+  }
 
   // Remove option row
   $(document).on('click', '.remove-option', function() {
     $(this).closest('.option-row').remove();
-    
     // Disable remove button if only one row left
-    if ($('.option-row').length === 1) {
-      $('.remove-option').prop('disabled', true);
+    $('.remove-option').prop('disabled', $('.option-row').length === 1);
+  });
+
+  // Tab name handling
+  $('#tab_name, #new_tab_name').change(function() {
+    let tabName = $('#new_tab_name').val() || $('#tab_name').val();
+    if (tabName) {
+      // Generate tab_group - lowercase, no spaces, underscores for spaces
+      let tabGroup = tabName.toLowerCase()
+                          .replace(/\s+/g, '_')
+                          .replace(/[^a-z0-9_]/g, '');
+      $('#tab_group').val(tabGroup);
+    } else {
+      $('#tab_group').val('');
+    }
+  });
+
+  // When typing in new tab name, clear the select
+  $('#new_tab_name').on('input', function() {
+    if ($(this).val()) {
+      $('#tab_name').val('');
+    }
+  });
+
+  // When selecting from dropdown, clear the new tab input
+  $('#tab_name').change(function() {
+    if ($(this).val()) {
+      $('#new_tab_name').val('');
     }
   });
 });
