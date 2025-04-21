@@ -545,7 +545,7 @@ $challenge_2_lesson = get_attribute_value('challenge_2_lesson', $current_page_id
     </div>
 </div>
                 
-                <!-- Notable Projects or Innovations -->
+<!-- Notable Projects or Innovations -->
 <?php
 // Assuming $conn is your established database connection
 // Assuming you have included the get_attribute_value and get_multiple_attribute_values functions
@@ -614,7 +614,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
     </div>
 </div>
                 
-                <!-- Industry Recognition & Awards -->
+<!-- Industry Recognition & Awards -->
 <?php
 // Assuming $conn is your established database connection
 // Assuming you have included the get_attribute_value and get_multiple_attribute_values functions
