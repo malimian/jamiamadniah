@@ -1,4 +1,3 @@
-
 <?php 
 $current_page_id = 8310; // Replace with the actual page ID
 ?>
@@ -94,7 +93,7 @@ $current_page_id = 8310; // Replace with the actual page ID
         <div class="container text-center">
             <div class="row justify-content-center">
                 <div class="col-lg-8">
-                    <img src="https://via.placeholder.com/150" alt="Profile Photo" class="rounded-circle mb-4" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid white;">
+                    <img src="https://placehold.co/150" alt="Profile Photo" class="rounded-circle mb-4" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid white;">
                     <h1 class="display-4 fw-bold mb-3" id="professional-name">John D. Professional</h1>
                     <?php
                         // Hero Section - Professional Title and Tagline
@@ -578,7 +577,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
     <div class="row g-4">
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_1_image_url ?: 'https://via.placeholder.com/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo htmlspecialchars($project_1_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_1_title ?: 'Enterprise AI Platform'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_1_description ?: 'Led development of award-winning AI platform now used by Fortune 500 companies.'); ?></p>
@@ -590,7 +589,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
         </div>
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_2_image_url ?: 'https://via.placeholder.com/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo htmlspecialchars($project_2_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_2_title ?: 'Global Payment System'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_2_description ?: 'Architected scalable payment processing system handling $1B+ annually.'); ?></p>
@@ -602,7 +601,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
         </div>
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_3_image_url ?: 'https://via.placeholder.com/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo htmlspecialchars($project_3_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_3_title ?: 'Sustainability Initiative'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_3_description ?: 'Pioneered green computing practices reducing company carbon footprint by 40%.'); ?></p>
@@ -647,7 +646,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
     <div class="row g-4">
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_1_image_url ?: 'https://via.placeholder.com/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo htmlspecialchars($project_1_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_1_title ?: 'Enterprise AI Platform'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_1_description ?: 'Led development of award-winning AI platform now used by Fortune 500 companies.'); ?></p>
@@ -659,7 +658,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
         </div>
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_2_image_url ?: 'https://via.placeholder.com/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo htmlspecialchars($project_2_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_2_title ?: 'Global Payment System'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_2_description ?: 'Architected scalable payment processing system handling $1B+ annually.'); ?></p>
@@ -671,7 +670,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
         </div>
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_3_image_url ?: 'https://via.placeholder.com/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo htmlspecialchars($project_3_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_3_title ?: 'Sustainability Initiative'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_3_description ?: 'Pioneered green computing practices reducing company carbon footprint by 40%.'); ?></p>
@@ -833,7 +832,7 @@ $personal_statement_body = get_attribute_value('personal_statement_body', $curre
 
                 <div class="card statement-card border-0 shadow-sm">
                     <div class="card-body p-4 p-md-5 text-center">
-                        <img src="<?php echo htmlspecialchars($signature_image_url ?: 'https://via.placeholder.com/100'); ?>" alt="Signature" class="mb-4" style="height: 50px;">
+                        <img src="<?php echo htmlspecialchars($signature_image_url ?: 'https://placehold.co/100'); ?>" alt="Signature" class="mb-4" style="height: 50px;">
                         <p class="lead mb-4"><?php echo htmlspecialchars($personal_statement_lead ?: 'I am a technology leader driven by the belief that innovation should serve human potential. With 15 years at the intersection of product development and strategic leadership, I specialize in transforming complex technical concepts into solutions that deliver measurable business value while improving lives.'); ?></p>
                         <p class="mb-0"><?php echo htmlspecialchars($personal_statement_body ?: 'My approach combines analytical rigor with creative problem-solving, always grounded in ethical considerations. I stand for technology that empowers rather than replaces, that bridges divides rather than creates them. Whether building teams, products, or companies, I bring a unique blend of technical depth, business acumen, and unwavering commitment to positive impact.'); ?></p>
                     </div>
@@ -1251,23 +1250,23 @@ $impact_item_3 = get_attribute_value('impact_item_3', $current_page_id);
                                 <h3 class="h5 mb-3"><i class="fas fa-camera me-2 text-primary"></i> Photos</h3>
                                 <div class="row g-2">
                                     <div class="col-6">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/800x1200">
-                                            <img src="https://via.placeholder.com/300x300" alt="Headshot" class="img-fluid rounded">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://placehold.co/800x1200">
+                                            <img src="https://placehold.co/300x300" alt="Headshot" class="img-fluid rounded">
                                         </a>
                                     </div>
                                     <div class="col-6">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/1200x800">
-                                            <img src="https://via.placeholder.com/300x300" alt="Speaking" class="img-fluid rounded">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://placehold.co/1200x800">
+                                            <img src="https://placehold.co/300x300" alt="Speaking" class="img-fluid rounded">
                                         </a>
                                     </div>
                                     <div class="col-6">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/800x800">
-                                            <img src="https://via.placeholder.com/300x300" alt="Team" class="img-fluid rounded">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://placehold.co/800x800">
+                                            <img src="https://placehold.co/300x300" alt="Team" class="img-fluid rounded">
                                         </a>
                                     </div>
                                     <div class="col-6">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/1200x600">
-                                            <img src="https://via.placeholder.com/300x300" alt="Workshop" class="img-fluid rounded">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://placehold.co/1200x600">
+                                            <img src="https://placehold.co/300x300" alt="Workshop" class="img-fluid rounded">
                                         </a>
                                     </div>
                                 </div>
@@ -1485,7 +1484,7 @@ $client_3_testimonial_author = get_attribute_value('client_3_testimonial_author'
                             <div class="col-md-4 mb-3 mb-md-0">
                                 <h3 class="h4"><?php echo ($client_1_title ?: 'Enterprise AI Transformation'); ?></h3>
                                 <div class="client-logo mb-3">
-                                    <img src="<?php echo ($client_1_logo_url ?: 'https://via.placeholder.com/150x50'); ?>" alt="Client Logo" class="img-fluid">
+                                    <img src="<?php echo ($client_1_logo_url ?: 'https://placehold.co/150x50'); ?>" alt="Client Logo" class="img-fluid">
                                 </div>
                                 <div class="badge bg-primary mb-2"><?php echo ($client_1_sector ?: 'Manufacturing Sector'); ?></div>
                                 <p class="mb-0"><strong>Duration:</strong> <?php echo ($client_1_duration ?: '18 months'); ?></p>
@@ -1527,7 +1526,7 @@ $client_3_testimonial_author = get_attribute_value('client_3_testimonial_author'
                             <div class="col-md-4 mb-3 mb-md-0">
                                 <h3 class="h4"><?php echo ($client_2_title ?: 'Global Payment System'); ?></h3>
                                 <div class="client-logo mb-3">
-                                    <img src="<?php echo ($client_2_logo_url ?: 'https://via.placeholder.com/150x50'); ?>" alt="Client Logo" class="img-fluid">
+                                    <img src="<?php echo ($client_2_logo_url ?: 'https://placehold.co/150x50'); ?>" alt="Client Logo" class="img-fluid">
                                 </div>
                                 <div class="badge bg-primary mb-2"><?php echo ($client_2_sector ?: 'Financial Services'); ?></div>
                                 <p class="mb-0"><strong>Duration:</strong> <?php echo ($client_2_duration ?: '2 years'); ?></p>
@@ -1569,7 +1568,7 @@ $client_3_testimonial_author = get_attribute_value('client_3_testimonial_author'
                             <div class="col-md-4 mb-3 mb-md-0">
                                 <h3 class="h4"><?php echo ($client_3_title ?: 'Nonprofit Tech Overhaul'); ?></h3>
                                 <div class="client-logo mb-3">
-                                    <img src="<?php echo ($client_3_logo_url ?: 'https://via.placeholder.com/150x50'); ?>" alt="Client Logo" class="img-fluid">
+                                    <img src="<?php echo ($client_3_logo_url ?: 'https://placehold.co/150x50'); ?>" alt="Client Logo" class="img-fluid">
                                 </div>
                                 <div class="badge bg-primary mb-2"><?php echo ($client_3_sector ?: 'Social Sector'); ?></div>
                                 <p class="mb-0"><strong>Duration:</strong> <?php echo ($client_3_duration ?: '9 months'); ?></p>
@@ -1745,7 +1744,7 @@ $client_3_testimonial_author = get_attribute_value('client_3_testimonial_author'
                                         </div>
                                     </a>
                                     <div class="ratio ratio-16x9 mb-2">
-                                        <img src="https://via.placeholder.com/800x450" alt="Website screenshot" class="img-fluid rounded">
+                                        <img src="https://placehold.co/800x450" alt="Website screenshot" class="img-fluid rounded">
                                     </div>
                                 </div>
                                 <div>
@@ -1935,7 +1934,7 @@ $media_mentions = get_multiple_attribute_values('media_mention', 4, $current_pag
                                             <?php if (!empty($collaboration['name'])): ?>
                                                 <div class="col-6">
                                                     <div class="p-3 border rounded text-center h-100">
-                                                        <img src="<?php echo ($collaboration['logo_url'] ?: 'https://via.placeholder.com/80x40'); ?>" alt="Partner Logo" class="img-fluid mb-2">
+                                                        <img src="<?php echo ($collaboration['logo_url'] ?: 'https://placehold.co/80x40'); ?>" alt="Partner Logo" class="img-fluid mb-2">
                                                         <h4 class="h6 mb-1"><?php echo ($collaboration['name']); ?></h4>
                                                         <p class="small text-muted mb-0"><?php echo ($collaboration['details']); ?></p>
                                                     </div>
