@@ -472,5 +472,3 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
     <!-- /#wrapper -->
 
     <?php include 'includes/footer.php';?>
-</body>
-</html>

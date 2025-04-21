@@ -5,7 +5,7 @@ include 'admin_connect.php';
 $extra_libs = [];
 
 AdminHeader(
-    "Gallery", 
+    "Modules", 
     "", 
     $extra_libs,
     null,
@@ -27,7 +27,7 @@ AdminHeader(
             <div class="row">
                <div class="col-lg-12">
                   <h3 class="page-header">
-                     Add New Packages Catagory
+                     Add New Modules
                   </h3>
                </div>
             </div>
