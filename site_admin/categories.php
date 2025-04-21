@@ -5,7 +5,7 @@ include 'admin_connect.php';
 $extra_libs = [];
 
 AdminHeader(
-    "Gallery", 
+    "Menue", 
     "", 
     $extra_libs,
     null,
@@ -202,6 +202,8 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
                             
                             // Function to display categories recursively
                             function displayCategories($parentId, $categories, $categoryTree, &$count, $level = 0) {
+                                global $action_ids, $has_view, $has_add, $has_edit, $has_delete, $has_status;
+
                                 if (!isset($categories[$parentId])) return;
                                 
                                 foreach ($categories[$parentId] as $category) {
@@ -260,14 +262,14 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="dropdown">
+                                            <div class="dropdown"> 
                                                 <button class="btn btn-sm btn-secondary dropdown-toggle" type="button" 
                                                         id="dropdownMenuButton_<?=$category['catid']?>" 
                                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class="fas fa-cog"></i>
                                                 </button>
                                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_<?=$category['catid']?>">
-                                                    <?php if( $has_edit && canEdit($category['isSystemOperated'])): ?>
+                                                    <?php if( isset($has_edit) && canEdit($category['isSystemOperated'])): ?>
                                                     <a class="dropdown-item" href="editmenue.php?id=<?=$category['catid']?>&action=edit">
                                                         <i class="fa fa-edit mr-2"></i>Edit
                                                     </a>

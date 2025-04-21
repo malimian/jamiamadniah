@@ -36,11 +36,13 @@ if (isset($_SESSION['user'])){
 			}
 
 		    $action_ids = array_column($module_actions, 'og_moduleactions_id');
+
 			$has_view = in_array(1, $action_ids);
 			$has_add = in_array(2, $action_ids);
 			$has_edit = in_array(3, $action_ids);
 			$has_delete = in_array(4, $action_ids);
 			$has_status = in_array(5, $action_ids);
+
 
 
 } else {
