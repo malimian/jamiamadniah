@@ -96,10 +96,6 @@
                     <h1 class="display-4 fw-bold mb-3" id="professional-name">John D. Professional</h1>
                     <h2 class="h4 mb-4" id="professional-title">Senior Executive | Industry Leader | Innovator</h2>
                     <p class="lead mb-4" id="professional-tagline">Transforming visions into reality through strategic leadership and innovative solutions</p>
-                    <div class="d-flex justify-content-center gap-3">
-                        <a href="#" class="btn btn-light btn-lg px-4">Contact Me</a>
-                        <a href="#" class="btn btn-outline-light btn-lg px-4">Download CV</a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1807,26 +1803,6 @@
     }
 </style>
 
-    <!-- Footer -->
-    <footer class="text-center">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <h3 class="h4 mb-4">Connect With Me</h3>
-                    <div class="d-flex justify-content-center gap-3 mb-4">
-                        <a href="#" class="text-white fs-3"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="text-white fs-3"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white fs-3"><i class="fab fa-github"></i></a>
-                        <a href="#" class="text-white fs-3"><i class="fas fa-envelope"></i></a>
-                    </div>
-                    <p class="mb-0">&copy; <span id="current-year"></span> Professional Achievements Portfolio. All rights reserved.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Bootstrap 5 JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Set current year in footer
         document.getElementById('current-year').textContent = new Date().getFullYear();
