@@ -615,73 +615,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
 </div>
                 
 <!-- Industry Recognition & Awards -->
-<?php
-// Assuming $conn is your established database connection
-// Assuming you have included the get_attribute_value and get_multiple_attribute_values functions
 
-// Assuming you have a $current_page_id available in the current scope
-
-// Notable Projects or Innovations
-$notable_projects_title = get_attribute_value('notable_projects_title', $current_page_id);
-
-$project_1_image_url = get_attribute_value('project_1_image_url', $current_page_id);
-$project_1_title = get_attribute_value('project_1_title', $current_page_id);
-$project_1_description = get_attribute_value('project_1_description', $current_page_id);
-$project_1_badge = get_attribute_value('project_1_badge', $current_page_id);
-
-$project_2_image_url = get_attribute_value('project_2_image_url', $current_page_id);
-$project_2_title = get_attribute_value('project_2_title', $current_page_id);
-$project_2_description = get_attribute_value('project_2_description', $current_page_id);
-$project_2_badge = get_attribute_value('project_2_badge', $current_page_id);
-
-$project_3_image_url = get_attribute_value('project_3_image_url', $current_page_id);
-$project_3_title = get_attribute_value('project_3_title', $current_page_id);
-$project_3_description = get_attribute_value('project_3_description', $current_page_id);
-$project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
-
-?>
-
-<div class="mb-5">
-    <h3 class="h4 mb-4 text-primary"><i class="fas fa-flask me-2"></i><?php echo htmlspecialchars($notable_projects_title ?: 'Notable Projects & Innovations'); ?></h3>
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card h-100">
-                <img src="<?php echo check_image_url($project_1_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
-                <div class="card-body">
-                    <h4 class="h5"><?php echo htmlspecialchars($project_1_title ?: 'Enterprise AI Platform'); ?></h4>
-                    <p class="card-text"><?php echo htmlspecialchars($project_1_description ?: 'Led development of award-winning AI platform now used by Fortune 500 companies.'); ?></p>
-                    <?php if ($project_1_badge): ?>
-                        <div class="badge bg-primary"><?php echo htmlspecialchars($project_1_badge); ?></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card h-100">
-                <img src="<?php echo check_image_url($project_2_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
-                <div class="card-body">
-                    <h4 class="h5"><?php echo htmlspecialchars($project_2_title ?: 'Global Payment System'); ?></h4>
-                    <p class="card-text"><?php echo htmlspecialchars($project_2_description ?: 'Architected scalable payment processing system handling $1B+ annually.'); ?></p>
-                    <?php if ($project_2_badge): ?>
-                        <div class="badge bg-primary"><?php echo htmlspecialchars($project_2_badge); ?></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card h-100">
-                <img src="<?php echo check_image_url($project_3_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
-                <div class="card-body">
-                    <h4 class="h5"><?php echo htmlspecialchars($project_3_title ?: 'Sustainability Initiative'); ?></h4>
-                    <p class="card-text"><?php echo htmlspecialchars($project_3_description ?: 'Pioneered green computing practices reducing company carbon footprint by 40%.'); ?></p>
-                    <?php if ($project_3_badge): ?>
-                        <div class="badge bg-primary"><?php echo htmlspecialchars($project_3_badge); ?></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
             </div>
         </div>
     </div>
