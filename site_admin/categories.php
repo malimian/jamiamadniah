@@ -334,9 +334,6 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
                 .child-row {
                     background-color: rgba(0,0,0,0.02);
                 }
-                .child-row td:first-child {
-                    padding-left: <?= 20 + ($level * 20) ?>px;
-                }
                 </style>
 
                 <!-- Pagination -->
