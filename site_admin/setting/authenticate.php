@@ -35,15 +35,20 @@ if (isset($_SESSION['user'])){
 			    }
 			}
 
-		    $action_ids = array_column($module_actions, 'og_moduleactions_id');
+		    // $action_ids = array_column($module_actions, 'og_moduleactions_id');
 
-			$has_view = in_array(1, $action_ids);
-			$has_add = in_array(2, $action_ids);
-			$has_edit = in_array(3, $action_ids);
-			$has_delete = in_array(4, $action_ids);
-			$has_status = in_array(5, $action_ids);
+			// $has_view = in_array(1, $action_ids);
+			// $has_add = in_array(2, $action_ids);
+			// $has_edit = in_array(3, $action_ids);
+			// $has_delete = in_array(4, $action_ids);
+			// $has_status = in_array(5, $action_ids);
 
-
+			$GLOBALS['action_ids'] = array_column($module_actions, 'og_moduleactions_id');
+			$GLOBALS['has_view'] = in_array(1, $GLOBALS['action_ids']);
+			$GLOBALS['has_add'] = in_array(2, $GLOBALS['action_ids']);
+			$GLOBALS['has_edit'] = in_array(3, $GLOBALS['action_ids']);
+			$GLOBALS['has_delete'] = in_array(4, $GLOBALS['action_ids']);
+			$GLOBALS['has_status'] = in_array(5, $GLOBALS['action_ids']);
 
 } else {
  		exit("<script>location.href='".ADMIN_URL."get/user/logout.php?logout'</script>");
