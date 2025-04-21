@@ -577,7 +577,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
     <div class="row g-4">
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_1_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo check_image_url($project_1_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_1_title ?: 'Enterprise AI Platform'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_1_description ?: 'Led development of award-winning AI platform now used by Fortune 500 companies.'); ?></p>
@@ -589,7 +589,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
         </div>
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_2_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo check_image_url($project_2_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_2_title ?: 'Global Payment System'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_2_description ?: 'Architected scalable payment processing system handling $1B+ annually.'); ?></p>
@@ -601,7 +601,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
         </div>
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_3_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo check_image_url($project_3_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_3_title ?: 'Sustainability Initiative'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_3_description ?: 'Pioneered green computing practices reducing company carbon footprint by 40%.'); ?></p>
@@ -646,7 +646,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
     <div class="row g-4">
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_1_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo check_image_url($project_1_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_1_title ?: 'Enterprise AI Platform'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_1_description ?: 'Led development of award-winning AI platform now used by Fortune 500 companies.'); ?></p>
@@ -658,7 +658,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
         </div>
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_2_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo check_image_url($project_2_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_2_title ?: 'Global Payment System'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_2_description ?: 'Architected scalable payment processing system handling $1B+ annually.'); ?></p>
@@ -670,7 +670,7 @@ $project_3_badge = get_attribute_value('project_3_badge', $current_page_id);
         </div>
         <div class="col-md-4">
             <div class="card h-100">
-                <img src="<?php echo htmlspecialchars($project_3_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
+                <img src="<?php echo check_image_url($project_3_image_url ?: 'https://placehold.co/300x200'); ?>" class="card-img-top" alt="Project Image">
                 <div class="card-body">
                     <h4 class="h5"><?php echo htmlspecialchars($project_3_title ?: 'Sustainability Initiative'); ?></h4>
                     <p class="card-text"><?php echo htmlspecialchars($project_3_description ?: 'Pioneered green computing practices reducing company carbon footprint by 40%.'); ?></p>
@@ -832,7 +832,7 @@ $personal_statement_body = get_attribute_value('personal_statement_body', $curre
 
                 <div class="card statement-card border-0 shadow-sm">
                     <div class="card-body p-4 p-md-5 text-center">
-                        <img src="<?php echo htmlspecialchars($signature_image_url ?: 'https://placehold.co/100'); ?>" alt="Signature" class="mb-4" style="height: 50px;">
+                        <img src="<?php echo check_image_url($signature_image_url ?: 'https://placehold.co/100'); ?>" alt="Signature" class="mb-4" style="height: 50px;">
                         <p class="lead mb-4"><?php echo htmlspecialchars($personal_statement_lead ?: 'I am a technology leader driven by the belief that innovation should serve human potential. With 15 years at the intersection of product development and strategic leadership, I specialize in transforming complex technical concepts into solutions that deliver measurable business value while improving lives.'); ?></p>
                         <p class="mb-0"><?php echo htmlspecialchars($personal_statement_body ?: 'My approach combines analytical rigor with creative problem-solving, always grounded in ethical considerations. I stand for technology that empowers rather than replaces, that bridges divides rather than creates them. Whether building teams, products, or companies, I bring a unique blend of technical depth, business acumen, and unwavering commitment to positive impact.'); ?></p>
                     </div>
@@ -2092,6 +2092,16 @@ function get_multiple_attribute_values($attribute_prefix, $count, $current_page_
         }
     }
     return $values;
+}
+
+
+function check_image_url($image_url){
+
+   if (!filter_var($image_url, FILTER_VALIDATE_URL)) {
+        return  BASE_URL . ABSOLUTE_IMAGEPATH . $image_url;
+    }
+    return $image_url;
+
 }
 
 ?>
