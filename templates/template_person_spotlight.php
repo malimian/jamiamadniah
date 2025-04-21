@@ -979,183 +979,171 @@
     </div>
 </section>
 
+<!-- Media Assets Section -->
 <section class="py-5 bg-light" id="media-assets">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                    <button class="nav-link active" id="v-pills-gallery-tab" data-bs-toggle="pill" data-bs-target="#v-pills-gallery" type="button" role="tab" aria-controls="v-pills-gallery" aria-selected="true">
-                        <i class="fas fa-images me-2"></i> Gallery
-                    </button>
-                    <button class="nav-link" id="v-pills-portfolio-tab" data-bs-toggle="pill" data-bs-target="#v-pills-portfolio" type="button" role="tab" aria-controls="v-pills-portfolio" aria-selected="false">
-                        <i class="fas fa-briefcase me-2"></i> Portfolio
-                    </button>
-                    <button class="nav-link" id="v-pills-videos-tab" data-bs-toggle="pill" data-bs-target="#v-pills-videos" type="button" role="tab" aria-controls="v-pills-videos" aria-selected="false">
-                        <i class="fas fa-video me-2"></i> Videos
-                    </button>
-                    <button class="nav-link" id="v-pills-publications-tab" data-bs-toggle="pill" data-bs-target="#v-pills-publications" type="button" role="tab" aria-controls="v-pills-publications" aria-selected="false">
-                        <i class="fas fa-newspaper me-2"></i> Publications
-                    </button>
-                    <button class="nav-link" id="v-pills-social-tab" data-bs-toggle="pill" data-bs-target="#v-pills-social" type="button" role="tab" aria-controls="v-pills-social" aria-selected="false">
-                        <i class="fas fa-share-alt me-2"></i> Social Media
-                    </button>
-                </div>
-            </div>
-            <div class="col-lg-9">
-                <h2 class="section-title mb-4 d-lg-none">Media Assets</h2>
-                <div class="tab-content" id="v-pills-tabContent">
-                    <div class="tab-pane fade show active" id="v-pills-gallery" role="tabpanel" aria-labelledby="v-pills-gallery-tab">
-                        <h3 class="mb-4"><i class="fas fa-camera me-2 text-primary"></i> Image Gallery</h3>
-                        <div class="row g-3">
-                            <div class="col-md-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/800x1200">
-                                    <img src="https://via.placeholder.com/300x300" alt="Headshot" class="img-fluid rounded shadow-sm">
-                                </a>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="section-title text-center mb-5">Media Assets</h2>
+                
+                <div class="row g-4">
+                    <!-- Photos -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3"><i class="fas fa-camera me-2 text-primary"></i> Photos</h3>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/800x1200">
+                                            <img src="https://via.placeholder.com/300x300" alt="Headshot" class="img-fluid rounded">
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/1200x800">
+                                            <img src="https://via.placeholder.com/300x300" alt="Speaking" class="img-fluid rounded">
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/800x800">
+                                            <img src="https://via.placeholder.com/300x300" alt="Team" class="img-fluid rounded">
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/1200x600">
+                                            <img src="https://via.placeholder.com/300x300" alt="Workshop" class="img-fluid rounded">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">Download All Headshots</a>
+                                </div>
                             </div>
-                            <div class="col-md-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/1200x800">
-                                    <img src="https://via.placeholder.com/300x300" alt="Speaking" class="img-fluid rounded shadow-sm">
-                                </a>
-                            </div>
-                            <div class="col-md-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/800x800">
-                                    <img src="https://via.placeholder.com/300x300" alt="Team" class="img-fluid rounded shadow-sm">
-                                </a>
-                            </div>
-                            <div class="col-md-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/1200x600">
-                                    <img src="https://via.placeholder.com/300x300" alt="Workshop" class="img-fluid rounded shadow-sm">
-                                </a>
-                            </div>
-                            <div class="col-md-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/600x900">
-                                    <img src="https://via.placeholder.com/300x300" alt="Event" class="img-fluid rounded shadow-sm">
-                                </a>
-                            </div>
-                            <div class="col-md-4">
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/900x600">
-                                    <img src="https://via.placeholder.com/300x300" alt="Collaboration" class="img-fluid rounded shadow-sm">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <a href="#" class="btn btn-primary">View All Photos</a>
                         </div>
                     </div>
-
-                    <div class="tab-pane fade" id="v-pills-portfolio" role="tabpanel" aria-labelledby="v-pills-portfolio-tab">
-                        <h3 class="mb-4"><i class="fas fa-briefcase me-2 text-primary"></i> Portfolio</h3>
-                        <div class="mb-4">
-                            <h4 class="h6 mb-2">Featured Case Studies:</h4>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">
-                                    <i class="fas fa-file-pdf text-danger me-2"></i>
-                                    <a href="#" class="text-decoration-none">Enterprise AI Transformation (PDF)</a>
-                                </li>
-                                <li class="mb-2">
-                                    <i class="fas fa-file-pdf text-danger me-2"></i>
-                                    <a href="#" class="text-decoration-none">Global Payment System Implementation (PDF)</a>
-                                </li>
-                                <li>
-                                    <i class="fas fa-file-pdf text-danger me-2"></i>
-                                    <a href="#" class="text-decoration-none">Nonprofit Tech Overhaul Strategy (PDF)</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div>
-                            <h4 class="h6 mb-2">Key Projects:</h4>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-code text-success me-2"></i> <a href="#" class="text-decoration-none">AI-Powered Analytics Platform</a></li>
-                                <li class="mb-2"><i class="fas fa-rocket text-success me-2"></i> <a href="#" class="text-decoration-none">New Product Launch Strategy</a></li>
-                                <li><i class="fas fa-users text-success me-2"></i> <a href="#" class="text-decoration-none">Team Collaboration Framework</a></li>
-                            </ul>
-                        </div>
-                        <div class="mt-4">
-                            <a href="#" class="btn btn-primary">View Full Portfolio</a>
+                    
+                    <!-- Videos -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3"><i class="fas fa-video me-2 text-primary"></i> Videos</h3>
+                                <div class="ratio ratio-16x9 mb-3">
+                                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Sample Video" allowfullscreen></iframe>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-play-circle text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">TechForward 2023 Keynote</a>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-play-circle text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">AI Ethics Panel Discussion</a>
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-play-circle text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">Client Success Stories</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="tab-pane fade" id="v-pills-videos" role="tabpanel" aria-labelledby="v-pills-videos-tab">
-                        <h3 class="mb-4"><i class="fas fa-video me-2 text-primary"></i> Videos</h3>
-                        <div class="ratio ratio-16x9 mb-4">
-                            <iframe src="https://www.youtube.com/embed/your_video_id_1" title="Sample Video 1" allowfullscreen></iframe>
-                        </div>
-                        <div class="ratio ratio-16x9 mb-4">
-                            <iframe src="https://www.youtube.com/embed/your_video_id_2" title="Sample Video 2" allowfullscreen></iframe>
-                        </div>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <i class="fas fa-play-circle text-primary me-2"></i>
-                                <a href="#" class="text-decoration-none">TechForward 2023 Keynote</a>
-                            </li>
-                            <li class="mb-2">
-                                <i class="fas fa-play-circle text-primary me-2"></i>
-                                <a href="#" class="text-decoration-none">AI Ethics Panel Discussion</a>
-                            </li>
-                            <li>
-                                <i class="fas fa-play-circle text-primary me-2"></i>
-                                <a href="#" class="text-decoration-none">Client Success Stories</a>
-                            </li>
-                        </ul>
-                        <div class="mt-4">
-                            <a href="#" class="btn btn-primary">View All Videos</a>
-                        </div>
-                    </div>
-
-                    <div class="tab-pane fade" id="v-pills-publications" role="tabpanel" aria-labelledby="v-pills-publications-tab">
-                        <h3 class="mb-4"><i class="fas fa-newspaper me-2 text-primary"></i> Publications</h3>
-                        <ul class="list-unstyled">
-                            <li class="mb-2">
-                                <i class="fas fa-book text-primary me-2"></i>
-                                <a href="#" class="text-decoration-none">"Ethical AI in Practice" - TechReview (2023) <span class="badge bg-secondary ms-2">Article</span></a>
-                            </li>
-                            <li class="mb-2">
-                                <i class="fas fa-book text-primary me-2"></i>
-                                <a href="#" class="text-decoration-none">"Leading Digital Transformation" - Harvard Biz (2022) <span class="badge bg-secondary ms-2">Article</span></a>
-                            </li>
-                            <li class="mb-2">
-                                <i class="fas fa-podcast text-primary me-2"></i>
-                                <a href="#" class="text-decoration-none">FutureTech Podcast - Episode 45 <span class="badge bg-success ms-2">Podcast</span></a>
-                            </li>
-                            <li>
-                                <i class="fas fa-tv text-primary me-2"></i>
-                                <a href="#" class="text-decoration-none">CNBC Tech Interview - May 2023 <span class="badge bg-info ms-2">Interview</span></a>
-                            </li>
-                            <li>
-                                <i class="fas fa-file-pdf text-danger me-2"></i>
-                                <a href="#" class="text-decoration-none">White Paper: The Future of Quantum Computing <span class="badge bg-danger ms-2">White Paper</span></a>
-                            </li>
-                        </ul>
-                        <div class="mt-4">
-                            <a href="#" class="btn btn-primary">View All Publications</a>
+                    
+                    <!-- Portfolio & Speaking -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3"><i class="fas fa-briefcase me-2 text-primary"></i> Portfolio</h3>
+                                <div class="mb-4">
+                                    <h4 class="h6 mb-2">Featured Case Studies:</h4>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="fas fa-file-pdf text-danger me-2"></i>
+                                            <a href="#" class="text-decoration-none">Enterprise AI Transformation</a>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-file-pdf text-danger me-2"></i>
+                                            <a href="#" class="text-decoration-none">Global Payment System</a>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-file-pdf text-danger me-2"></i>
+                                            <a href="#" class="text-decoration-none">Nonprofit Tech Overhaul</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <h3 class="h5 mb-3"><i class="fas fa-microphone me-2 text-primary"></i> Speaking</h3>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                        <strong>2023:</strong> "Future of Ethical AI" - TechGlobal Summit
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                        <strong>2022:</strong> "Leading Through Disruption" - ExecForum
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                        <strong>2021:</strong> "Human-Centered Design" - InnovateConf
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="tab-pane fade" id="v-pills-social" role="tabpanel" aria-labelledby="v-pills-social-tab">
-                        <h3 class="mb-4"><i class="fas fa-share-alt me-2 text-primary"></i> Social Media</h3>
-                        <div class="social-links">
-                            <a href="#" class="btn btn-outline-primary btn-lg mb-2 me-2">
-                                <i class="fab fa-linkedin-in me-2"></i> LinkedIn
-                            </a>
-                            <a href="#" class="btn btn-outline-info btn-lg mb-2 me-2">
-                                <i class="fab fa-twitter me-2"></i> Twitter
-                            </a>
-                            <a href="#" class="btn btn-outline-danger btn-lg mb-2 me-2">
-                                <i class="fab fa-youtube me-2"></i> YouTube
-                            </a>
-                            <a href="#" class="btn btn-outline-dark btn-lg mb-2">
-                                <i class="fab fa-github me-2"></i> GitHub
-                            </a>
+                    
+                    <!-- Publications & Social -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3"><i class="fas fa-newspaper me-2 text-primary"></i> Publications</h3>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-book text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">"Ethical AI in Practice" - TechReview (2023)</a>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-book text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">"Leading Digital Transformation" - Harvard Biz (2022)</a>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-podcast text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">FutureTech Podcast - Episode 45</a>
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-tv text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">CNBC Tech Interview - May 2023</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="mt-4">
-                            <h4 class="h6 mb-2">Professional Hashtags:</h4>
-                            <div class="d-flex flex-wrap">
-                                <span class="badge bg-light text-dark me-2 mb-2">#TechLeadership</span>
-                                <span class="badge bg-light text-dark me-2 mb-2">#EthicalAI</span>
-                                <span class="badge bg-light text-dark me-2 mb-2">#DigitalTransformation</span>
-                                <span class="badge bg-light text-dark mb-2">#InnovationCulture</span>
-                                <span class="badge bg-light text-dark me-2 mb-2">#FutureofWork</span>
-                                <span class="badge bg-light text-dark mb-2">#StrategicThinking</span>
+                    </div>
+                    
+                    <!-- Social Media -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3"><i class="fas fa-hashtag me-2 text-primary"></i> Social Media</h3>
+                                <div class="social-links">
+                                    <a href="#" class="btn btn-outline-primary btn-sm mb-2 me-2">
+                                        <i class="fab fa-linkedin-in me-1"></i> LinkedIn
+                                    </a>
+                                    <a href="#" class="btn btn-outline-info btn-sm mb-2 me-2">
+                                        <i class="fab fa-twitter me-1"></i> Twitter
+                                    </a>
+                                    <a href="#" class="btn btn-outline-danger btn-sm mb-2 me-2">
+                                        <i class="fab fa-youtube me-1"></i> YouTube
+                                    </a>
+                                    <a href="#" class="btn btn-outline-dark btn-sm mb-2">
+                                        <i class="fab fa-github me-1"></i> GitHub
+                                    </a>
+                                </div>
+                                <div class="mt-3">
+                                    <h4 class="h6 mb-2">Professional Hashtags:</h4>
+                                    <div class="d-flex flex-wrap">
+                                        <span class="badge bg-light text-dark me-2 mb-2">#TechLeadership</span>
+                                        <span class="badge bg-light text-dark me-2 mb-2">#EthicalAI</span>
+                                        <span class="badge bg-light text-dark me-2 mb-2">#DigitalTransformation</span>
+                                        <span class="badge bg-light text-dark mb-2">#InnovationCulture</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1163,7 +1151,8 @@
             </div>
         </div>
     </div>
-
+    
+    <!-- Image Modal -->
     <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -1174,62 +1163,12 @@
                     <img src="" id="modalImage" class="img-fluid" alt="Enlarged view">
                 </div>
                 <div class="modal-footer">
-                    <a href="#" id="downloadImage" class="btn btn-primary" target="_blank" download>Download</a>
+                    <a href="#" id="downloadImage" class="btn btn-primary">Download</a>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<style>
-    /* Adjust styles as needed */
-    .nav-pills .nav-link {
-        color: #333;
-        margin-bottom: 5px;
-        border-radius: 0.25rem;
-    }
-
-    .nav-pills .nav-link.active {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .nav-pills .nav-link i {
-        width: 1.2em; /* Ensure icons align properly */
-        text-align: center;
-    }
-
-    @media (max-width: 991.98px) {
-        .section-title.d-lg-none {
-            margin-bottom: 30px;
-        }
-        .nav-pills {
-            flex-direction: row;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #ddd;
-        }
-        .nav-pills .nav-link {
-            margin-right: 10px;
-            margin-bottom: 0;
-        }
-    }
-</style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const imageModal = document.getElementById('imageModal');
-        if (imageModal) {
-            imageModal.addEventListener('show.bs.modal', event => {
-                const imgLink = event.relatedTarget.getAttribute('data-img');
-                const modalImage = imageModal.querySelector('#modalImage');
-                const downloadLink = imageModal.querySelector('#downloadImage');
-
-                modalImage.src = imgLink;
-                downloadLink.href = imgLink;
-            });
-        }
-    });
-</script>
 
 <!-- Client Impact Stories Section -->
 <section class="py-5" id="client-stories">
