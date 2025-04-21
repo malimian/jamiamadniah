@@ -1,348 +1,1811 @@
-<?php
-$GLOBALS['content'] = $content;
-
-if (!function_exists("header_t")) {
-    function header_t()
-    {
-        return '
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
-            <link href="css/templates/template_general.css" rel="stylesheet">
-            <meta property="og:site_name" content="' . SITE_TITLE . '">
-            <meta property="og:title" content="' . replace_sysvari($GLOBALS['content']['page_title']) . '" />
-            <meta property="og:description" content="' . replace_sysvari($GLOBALS['content']['page_title']) . '" />
-            <meta property="og:image" itemprop="image" content="' . BASE_URL . ABSOLUTE_IMAGEPATH . $GLOBALS['content']['featured_image'] . '">           
-        ';
-    }
-}
-
-if (!function_exists("footer_t")) {
-    function footer_t()
-    {
-        return '
-        ';
-    }
-}
 
 
-
-
-$GLOBALS['content'] = $content;
-
-print_r($content);
-
-// 4. Fetch product variations
-$page_attributes = return_multiple_rows("SELECT * from page_attributes Where template_id = " . $content['template_id'] . " and isactive = 1 and soft_delete = 0");
-
-print_r($page_attributes);
-
-
-$page_attribute_values = return_multiple_rows("SELECT * from page_attribute_values Where page_id = " . $content['pid'] . " and isactive = 1 and soft_delete = 0");
-
-print_r($page_attribute_values);
-
-
-// 5. Fetch images
-$photogallery = return_multiple_rows("Select * from images Where pid = " . $content['pid'] . " and isactive = 1 and soft_delete = 0");
-
-print_r($photogallery);
-
-$videos = return_multiple_rows("Select * from videos Where pid = " . $content['pid'] . " and isactive = 1 and soft_delete = 0");
-
-
-print_r($videos);
-
-?>
-  <?php
-$GLOBALS['content'] = $content;
-
-if (!function_exists("header_t")) {
-    function header_t()
-    {
-        return '
-            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap">
-            <link href="css/templates/template_general.css" rel="stylesheet">
-            <meta property="og:site_name" content="' . SITE_TITLE . '">
-            <meta property="og:title" content="' . replace_sysvari($GLOBALS['content']['page_title']) . '" />
-            <meta property="og:description" content="' . replace_sysvari($GLOBALS['content']['page_title']) . '" />
-            <meta property="og:image" itemprop="image" content="' . BASE_URL . ABSOLUTE_IMAGEPATH . $GLOBALS['content']['featured_image'] . '">           
-        ';
-    }
-}
-
-if (!function_exists("footer_t")) {
-    function footer_t()
-    {
-        return '
-        ';
-    }
-}
-
-// Helper function to get attribute value
-function get_attribute_value($attribute_id, $page_attribute_values) {
-    foreach ($page_attribute_values as $value) {
-        if ($value['attribute_id'] == $attribute_id) {
-            return $value['attribute_value'];
-        }
-    }
-    return null;
-}
-
-// Extract all data
-$person_name = $content['page_title'];
-$person_title = get_attribute_value(53, $page_attribute_values);
-$profile_image = get_attribute_value(54, $page_attribute_values) ?: 'https://placehold.co/800x600/EEE/31343C';
-$short_bio = get_attribute_value(55, $page_attribute_values);
-$long_bio = get_attribute_value(56, $page_attribute_values);
-$video_url = get_attribute_value(57, $page_attribute_values);
-$achievements_json = get_attribute_value(58, $page_attribute_values);
-$social_links_json = get_attribute_value(59, $page_attribute_values);
-$quote = get_attribute_value(60, $page_attribute_values);
-$quote_source = get_attribute_value(61, $page_attribute_values);
-
-// Decode JSON data
-$achievements = json_decode($achievements_json, true) ?: [];
-$social_links = json_decode($social_links_json, true) ?: [];
-
-// Process featured image
-$featured_image = !empty($content['featured_image']) ? BASE_URL . ABSOLUTE_IMAGEPATH . $content['featured_image'] : 'https://source.unsplash.com/random/1600x900/?success';
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($person_name); ?> | Achievement Spotlight</title>
-    <?php echo header_t(); ?>
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+        
         .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('<?php echo $featured_image; ?>') no-repeat center center;
-            background-size: cover;
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
             color: white;
-            padding: 100px 0;
-            margin-bottom: 50px;
-        }
-        
-        .achievement-card {
-            transition: transform 0.3s;
-            margin-bottom: 30px;
-            height: 100%;
-        }
-        
-        .achievement-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        
-        .interview-card {
-            border-left: 5px solid #0d6efd;
-        }
-        
-        .profile-img {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            border: 5px solid white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
         }
         
         .section-title {
+            color: var(--secondary-color);
             position: relative;
-            margin-bottom: 40px;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
         }
         
         .section-title:after {
-            content: "";
+            content: '';
             position: absolute;
-            bottom: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
+            left: 0;
+            bottom: 0;
+            width: 50px;
             height: 3px;
-            background: #0d6efd;
+            background: var(--primary-color);
         }
         
-        .quote-section {
-            background-color: #f8f9fa;
-            border-left: 5px solid #0d6efd;
-            padding: 2rem;
-            margin: 2rem 0;
+        .achievement-card {
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        .achievement-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .milestone-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 25px;
+        }
+        
+        .milestone-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--accent-color);
+        }
+        
+        .milestone-date {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .certification-badge {
+            background-color: var(--light-bg);
+            border-radius: 20px;
+            padding: 8px 15px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="#"><?php echo htmlspecialchars($person_name); ?></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#achievements">Achievements</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#spotlight">Spotlight</a>
-                    </li>
-                    <?php if ($video_url): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#interview">Interview</a>
-                    </li>
-                    <?php endif; ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contact">Contact</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
     <!-- Hero Section -->
-    <header class="hero-section text-center">
-        <div class="container">
-            <img src="<?php echo htmlspecialchars($profile_image); ?>" alt="<?php echo htmlspecialchars($person_name); ?>" class="profile-img rounded-circle mb-4">
-            <h1 class="display-4 fw-bold"><?php echo htmlspecialchars($person_name); ?></h1>
-            <p class="lead"><?php echo htmlspecialchars($person_title); ?></p>
-            <?php if (!empty($social_links)): ?>
-            <div class="social-icons mt-4">
-                <?php foreach ($social_links as $social): ?>
-                <a href="<?php echo htmlspecialchars($social['url']); ?>" class="text-white mx-2" target="_blank" rel="noopener noreferrer">
-                    <i class="<?php echo strpos($social['icon'], 'bi-') === 0 ? 'bi ' . htmlspecialchars($social['icon']) : 'fab fa-' . htmlspecialchars($social['icon']); ?> fa-2x"></i>
-                </a>
-                <?php endforeach; ?>
+    <header class="hero-section">
+        <div class="container text-center">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <img src="https://via.placeholder.com/150" alt="Profile Photo" class="rounded-circle mb-4" style="width: 150px; height: 150px; object-fit: cover; border: 4px solid white;">
+                    <h1 class="display-4 fw-bold mb-3" id="professional-name">John D. Professional</h1>
+                    <h2 class="h4 mb-4" id="professional-title">Senior Executive | Industry Leader | Innovator</h2>
+                    <p class="lead mb-4" id="professional-tagline">Transforming visions into reality through strategic leadership and innovative solutions</p>
+                </div>
             </div>
-            <?php endif; ?>
         </div>
     </header>
 
-    <!-- Quote Section -->
-    <?php if ($quote): ?>
-    <section class="container my-5">
-        <div class="quote-section">
-            <blockquote class="blockquote mb-0">
-                <p><?php echo htmlspecialchars($quote); ?></p>
-                <?php if ($quote_source): ?>
-                <footer class="blockquote-footer mt-2"><?php echo htmlspecialchars($quote_source); ?></footer>
-                <?php endif; ?>
-            </blockquote>
-        </div>
-    </section>
-    <?php endif; ?>
-
-    <!-- Achievements Section -->
-    <?php if (!empty($achievements)): ?>
-    <section id="achievements" class="py-5">
-        <div class="container">
-            <h2 class="text-center section-title">Notable Achievements</h2>
-            <div class="row mt-5">
-                <?php foreach ($achievements as $achievement): ?>
-                <div class="col-md-4">
-                    <div class="card achievement-card">
-                        <div class="card-body text-center">
-                            <i class="fas fa-award fa-3x text-warning mb-3"></i>
-                            <h4 class="card-title"><?php echo htmlspecialchars($achievement['title']); ?></h4>
-                            <p class="card-text"><?php echo htmlspecialchars($achievement['description']); ?></p>
-                        </div>
-                    </div>
-                </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </section>
-    <?php endif; ?>
-
-    <!-- Spotlight Section -->
-    <section id="spotlight" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="text-center section-title">Professional Spotlight</h2>
-            <div class="row align-items-center mt-5">
-                <div class="col-lg-6">
-                    <h3 class="mb-4">About <?php echo htmlspecialchars($person_name); ?></h3>
-                    <?php if ($short_bio): ?>
-                    <p class="lead"><?php echo htmlspecialchars($short_bio); ?></p>
-                    <?php endif; ?>
-                    <?php if ($long_bio): ?>
-                    <p><?php echo nl2br(htmlspecialchars($long_bio)); ?></p>
-                    <?php endif; ?>
-                </div>
-                <div class="col-lg-6">
-                    <?php if (!empty($photogallery)): ?>
-                    <div id="profileCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <?php foreach ($photogallery as $index => $photo): ?>
-                            <div class="carousel-item <?php echo $index === 0 ? 'active' : ''; ?>">
-                                <img src="<?php echo BASE_URL . ABSOLUTE_IMAGEPATH . $photo['image_path']; ?>" class="d-block w-100 rounded" alt="<?php echo htmlspecialchars($photo['caption'] ?: $person_name); ?>">
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Personal Background Section -->
+        <section class="mb-5" id="personal-background">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-title text-center">Personal Background</h2>
+                    
+                    <div class="card achievement-card mb-4">
+                        <div class="card-body">
+                            <h3 class="h4 card-title">Professional Profile</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Full Name:</strong> <span id="full-name">John Doe Professional</span></p>
+                                    <p><strong>Current Role:</strong> <span id="current-role">Chief Executive Officer</span></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Company:</strong> <span id="current-company">InnovateTech Solutions</span></p>
+                                    <p><strong>Industry:</strong> <span id="current-industry">Technology & Consulting</span></p>
+                                </div>
                             </div>
-                            <?php endforeach; ?>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#profileCarousel" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#profileCarousel" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
                     </div>
-                    <?php else: ?>
-                    <img src="<?php echo htmlspecialchars($profile_image); ?>" class="img-fluid rounded" alt="<?php echo htmlspecialchars($person_name); ?>">
-                    <?php endif; ?>
+                    
+                    <div class="card achievement-card mb-4">
+                        <div class="card-body">
+                            <h3 class="h4 card-title">Education</h3>
+                            <div class="education-item mb-3">
+                                <h4 class="h5">MBA in Business Administration</h4>
+                                <p class="mb-1">Harvard Business School</p>
+                                <p class="text-muted">Graduated: 2010</p>
+                            </div>
+                            <div class="education-item">
+                                <h4 class="h5">BSc in Computer Science</h4>
+                                <p class="mb-1">Stanford University</p>
+                                <p class="text-muted">Graduated: 2005</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card achievement-card mb-4">
+                        <div class="card-body">
+                            <h3 class="h4 card-title">Certifications & Licenses</h3>
+                            <div>
+                                <span class="certification-badge"><i class="fas fa-certificate me-2"></i>PMP Certified</span>
+                                <span class="certification-badge"><i class="fas fa-certificate me-2"></i>Six Sigma Black Belt</span>
+                                <span class="certification-badge"><i class="fas fa-certificate me-2"></i>AWS Solutions Architect</span>
+                                <span class="certification-badge"><i class="fas fa-certificate me-2"></i>Google Cloud Professional</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Career Milestones Section -->
+        <section class="mb-5" id="career-milestones">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-title text-center">Career Milestones</h2>
+                    
+                    <div class="timeline">
+                        <div class="milestone-item">
+                            <span class="milestone-date">2020 - Present</span>
+                            <h3 class="h4">Founded InnovateTech Solutions</h3>
+                            <p>Launched a successful tech consulting firm that grew from 5 to 150 employees in three years, serving Fortune 500 clients across multiple industries.</p>
+                        </div>
+                        
+                        <div class="milestone-item">
+                            <span class="milestone-date">2018 - 2020</span>
+                            <h3 class="h4">VP of Product Development at TechGlobal</h3>
+                            <p>Led the product team that developed the award-winning EnterpriseX platform, resulting in 200% revenue growth for the division.</p>
+                        </div>
+                        
+                        <div class="milestone-item">
+                            <span class="milestone-date">2015</span>
+                            <h3 class="h4">First Executive Promotion</h3>
+                            <p>Became the youngest Director in company history at age 32, overseeing a $50M product portfolio.</p>
+                        </div>
+                        
+                        <div class="milestone-item">
+                            <span class="milestone-date">2010</span>
+                            <h3 class="h4">Industry Breakthrough</h3>
+                            <p>Developed the patented ProcessOptimizer algorithm that became industry standard in supply chain management systems.</p>
+                        </div>
+                        
+                        <div class="milestone-item">
+                            <span class="milestone-date">2005</span>
+                            <h3 class="h4">First Major Role</h3>
+                            <p>Joined TechStart Inc. as a junior developer and within 18 months led the team that built their flagship product.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Achievements Section -->
+        <section class="mb-5" id="key-achievements">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="section-title text-center">Key Achievements</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 achievement-card">
+                                <div class="card-body">
+                                    <div class="d-flex mb-3">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                            <i class="fas fa-trophy fa-2x text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="h5 card-title">Industry Recognition</h3>
+                                            <p class="card-text">Named "Tech Leader of the Year" by Industry Magazine for three consecutive years.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 achievement-card">
+                                <div class="card-body">
+                                    <div class="d-flex mb-3">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                            <i class="fas fa-chart-line fa-2x text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="h5 card-title">Revenue Growth</h3>
+                                            <p class="card-text">Grew division revenue from $10M to $75M in 5 years through strategic initiatives.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 achievement-card">
+                                <div class="card-body">
+                                    <div class="d-flex mb-3">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                            <i class="fas fa-users fa-2x text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="h5 card-title">Team Leadership</h3>
+                                            <p class="card-text">Built and mentored 5 teams that produced 3 successful product launches.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-4">
+                            <div class="card h-100 achievement-card">
+                                <div class="card-body">
+                                    <div class="d-flex mb-3">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                            <i class="fas fa-lightbulb fa-2x text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h3 class="h5 card-title">Innovation</h3>
+                                            <p class="card-text">Holds 7 patents in process optimization and machine learning applications.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+
+    <!-- Professional Journey Section -->
+<section class="py-5" id="professional-journey">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="section-title text-center mb-5">Professional Journey</h2>
+                
+                <!-- Career Progression Timeline -->
+                <div class="mb-5">
+                    <h3 class="h4 mb-4 text-primary"><i class="fas fa-timeline me-2"></i>Career Progression Timeline</h3>
+                    <div class="timeline-wrapper">
+                        <div class="timeline">
+                            <!-- Timeline Item 1 -->
+                            <div class="timeline-item">
+                                <div class="timeline-date">2018 - Present</div>
+                                <div class="timeline-content card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Chief Technology Officer</h4>
+                                        <h5 class="card-subtitle mb-2 text-muted">InnovateTech Solutions</h5>
+                                        <p class="card-text">Leading technology strategy and digital transformation for a 300-employee SaaS company. Grev annual recurring revenue from $5M to $50M in 4 years.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Timeline Item 2 -->
+                            <div class="timeline-item">
+                                <div class="timeline-date">2015 - 2018</div>
+                                <div class="timeline-content card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Director of Product Development</h4>
+                                        <h5 class="card-subtitle mb-2 text-muted">TechGlobal Inc.</h5>
+                                        <p class="card-text">Managed cross-functional teams to deliver 5 major product releases that captured 30% market share in our vertical.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Timeline Item 3 -->
+                            <div class="timeline-item">
+                                <div class="timeline-date">2012 - 2015</div>
+                                <div class="timeline-content card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Senior Product Manager</h4>
+                                        <h5 class="card-subtitle mb-2 text-muted">Digital Solutions Co.</h5>
+                                        <p class="card-text">Led the product team that developed the industry-leading EnterpriseX platform with 95% customer satisfaction.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Key Achievements & Breakthroughs -->
+                <div class="mb-5">
+                    <h3 class="h4 mb-4 text-primary"><i class="fas fa-trophy me-2"></i>Key Achievements & Breakthroughs</h3>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card h-100 achievement-card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                            <i class="fas fa-lightbulb text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h5">Product Innovation</h4>
+                                            <p class="mb-0">Developed patented AI algorithm that reduced processing time by 80% for enterprise clients.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 achievement-card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                            <i class="fas fa-chart-line text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h5">Revenue Growth</h4>
+                                            <p class="mb-0">Spearheaded initiative that increased upsell revenue by 240% in 18 months.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 achievement-card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                            <i class="fas fa-users text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h5">Team Building</h4>
+                                            <p class="mb-0">Built and scaled engineering team from 5 to 50 while maintaining 92% retention rate.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card h-100 achievement-card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                            <i class="fas fa-globe text-primary"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h5">Market Expansion</h4>
+                                            <p class="mb-0">Led successful expansion into 3 new international markets within 2 years.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Challenges Overcome & Lessons Learned -->
+                <div class="mb-5">
+                    <h3 class="h4 mb-4 text-primary"><i class="fas fa-mountain me-2"></i>Challenges Overcome & Lessons Learned</h3>
+                    <div class="accordion" id="challengesAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#challenge1">
+                                    Digital Transformation Resistance
+                                </button>
+                            </h2>
+                            <div id="challenge1" class="accordion-collapse collapse" data-bs-parent="#challengesAccordion">
+                                <div class="accordion-body">
+                                    <p>Overcame organizational resistance to digital transformation by implementing change management strategies that resulted in 85% adoption rate across departments.</p>
+                                    <p class="mb-0 fst-italic"><strong>Lesson:</strong> Cultural change requires equal parts technology, communication, and empathy.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#challenge2">
+                                    Market Downturn Recovery
+                                </button>
+                            </h2>
+                            <div id="challenge2" class="accordion-collapse collapse" data-bs-parent="#challengesAccordion">
+                                <div class="accordion-body">
+                                    <p>Navigated company through 2020 market downturn by pivoting product strategy, resulting in record revenue year despite economic conditions.</p>
+                                    <p class="mb-0 fst-italic"><strong>Lesson:</strong> Agile decision-making and scenario planning are critical in volatile markets.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notable Projects or Innovations -->
+                <div class="mb-5">
+                    <h3 class="h4 mb-4 text-primary"><i class="fas fa-flask me-2"></i>Notable Projects & Innovations</h3>
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Project Image">
+                                <div class="card-body">
+                                    <h4 class="h5">Enterprise AI Platform</h4>
+                                    <p class="card-text">Led development of award-winning AI platform now used by Fortune 500 companies.</p>
+                                    <div class="badge bg-primary">Patent #US1234567</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Project Image">
+                                <div class="card-body">
+                                    <h4 class="h5">Global Payment System</h4>
+                                    <p class="card-text">Architected scalable payment processing system handling $1B+ annually.</p>
+                                    <div class="badge bg-primary">Industry Award 2021</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100">
+                                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Project Image">
+                                <div class="card-body">
+                                    <h4 class="h5">Sustainability Initiative</h4>
+                                    <p class="card-text">Pioneered green computing practices reducing company carbon footprint by 40%.</p>
+                                    <div class="badge bg-primary">Featured in TechToday</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Industry Recognition & Awards -->
+                <div class="mb-5">
+                    <h3 class="h4 mb-4 text-primary"><i class="fas fa-award me-2"></i>Industry Recognition & Awards</h3>
+                    <div class="row g-3">
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card award-card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="award-icon me-3">
+                                            <i class="fas fa-medal text-warning fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h5 mb-1">Tech Leader of the Year</h4>
+                                            <p class="mb-0 text-muted">Global Tech Awards, 2022</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card award-card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="award-icon me-3">
+                                            <i class="fas fa-trophy text-warning fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h5 mb-1">Top 40 Under 40</h4>
+                                            <p class="mb-0 text-muted">Business Innovators, 2021</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card award-card">
+                                <div class="card-body">
+                                    <div class="d-flex">
+                                        <div class="award-icon me-3">
+                                            <i class="fas fa-star text-warning fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h5 mb-1">Best AI Implementation</h4>
+                                            <p class="mb-0 text-muted">AI & Tech Summit, 2020</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Video Interview Section -->
-    <?php if ($video_url): ?>
-    <section id="interview" class="py-5">
-        <div class="container">
-            <h2 class="text-center section-title">Featured Interview</h2>
-            <div class="row justify-content-center mt-5">
-                <div class="col-lg-8">
-                    <div class="ratio ratio-16x9">
-                        <iframe src="<?php echo htmlspecialchars($video_url); ?>" title="<?php echo htmlspecialchars($person_name); ?> Interview" allowfullscreen></iframe>
+<style>
+    /* Timeline Styles */
+    .timeline {
+        position: relative;
+        padding-left: 50px;
+    }
+    
+    .timeline:before {
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--primary-color);
+    }
+    
+    .timeline-item {
+        position: relative;
+        margin-bottom: 30px;
+    }
+    
+    .timeline-date {
+        position: absolute;
+        left: -50px;
+        top: 0;
+        width: 40px;
+        padding: 5px;
+        text-align: center;
+        background: var(--primary-color);
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+    
+    .timeline-content {
+        position: relative;
+        padding-left: 20px;
+    }
+    
+    .timeline-content:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 15px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: white;
+        border: 3px solid var(--primary-color);
+        z-index: 1;
+    }
+    
+    /* Award Cards */
+    .award-card {
+        transition: transform 0.3s ease;
+        border-left: 3px solid var(--primary-color);
+    }
+    
+    .award-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .award-icon {
+        color: var(--primary-color);
+    }
+    
+    /* Accordion Customization */
+    .accordion-button:not(.collapsed) {
+        background-color: rgba(52, 152, 219, 0.1);
+        color: var(--primary-color);
+    }
+</style>
+
+
+<!-- My Story Section -->
+<section class="py-5 bg-light" id="my-story">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h2 class="section-title text-center mb-5">My Story</h2>
+                
+                <div class="story-content">
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-body p-4 p-md-5">
+                            <div class="d-flex mb-4">
+                                <div class="me-3">
+                                    <i class="fas fa-quote-left fa-2x text-primary opacity-25"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <p class="lead fst-italic">My journey in technology began unexpectedly when I built my first computer from spare parts at age 12. That moment of triumph when the screen flickered to life sparked a lifelong passion for solving complex problems through innovation.</p>
+                                </div>
+                            </div>
+                            
+                            <p>Growing up in a small town with limited resources, I learned early that creativity often trumps budget. When our high school couldn't afford new computers, I led a team of classmates to refurbish donated machines, giving our community its first computer lab.</p>
+                            
+                            <p class="mb-4">My professional turning point came during my first year at TechStart Inc. Challenged with an impossible deadline for a client project, I developed a rapid prototyping method that cut development time by 60%. This became the foundation for my "fail fast, learn faster" philosophy that I've applied throughout my career.</p>
+                            
+                            <div class="story-highlight bg-primary bg-opacity-10 p-4 rounded mb-4">
+                                <h4 class="h5"><i class="fas fa-lightbulb me-2 text-primary"></i>Defining Moment</h4>
+                                <p class="mb-0">The 2018 industry conference where I presented my "Human-Centered AI" framework changed everything. What began as a hallway conversation with skeptical peers evolved into an industry standard adopted by three Fortune 100 companies.</p>
+                            </div>
+                            
+                            <p>What motivates me most is seeing technology create real human impact. Whether it's watching a nurse use our software to save critical time in emergencies, or receiving letters from students who used our educational tools to discover STEM careers—these moments fuel my work.</p>
+                            
+                            <p class="mb-0">Behind every line of code, every product launch, there's a simple truth that guides me: Technology at its best doesn't just solve problems—it creates possibilities people never imagined. That's the legacy I want to build.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <?php endif; ?>
+    </div>
+</section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 text-center">
-                    <h2 class="section-title mb-5">Get In Touch</h2>
-                    <?php if (!empty($social_links)): ?>
-                    <div class="d-flex justify-content-center gap-3 flex-wrap">
-                        <?php foreach ($social_links as $social): ?>
-                        <a href="<?php echo htmlspecialchars($social['url']); ?>" class="btn btn-outline-primary btn-lg" target="_blank" rel="noopener noreferrer">
-                            <i class="<?php echo strpos($social['icon'], 'bi-') === 0 ? 'bi ' . htmlspecialchars($social['icon']) : 'fab fa-' . htmlspecialchars($social['icon']); ?> me-2"></i>
-                            <?php echo htmlspecialchars($social['name']); ?>
-                        </a>
-                        <?php endforeach; ?>
+<!-- Personal Statement Section -->
+<section class="py-5" id="personal-statement">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-6">
+                <h2 class="section-title text-center mb-5">Personal Statement</h2>
+                
+                <div class="card statement-card border-0 shadow-sm">
+                    <div class="card-body p-4 p-md-5 text-center">
+                        <img src="https://via.placeholder.com/100" alt="Signature" class="mb-4" style="height: 50px;">
+                        <p class="lead mb-4">I am a technology leader driven by the belief that innovation should serve human potential. With 15 years at the intersection of product development and strategic leadership, I specialize in transforming complex technical concepts into solutions that deliver measurable business value while improving lives.</p>
+                        <p class="mb-0">My approach combines analytical rigor with creative problem-solving, always grounded in ethical considerations. I stand for technology that empowers rather than replaces, that bridges divides rather than creates them. Whether building teams, products, or companies, I bring a unique blend of technical depth, business acumen, and unwavering commitment to positive impact.</p>
                     </div>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="py-4 bg-dark text-white">
-        <div class="container text-center">
-            <p class="mb-0">&copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars($person_name); ?>. All rights reserved.</p>
+<!-- Unique Value Proposition Section -->
+<section class="py-5 bg-light" id="unique-value">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="section-title text-center mb-5">Unique Value Proposition</h2>
+                
+                <div class="row g-4">
+                    <!-- Specialized Skills -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="icon-wrapper bg-primary bg-opacity-10 mx-auto mb-4">
+                                    <i class="fas fa-tools text-primary fa-2x"></i>
+                                </div>
+                                <h3 class="h5 mb-3">Specialized Skills</h3>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2">AI/ML Product Strategy</li>
+                                    <li class="mb-2">Enterprise Architecture</li>
+                                    <li class="mb-2">Digital Transformation</li>
+                                    <li class="mb-2">Cross-Functional Leadership</li>
+                                    <li>Technical Due Diligence</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Methodologies -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="icon-wrapper bg-primary bg-opacity-10 mx-auto mb-4">
+                                    <i class="fas fa-project-diagram text-primary fa-2x"></i>
+                                </div>
+                                <h3 class="h5 mb-3">Methodologies</h3>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2">Human-Centered AI Framework</li>
+                                    <li class="mb-2">Rapid Value Prototyping</li>
+                                    <li class="mb-2">Growth Architecture</li>
+                                    <li class="mb-2">Inclusive Design Sprints</li>
+                                    <li>Ethical Tech Assessment</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Thought Leadership -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="icon-wrapper bg-primary bg-opacity-10 mx-auto mb-4">
+                                    <i class="fas fa-bullhorn text-primary fa-2x"></i>
+                                </div>
+                                <h3 class="h5 mb-3">Thought Leadership</h3>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2">Keynote Speaker (30+ events)</li>
+                                    <li class="mb-2">Forbes Tech Council</li>
+                                    <li class="mb-2">Advisor to 3 Startups</li>
+                                    <li class="mb-2">Industry White Papers</li>
+                                    <li>Mentor to Women in Tech</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Publications -->
+                    <div class="col-md-6 col-lg-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center p-4">
+                                <div class="icon-wrapper bg-primary bg-opacity-10 mx-auto mb-4">
+                                    <i class="fas fa-file-alt text-primary fa-2x"></i>
+                                </div>
+                                <h3 class="h5 mb-3">Publications</h3>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2">7 Patents in AI Applications</li>
+                                    <li class="mb-2">"Ethical AI in Practice" (2022)</li>
+                                    <li class="mb-2">TechReview Contributor</li>
+                                    <li class="mb-2">3 Peer-Reviewed Papers</li>
+                                    <li>Monthly Industry Blog</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Value Proposition Summary -->
+                <div class="card mt-5 border-0 shadow-sm">
+                    <div class="card-body p-4 p-md-5">
+                        <div class="row align-items-center">
+                            <div class="col-md-3 text-center mb-4 mb-md-0">
+                                <div class="icon-wrapper-lg bg-primary bg-opacity-10 mx-auto">
+                                    <i class="fas fa-chess-queen text-primary fa-3x"></i>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <h3 class="h4">What Sets Me Apart</h3>
+                                <p class="mb-0">I combine rare technical depth with executive business perspective, having led projects from initial code to IPO. My value lies in bridging the gap between engineering teams and C-suite objectives, translating complex technologies into strategic advantages. Unlike pure technologists or general managers, I speak both languages fluently—a skill honed through 5 successful product launches and 3 company turnarounds. My published frameworks are used industry-wide because they address not just technical challenges, but human and organizational factors critical for adoption.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+    </div>
+</section>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <?php echo footer_t(); ?>
+<style>
+    /* My Story Styles */
+    .story-highlight {
+        border-left: 3px solid var(--primary-color);
+    }
+    
+    /* Personal Statement Styles */
+    .statement-card {
+        background-color: white;
+        border-radius: 8px;
+    }
+    
+    /* Unique Value Styles */
+    .icon-wrapper {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .icon-wrapper-lg {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Section-specific spacing */
+    #my-story {
+        background-color: rgba(52, 152, 219, 0.05);
+    }
+    
+    #unique-value .card {
+        transition: transform 0.3s ease;
+    }
+    
+    #unique-value .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+
+
+
+<!-- Personal Brand Elements Section -->
+<section class="py-5" id="brand-elements">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="section-title text-center mb-5">Personal Brand Elements</h2>
+                
+                <div class="row g-4">
+                    <!-- Professional Philosophy -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                        <i class="fas fa-atom text-primary fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="h5 mb-0">Professional Philosophy</h3>
+                                        <p class="text-muted mb-0">My guiding principles</p>
+                                    </div>
+                                </div>
+                                <ul class="list-unstyled ps-4">
+                                    <li class="mb-2 position-relative ps-3">
+                                        <i class="fas fa-circle text-primary small position-absolute" style="left: 0; top: 8px;"></i>
+                                        <strong>Human-Centered Technology:</strong> Tools should amplify human potential
+                                    </li>
+                                    <li class="mb-2 position-relative ps-3">
+                                        <i class="fas fa-circle text-primary small position-absolute" style="left: 0; top: 8px;"></i>
+                                        <strong>Ethical By Design:</strong> Build integrity into every system
+                                    </li>
+                                    <li class="mb-2 position-relative ps-3">
+                                        <i class="fas fa-circle text-primary small position-absolute" style="left: 0; top: 8px;"></i>
+                                        <strong>Growth Through Challenge:</strong> Comfort zones are innovation dead zones
+                                    </li>
+                                    <li class="position-relative ps-3">
+                                        <i class="fas fa-circle text-primary small position-absolute" style="left: 0; top: 8px;"></i>
+                                        <strong>Collaborative Excellence:</strong> The best solutions emerge from diverse minds
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Leadership Style -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                        <i class="fas fa-chess-king text-primary fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="h5 mb-0">Leadership Style</h3>
+                                        <p class="text-muted mb-0">How I build and guide teams</p>
+                                    </div>
+                                </div>
+                                <div class="leadership-traits">
+                                    <div class="d-flex mb-3">
+                                        <div class="flex-shrink-0">
+                                            <span class="badge bg-primary rounded-pill me-2">1</span>
+                                        </div>
+                                        <div>
+                                            <strong>Servant Leadership:</strong> Clear vision with hands-on support
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <div class="flex-shrink-0">
+                                            <span class="badge bg-primary rounded-pill me-2">2</span>
+                                        </div>
+                                        <div>
+                                            <strong>Radical Transparency:</strong> Information sharing builds trust
+                                        </div>
+                                    </div>
+                                    <div class="d-flex mb-3">
+                                        <div class="flex-shrink-0">
+                                            <span class="badge bg-primary rounded-pill me-2">3</span>
+                                        </div>
+                                        <div>
+                                            <strong>Fail Forward Culture:</strong> Celebrate lessons from setbacks
+                                        </div>
+                                    </div>
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <span class="badge bg-primary rounded-pill me-2">4</span>
+                                        </div>
+                                        <div>
+                                            <strong>Talent Multiplier:</strong> Grow team capabilities exponentially
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Vision & Future -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                        <i class="fas fa-binoculars text-primary fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="h5 mb-0">Vision & Future</h3>
+                                        <p class="text-muted mb-0">Where I'm headed</p>
+                                    </div>
+                                </div>
+                                <div class="vision-item mb-3">
+                                    <h4 class="h6 mb-1">5-Year Goal</h4>
+                                    <p class="mb-0">Establish an innovation lab bridging tech and social impact sectors</p>
+                                </div>
+                                <div class="vision-item mb-3">
+                                    <h4 class="h6 mb-1">Industry Change</h4>
+                                    <p class="mb-0">Make ethical AI assessment standard practice by 2027</p>
+                                </div>
+                                <div class="vision-item">
+                                    <h4 class="h6 mb-1">Legacy</h4>
+                                    <p class="mb-0">Mentor 100+ underrepresented technologists</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Community Impact -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                        <i class="fas fa-hands-helping text-primary fa-2x"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="h5 mb-0">Community Impact</h3>
+                                        <p class="text-muted mb-0">Beyond professional achievements</p>
+                                    </div>
+                                </div>
+                                <div class="impact-item d-flex mb-3">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-check-circle text-primary me-2"></i>
+                                    </div>
+                                    <div>
+                                        <strong>TechBridge Nonprofit:</strong> Board member since 2018
+                                    </div>
+                                </div>
+                                <div class="impact-item d-flex mb-3">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-check-circle text-primary me-2"></i>
+                                    </div>
+                                    <div>
+                                        <strong>Coding for Seniors:</strong> Monthly workshop leader
+                                    </div>
+                                </div>
+                                <div class="impact-item d-flex">
+                                    <div class="flex-shrink-0">
+                                        <i class="fas fa-check-circle text-primary me-2"></i>
+                                    </div>
+                                    <div>
+                                        <strong>STEM Scholarships:</strong> Funded 3 annual awards
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Media Assets Section -->
+<section class="py-5 bg-light" id="media-assets">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="section-title text-center mb-5">Media Assets</h2>
+                
+                <div class="row g-4">
+                    <!-- Photos -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3"><i class="fas fa-camera me-2 text-primary"></i> Photos</h3>
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/800x1200">
+                                            <img src="https://via.placeholder.com/300x300" alt="Headshot" class="img-fluid rounded">
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/1200x800">
+                                            <img src="https://via.placeholder.com/300x300" alt="Speaking" class="img-fluid rounded">
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/800x800">
+                                            <img src="https://via.placeholder.com/300x300" alt="Team" class="img-fluid rounded">
+                                        </a>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#imageModal" data-img="https://via.placeholder.com/1200x600">
+                                            <img src="https://via.placeholder.com/300x300" alt="Workshop" class="img-fluid rounded">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="#" class="btn btn-sm btn-outline-primary">Download All Headshots</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Videos -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3"><i class="fas fa-video me-2 text-primary"></i> Videos</h3>
+                                <div class="ratio ratio-16x9 mb-3">
+                                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Sample Video" allowfullscreen></iframe>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-play-circle text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">TechForward 2023 Keynote</a>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-play-circle text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">AI Ethics Panel Discussion</a>
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-play-circle text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">Client Success Stories</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Portfolio & Speaking -->
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3"><i class="fas fa-briefcase me-2 text-primary"></i> Portfolio</h3>
+                                <div class="mb-4">
+                                    <h4 class="h6 mb-2">Featured Case Studies:</h4>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="fas fa-file-pdf text-danger me-2"></i>
+                                            <a href="#" class="text-decoration-none">Enterprise AI Transformation</a>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-file-pdf text-danger me-2"></i>
+                                            <a href="#" class="text-decoration-none">Global Payment System</a>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-file-pdf text-danger me-2"></i>
+                                            <a href="#" class="text-decoration-none">Nonprofit Tech Overhaul</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <h3 class="h5 mb-3"><i class="fas fa-microphone me-2 text-primary"></i> Speaking</h3>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                        <strong>2023:</strong> "Future of Ethical AI" - TechGlobal Summit
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                        <strong>2022:</strong> "Leading Through Disruption" - ExecForum
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-calendar-alt text-primary me-2"></i>
+                                        <strong>2021:</strong> "Human-Centered Design" - InnovateConf
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Publications & Social -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3"><i class="fas fa-newspaper me-2 text-primary"></i> Publications</h3>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-book text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">"Ethical AI in Practice" - TechReview (2023)</a>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-book text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">"Leading Digital Transformation" - Harvard Biz (2022)</a>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-podcast text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">FutureTech Podcast - Episode 45</a>
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-tv text-primary me-2"></i>
+                                        <a href="#" class="text-decoration-none">CNBC Tech Interview - May 2023</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Social Media -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body">
+                                <h3 class="h5 mb-3"><i class="fas fa-hashtag me-2 text-primary"></i> Social Media</h3>
+                                <div class="social-links">
+                                    <a href="#" class="btn btn-outline-primary btn-sm mb-2 me-2">
+                                        <i class="fab fa-linkedin-in me-1"></i> LinkedIn
+                                    </a>
+                                    <a href="#" class="btn btn-outline-info btn-sm mb-2 me-2">
+                                        <i class="fab fa-twitter me-1"></i> Twitter
+                                    </a>
+                                    <a href="#" class="btn btn-outline-danger btn-sm mb-2 me-2">
+                                        <i class="fab fa-youtube me-1"></i> YouTube
+                                    </a>
+                                    <a href="#" class="btn btn-outline-dark btn-sm mb-2">
+                                        <i class="fab fa-github me-1"></i> GitHub
+                                    </a>
+                                </div>
+                                <div class="mt-3">
+                                    <h4 class="h6 mb-2">Professional Hashtags:</h4>
+                                    <div class="d-flex flex-wrap">
+                                        <span class="badge bg-light text-dark me-2 mb-2">#TechLeadership</span>
+                                        <span class="badge bg-light text-dark me-2 mb-2">#EthicalAI</span>
+                                        <span class="badge bg-light text-dark me-2 mb-2">#DigitalTransformation</span>
+                                        <span class="badge bg-light text-dark mb-2">#InnovationCulture</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Image Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img src="" id="modalImage" class="img-fluid" alt="Enlarged view">
+                </div>
+                <div class="modal-footer">
+                    <a href="#" id="downloadImage" class="btn btn-primary">Download</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Client Impact Stories Section -->
+<section class="py-5" id="client-stories">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="section-title text-center mb-5">Client Impact Stories</h2>
+                
+                <!-- Story 1 -->
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <h3 class="h4">Enterprise AI Transformation</h3>
+                                <div class="client-logo mb-3">
+                                    <img src="https://via.placeholder.com/150x50" alt="Client Logo" class="img-fluid">
+                                </div>
+                                <div class="badge bg-primary mb-2">Manufacturing Sector</div>
+                                <p class="mb-0"><strong>Duration:</strong> 18 months</p>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-exclamation-triangle text-warning me-2"></i> Challenge</h4>
+                                        <p>$1B manufacturer struggling with 30% defect rate and $12M annual quality costs</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-lightbulb text-primary me-2"></i> Solution</h4>
+                                        <p>Led development of custom AI quality control system integrated with production lines</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-chart-line text-success me-2"></i> Results</h4>
+                                        <ul class="mb-0">
+                                            <li>62% reduction in defects</li>
+                                            <li>$8.7M first-year savings</li>
+                                            <li>ROI in 7 months</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-quote-left text-info me-2"></i> Testimonial</h4>
+                                        <div class="bg-light p-3 rounded">
+                                            <p class="fst-italic mb-0">"The solution transformed our quality process and became a competitive advantage in our RFP responses."</p>
+                                            <p class="mb-0 text-end"><strong>— COO, ManufacturingCo</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Story 2 -->
+                <div class="card mb-4 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <h3 class="h4">Global Payment System</h3>
+                                <div class="client-logo mb-3">
+                                    <img src="https://via.placeholder.com/150x50" alt="Client Logo" class="img-fluid">
+                                </div>
+                                <div class="badge bg-primary mb-2">Financial Services</div>
+                                <p class="mb-0"><strong>Duration:</strong> 2 years</p>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-exclamation-triangle text-warning me-2"></i> Challenge</h4>
+                                        <p>Legacy system couldn't handle 300% transaction volume growth, causing outages</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-lightbulb text-primary me-2"></i> Solution</h4>
+                                        <p>Architected cloud-native payment platform with 99.999% availability SLA</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-chart-line text-success me-2"></i> Results</h4>
+                                        <ul class="mb-0">
+                                            <li>Handles 15,000 TPS (up from 2,500)</li>
+                                            <li>Zero downtime in 18 months</li>
+                                            <li>Enabled expansion to 12 new markets</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-quote-left text-info me-2"></i> Testimonial</h4>
+                                        <div class="bg-light p-3 rounded">
+                                            <p class="fst-italic mb-0">"The system became the backbone of our international growth strategy, delivering flawless performance."</p>
+                                            <p class="mb-0 text-end"><strong>— CTO, FinTechGlobal</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Story 3 -->
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <h3 class="h4">Nonprofit Tech Overhaul</h3>
+                                <div class="client-logo mb-3">
+                                    <img src="https://via.placeholder.com/150x50" alt="Client Logo" class="img-fluid">
+                                </div>
+                                <div class="badge bg-primary mb-2">Social Sector</div>
+                                <p class="mb-0"><strong>Duration:</strong> 9 months</p>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row g-3">
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-exclamation-triangle text-warning me-2"></i> Challenge</h4>
+                                        <p>Manual processes limited service reach to only 15% of target population</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-lightbulb text-primary me-2"></i> Solution</h4>
+                                        <p>Pro bono development of mobile platform with automated eligibility screening</p>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-chart-line text-success me-2"></i> Results</h4>
+                                        <ul class="mb-0">
+                                            <li>400% increase in clients served</li>
+                                            <li>80% reduction in processing time</li>
+                                            <li>$2.3M additional funding secured</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4 class="h5"><i class="fas fa-quote-left text-info me-2"></i> Testimonial</h4>
+                                        <div class="bg-light p-3 rounded">
+                                            <p class="fst-italic mb-0">"This transformation allowed us to help thousands more families in need with the same resources."</p>
+                                            <p class="mb-0 text-end"><strong>— Executive Director, CommunityFirst</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Brand Elements Styles */
+    .leadership-traits .badge {
+        width: 24px;
+        height: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+    }
+    
+    /* Media Assets Styles */
+    #media-assets .card {
+        transition: all 0.3s ease;
+    }
+    
+    #media-assets .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    
+    .social-links .btn {
+        width: 110px;
+        text-align: left;
+    }
+    
+    /* Client Stories Styles */
+    .client-logo {
+        height: 50px;
+        display: flex;
+        align-items: center;
+    }
+    
+    #client-stories .card {
+        transition: transform 0.3s ease;
+    }
+    
+    #client-stories .card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+
+<script>
+    // Image Modal Handler
+    document.addEventListener('DOMContentLoaded', function() {
+        var imageModal = document.getElementById('imageModal');
+        imageModal.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            var imgSrc = button.getAttribute('data-img');
+            var modalImg = document.getElementById('modalImage');
+            var downloadLink = document.getElementById('downloadImage');
+            
+            modalImg.src = imgSrc;
+            downloadLink.href = imgSrc;
+        });
+    });
+</script>
+
+
+
+<!-- Digital Presence Section -->
+<section class="py-5 bg-light" id="digital-presence">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="section-title text-center mb-5">Digital Presence</h2>
+                
+                <div class="row g-4">
+                    <!-- Professional Profiles -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-id-card fa-2x text-primary"></i>
+                                    </div>
+                                    <h3 class="h5 mb-0">Professional Profiles</h3>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li class="mb-3 d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fab fa-linkedin fa-fw fa-lg text-linkedin me-3"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 mb-1">LinkedIn</h4>
+                                            <a href="#" class="text-decoration-none">linkedin.com/in/professionalname</a>
+                                            <p class="small text-muted mt-1">5000+ connections, regular industry insights</p>
+                                        </div>
+                                    </li>
+                                    <li class="mb-3 d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fab fa-twitter fa-fw fa-lg text-twitter me-3"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 mb-1">Twitter (X)</h4>
+                                            <a href="#" class="text-decoration-none">twitter.com/professionalhandle</a>
+                                            <p class="small text-muted mt-1">10K+ followers, daily tech commentary</p>
+                                        </div>
+                                    </li>
+                                    <li class="d-flex">
+                                        <div class="flex-shrink-0">
+                                            <i class="fab fa-angellist fa-fw fa-lg text-dark me-3"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 mb-1">Other Platforms</h4>
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <a href="#" class="badge bg-light text-dark text-decoration-none">Behance</a>
+                                                <a href="#" class="badge bg-light text-dark text-decoration-none">Dribbble</a>
+                                                <a href="#" class="badge bg-light text-dark text-decoration-none">StackOverflow</a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Website & Blog -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-globe fa-2x text-primary"></i>
+                                    </div>
+                                    <h3 class="h5 mb-0">Website & Blog</h3>
+                                </div>
+                                <div class="mb-4">
+                                    <h4 class="h6 mb-2">Personal Website:</h4>
+                                    <a href="#" class="d-block mb-3 text-decoration-none">
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-external-link-alt fa-fw me-2 text-primary"></i>
+                                            <span>professionalname.com</span>
+                                        </div>
+                                    </a>
+                                    <div class="ratio ratio-16x9 mb-2">
+                                        <img src="https://via.placeholder.com/800x450" alt="Website screenshot" class="img-fluid rounded">
+                                    </div>
+                                </div>
+                                <div>
+                                    <h4 class="h6 mb-2">Featured Blog Posts:</h4>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="fas fa-pen-fancy text-primary me-2"></i>
+                                            <a href="#" class="text-decoration-none">"The Future of Human-Centered AI"</a>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-pen-fancy text-primary me-2"></i>
+                                            <a href="#" class="text-decoration-none">"Lessons from Scaling Tech Teams"</a>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-pen-fancy text-primary me-2"></i>
+                                            <a href="#" class="text-decoration-none">"Ethics in Digital Transformation"</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Industry Platforms -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-laptop-code fa-2x text-primary"></i>
+                                    </div>
+                                    <h3 class="h5 mb-0">Industry Platforms</h3>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="p-3 border rounded text-center h-100">
+                                            <i class="fab fa-github fa-2x mb-2 text-dark"></i>
+                                            <h4 class="h6 mb-1">GitHub</h4>
+                                            <a href="#" class="small text-decoration-none">github.com/prohandle</a>
+                                            <p class="small text-muted mt-1 mb-0">12 repositories, 5 open-source contributions</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-3 border rounded text-center h-100">
+                                            <i class="fab fa-medium fa-2x mb-2 text-dark"></i>
+                                            <h4 class="h6 mb-1">Medium</h4>
+                                            <a href="#" class="small text-decoration-none">medium.com/@prohandle</a>
+                                            <p class="small text-muted mt-1 mb-0">25 articles, 50K+ reads</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-3 border rounded text-center h-100">
+                                            <i class="fas fa-book-open fa-2x mb-2 text-dark"></i>
+                                            <h4 class="h6 mb-1">ResearchGate</h4>
+                                            <a href="#" class="small text-decoration-none">researchgate.net/profile</a>
+                                            <p class="small text-muted mt-1 mb-0">7 publications, 200+ citations</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-3 border rounded text-center h-100">
+                                            <i class="fab fa-stack-overflow fa-2x mb-2 text-dark"></i>
+                                            <h4 class="h6 mb-1">Stack Overflow</h4>
+                                            <a href="#" class="small text-decoration-none">stackoverflow.com/users</a>
+                                            <p class="small text-muted mt-1 mb-0">Top 5% contributor</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Recorded Talks -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-video fa-2x text-primary"></i>
+                                    </div>
+                                    <h3 class="h5 mb-0">Recorded Talks & Webinars</h3>
+                                </div>
+                                <div class="mb-4">
+                                    <div class="ratio ratio-16x9 mb-3">
+                                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Featured Talk" allowfullscreen></iframe>
+                                    </div>
+                                    <h4 class="h6 mb-2">Featured Presentation:</h4>
+                                    <p>"Ethical AI in Enterprise Applications" - TechForward 2023</p>
+                                </div>
+                                <div>
+                                    <h4 class="h6 mb-2">Additional Talks:</h4>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="fas fa-play-circle text-primary me-2"></i>
+                                            <a href="#" class="text-decoration-none">"Leading Digital Transformation" - ExecSummit 2022</a>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-play-circle text-primary me-2"></i>
+                                            <a href="#" class="text-decoration-none">Webinar: "Future of Work Tech" - 2023</a>
+                                        </li>
+                                        <li>
+                                            <i class="fas fa-play-circle text-primary me-2"></i>
+                                            <a href="#" class="text-decoration-none">Panel: "Women in Tech Leadership" - 2023</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Network & Influence Section -->
+<section class="py-5" id="network-influence">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <h2 class="section-title text-center mb-5">Network & Influence</h2>
+                
+                <div class="row g-4">
+                    <!-- Associations -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-users fa-2x text-primary"></i>
+                                    </div>
+                                    <h3 class="h5 mb-0">Professional Associations</h3>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li class="mb-3">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-star text-warning me-3"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 mb-1">IEEE Senior Member</h4>
+                                                <p class="small text-muted mb-0">Since 2018, Committee Chair 2020-2022</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-3">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-star text-warning me-3"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 mb-1">Forbes Technology Council</h4>
+                                                <p class="small text-muted mb-0">Official Member since 2021</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-3">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-star text-warning me-3"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 mb-1">AI Ethics Alliance</h4>
+                                                <p class="small text-muted mb-0">Founding Member, Working Group Lead</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-star text-warning me-3"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 mb-1">TechWomen Mentorship Program</h4>
+                                                <p class="small text-muted mb-0">Mentor since 2019</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Collaborations -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-handshake fa-2x text-primary"></i>
+                                    </div>
+                                    <h3 class="h5 mb-0">Key Collaborations</h3>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <div class="p-3 border rounded text-center h-100">
+                                            <img src="https://via.placeholder.com/80x40" alt="Partner Logo" class="img-fluid mb-2">
+                                            <h4 class="h6 mb-1">Microsoft</h4>
+                                            <p class="small text-muted mb-0">AI Partner Program</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-3 border rounded text-center h-100">
+                                            <img src="https://via.placeholder.com/80x40" alt="Partner Logo" class="img-fluid mb-2">
+                                            <h4 class="h6 mb-1">Stanford</h4>
+                                            <p class="small text-muted mb-0">Research Initiative</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-3 border rounded text-center h-100">
+                                            <img src="https://via.placeholder.com/80x40" alt="Partner Logo" class="img-fluid mb-2">
+                                            <h4 class="h6 mb-1">TechNonprofit</h4>
+                                            <p class="small text-muted mb-0">Board Advisor</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-3 border rounded text-center h-100">
+                                            <img src="https://via.placeholder.com/80x40" alt="Partner Logo" class="img-fluid mb-2">
+                                            <h4 class="h6 mb-1">StartupIncubator</h4>
+                                            <p class="small text-muted mb-0">Mentor Network</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mentorship -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-user-graduate fa-2x text-primary"></i>
+                                    </div>
+                                    <h3 class="h5 mb-0">Mentorship & Leadership</h3>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="p-3 border rounded">
+                                            <h4 class="h6 mb-2">TechWomen Rising</h4>
+                                            <p class="small mb-2">Mentored 15 early-career women in tech through 6-month program</p>
+                                            <span class="badge bg-light text-dark">2019-Present</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="p-3 border rounded">
+                                            <h4 class="h6 mb-2">University Advisor</h4>
+                                            <p class="small mb-2">Advisory board for Stanford Computer Science Department</p>
+                                            <span class="badge bg-light text-dark">2020-2023</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="p-3 border rounded">
+                                            <h4 class="h6 mb-2">Founder Circles</h4>
+                                            <p class="small mb-2">Lead monthly peer advisory group for tech startup founders</p>
+                                            <span class="badge bg-light text-dark">2022-Present</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Media Mentions -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-primary bg-opacity-10 p-2 rounded me-3">
+                                        <i class="fas fa-bullhorn fa-2x text-primary"></i>
+                                    </div>
+                                    <h3 class="h5 mb-0">Media & Influence</h3>
+                                </div>
+                                <ul class="list-unstyled">
+                                    <li class="mb-3">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-newspaper text-primary me-3"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 mb-1">Featured in TechCrunch</h4>
+                                                <p class="small text-muted mb-0">"How Ethical AI is Shaping the Future of Business" - March 2023</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-3">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-podcast text-primary me-3"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 mb-1">FutureTech Podcast</h4>
+                                                <p class="small text-muted mb-0">Episode 45: Leadership in Digital Transformation</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li class="mb-3">
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-tv text-primary me-3"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 mb-1">CNBC Interview</h4>
+                                                <p class="small text-muted mb-0">Market Trends in Enterprise Technology</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="d-flex">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-award text-primary me-3"></i>
+                                            </div>
+                                            <div>
+                                                <h4 class="h6 mb-1">Top 100 Influencers</h4>
+                                                <p class="small text-muted mb-0">TechLeader Magazine 2022, 2023</p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Digital Presence Styles */
+    .text-linkedin { color: #0a66c2; }
+    .text-twitter { color: #1da1f2; }
+    
+    #digital-presence .platform-card {
+        transition: all 0.3s ease;
+    }
+    
+    #digital-presence .platform-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    /* Network & Influence Styles */
+    #network-influence .card {
+        transition: transform 0.3s ease;
+    }
+    
+    #network-influence .card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .partner-logo {
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+</style>
+
+    <script>
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // You can add more dynamic functionality here as needed
+    </script>
