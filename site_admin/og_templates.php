@@ -3,13 +3,12 @@ include 'admin_connect.php';
 
 // With additional libraries
 $extra_libs = [
-    '<link href="css/page/templates.css" rel="stylesheet">',
-    '<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet">'
+    '<link href="css/page/templates.css" rel="stylesheet">'
 ];
 
 AdminHeader(
-    "Site Templates", 
-    "Manage website templates", 
+    "Templates", 
+    "Template management", 
     $extra_libs
 );
 
@@ -30,12 +29,12 @@ if(isset($_GET['status']) && $_GET['status'] !== '') {
 // Search filter
 if(isset($_GET['search']) && !empty($_GET['search'])) {
     $search = trim($_GET['search']);
-    $search_filter = " AND (st_name LIKE '%$search%') ";
+    $search_filter = " AND (template_title LIKE '%$search%' OR template_key LIKE '%$search%') ";
     $page_link .="&search=".urlencode($search);
 }
 
 // Get total count
-$total_query = "SELECT COUNT(*) as total FROM site_template WHERE soft_delete = 0 $status_filter $search_filter";
+$total_query = "SELECT COUNT(*) as total FROM og_template WHERE soft_delete = 0 $status_filter $search_filter";
 $total_result = return_single_row($total_query);
 $total_items = $total_result['total'];
 
@@ -44,13 +43,13 @@ $total_pages = ($per_page > 0) ? ceil($total_items / $per_page) : 1;
 $offset = ($current_page - 1) * $per_page;
 
 // Get paginated data
-$query = "SELECT * FROM site_template WHERE soft_delete = 0 $status_filter $search_filter ORDER BY st_id DESC";
+$query = "SELECT * FROM og_template WHERE soft_delete = 0 $status_filter $search_filter ORDER BY template_id DESC";
     
 if ($per_page > 0) {
     $query .= " LIMIT $offset, $per_page";
 }
 
-$templates = return_multiple_rows($query);
+$Templates = return_multiple_rows($query);
 
 // Get all users for createdby filter
 $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
@@ -69,14 +68,14 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
                     <li class="breadcrumb-item">
                         <a href="domain.php">Dashboard</a>
                     </li>
-                    <li class="breadcrumb-item active">Site Templates</li>
+                    <li class="breadcrumb-item active">Templates</li>
                 </ol>
 
                 <!-- Page Content -->
                 <h3 class="page-header">
                     All Templates (<?php echo $total_items; ?>)
                     <?php if($has_add): ?>
-                        <a href="add_template.php" style="float:right;color: #fff" class="btn btn-danger btn-md">
+                        <a href="addsite_template.php" style="float:right;color: #fff" class="btn btn-danger btn-md">
                             <i class="fa fa-plus">&nbsp;</i>Add New
                         </a>
                     <?php endif; ?>
@@ -97,7 +96,7 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
                             <div class="col-md-6 mb-2">
                                 <form method="get" action="">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" name="search" placeholder="Search by template name..." 
+                                        <input type="text" class="form-control" name="search" placeholder="Search by title or key..." 
                                             value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
                                         <div class="input-group-append">
                                             <button class="btn btn-primary" type="submit">
@@ -176,37 +175,62 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
                                         </th>
                                         <th width="60px">ID</th>
                                         <th>Template Name</th>
-                                        <th width="120px">Status</th>
+                                        <th width="150px">Template Key</th>
+                                        <th width="120px">Created By</th>
+                                        <th width="100px">Status</th>
                                         <th width="150px">Last Modified</th>
                                         <th width="120px">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php 
-                                    if(count($templates) > 0) {
-                                        foreach($templates as $template) {
+                                    if(count($Templates) > 0) {
+                                        foreach($Templates as $template) {
+                                            // Get creator info
+                                            $creator = isset($user_lookup[$template['createdby']]) ? $user_lookup[$template['createdby']] : null;
+                                            $creator_name = $creator ? $creator['username'] : 'System';
+                                            
+                                            $creator_image = $creator && !empty($creator['profile_pic']) ? 
+                                                BASE_URL.ABSOLUTE_IMAGEPATH.$creator['profile_pic'] : 
+                                                'https://ui-avatars.com/api/?name='.urlencode($creator_name).'&size=40';
+                                            
                                             $status_label = $template['isactive'] ? 'Active' : 'Inactive';
                                             $status_class = $template['isactive'] ? 'success' : 'danger';
                                             
                                             $last_modified = date('M j, Y', strtotime($template['updatedon']));
                                             ?>
-                                            <tr id="tr_<?=$template['st_id']?>">
+                                            <tr id="tr_<?=$template['template_id']?>">
                                                 <td>
-                                                    <input type="checkbox" class="template-checkbox" value="<?=$template['st_id']?>">
+                                                    <input type="checkbox" class="template-checkbox" value="<?=$template['template_id']?>">
                                                 </td>
-                                                <td><?=$template['st_id']?></td>
+                                                <td><?=$template['template_id']?></td>
                                                 <td>
-                                                    <strong><?=$template['st_name']?></strong>
+                                                    <strong><?=$template['template_title']?></strong>
+                                                    <?php if(!empty($template['template_description'])): ?>
+                                                        <p class="text-muted small mb-0"><?=$template['template_description']?></p>
+                                                    <?php endif; ?>
+                                                </td>
+                                                <td>
+                                                    <code><?=$template['template_key']?></code>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="<?=$creator_image?>" class="rounded-circle mr-2" width="30" height="30" alt="<?=$creator_name?>">
+                                                        <div>
+                                                            <small class="text-muted d-block">Created by</small>
+                                                            <span><?=$creator_name?></span>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
                                                         <?php if ($has_status): ?>
                                                             <?php if ($template['isactive'] == 1): ?>
-                                                                <span id="status_<?=$template['st_id']?>" class="badge badge-success">Active</span>
-                                                                <input type="checkbox" data-id="<?=$template['st_id']?>" class="js-switch" checked />
+                                                                <span id="status_<?=$template['template_id']?>" class="badge badge-success">Active</span>
+                                                                <input type="checkbox" data-id="<?=$template['template_id']?>" class="js-switch" checked />
                                                             <?php else: ?>
-                                                                <span id="status_<?=$template['st_id']?>" class="badge badge-danger">Inactive</span>
-                                                                <input type="checkbox" data-id="<?=$template['st_id']?>" class="js-switch" />
+                                                                <span id="status_<?=$template['template_id']?>" class="badge badge-danger">Inactive</span>
+                                                                <input type="checkbox" data-id="<?=$template['template_id']?>" class="js-switch" />
                                                             <?php endif; ?>
                                                         <?php else: ?>
                                                             <span class="badge badge-<?=$status_class?>"><?=$status_label?></span>
@@ -224,27 +248,27 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                             <!-- Edit Action -->
                                                             <?php if($has_edit): ?>
-                                                            <a class="dropdown-item" href="editsite_template.php?id=<?=$template['st_id']?>">
+                                                            <a class="dropdown-item" href="editsite_template.php?id=<?=$template['template_id']?>">
                                                                 <i class="fas fa-edit fa-fw"></i> Edit
                                                             </a>
                                                             <?php endif; ?>
                                                             
                                                             <!-- Duplicate Action -->
                                                             <?php if($has_add): ?>
-                                                            <a class="dropdown-item duplicate-template" href="#" data-templateid="<?=$template['st_id']?>">
+                                                            <a class="dropdown-item duplicate-template" href="#" data-templateid="<?=$template['template_id']?>">
                                                                 <i class="fas fa-copy fa-fw"></i> Duplicate
                                                             </a>
                                                             <?php endif; ?>
                                                             
                                                             <!-- Preview Action -->
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#previewTemplateModal" onclick="previewTemplate(<?=$template['st_id']?>)">
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#previewTemplateModal" onclick="previewTemplate(<?=$template['template_id']?>)">
                                                                 <i class="fas fa-eye fa-fw"></i> Preview
                                                             </a>
                                                             
                                                             <!-- Status Toggle -->
                                                             <?php if($has_status): ?>
                                                             <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item" href="#" onclick="toggleStatus(<?=$template['st_id']?>, <?=$template['isactive']?>)">
+                                                            <a class="dropdown-item" href="#" onclick="toggleStatus(<?=$template['template_id']?>, <?=$template['isactive']?>)">
                                                                 <i class="fas fa-power-off fa-fw"></i> <?=$template['isactive'] ? 'Deactivate' : 'Activate'?>
                                                             </a>
                                                             <?php endif; ?>
@@ -252,7 +276,7 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
                                                             <!-- Delete Action -->
                                                             <?php if($has_delete): ?>
                                                             <div class="dropdown-divider"></div>
-                                                            <a class="dropdown-item text-danger" onclick="deleteTemplate(<?=$template['st_id']?>)">
+                                                            <a class="dropdown-item text-danger" onclick="deleteTemplate(<?=$template['template_id']?>)">
                                                                 <i class="fas fa-trash fa-fw"></i> Delete
                                                             </a>
                                                             <?php endif; ?>
@@ -263,7 +287,7 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
                                             <?php
                                         }
                                     } else {
-                                        echo '<tr><td colspan="6" class="text-center">No templates found</td></tr>';
+                                        echo '<tr><td colspan="8" class="text-center">No templates found</td></tr>';
                                     }
                                     ?>
                                 </tbody>
@@ -381,7 +405,6 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
 
     <?php include 'includes/footer.php';?>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script type="text/javascript" src="js/template/templates.js"></script>
     <script src="js/template/bulk_action.js"></script>
 
@@ -453,9 +476,6 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', updateSelectedCount);
         });
-        
-        // Initialize Select2 for any select elements
-        $('.select2').select2();
     });
     
     function bulkAction(action) {
@@ -487,66 +507,6 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
                 },
                 error: function() {
                     alert('An error occurred while processing your request.');
-                }
-            });
-        }
-    }
-    
-    // Function to toggle template status
-    function toggleStatus(templateId, currentStatus) {
-        const newStatus = currentStatus ? 0 : 1;
-        
-        $.ajax({
-            url: 'toggle_template_status.php',
-            type: 'POST',
-            data: {
-                id: templateId,
-                status: newStatus
-            },
-            success: function(response) {
-                const result = JSON.parse(response);
-                if (result.success) {
-                    // Update the UI
-                    const statusBadge = $('#status_' + templateId);
-                    const statusSwitch = $('input[data-id="' + templateId + '"]');
-                    
-                    if (newStatus) {
-                        statusBadge.removeClass('badge-danger').addClass('badge-success').text('Active');
-                        statusSwitch.prop('checked', true);
-                    } else {
-                        statusBadge.removeClass('badge-success').addClass('badge-danger').text('Inactive');
-                        statusSwitch.prop('checked', false);
-                    }
-                } else {
-                    alert(result.message);
-                }
-            },
-            error: function() {
-                alert('An error occurred while updating the template status.');
-            }
-        });
-    }
-    
-    // Function to delete template
-    function deleteTemplate(templateId) {
-        if (confirm('Are you sure you want to delete this template?')) {
-            $.ajax({
-                url: 'delete_template.php',
-                type: 'POST',
-                data: {
-                    id: templateId
-                },
-                success: function(response) {
-                    const result = JSON.parse(response);
-                    if (result.success) {
-                        // Remove the row from the table
-                        $('#tr_' + templateId).remove();
-                    } else {
-                        alert(result.message);
-                    }
-                },
-                error: function() {
-                    alert('An error occurred while deleting the template.');
                 }
             });
         }

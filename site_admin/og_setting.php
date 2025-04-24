@@ -10,7 +10,41 @@ AdminHeader(
     $extra_libs,
     null,
     '
-
+    <style>
+        .nav-tabs .nav-link {
+            padding: 12px 20px;
+            font-weight: 600;
+            color: #6c757d;
+            border: 1px solid transparent;
+            border-top-left-radius: 0.25rem;
+            border-top-right-radius: 0.25rem;
+        }
+        .nav-tabs .nav-link.active {
+            color: #495057;
+            background-color: #fff;
+            border-color: #dee2e6 #dee2e6 #fff;
+        }
+        .nav-tabs .nav-link:hover {
+            border-color: #e9ecef #e9ecef #dee2e6;
+        }
+        .tab-content {
+            padding: 20px;
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-top: none;
+            border-radius: 0 0 0.25rem 0.25rem;
+        }
+        .social-media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        @media (min-width: 1200px) {
+            .social-media-grid {
+                grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            }
+        }
+    </style>
     '
 );
 
@@ -24,9 +58,6 @@ AdminHeader(
     $setting = return_multiple_rows("Select * from og_settings $Where_gc ");
     ?>
 
-    <style>
-
-    </style>
     <div id="wrapper">
 
         <?php include 'includes/sidebar.php'; ?>
@@ -45,261 +76,288 @@ AdminHeader(
 
                 <!-- Page Content -->
                 <div id="error_id"></div>
-                        <form class="needs-validation" onsubmit="return false" novalidate>
-
-               <!-- Make sure you include Font Awesome 4 in the <head> section of your HTML -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-<div class="container-fluid tab-pane fade active show">
-    <div class="form-row">
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-header"></i> Title
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-pencil"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter Title" id="title" value="<?php echo $setting[0]['settings_value']?>">
-            </div>
-            <small class="form-text text-muted">Use Short Code <?php echo $setting[0]['short_code']?></small>
-        </div>
-
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-tag"></i> Tagline
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-tag"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter Tagline" id="tagline" name="meta_keywords" value="<?php echo $setting[1]['settings_value']?>">
-            </div>
-            <small class="form-text text-muted">Use Short Code <?php echo $setting[1]['short_code']?></small>
-        </div>
-    </div>
-    
-    <div class="form-row">
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-picture-o"></i> Logo
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-image"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter Logo" id="logo" value="<?php echo $setting[8]['settings_value']?>">
-            </div>
-            <small class="form-text text-muted">Use Short Code <?php echo $setting[8]['short_code']?></small>
-        </div>
-        
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-link"></i> URL
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-link"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter URL" id="url" value="<?php echo $setting[2]['settings_value']?>">
-            </div>
-            <small class="form-text text-muted">Use Short Code <?php echo $setting[2]['short_code']?></small>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid tab-pane fade active show">
-    <div class="form-row">
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-envelope"></i> E-mail
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-envelope"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter E-mail" id="email" name="meta_keywords" value="<?php echo $setting[4]['settings_value']?>">
-            </div>
-            <small class="form-text text-muted">Use Short Code <?php echo $setting[4]['short_code']?></small>
-        </div>
-
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-key"></i> Key
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-key"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter Key" id="key" value="<?php echo $setting[5]['settings_value']?>">
-            </div>
-        </div>
-    </div>
-    
-    <div class="form-row">
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-lock"></i> Key-Pass
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter Key-Pass" id="keypass" value="<?php echo $setting[6]['settings_value']?>">
-            </div>
-        </div>
-        
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-cogs"></i> ENV
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-cogs"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter ENV" id="env" value="<?php echo $setting[7]['settings_value']?>">
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="container-fluid tab-pane fade active show">
-    <div class="form-row">
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-image"></i> IMG-Path
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-image"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter IMG-Path" id="img_path" value="<?php echo $setting[9]['settings_value']?>">
-            </div>
-            <small class="form-text text-muted">Use Short Code <?php echo $setting[9]['short_code']?></small>
-        </div>
-        
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-clock-o"></i> Time Zone
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
-                </div>
-                <select id="time_zone" class="form-control">
-                    <?php
-                    $tzlist = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
-                    foreach ($tzlist as $tzlist_) {
-                        echo "<option" . ($tzlist_ == $setting[10]['settings_value'] ? " selected" : "") . ">$tzlist_</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-            <small class="form-text text-muted">Use Short Code <?php echo $setting[10]['short_code']?></small>
-        </div>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-exclamation-triangle"></i> ERROR 404
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-exclamation-triangle"></i></span>
-                </div>
-                <select class="form-control" id="error_404" name="error_404" required>
-                    <?php
-                    $pages = return_multiple_rows("SELECT page_title, page_url FROM pages $where_gc AND isactive = 1");
-                    foreach ($pages as $page) {
-                        echo "<option value='{$page['page_url']}'" . ($setting[14]['settings_value'] == $page['page_url'] ? " selected" : "") . ">{$page['page_title']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-        </div>
-        
-        <div class="form-group col-sm-6">
-            <label for="colFormLabel" class="col-form-label">
-                <i class="fa fa-folder"></i> File-Path
-            </label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <span class="input-group-text"><i class="fa fa-folder"></i></span>
-                </div>
-                <input type="text" class="form-control" placeholder="Enter File-Path" id="file_path" value="<?php echo $setting[11]['settings_value']?>">
-            </div>
-            <small class="form-text text-muted">Use Short Code <?php echo $setting[11]['short_code']?></small>
-        </div>
-    </div>
-</div>
-
-
-              <!-- Social Media Fields in Two Columns -->
-                    <div class="container">
-                        <div class="row">
-                            <?php 
-                            $social_media = [
-                                'Facebook' => 'fa fa-facebook',
-                                'Twitter' => 'fa fa-twitter',
-                                'Instagram' => 'fa fa-instagram',
-                                'LinkedIn' => 'fa fa-linkedin',
-                                'YouTube' => 'fa fa-youtube',
-                                'Pinterest' => 'fa fa-pinterest',
-                                'Snapchat' => 'fa fa-snapchat',
-                                'TikTok' => 'fa fa-music',
-                                'Reddit' => 'fa fa-reddit',
-                                'WhatsApp' => 'fa fa-whatsapp',
-                                'Telegram' => 'fa fa-telegram'
-                            ];
-                            
-                            $startIndex = 18; 
-                            $index = 0;
-
-                            foreach ($social_media as $platform => $icon) {
-                                $currentIndex = $startIndex + $index;
-                            ?>
-                                <div class="col-md-6 mb-3">
+                <form class="needs-validation" onsubmit="return false" novalidate>
+                
+                    <!-- Tabs Navigation -->
+                    <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="general-tab" data-toggle="tab" href="#general" role="tab" aria-controls="general" aria-selected="true">
+                                <i class="fa fa-cog"></i> General
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="technical-tab" data-toggle="tab" href="#technical" role="tab" aria-controls="technical" aria-selected="false">
+                                <i class="fa fa-wrench"></i> Technical
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="paths-tab" data-toggle="tab" href="#paths" role="tab" aria-controls="paths" aria-selected="false">
+                                <i class="fa fa-folder-open"></i> Paths
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="social-tab" data-toggle="tab" href="#social" role="tab" aria-controls="social" aria-selected="false">
+                                <i class="fa fa-share-alt"></i> Social Media
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <!-- Tabs Content -->
+                    <div class="tab-content" id="settingsTabsContent">
+                        <!-- General Tab -->
+                        <div class="tab-pane fade show active" id="general" role="tabpanel" aria-labelledby="general-tab">
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-header"></i> Title
+                                    </label>
                                     <div class="input-group">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="<?php echo $icon; ?>"></i></span>
+                                            <span class="input-group-text"><i class="fa fa-pencil"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" name="<?php echo strtolower($platform); ?>_url"
-                                            placeholder="Enter <?php echo $platform; ?> URL" id="<?php echo strtolower($platform); ?>_url" 
-                                            value="<?php echo htmlspecialchars($setting[$currentIndex]['settings_value'], ENT_QUOTES, 'UTF-8'); ?>">
+                                        <input type="text" class="form-control" placeholder="Enter Title" id="title" value="<?php echo $setting[0]['settings_value']?>">
                                     </div>
-                                    <small class="form-text text-muted">Use Short Code <?php echo $setting[$currentIndex]['short_code']?></small>
+                                    <small class="form-text text-muted">Use Short Code <?php echo $setting[0]['short_code']?></small>
                                 </div>
-                            <?php 
-                                $index++;
-                            }
-                            ?>
+
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-tag"></i> Tagline
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-tag"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter Tagline" id="tagline" name="meta_keywords" value="<?php echo $setting[1]['settings_value']?>">
+                                    </div>
+                                    <small class="form-text text-muted">Use Short Code <?php echo $setting[1]['short_code']?></small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-picture-o"></i> Logo
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-image"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter Logo" id="logo" value="<?php echo $setting[8]['settings_value']?>">
+                                    </div>
+                                    <small class="form-text text-muted">Use Short Code <?php echo $setting[8]['short_code']?></small>
+                                </div>
+                                
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-link"></i> URL
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-link"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter URL" id="url" value="<?php echo $setting[2]['settings_value']?>">
+                                    </div>
+                                    <small class="form-text text-muted">Use Short Code <?php echo $setting[2]['short_code']?></small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-envelope"></i> E-mail
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter E-mail" id="email" name="meta_keywords" value="<?php echo $setting[4]['settings_value']?>">
+                                    </div>
+                                    <small class="form-text text-muted">Use Short Code <?php echo $setting[4]['short_code']?></small>
+                                </div>
+                                
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-clock-o"></i> Time Zone
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-clock-o"></i></span>
+                                        </div>
+                                        <select id="time_zone" class="form-control">
+                                            <?php
+                                            $tzlist = DateTimeZone::listIdentifiers(DateTimeZone::ALL);
+                                            foreach ($tzlist as $tzlist_) {
+                                                echo "<option" . ($tzlist_ == $setting[10]['settings_value'] ? " selected" : "") . ">$tzlist_</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                    <small class="form-text text-muted">Use Short Code <?php echo $setting[10]['short_code']?></small>
+                                </div>
+                            </div>
                         </div>
-                </div>
+                        
+                        <!-- Technical Tab -->
+                        <div class="tab-pane fade" id="technical" role="tabpanel" aria-labelledby="technical-tab">
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-key"></i> Key
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter Key" id="key" value="<?php echo $setting[5]['settings_value']?>">
+                                    </div>
+                                </div>
 
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-lock"></i> Key-Pass
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter Key-Pass" id="keypass" value="<?php echo $setting[6]['settings_value']?>">
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-cogs"></i> ENV
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-cogs"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter ENV" id="env" value="<?php echo $setting[7]['settings_value']?>">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-exclamation-triangle"></i> ERROR 404
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-exclamation-triangle"></i></span>
+                                        </div>
+                                        <select class="form-control" id="error_404" name="error_404" required>
+                                            <?php
+                                            $pages = return_multiple_rows("SELECT page_title, page_url FROM pages $where_gc AND isactive = 1");
+                                            foreach ($pages as $page) {
+                                                echo "<option value='{$page['page_url']}'" . ($setting[14]['settings_value'] == $page['page_url'] ? " selected" : "") . ">{$page['page_title']}</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabelSm" class="col-form-label col-form-label-sm">FRIENDLY URL</label>
+                                    <div class="col-sm-8">
+                                    <input type="checkbox" class="js-switch friendly_url" <?php echo ($setting[12]['settings_value']) ? "checked" : ""  ?> />
+                                    </div>
+                                </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabelSm" class="col-form-label col-form-label-sm">PAGE LOADER</label>
+                                    <div class="col-sm-8">
+                                        <input type="checkbox" class="js-switch page_loader" <?php echo ($setting[13]['settings_value']) ? "checked" : ""  ?> />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Paths Tab -->
+                        <div class="tab-pane fade" id="paths" role="tabpanel" aria-labelledby="paths-tab">
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-image"></i> IMG-Path
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-image"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter IMG-Path" id="img_path" value="<?php echo $setting[9]['settings_value']?>">
+                                    </div>
+                                    <small class="form-text text-muted">Use Short Code <?php echo $setting[9]['short_code']?></small>
+                                </div>
+                                
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-folder"></i> File-Path
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-folder"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter File-Path" id="file_path" value="<?php echo $setting[11]['settings_value']?>">
+                                    </div>
+                                    <small class="form-text text-muted">Use Short Code <?php echo $setting[11]['short_code']?></small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Social Media Tab -->
+                        <div class="tab-pane fade" id="social" role="tabpanel" aria-labelledby="social-tab">
+                            <div class="social-media-grid">
+                                <?php 
+                                $social_media = [
+                                    'Facebook' => 'fa fa-facebook',
+                                    'Twitter' => 'fa fa-twitter',
+                                    'Instagram' => 'fa fa-instagram',
+                                    'LinkedIn' => 'fa fa-linkedin',
+                                    'YouTube' => 'fa fa-youtube',
+                                    'Pinterest' => 'fa fa-pinterest',
+                                    'Snapchat' => 'fa fa-snapchat',
+                                    'TikTok' => 'fa fa-music',
+                                    'Reddit' => 'fa fa-reddit',
+                                    'WhatsApp' => 'fa fa-whatsapp',
+                                    'Telegram' => 'fa fa-telegram'
+                                ];
+                                
+                                $startIndex = 18; 
+                                $index = 0;
 
-                <div class="form-group row">
-                  <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">FRIENDLY URL</label>
-                  <div class="col-sm-8">
-                   <input type="checkbox" class="js-switch friendly_url" <?php echo ($setting[12]['settings_value']) ? "checked" : ""  ?> />
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">PAGE LOADER</label>
-                  <div class="col-sm-8">
-                     <input type="checkbox" class="js-switch page_loader" <?php echo ($setting[13]['settings_value']) ? "checked" : ""  ?> />
-                  </div>
-                </div>
-
-                     <div class="form-group row">
-                    <div class="col-sm-2"></div>
-                    <div class="col-sm-8 text-center">
-                        <input type="submit" name="submit" class="btn btn-info" value="Save Changes" id="submit_btn" />
+                                foreach ($social_media as $platform => $icon) {
+                                    $currentIndex = $startIndex + $index;
+                                ?>
+                                    <div class="form-group">
+                                        <label for="<?php echo strtolower($platform); ?>_url" class="col-form-label">
+                                            <i class="<?php echo $icon; ?>"></i> <?php echo $platform; ?>
+                                        </label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text"><i class="<?php echo $icon; ?>"></i></span>
+                                            </div>
+                                            <input type="text" class="form-control" name="<?php echo strtolower($platform); ?>_url"
+                                                placeholder="Enter <?php echo $platform; ?> URL" id="<?php echo strtolower($platform); ?>_url" 
+                                                value="<?php echo htmlspecialchars($setting[$currentIndex]['settings_value'], ENT_QUOTES, 'UTF-8'); ?>">
+                                        </div>
+                                        <small class="form-text text-muted">Use Short Code <?php echo $setting[$currentIndex]['short_code']?></small>
+                                    </div>
+                                <?php 
+                                    $index++;
+                                }
+                                ?>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-2"></div>
-                </div>
-
-
+                    
+                    <!-- Save Button -->
+                    <div class="form-group row mt-3">
+                        <div class="col-sm-12 text-center">
+                            <input type="submit" name="submit" class="btn btn-info" value="Save Changes" id="submit_btn" />
+                        </div>
+                    </div>
                 </form>
 
                 <?php include 'includes/footer_copyright.php'; ?>

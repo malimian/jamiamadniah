@@ -8,7 +8,7 @@ if (isset($_POST['template_id'])) {
     $attributes_sql = "SELECT * FROM page_attributes WHERE template_id = $template_id AND isactive = 1 AND soft_delete = 0 ORDER BY tab_group ASC, sort_order ASC";
     $attributes_result = return_multiple_rows($attributes_sql);
     $attributes = [];
-        if($attributes_result){
+    if($attributes_result){
         foreach ($attributes_result as $row) {
             $attributes[$row['tab_group']][] = $row;
         }
@@ -20,12 +20,17 @@ if (isset($_POST['template_id'])) {
             $html .= '<h5>' . ucfirst($tab_group) . '</h5>';
             $html .= '<div class="row">';
             foreach ($group_attributes as $attribute) {
-                $html .= '<div class="col-md-4">';
-                $html .= '<div class="form-check">';
-                $html .= '<input class="form-check-input" type="checkbox" name="attributes[]" value="' . $attribute['id'] . '" id="attribute_' . $attribute['id'] . '" checked>';
-                $html .= '<label class="form-check-label" for="attribute_' . $attribute['id'] . '">';
-                $html .= $attribute['attribute_label'] . ' (' . $attribute['attribute_name'] . ')';
-                $html .= '</label>';
+                $html .= '<div class="col-md-4 mb-3">';
+                $html .= '<div class="d-flex justify-content-between align-items-center p-2 border rounded">';
+                $html .= '<span>' . $attribute['attribute_label'] . ' (' . $attribute['attribute_name'] . ')</span>';
+                $html .= '<div class="btn-group btn-group-sm">';  // Added btn-group-sm for smaller buttons
+                $html .= '<button type="button" class="btn btn-outline-primary edit-attribute" data-id="'.$attribute['id'].'" data-toggle="modal" data-target="#editAttributeModal" title="Edit">';
+                $html .= '<i class="fas fa-pencil-alt"></i>';  // Changed to pencil icon
+                $html .= '</button>';
+                $html .= '<button type="button" class="btn btn-outline-danger delete-attribute" data-id="'.$attribute['id'].'" title="Delete">';
+                $html .= '<i class="fas fa-trash-alt"></i>';  // Changed to trash-alt icon
+                $html .= '</button>';
+                $html .= '</div>';
                 $html .= '</div>';
                 $html .= '</div>';
             }

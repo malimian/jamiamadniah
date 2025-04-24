@@ -311,7 +311,47 @@ AdminHeader("Manage Page Template Attributes", "", $extra_libs);
 
                 </div>
             </div>
-            
+
+<!-- Edit Attribute Modal -->
+<div class="modal fade" id="editAttributeModal" tabindex="-1" role="dialog" aria-labelledby="editAttributeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAttributeModalLabel">Update Attribute</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editAttributeForm">
+                    <input type="hidden" id="edit_attribute_id" name="id">
+                    <div class="form-group">
+                        <label for="edit_attribute_label">Attribute Label</label>
+                        <input type="text" class="form-control" id="edit_attribute_label" name="attribute_label" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_attribute_name">Attribute Name</label>
+                        <input type="text" class="form-control" id="edit_attribute_name" name="attribute_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_tab_group">Tab Group</label>
+                        <input type="text" class="form-control" id="edit_tab_group" name="tab_group" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_sort_order">Sort Order</label>
+                        <input type="number" class="form-control" id="edit_sort_order" name="sort_order" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="saveAttributeChanges">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+ <!-- Edit Attribute Modal -->
+           
             <?php include 'includes/footer.php'; ?>
         </div>
     </div>
