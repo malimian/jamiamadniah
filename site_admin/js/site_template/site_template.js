@@ -1,5 +1,5 @@
 
-var datatable_id = 'dataTable';
+var datatable_id = 'dataTable1';
 
 searchdatatable(datatable_id);
 
@@ -27,29 +27,3 @@ searchdatatable(datatable_id);
     }
 
 });
-
-
-function delete_(id) {
-
-    createmodal('Delete', 'Are you sure You want to delete ?', id, 'deletemodal', function() {
-        senddata(
-             'post/site_template/site_template.php',
-        "POST", {
-                id: id,
-                delete: true
-            },
-            function(result) {
-                console.log(result);
-            },
-            function(result) {
-                console.log(result);
-            }
-        );
-
-        $('#tr_' + id).hide();
-        $('#custommodal').modal('toggle');
-    });
-
-    $('#custommodal').modal('toggle');
-}
-

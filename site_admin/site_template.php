@@ -419,19 +419,19 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
         window.location.href = url;
     }
     
-    function previewTemplate(templateId) {
-        // AJAX call to get template preview
-        $.ajax({
-            url: 'get_template_preview.php',
-            type: 'GET',
-            data: { id: templateId },
-            success: function(response) {
+      function previewTemplate(templateId) {
+        senddata(
+            'get_template_preview.php', // url
+            'GET',                       // method
+            { id: templateId },           // parameters
+            function(response) {         // callback (success)
                 $('#templatePreviewContent').html(response);
             },
-            error: function() {
-                $('#templatePreviewContent').html('<div class="alert alert-danger">Could not load template preview.</div>');
+            function(result) {           // failback (error)
+                $('#templatePreviewContent').html('<div class="showAlert showAlert-danger">Could not load template preview.</div>');
+                console.error("Preview Error:", result); // It's good practice to log the error
             }
-        });
+        );
     }
     
     function toggleSelectAll(source) {
@@ -459,97 +459,66 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
     });
     
     function bulkAction(action) {
-        const selected = [];
-        document.querySelectorAll('.template-checkbox:checked').forEach(checkbox => {
-            selected.push(checkbox.value);
-        });
-        
-        if (selected.length === 0) {
-            alert('Please select at least one template.');
-            return;
-        }
-        
-        if (confirm(`Are you sure you want to ${action} ${selected.length} template(s)?`)) {
-            $.ajax({
-                url: 'bulk_action_templates.php',
-                type: 'POST',
-                data: {
-                    action: action,
-                    ids: selected
-                },
-                success: function(response) {
-                    const result = JSON.parse(response);
-                    if (result.success) {
-                        location.reload();
-                    } else {
-                        alert(result.message);
-                    }
-                },
-                error: function() {
-                    alert('An error occurred while processing your request.');
-                }
-            });
-        }
+    const selected = [];
+    document.querySelectorAll('.template-checkbox:checked').forEach(checkbox => {
+        selected.push(checkbox.value);
+    });
+
+    if (selected.length === 0) {
+        showAlert('Please select at least one template.' , 'warning');
+        return;
     }
-    
-    // Function to toggle template status
-    function toggleStatus(templateId, currentStatus) {
-        const newStatus = currentStatus ? 0 : 1;
-        
-        $.ajax({
-            url: 'toggle_template_status.php',
-            type: 'POST',
-            data: {
-                id: templateId,
-                status: newStatus
-            },
-            success: function(response) {
+
+    if (confirm(`Are you sure you want to ${action} ${selected.length} template(s)?`)) {
+        senddata(
+            'bulk_action_templates.php', // url
+            'POST',                      // method
+            { action: action, ids: selected }, // parameters
+            function(response) {          // callback (success)
                 const result = JSON.parse(response);
                 if (result.success) {
-                    // Update the UI
-                    const statusBadge = $('#status_' + templateId);
-                    const statusSwitch = $('input[data-id="' + templateId + '"]');
-                    
-                    if (newStatus) {
-                        statusBadge.removeClass('badge-danger').addClass('badge-success').text('Active');
-                        statusSwitch.prop('checked', true);
-                    } else {
-                        statusBadge.removeClass('badge-success').addClass('badge-danger').text('Inactive');
-                        statusSwitch.prop('checked', false);
-                    }
+                    location.reload();
                 } else {
-                    alert(result.message);
+                    showAlert(result.message , 'danger');
                 }
             },
-            error: function() {
-                alert('An error occurred while updating the template status.');
+            function(result) {            // failback (error)
+                showAlert('An error occurred while processing your request.' , 'alert');
+                console.error("Bulk Action Error:", result); // Log the error
             }
-        });
+        );
     }
+}
     
-    // Function to delete template
-    function deleteTemplate(templateId) {
-        if (confirm('Are you sure you want to delete this template?')) {
-            $.ajax({
-                url: 'delete_template.php',
-                type: 'POST',
-                data: {
-                    id: templateId
-                },
-                success: function(response) {
-                    const result = JSON.parse(response);
-                    if (result.success) {
-                        // Remove the row from the table
-                        $('#tr_' + templateId).remove();
-                    } else {
-                        alert(result.message);
+    
+        // Function to delete template
+        function deleteTemplate(templateId) {
+
+            createmodal('Delete', 'Are you sure you want to delete this template?', templateId, 'deletemodal', function() {
+                $.ajax({
+                    url: 'post/site_template/site_template.php',
+                    type: 'POST',
+                    data: {
+                        id: templateId
+                    },
+                    success: function(response) {
+                        const result = JSON.parse(response);
+                        if (result.success) {
+                            // Remove the row from the table
+                            $('#tr_' + templateId).remove();
+                        } else {
+                            showAlert(result.message , 'danger');
+                        }
+                    },
+                    error: function() {
+                        showAlert('An error occurred while deleting the template.' , 'danger');
                     }
-                },
-                error: function() {
-                    alert('An error occurred while deleting the template.');
-                }
+                });
+                $('#custommodal').modal('toggle');
             });
+            $('#custommodal').modal('toggle');
         }
-    }
+
+
     </script>
 </body>
