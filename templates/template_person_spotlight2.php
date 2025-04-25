@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jacob Oroks - Visionary Leader | IB Spotlight</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+    /* Hero Carousel Styling */
+    #hero-carousel {
+        margin-bottom: 3rem;
+    }
+    #hero-carousel .carousel-item {
+        height: 70vh;
+        min-height: 400px;
+    }
+    #hero-carousel .carousel-item img {
+        object-fit: cover;
+        height: 100%;
+    }
+    #hero-carousel .carousel-caption {
+        bottom: 30%;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 2rem;
+        border-radius: 0.5rem;
+    }
+    
+    /* Profile Snapshot Styling */
+    .profile-snapshot {
+        border: none !important;
+    }
+    .profile-snapshot p {
+        margin-bottom: 1.2rem;
+    }
+    .profile-snapshot strong {
+        color: #0d6efd;
+    }
+
+/*   Right Section */
+.profile-card {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #0d6efd, #6610f2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+
+ /*  Personal Background */
+    .text-gradient {
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    .section-divider {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        margin: 1rem auto;
+        border-radius: 2px;
+    }
+    
+    .icon-box {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .hover-effect {
+        transition: all 0.3s ease;
+    }
+    
+    .hover-effect:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+
+    
+
+</style>
+</head>
+<body>
+    <!-- Section 1: Hero Banner with Carousel -->
+<section id="hero-carousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2"></button>
+    </div>
+    <div class="carousel-inner">
+         <div class="carousel-item">
+            <img src="https://picsum.photos/1956/600?greyscale" class="d-block w-100" alt="Jacob Oroks Banner 3">
+            <div class="carousel-caption d-none d-md-block">
+                <h1 class="display-3 fw-bold">Community Builder</h1>
+                <p class="lead">Championing Efik Heritage in the Diaspora</p>
+            </div>
+        </div>
+        <div class="carousel-item active">
+            <img src="https://picsum.photos/1921/600?blackscale" class="d-block w-100" alt="Jacob Oroks Banner 2">
+            <div class="carousel-caption d-none d-md-block">
+                <h1 class="display-3 fw-bold">Innovative Thinker</h1>
+                <p class="lead">Bridging Technology and Spiritual Wisdom</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="https://picsum.photos/1920/600?whitescale" class="d-block w-100" alt="Jacob Oroks Banner 3">
+            <div class="carousel-caption d-none d-md-block">
+                <h1 class="display-3 fw-bold">Community Builder</h1>
+                <p class="lead">Championing Efik Heritage in the Diaspora</p>
+            </div>
+        </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</section>
+
+    <div class="container mb-5">
+
+<!-- Section 2: Profile Snapshot -->
+<section class="container my-5">
+    <div class="row align-items-center">
+        <!-- Left Column - Profile Image -->
+        <div class="col-md-4 text-center mb-4 mb-md-0">
+            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=600&fit=facearea&facepad=3" 
+                 alt="Professional Headshot of Jacob Oroks" 
+                 class="img-fluid rounded-circle shadow"
+                 style="width: 300px; height: 300px; object-fit: cover;">
+        </div>
+        
+        <!-- Right Column - Profile Details -->
+      <div class="col-md-8">
+    <div class="profile-card p-4 shadow-sm rounded-4">
+        <h2 class="mb-4 text-gradient">Profile Snapshot</h2>
+        
+        <div class="row g-4">
+            <!-- Left Column -->
+            <div class="col-md-6">
+                <div class="d-flex align-items-start mb-4">
+                    <div class="me-3 text-primary">
+                        <i class="bi bi-person-badge fs-3"></i>
+                    </div>
+                    <div>
+                        <h3 class="h5 mb-1">Name & Titles</h3>
+                        <p class="mb-0 fw-bold fs-5">Jacob Etim Oroks</p>
+                        <span class="badge bg-primary bg-opacity-10 text-primary mt-1">CEO</span>
+                        <span class="badge bg-success bg-opacity-10 text-success mt-1">Pastor</span>
+                        <span class="badge bg-info bg-opacity-10 text-info mt-1">Community Leader</span>
+                    </div>
+                </div>
+                
+                <div class="d-flex align-items-start">
+                    <div class="me-3 text-primary">
+                        <i class="bi bi-geo-alt fs-3"></i>
+                    </div>
+                    <div>
+                        <h3 class="h5 mb-1">Location</h3>
+                        <p class="mb-0">
+                            <span class="d-block">United States</span>
+                            <small class="text-muted">Based in Maryland</small>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column -->
+            <div class="col-md-6">
+                <div class="d-flex align-items-start mb-4">
+                    <div class="me-3 text-primary">
+                        <i class="bi bi-envelope-at fs-3"></i>
+                    </div>
+                    <div>
+                        <h3 class="h5 mb-1">Contact</h3>
+                        <p class="mb-1">
+                            <a href="mailto:contact@ibspotlight.com" class="text-decoration-none">
+                                contact@ibspotlight.com
+                            </a>
+                        </p>
+                        <p class="mb-0">
+                            <a href="tel:+11234567890" class="text-decoration-none">
+                                +1 (123) 456-7890
+                            </a>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="d-grid">
+                    <a href="#contact" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
+                        <i class="bi bi-calendar-check me-2"></i> Book a Spotlight Session
+                    </a>
+                    <div class="d-flex justify-content-center mt-2">
+                        <small class="text-muted">
+                            <i class="bi bi-clock-history me-1"></i> Typically replies within 24 hours
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Social Links -->
+            <div class="mt-4 pt-3 border-top">
+                <h4 class="h6 text-uppercase text-muted mb-3">Connect With Me</h4>
+                <div class="d-flex gap-3">
+                    <a href="#" class="btn btn-outline-primary p-2">
+                        <i class="bi bi-linkedin"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary p-2">
+                        <i class="bi bi-twitter"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary p-2">
+                        <i class="bi bi-facebook"></i>
+                    </a>
+                    <a href="#" class="btn btn-outline-primary p-2">
+                        <i class="bi bi-instagram"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</section>
+
+        <div class="section-divider"></div>
+
+       <!-- Section 3: Personal Background -->
+<section class="mb-5 py-4">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold text-gradient mb-3">Personal Journey</h2>
+            <div class="section-divider mx-auto"></div>
+            <p class="lead text-muted">A life dedicated to faith, community, and service</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Column -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 rounded-4 h-100 hover-effect">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="icon-box bg-primary bg-opacity-10 text-primary me-3">
+                                <i class="bi bi-person-vcard fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="h4 mb-2">Professional Identity</h3>
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="me-3">
+                                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&h=100&fit=facearea&facepad=3" 
+                                             class="rounded-circle shadow-sm" 
+                                             width="60" 
+                                             alt="Jacob Oroks">
+                                    </div>
+                                    <div>
+                                        <h4 class="h5 mb-0">Jacob Etim Oroks</h4>
+                                        <small class="text-muted">Full Professional Name</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Middle Column -->
+            <div class="col-lg-6">
+                <div class="card shadow-sm border-0 rounded-4 h-100 hover-effect">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="icon-box bg-success bg-opacity-10 text-success me-3">
+                                <i class="bi bi-journal-bookmark fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="h4 mb-2">Faith & Ministry</h3>
+                                <p class="mb-0">Ordained Pastor with over 15 years of spiritual leadership, guiding congregations through transformative teachings that blend faith with practical living.</p>
+                                <div class="mt-3">
+                                    <span class="badge bg-success bg-opacity-10 text-success me-2">Spiritual Guidance</span>
+                                    <span class="badge bg-success bg-opacity-10 text-success me-2">Transformative Teachings</span>
+                                    <span class="badge bg-success bg-opacity-10 text-success">Practical Christianity</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Width Bottom Card -->
+            <div class="col-12">
+                <div class="card shadow-sm border-0 rounded-4 hover-effect bg-light">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start">
+                            <div class="icon-box bg-info bg-opacity-10 text-info me-3">
+                                <i class="bi bi-people fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="h4 mb-2">Community Leadership</h3>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p class="mb-3">Champion for diaspora engagement and cultural preservation, serving as a bridge between the Efik community in the U.S. and their homeland.</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Cultural preservation advocate</li>
+                                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Diaspora community leader</li>
+                                            <li><i class="bi bi-check-circle-fill text-info me-2"></i> Cross-cultural bridge builder</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="#community-work" class="btn btn-outline-info rounded-pill">
+                                        <i class="bi bi-arrow-right-circle me-2"></i> View Community Projects
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+        <div class="section-divider"></div>
+
+       <!-- Section 4: Education & Certifications -->
+<section class="py-5 mb-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3 text-gradient">Academic Excellence</h2>
+            <div class="section-divider mx-auto"></div>
+            <p class="lead text-muted">Foundations of knowledge and professional achievement</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Education Card -->
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-lg rounded-4 hover-lift">
+                    <div class="card-body p-4 text-center">
+                        <div class="icon-box bg-primary bg-opacity-10 text-primary mx-auto mb-4">
+                            <i class="bi bi-mortarboard fs-2"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Formal Education</h3>
+                        <div class="timeline-item ps-3 border-start border-2 border-primary">
+                            <div class="timeline-badge bg-primary text-white rounded-circle">✓</div>
+                            <h4 class="h5 mb-1">B.Sc Computer Science</h4>
+                            <p class="mb-2 text-muted">University of Maryland Global Campus</p>
+                            <div class="d-flex gap-2 justify-content-center">
+                                <span class="badge bg-primary bg-opacity-10 text-primary">2015-2019</span>
+                                <span class="badge bg-success bg-opacity-10 text-success">4.0 GPA</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certifications Card -->
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-lg rounded-4 hover-lift">
+                    <div class="card-body p-4 text-center">
+                        <div class="icon-box bg-warning bg-opacity-10 text-warning mx-auto mb-4">
+                            <i class="bi bi-award fs-2"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Professional Certifications</h3>
+                        <div class="d-flex flex-column gap-3">
+                            <div class="certification-badge">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Scrum_Alliance_logo.png" 
+                                     alt="CSM" 
+                                     class="img-fluid rounded-3" 
+                                     width="80">
+                                <span>Certified Scrum Master</span>
+                            </div>
+                            <div class="certification-badge">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/PMP_Certification.png" 
+                                     alt="PMP" 
+                                     class="img-fluid rounded-3" 
+                                     width="80">
+                                <span>Project Management Professional</span>
+                            </div>
+                            <div class="certification-badge">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" 
+                                     alt="AWS" 
+                                     class="img-fluid rounded-3" 
+                                     width="80">
+                                <span>AWS Solutions Architect</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Honors Card -->
+            <div class="col-lg-4">
+                <div class="card h-100 border-0 shadow-lg rounded-4 hover-lift">
+                    <div class="card-body p-4 text-center">
+                        <div class="icon-box bg-danger bg-opacity-10 text-danger mx-auto mb-4">
+                            <i class="bi bi-trophy fs-2"></i>
+                        </div>
+                        <h3 class="h4 mb-3">Academic Honors</h3>
+                        <div class="d-flex flex-column gap-3">
+                            <div class="honor-item">
+                                <div class="honor-icon bg-primary text-white">
+                                    <i class="bi bi-stars"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Summa Cum Laude</h5>
+                                    <small class="text-muted">Top 1% of graduating class</small>
+                                </div>
+                            </div>
+                            <div class="honor-item">
+                                <div class="honor-icon bg-success text-white">
+                                    <i class="bi bi-journal-check"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">National Dean's List</h5>
+                                    <small class="text-muted">Multiple semester honoree</small>
+                                </div>
+                            </div>
+                            <div class="honor-item">
+                                <div class="honor-icon bg-info text-white">
+                                    <i class="bi bi-google"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Google Scholarship</h5>
+                                    <small class="text-muted">Developer Technologies</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verification CTA -->
+        <div class="text-center mt-5 pt-3">
+            <a href="#" class="btn btn-outline-primary rounded-pill px-4">
+                <i class="bi bi-shield-check me-2"></i> Verify Credentials
+            </a>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Custom Styles */
+    .text-gradient {
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    .section-divider {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        margin: 1rem auto;
+        border-radius: 2px;
+    }
+    
+    .icon-box {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .hover-lift {
+        transition: all 0.3s ease;
+    }
+    
+    .hover-lift:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+    }
+    
+    .timeline-item {
+        position: relative;
+        padding-left: 1.5rem;
+    }
+    
+    .timeline-badge {
+        position: absolute;
+        left: -12px;
+        top: 0;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .certification-badge {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem;
+        background: rgba(255,255,255,0.7);
+        border-radius: 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .certification-badge:hover {
+        background: white;
+        transform: scale(1.02);
+    }
+    
+    .honor-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem;
+        background: rgba(255,255,255,0.7);
+        border-radius: 0.5rem;
+    }
+    
+    .honor-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+</style>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 5: Faith Led Leadership -->
+        <section class="py-5 bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-8 text-center">
+                <h2 class="display-5 fw-bold text-primary mb-3">Faith-Inspired Leadership</h2>
+                <p class="lead text-muted">Guiding with conviction and serving with compassion, integrating spiritual values into professional endeavors.</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-lightbulb fa-3x text-warning"></i>
+                        </div>
+                        <h3 class="h5 fw-semibold text-secondary mb-2">Professional Philosophy</h3>
+                        <p class="text-muted">"Technology should serve humanity, not replace it. My work at the intersection of faith and innovation seeks to create solutions that uplift communities while honoring our spiritual values."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-church fa-3x text-info"></i>
+                        </div>
+                        <h3 class="h5 fw-semibold text-secondary mb-2">Pastoral Ministry</h3>
+                        <p class="text-muted">Founding pastor of Iboto Empire Ministries, providing spiritual guidance to a growing congregation with a focus on practical Christianity in the digital age.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card shadow-sm h-100 border-0">
+                    <div class="card-body p-4 text-center">
+                        <div class="mb-3">
+                            <i class="fas fa-hands-helping fa-3x text-success"></i>
+                        </div>
+                        <h3 class="h5 fw-semibold text-secondary mb-2">Servant Leadership</h3>
+                        <p class="text-muted">Committed to leadership that prioritizes the growth and well-being of team members and communities, demonstrated through mentorship programs and community initiatives.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 6: Cultural Stewardship -->
+        <section class="mb-5">
+            <h2 class="mb-4">Cultural Stewardship</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h3 class="h5">Community Impact</h3>
+                    <ul>
+                        <li>Founded the Efik Cultural Preservation Initiative, reaching over 5,000 diaspora members</li>
+                        <li>Organized annual cultural festivals that celebrate Efik heritage in the U.S.</li>
+                        <li>Established scholarship programs for Efik youth pursuing higher education</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/example" title="Jacob Oroks Cultural Stewardship" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 7: Professional Journey & Achievements -->
+        <section class="mb-5">
+            <h2 class="mb-4">Professional Journey & Achievements</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>2020-Present</h3>
+                    <h4>CEO, Iboto Empire USA</h4>
+                    <p>Leading a technology consulting firm that delivers innovative solutions to faith-based organizations and non-profits.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2018-2020</h3>
+                    <h4>Senior Solutions Architect, TechFaith Inc.</h4>
+                    <p>Designed and implemented cloud solutions for Fortune 500 companies while maintaining ethical technology practices.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2015-2018</h3>
+                    <h4>Founder, FaithTech Collective</h4>
+                    <p>Created a platform connecting technologists and faith leaders to collaborate on projects with social impact.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+        <!-- Section 8: Unique Value Proposition & Leadership Philosophy -->
+        <section class="mb-5" id="contact">
+            <h2 class="mb-4">Unique Value Proposition</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="h4">Leadership Philosophy</h3>
+                            <p>"True leadership emerges at the intersection of competence and character. My approach combines technical expertise with spiritual wisdom, creating organizations that excel while maintaining their soul."</p>
+                            <h4 class="h5 mt-3">Core Principles:</h4>
+                            <ul>
+                                <li>Ethical innovation that serves human dignity</li>
+                                <li>Cultural preservation through technological advancement</li>
+                                <li>Faith as the foundation for sustainable success</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="h4">Connect With Jacob</h3>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Your Name">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="Email Address">
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="4" placeholder="Your Message"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Request Spotlight Session</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container text-center">
+            <p>© 2023 IB Spotlight. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#" class="text-white mx-2"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-linkedin"></i></a>
+                <a href="#" class="text-white mx-2"><i class="bi bi-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
