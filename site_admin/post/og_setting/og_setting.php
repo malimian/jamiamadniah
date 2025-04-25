@@ -4,16 +4,16 @@ require_once('../../admin_connect.php');
 if(isset($_POST['submit'])){
 
     $title = escape($_POST['title']);    
-    $tagline =escape($_POST['tagline']);
-    $url =$_POST['url'];
-    $email =$_POST['email'];
-    $key =$_POST['key'];
-    $key_pass =$_POST['key_pass'];
-    $env =$_POST['env'];
-    $logo =$_POST['logo'];
-    $img_path =$_POST['img_path'];
-    $time_zone =$_POST['time_zone'];
-    $file_path =$_POST['file_path'];
+    $tagline = escape($_POST['tagline']);
+    $url = $_POST['url'];
+    $email = $_POST['email'];
+    $key = $_POST['key'];
+    $key_pass = $_POST['key_pass'];
+    $env = $_POST['env'];
+    $logo = $_POST['logo'];
+    $img_path = $_POST['img_path'];
+    $time_zone = $_POST['time_zone'];
+    $file_path = $_POST['file_path'];
     $uid = $_SESSION['user']['id'];
     $friendly_url = $_POST['friendly_url'];
     $page_loader = $_POST['page_loader'];
@@ -51,13 +51,20 @@ if(isset($_POST['submit'])){
         22 => isset($_POST['social_media_data']['linkedin_url']) ? $_POST['social_media_data']['linkedin_url'] : '',
         23 => isset($_POST['social_media_data']['youtube_url']) ? $_POST['social_media_data']['youtube_url'] : '',
         24 => isset($_POST['social_media_data']['pinterest_url']) ? $_POST['social_media_data']['pinterest_url'] : '',
-        25 => isset($_POST['social_media_data']['snapchat_url']) ? $_POST['social_media_data']['snapchat_url'] : ''
+        25 => isset($_POST['social_media_data']['snapchat_url']) ? $_POST['social_media_data']['snapchat_url'] : '',
+        26 => isset($_POST['social_media_data']['tiktok_url']) ? $_POST['social_media_data']['tiktok_url'] : '',
+        27 => isset($_POST['social_media_data']['reddit_url']) ? $_POST['social_media_data']['reddit_url'] : '',
+        28 => isset($_POST['social_media_data']['whatsapp_url']) ? $_POST['social_media_data']['whatsapp_url'] : '',
+        29 => isset($_POST['social_media_data']['telegram_url']) ? $_POST['social_media_data']['telegram_url'] : ''
     ];
 
     // Loop through each social media platform and update the corresponding URL by ID
     foreach ($social_media_platforms as $platform_id => $url) {
         if (!empty($url)) {
             Update("UPDATE og_settings SET settings_value = '$url' WHERE settings_id = $platform_id");
+        } else {
+            // Optionally clear the URL if it's empty
+            Update("UPDATE og_settings SET settings_value = '' WHERE settings_id = $platform_id");
         }
     }
 
