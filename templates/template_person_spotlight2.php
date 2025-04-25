@@ -97,7 +97,7 @@
         background-color: #f8f9fa !important;
     }
 
-    
+
 
 </style>
 </head>
@@ -348,121 +348,247 @@
         <div class="section-divider"></div>
 
        <!-- Section 4: Education & Certifications -->
-<section class="py-5 mb-5 bg-light">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold mb-3 text-gradient">Academic Excellence</h2>
-            <div class="section-divider mx-auto"></div>
-            <p class="lead text-muted">Foundations of knowledge and professional achievement</p>
+       <!-- Section 4: Education & Certifications -->
+<section class="py-6 mb-6 bg-light position-relative overflow-hidden">
+    <!-- Animated background elements -->
+    <div class="position-absolute top-0 start-0 w-100 h-100">
+        <div class="position-absolute top-0 end-0 bg-primary bg-opacity-5 rounded-circle" style="width: 300px; height: 300px; transform: translate(50%, -50%);"></div>
+        <div class="position-absolute bottom-0 start-0 bg-success bg-opacity-5 rounded-circle" style="width: 400px; height: 400px; transform: translate(-50%, 50%);"></div>
+    </div>
+
+    <div class="container position-relative">
+        <!-- Section Header -->
+        <div class="text-center mb-6" data-aos="fade-up">
+            <span class="badge bg-primary bg-opacity-10 text-primary mb-3 rounded-pill px-3 py-2">
+                <i class="bi bi-mortarboard me-2"></i> Academic Journey
+            </span>
+            <h2 class="display-4 fw-bold mb-3 text-gradient">Education & Certifications</h2>
+            <p class="lead text-muted mx-auto" style="max-width: 600px;">
+                Building expertise through formal education and continuous professional development
+            </p>
         </div>
 
         <div class="row g-4">
-            <!-- Education Card -->
-            <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-lg rounded-4 hover-lift">
-                    <div class="card-body p-4 text-center">
-                        <div class="icon-box bg-primary bg-opacity-10 text-primary mx-auto mb-4">
-                            <i class="bi bi-mortarboard fs-2"></i>
-                        </div>
-                        <h3 class="h4 mb-3">Formal Education</h3>
-                        <div class="timeline-item ps-3 border-start border-2 border-primary">
-                            <div class="timeline-badge bg-primary text-white rounded-circle">✓</div>
-                            <h4 class="h5 mb-1">B.Sc Computer Science</h4>
-                            <p class="mb-2 text-muted">University of Maryland Global Campus</p>
-                            <div class="d-flex gap-2 justify-content-center">
-                                <span class="badge bg-primary bg-opacity-10 text-primary">2015-2019</span>
-                                <span class="badge bg-success bg-opacity-10 text-success">4.0 GPA</span>
+            <!-- Education Timeline -->
+            <div class="col-lg-5" data-aos="fade-right">
+                <div class="card h-100 border-0 shadow-lg rounded-4 overflow-hidden">
+                    <div class="card-header bg-white py-4 border-0">
+                        <h3 class="h4 mb-0 d-flex align-items-center">
+                            <span class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 me-3">
+                                <i class="bi bi-mortarboard fs-2"></i>
+                            </span>
+                            <span>Academic Background</span>
+                        </h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="timeline-steps">
+                            <div class="timeline-step">
+                                <div class="timeline-content" data-aos="fade-up" data-aos-delay="100">
+                                    <div class="inner-circle bg-primary text-white">
+                                        <i class="bi bi-book"></i>
+                                    </div>
+                                    <h4 class="h5 mb-1">Bachelor of Science</h4>
+                                    <p class="mb-1 text-primary fw-bold">Computer Science</p>
+                                    <p class="small text-muted mb-2">University of Maryland Global Campus</p>
+                                    <div class="d-flex gap-2">
+                                        <span class="badge bg-primary bg-opacity-10 text-primary">2015-2019</span>
+                                        <span class="badge bg-success bg-opacity-10 text-success">Summa Cum Laude</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-step">
+                                <div class="timeline-content" data-aos="fade-up" data-aos-delay="200">
+                                    <div class="inner-circle bg-success text-white">
+                                        <i class="bi bi-award"></i>
+                                    </div>
+                                    <h4 class="h5 mb-1">Academic Honors</h4>
+                                    <ul class="list-unstyled small">
+                                        <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i> National Dean's List</li>
+                                        <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i> Google Developer Scholarship</li>
+                                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> President's Honor Roll</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Certifications Card -->
-            <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-lg rounded-4 hover-lift">
-                    <div class="card-body p-4 text-center">
-                        <div class="icon-box bg-warning bg-opacity-10 text-warning mx-auto mb-4">
-                            <i class="bi bi-award fs-2"></i>
-                        </div>
-                        <h3 class="h4 mb-3">Professional Certifications</h3>
-                        <div class="d-flex flex-column gap-3">
-                            <div class="certification-badge">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Scrum_Alliance_logo.png" 
-                                     alt="CSM" 
-                                     class="img-fluid rounded-3" 
-                                     width="80">
-                                <span>Certified Scrum Master</span>
+            <!-- Certifications Showcase -->
+            <div class="col-lg-7" data-aos="fade-left">
+                <div class="card h-100 border-0 shadow-lg rounded-4 overflow-hidden">
+                    <div class="card-header bg-white py-4 border-0">
+                        <h3 class="h4 mb-0 d-flex align-items-center">
+                            <span class="bg-warning bg-opacity-10 text-warning p-3 rounded-3 me-3">
+                                <i class="bi bi-award fs-2"></i>
+                            </span>
+                            <span>Professional Certifications</span>
+                        </h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            <!-- CSM -->
+                            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                                <div class="certification-card bg-white rounded-3 p-4 h-100 shadow-sm border-start border-4 border-primary">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="https://badgecert.com/bc/html/img/badges/generated/badge-7227.png" 
+                                             alt="CSM" 
+                                             class="img-fluid rounded-3 me-3" 
+                                             width="60">
+                                        <div>
+                                            <h4 class="h6 mb-0">Certified Scrum Master</h4>
+                                            <small class="text-muted">Scrum Alliance</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-primary bg-opacity-10 text-primary">2020</span>
+                                        <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Verify</a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="certification-badge">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/PMP_Certification.png" 
-                                     alt="PMP" 
-                                     class="img-fluid rounded-3" 
-                                     width="80">
-                                <span>Project Management Professional</span>
+                            
+                            <!-- PMP -->
+                            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="200">
+                                <div class="certification-card bg-white rounded-3 p-4 h-100 shadow-sm border-start border-4 border-success">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="https://www.ltcillinois.org/wp-content/uploads/2022/09/Untitled-design-13.png" 
+                                             alt="PMP" 
+                                             class="img-fluid rounded-3 me-3" 
+                                             width="60">
+                                        <div>
+                                            <h4 class="h6 mb-0">Project Management Professional</h4>
+                                            <small class="text-muted">PMI</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-success bg-opacity-10 text-success">2019</span>
+                                        <a href="#" class="btn btn-sm btn-outline-success rounded-pill">Verify</a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="certification-badge">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" 
-                                     alt="AWS" 
-                                     class="img-fluid rounded-3" 
-                                     width="80">
-                                <span>AWS Solutions Architect</span>
+                            
+                            <!-- AWS -->
+                            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="300">
+                                <div class="certification-card bg-white rounded-3 p-4 h-100 shadow-sm border-start border-4 border-warning">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" 
+                                             alt="AWS" 
+                                             class="img-fluid rounded-3 me-3" 
+                                             width="60">
+                                        <div>
+                                            <h4 class="h6 mb-0">AWS Solutions Architect</h4>
+                                            <small class="text-muted">Amazon Web Services</small>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="badge bg-warning bg-opacity-10 text-warning">2021</span>
+                                        <a href="#" class="btn btn-sm btn-outline-warning rounded-pill">Verify</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- More Certifications -->
+                            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="400">
+                                <div class="certification-card bg-white rounded-3 p-4 h-100 shadow-sm border-start border-4 border-info">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <div class="bg-info bg-opacity-10 text-info p-3 rounded-3 me-3">
+                                            <i class="bi bi-patch-check fs-4"></i>
+                                        </div>
+                                        <div>
+                                            <h4 class="h6 mb-0">Additional Certifications</h4>
+                                            <small class="text-muted">Ongoing Learning</small>
+                                        </div>
+                                    </div>
+                                    <ul class="list-unstyled small mb-0">
+                                        <li class="mb-1"><i class="bi bi-check-circle-fill text-info me-2"></i> Google Cloud Certified</li>
+                                        <li class="mb-1"><i class="bi bi-check-circle-fill text-info me-2"></i> Microsoft Certified</li>
+                                        <li><i class="bi bi-check-circle-fill text-info me-2"></i> ITIL Foundation</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Honors Card -->
-            <div class="col-lg-4">
-                <div class="card h-100 border-0 shadow-lg rounded-4 hover-lift">
-                    <div class="card-body p-4 text-center">
-                        <div class="icon-box bg-danger bg-opacity-10 text-danger mx-auto mb-4">
-                            <i class="bi bi-trophy fs-2"></i>
-                        </div>
-                        <h3 class="h4 mb-3">Academic Honors</h3>
-                        <div class="d-flex flex-column gap-3">
-                            <div class="honor-item">
-                                <div class="honor-icon bg-primary text-white">
-                                    <i class="bi bi-stars"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">Summa Cum Laude</h5>
-                                    <small class="text-muted">Top 1% of graduating class</small>
-                                </div>
-                            </div>
-                            <div class="honor-item">
-                                <div class="honor-icon bg-success text-white">
-                                    <i class="bi bi-journal-check"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">National Dean's List</h5>
-                                    <small class="text-muted">Multiple semester honoree</small>
-                                </div>
-                            </div>
-                            <div class="honor-item">
-                                <div class="honor-icon bg-info text-white">
-                                    <i class="bi bi-google"></i>
-                                </div>
-                                <div>
-                                    <h5 class="mb-0">Google Scholarship</h5>
-                                    <small class="text-muted">Developer Technologies</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Verification CTA -->
-        <div class="text-center mt-5 pt-3">
-            <a href="#" class="btn btn-outline-primary rounded-pill px-4">
-                <i class="bi bi-shield-check me-2"></i> Verify Credentials
-            </a>
         </div>
     </div>
 </section>
+
+<style>
+    /* Custom Styles */
+    .text-gradient {
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    .timeline-steps {
+        position: relative;
+        padding-left: 2rem;
+    }
+    
+    .timeline-step:not(:last-child) {
+        padding-bottom: 2rem;
+    }
+    
+    .timeline-step::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(to bottom, #0d6efd, #6610f2);
+    }
+    
+    .inner-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: -25px;
+        top: 0;
+        font-size: 1.25rem;
+    }
+    
+    .timeline-content {
+        padding-left: 2.5rem;
+        position: relative;
+    }
+    
+    .certification-card {
+        transition: all 0.3s ease;
+    }
+    
+    .certification-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .py-6 {
+        padding-top: 5rem !important;
+        padding-bottom: 5rem !important;
+    }
+    
+    .mb-6 {
+        margin-bottom: 5rem !important;
+    }
+</style>
+
+<!-- AOS Animation Library -->
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+    });
+</script>
 
 <style>
     /* Custom Styles */
@@ -602,20 +728,38 @@
         <div class="section-divider"></div>
 
         <!-- Section 6: Cultural Stewardship -->
-        <section class="mb-5">
-            <h2 class="mb-4">Cultural Stewardship</h2>
-            <div class="row">
-                <div class="col-md-6">
-                    <h3 class="h5">Community Impact</h3>
-                    <ul>
-                        <li>Founded the Efik Cultural Preservation Initiative, reaching over 5,000 diaspora members</li>
-                        <li>Organized annual cultural festivals that celebrate Efik heritage in the U.S.</li>
-                        <li>Established scholarship programs for Efik youth pursuing higher education</li>
-                    </ul>
+        <section class="py-5 bg-light">
+            <div class="container">
+                <div class="row justify-content-center mb-5">
+                    <div class="col-md-8 text-center">
+                        <h2 class="display-5 fw-bold text-primary mb-3">Cultural Stewardship</h2>
+                        <p class="lead text-muted">Celebrating and preserving heritage through community engagement and education.</p>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="ratio ratio-16x9">
-                        <iframe src="https://www.youtube.com/embed/example" title="Jacob Oroks Cultural Stewardship" allowfullscreen></iframe>
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm h-100 border-0">
+                            <div class="card-body p-4">
+                                <div class="mb-3 text-center">
+                                    <i class="fas fa-users fa-3x text-info"></i>
+                                </div>
+                                <h3 class="h5 fw-semibold text-secondary mb-2">Community Impact</h3>
+                                <ul class="list-unstyled text-muted">
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Founded the Efik Cultural Preservation Initiative, reaching over 5,000 diaspora members</li>
+                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Organized annual cultural festivals that celebrate Efik heritage in the U.S.</li>
+                                    <li><i class="fas fa-check-circle text-success me-2"></i>Established scholarship programs for Efik youth pursuing higher education</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm h-100 border-0">
+                            <div class="card-body p-4">
+                                <div class="ratio ratio-16x9">
+                                    <iframe src="https://www.youtube.com/embed/example" title="Jacob Oroks Cultural Stewardship" allowfullscreen></iframe>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
