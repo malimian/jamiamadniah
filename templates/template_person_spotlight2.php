@@ -832,18 +832,5 @@
         </section>
     </div>
 
-    <footer class="bg-dark text-white py-4">
-        <div class="container text-center">
-            <p>© 2023 IB Spotlight. All rights reserved.</p>
-            <div class="social-links">
-                <a href="#" class="text-white mx-2"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="text-white mx-2"><i class="bi bi-twitter"></i></a>
-                <a href="#" class="text-white mx-2"><i class="bi bi-linkedin"></i></a>
-                <a href="#" class="text-white mx-2"><i class="bi bi-instagram"></i></a>
-            </div>
-        </div>
-    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
