@@ -699,7 +699,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
+         <!--    <div class="col-lg-4 col-md-6">
                 <div class="card shadow-sm h-100 border-0">
                     <div class="card-body p-4 text-center">
                         <div class="mb-3">
@@ -709,7 +709,7 @@
                         <p class="text-muted">Founding pastor of Iboto Empire Ministries, providing spiritual guidance to a growing congregation with a focus on practical Christianity in the digital age.</p>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="col-lg-4 col-md-6">
                 <div class="card shadow-sm h-100 border-0">
                     <div class="card-body p-4 text-center">
