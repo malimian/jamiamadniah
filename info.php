@@ -8,19 +8,22 @@ if (isset($_GET['url']) && !empty($_GET['url'])) {
            htmlspecialchars($_GET['url']) : 
            htmlspecialchars($_GET['url']) . ".html";
 } else {
-    // Redirect to 404 page if URL is missing or empty
     exit('<script type="text/javascript">window.location = "' . ERROR_404 . '";</script>');
 }
 
 // Initialize variables
 $header = [];
+$menu = [];
+$scripts = [];
+$footer = [];
 $template_ = "";
 $main_header = "";
-$script = [];
-$footer = [];
+$main_menu = "";
+$main_scripts = "";
+$main_footer = "";
 $page = [];
 
-// Fetch page content from the database (using prepared statements would be better)
+// Fetch page content
 $content = return_single_row("SELECT 
     pages.*,
     category.*, pages.isactive as page_active, pages.visibility as page_visibility
@@ -28,22 +31,29 @@ FROM pages
 INNER JOIN category ON pages.catid = category.catid
 WHERE 
     pages.soft_delete = 0 
-    AND pages.page_url = '$url';
-");
+    AND pages.page_url = '$url'");
 
-// Redirect to 404 if no content is found
 if (empty($content)) {
     exit('<script type="text/javascript">window.location = "' . ERROR_404 . '";</script>');
 }
 
-// Check page visibility and user session
+// Check page visibility
 if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset($_SESSION['user'])) {
     exit('<script type="text/javascript">window.location = "' . ERROR_404 . '";</script>');
 }
 
-// Add header if specified in the content
+// Add content components if specified
 if (!empty($content['header'])) {
     $header[] = $content['header'];
+}
+if (!empty($content['menu'])) {
+    $menu[] = $content['menu'];
+}
+if (!empty($content['scripts'])) {
+    $scripts[] = $content['scripts'];
+}
+if (!empty($content['footer'])) {
+    $footer[] = $content['footer'];
 }
 
 // Fetch site template details
@@ -58,8 +68,11 @@ $page = return_single_row("
 if (!empty($page['st_header'])) {
     $header[] = replace_sysvari($page['st_header'], null);
 }
+if (!empty($page['st_menu'])) {
+    $menu[] = replace_sysvari($page['st_menu'], null);
+}
 if (!empty($page['st_script'])) {
-    $script[] = replace_sysvari($page['st_script'], null);
+    $scripts[] = replace_sysvari($page['st_script'], null);
 }
 if (!empty($page['st_footer'])) {
     $footer[] = replace_sysvari($page['st_footer'], getcwd() . "/");
@@ -85,15 +98,18 @@ if (!empty($template_page)) {
     if (function_exists("header_t")) {
         $header[] = header_t();
     }
+    if (function_exists("menu_t")) {
+        $menu[] = menu_t();
+    }
     if (function_exists("script_t")) {
-        $script[] = script_t();
+        $scripts[] = script_t();
     }
     if (function_exists("footer_t")) {
         $footer[] = footer_t();
     }
 }
 
-// Build the main header
+// Build the main components
 $main_header = front_header(
     $content['page_meta_title'], 
     $content['page_meta_keywords'], 
@@ -101,16 +117,20 @@ $main_header = front_header(
     $header
 );
 
+$main_menu = front_menu($menu);
+$main_scripts = front_script($scripts);
+$main_footer = front_footer($footer);
+
 /* ==================== OUTPUT SECTION ==================== */
 
-// Output header with debug comments
+// Output header
 echo "<!-- HEADER SECTION START -->\n";
-echo replace_sysvari($main_header);
+echo replace_sysvari($main_header , getcwd() . "/");
 echo "\n<!-- HEADER SECTION END -->\n\n";
 
 // Output menu
 echo "<!-- MENU SECTION START -->\n";
-echo replace_sysvari($page['st_menue'], getcwd() . "/");
+echo replace_sysvari($main_menu , getcwd() . "/" );
 echo "\n<!-- MENU SECTION END -->\n\n";
 
 // Output template content
@@ -137,25 +157,21 @@ if (PAGE_LOADER == 1) {
     echo "\n<!-- PAGE LOADER SCRIPT END -->\n\n";
 }
 
-// Track page views (only once per session)
+// Track page views
 if (!in_array($url, $_SESSION['pages_views'])) {
     Update("UPDATE pages SET views = views + 1 WHERE pid = " . (int)$content['pid']);
     array_push($_SESSION['pages_views'], $url);
 }
 
 // Output scripts
-if (!empty($script)) {
-    echo "<!-- PAGE SCRIPTS START -->\n";
-    echo replace_sysvari(front_script($script));
-    echo "\n<!-- PAGE SCRIPTS END -->\n\n";
-}
+echo "<!-- PAGE SCRIPTS START -->\n";
+echo replace_sysvari($main_scripts);
+echo "\n<!-- PAGE SCRIPTS END -->\n\n";
 
 // Output footer
-if (!empty($footer)) {
-    echo "<!-- PAGE FOOTER START -->\n";
-    echo replace_sysvari(front_footer($footer));
-    echo "\n<!-- PAGE FOOTER END -->\n\n";
-}
+echo "<!-- PAGE FOOTER START -->\n";
+echo replace_sysvari($main_footer);
+echo "\n<!-- PAGE FOOTER END -->\n\n";
 
 // Content visibility alert for admins
 if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && isset($_SESSION['user'])) {
@@ -188,4 +204,3 @@ if(isset($_SESSION['user'])) {
         echo "\n<!-- EDIT BUTTON END -->\n";
     } 
 }
-?>

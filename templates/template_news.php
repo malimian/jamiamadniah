@@ -8,6 +8,15 @@ if(!function_exists("header_t")) {
 ?>
 
 <?php
+if(!function_exists("menu_t")) {
+    function menu_t(){
+        return '
+        ';
+    }
+}
+?>
+
+<?php
 if(!function_exists("footer_t")) {
     function footer_t(){
         return '
