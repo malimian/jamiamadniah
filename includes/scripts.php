@@ -1,33 +1,4 @@
 <?php
-
-/**
- * Get frontend scripts HTML
- * 
- * @param array|string|null $libs Script tags or array of script tags
- * @return string HTML output
- */
-function front_script($libs = null) {
-    $output = '';
-
-    if (empty($libs)) {
-        return <<<HTML
-
-HTML;
-    }
-
-    $output .= "\n";
-
-    if (is_array($libs)) {
-        $output .= implode("\n", array_filter($libs)) . "\n";
-    } else {
-        $output .= $libs . "\n";
-    }
-
-    return <<<HTML
-$output
-HTML;
-}
-
 /**
  * Get combined scripts from template and additional libraries
  * 
@@ -35,7 +6,7 @@ HTML;
  * @param int|null $template_id Template ID to pull scripts from
  * @return string Combined script tags
  */
-function BaseScript($libs = null, $template_id = null) {
+function front_script($libs = null, $template_id = null) {
     global $and_gc;
 
     $output = [];

@@ -1,37 +1,12 @@
 <?php
 /**
- * Frontend Footer Function
- * 
- * @param array|null $libs Additional libraries/scripts to include before closing body
- * @return string HTML output
- */
-function front_footer($libs = null) {
-    $output = "";
-
-    if (!empty($libs)) {
-        $output .= "\n";
-        if (is_array($libs)) {
-            foreach ($libs as $lib) {
-                $output .= $lib . "\n";
-            }
-        } else {
-            $output .= $libs . "\n";
-        }
-    }
-
-    return <<<HTML
-$output
-HTML;
-}
-
-/**
- * Base Footer Function with Template Support
+ * front_footer Function with Template Support
  * 
  * @param array|null $libs Additional libraries/scripts to include
  * @param int|null $template_id Template ID from database
  * @return string Complete footer content
  */
-function Basefooter($libs = null, $template_id = null) {
+function front_footer($libs = null, $template_id = null) {
     global $and_gc;
 
     $output = "";

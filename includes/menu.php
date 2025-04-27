@@ -21,7 +21,7 @@ function front_menu($menu_components = null, $template_id = null) {
         }
 
         try {
-            $query = "SELECT st_menue FROM site_template 
+            $query = "SELECT st_menu FROM site_template 
                       WHERE st_id = $template_id $and_gc AND isactive = 1 
                       LIMIT 1";
             $site_menu = return_single_ans($query);

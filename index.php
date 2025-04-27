@@ -27,7 +27,7 @@ $additional_libs = [
 ];
 
 // Output the header with all meta information
-echo Baseheader(
+echo front_header(
     htmlspecialchars($content['page_meta_title'] ?? 'Default Page Title'),
     htmlspecialchars($content['page_meta_keywords'] ?? ''),
     htmlspecialchars($content['page_meta_desc'] ?? ''),
@@ -36,7 +36,7 @@ echo Baseheader(
 );
 
 // Output the navbar with path replacement
-$navbar_content = BaseNavBar($template_id);
+$navbar_content = front_menu( null ,$template_id);
 if (!empty($navbar_content)) {
     echo replace_sysvari($navbar_content, getcwd() . "/");
 }
@@ -611,8 +611,12 @@ foreach ($news_categories as $new_category) {
 <!-- Most Popular News End -->
 
 <?php
-echo replace_sysvari(Basefooter(null, $template_id), getcwd() . "/");
-echo replace_sysvari(BaseScript(null, $template_id), getcwd() . "/");
+echo replace_sysvari(front_footer(null, $template_id), getcwd() . "/");
 ?>
+
+<?php 
+echo replace_sysvari(front_script(null, $template_id), getcwd() . "/");
+?>
+
 </body>
 </html>
