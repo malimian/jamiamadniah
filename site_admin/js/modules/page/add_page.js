@@ -219,11 +219,3 @@ $(document).ready(function() {
         $('.nav-tabs a[href="#modalDescriptionTab"]').tab('show');
     });
 });
-
-// Helper function to show alerts
-function showAlert(message, type) {
-    $('#message').html('<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' + 
-        message + 
-        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-        '<span aria-hidden="true">&times;</span></button></div>');
-}

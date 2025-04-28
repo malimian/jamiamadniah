@@ -334,7 +334,7 @@ $(document).ready(function() {
                 }
             });
         } else {
-            alert('No dynamic attributes available to duplicate in this tab.');
+            showAlert('No dynamic attributes available to duplicate in this tab.');
         }
     });
 
@@ -344,7 +344,7 @@ $(document).ready(function() {
         if ($setsContainer.find('.attribute-set').length > 1) {
             $(this).closest('.attribute-set').remove();
         } else {
-            alert('You must have at least one attribute set.');
+            showAlert('You must have at least one attribute set.');
         }
     });
 });
