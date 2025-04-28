@@ -156,7 +156,7 @@ function myalert(message , id){
 function showAlert(message, id) {
 
     if (!id || typeof id !== 'string' || id.trim() === '') {
-        id = 'danger';
+        id = 'warn';
     }
     
     $.notify(message, id);
