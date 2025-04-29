@@ -138,7 +138,7 @@ foreach ($section_attributes as $tab_sections) {
                             <div class="attribute-sets-container">
                                 <div class="attribute-set card mb-4">
                                     <div class="card-body">
-                                        <?php foreach ($section_attrs as $attribute): 
+                                        <?php foreach ($section_attrs as $attribute):  
                                             $attribute_id = $attribute['id'];
                                             $current_value = isset($attribute_values[$attribute_id]) ? $attribute_values[$attribute_id] : $attribute['default_value'];
                                             $required = $attribute['is_required'] ? 'required' : '';
