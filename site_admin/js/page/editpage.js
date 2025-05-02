@@ -181,6 +181,9 @@ validateform(function() {
     var meta_keywords = $('#meta_keywords').val();
     var meta_desc = $('#meta_desc').val();
     var header = $('#header').val();
+    var menu_content = $('#menu_content').val();
+    var footer_content = $('#footer_content').val();
+    var scripts_content = $('#scripts_content').val();
     var p_image = $('#p_image').val();
     var is_active = $('#is_active option:selected').val();
     var postVisibility = $('#postVisibility option:selected').val();
@@ -228,6 +231,9 @@ validateform(function() {
     formData.append("page_title", page_title);
     formData.append("page_url", page_url);
     formData.append("ctname", ctname);
+    formData.append("menu_content", menu_content);
+    formData.append("footer_content", footer_content);
+    formData.append("scripts_content", scripts_content);
     formData.append("header", header);
     formData.append("template_page", template_page);
     formData.append("site_template", site_template);

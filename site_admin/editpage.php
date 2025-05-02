@@ -20,17 +20,6 @@ AdminHeader(
    <?php include 'includes/notification.php'; ?>
 
 <style type="text/css">
-    /* Modern Color Scheme */
-    :root {
-        --primary-color: #4e73df;
-        --secondary-color: #858796;
-        --success-color: #1cc88a;
-        --info-color: #36b9cc;
-        --warning-color: #f6c23e;
-        --danger-color: #e74a3b;
-        --light-color: #f8f9fc;
-        --dark-color: #5a5c69;
-    }
 
     .form-switch .form-check-label {
         font-weight: 500;
@@ -357,15 +346,9 @@ AdminHeader(
                             </div>
                         </div>
 
-                        <!-- HEADER Tab Content -->
+                        <!-- HEADER FOOTER SCRIPTS Tab Content -->
                         <div id="menu2" class="container tab-pane fade">
-                            <div class="form-group row">
-                                <div class="col-sm-12">
-                                    <textarea class="form-control" rows="10" id="header" placeholder="Update Header Files" name="editor1"><?php echo $page['header']; ?></textarea>
-                                    <div class="valid-feedback">Valid.</div>
-                                    <div class="invalid-feedback">Please fill out this field.</div>
-                                </div>
-                            </div>
+                             <?php echo include_module('modules/page/header_footer_tab.php', array('action' => "edit" , 'page' => array($page) )); ?>
                         </div>
 
                         <!-- TEMPLATE Tab Content -->

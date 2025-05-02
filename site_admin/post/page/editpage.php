@@ -14,6 +14,9 @@ if(isset($_POST['submit'])) {
     $meta_keywords = escape($_POST['meta_keywords']);
     $meta_desc = escape($_POST['meta_desc']);
     $header = escape($_POST['header']);
+    $menu_content = escape($_POST['menu_content']);
+    $footer_content = escape($_POST['footer_content']);
+    $scripts_content = escape($_POST['scripts_content']);
     $p_image = escape($_POST['p_image']);
     $uid = $_SESSION['user']['id'];
     $is_active = $_POST['is_active'];
@@ -29,6 +32,9 @@ if(isset($_POST['submit'])) {
         `page_title` = '$page_title',
         `page_desc` = '$editor1',
         `header` = '$header',
+        `menu` = '$menu_content',
+        `footer_content` = '$footer_content',
+        `scripts_content` = '$scripts_content',
         `page_meta_title` = '$meta_title',
         `page_meta_keywords` = '$meta_keywords',
         `page_meta_desc` = '$meta_desc',
