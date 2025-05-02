@@ -38,27 +38,12 @@ $(document).ready(function() {
             
             // Initialize only if not already initialized
             if (!CKEDITOR.instances.editor1) {
+              
                 CKEDITOR.replace('editor1', {
                     height: 300,
                     filebrowserUploadUrl: "post/general/uploads.php?type=file",
-                    filebrowserImageUploadUrl: "post/general/uploads.php?type=image",
-                    removeButtons: 'Source,Save,NewPage,Preview,Print,Templates',
-                    removePlugins: 'elementspath',
-                    resize_enabled: false,
-                    extraPlugins: 'autogrow',
-                    autoGrow_minHeight: 200,
-                    autoGrow_maxHeight: 600,
-                    autoGrow_bottomSpace: 50,
-                    toolbarGroups: [
-                        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'] },
-                        { name: 'links' },
-                        { name: 'insert' },
-                        { name: 'styles' },
-                        { name: 'colors' },
-                        { name: 'tools' }
-                    ]
-                });
+                    filebrowserImageUploadUrl: "post/general/uploads.php?type=image"
+                  });
                 
                 // Handle CKEditor ready event
                 CKEDITOR.instances.editor1.on('instanceReady', function() {

@@ -142,6 +142,44 @@ AdminHeader(
         border-bottom: 1px solid #e3e6f0;
         color: var(--dark-color);
     }
+
+
+    /* Ensure buttons stay above fullscreen textarea */
+    .ib-preview-btn, .ib-publish-btn {
+        position: relative;
+        z-index: 2002;
+    }
+
+
+   /* Add these styles to your existing CSS */
+    .ib-simple-editor-container {
+        position: relative;
+        margin-bottom: 20px;
+    }
+    
+    .ib-simple-editor-toolbar {
+        background: #f5f5f5;
+        padding: 8px 12px;
+        border: 1px solid #e0e0e0;
+        border-bottom: none;
+        border-radius: 4px 4px 0 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .ib-simple-editor-label {
+        font-weight: 600;
+        color: #444;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+    
+    .ib-simple-editor-buttons {
+        display: flex;
+        gap: 5px;
+    }
+
 </style>
 
 
@@ -205,13 +243,13 @@ AdminHeader(
                         <!-- HEADER Tab -->
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#menu2">
-                                <i class="fa fa-header"></i> HEADER
+                                <i class="fa fa-code"></i> Elements
                             </a>
                         </li>
                         <!-- TEMPLATE Tab -->
                         <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#menu3">
-                                <i class="fa fa-code"></i> TEMPLATE
+                                <i class="fa fa-sliders-h"></i> TEMPLATE
                             </a>
                         </li>
                         <!-- Media Tab -->
@@ -303,10 +341,26 @@ AdminHeader(
                                     </div>
 
                                     <!-- Textarea (initially hidden if using CKEditor) -->
-                                    <textarea class="form-control" id="simpleEditor" name="editor1" style="<?php echo $useCKEditor === 1 ? 'display:none;' : ''; ?>"><?php 
-                                        // Remove indentation to avoid whitespace issues
-                                        echo replaceTextArea($page['page_desc']); 
-                                    ?></textarea>
+                                    <!-- Simple Editor Container -->
+                                    <div class="ib-simple-editor-container">
+                                        <div class="ib-simple-editor-toolbar">
+                                            <span class="ib-simple-editor-label">Page Content</span>
+                                            <div class="ib-simple-editor-buttons">
+                                                <button type="button" class="ib-toolbar-btn ib-indent-btn" data-target="simpleEditor" title="Indent">
+                                                    <i class="fas fa-indent"></i> Indent
+                                                </button>
+                                                <button type="button" class="ib-toolbar-btn ib-outdent-btn" data-target="simpleEditor" title="Outdent">
+                                                    <i class="fas fa-outdent"></i> Outdent
+                                                </button>
+                                                <button type="button" class="ib-maximize-btn" data-target="simpleEditor" title="Maximize">
+                                                    <i class="fas fa-expand"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <textarea class="form-control" id="simpleEditor" name="editor1" style="<?php echo $useCKEditor === 1 ? 'display:none;' : ''; ?>"><?php 
+                                            echo replaceTextArea($page['page_desc']); 
+                                        ?></textarea>
+                                    </div>
 
                                     <!-- CKEditor Container (initially shown if using CKEditor) -->
                                     <div id="ckeditorContainer" style="<?php echo $useCKEditor !== 1 ? 'display:none;' : ''; ?>">
@@ -418,7 +472,7 @@ AdminHeader(
                     <div class="card-body">
                         <div class="form-group">
                                 <div class="form-group">
-                                    <a href="<?php echo BASE_URL . $page['page_url']; ?>" id="previewLink" class="btn btn-secondary btn-block">
+                                    <a href="<?php echo BASE_URL . $page['page_url']; ?>" id="previewLink" class="btn btn-secondary btn-block ib-preview-btn">
                                         <i class="fa fa-eye"></i> Preview
                                     </a>
                                 </div>
@@ -447,7 +501,7 @@ AdminHeader(
                             </select>
                         </div>
                         <div class="form-group">
-                            <button type="submit" id="submit_btn" class="btn btn-primary btn-block">Publish</button>
+                            <button type="submit" id="submit_btn" class="btn btn-primary btn-block ib-publish-btn">Publish</button>
                         </div>
                     </div>
                 </div>

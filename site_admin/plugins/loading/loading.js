@@ -29,7 +29,7 @@
         }
         var nonceAttr = settings.nonce === null ? '' : ' nonce="' + settings.nonce + '"',
             elem = $.parseHTML(
-                '<div class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;"' + nonceAttr + '>' +
+                '<div class="modal fade" style=" z-index: 2100 !important;" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true" style="padding-top:15%; overflow-y:visible;"' + nonceAttr + '>' +
                     '<div class="modal-dialog modal-m">' +
                         '<div class="modal-content">' +
                             '<div class="modal-header" style="display: none;"' + nonceAttr + '></div>' +
