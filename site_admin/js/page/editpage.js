@@ -124,6 +124,14 @@ function process(value) {
 // });
 
 
+$('#page_title').on('input', function() {
+    if (document.getElementById('check_url').checked) {
+        var result = process($('#page_title').val());
+        $('#page_url').empty().val(result + ".html");
+        $('#meta_title').val($('#page_title').val());
+    }
+});
+
 $(document).ready(function() {
     // Initialize lock state
     $('#page_url').prop('readonly', true);
@@ -147,45 +155,65 @@ $(document).ready(function() {
         }
     }).trigger('change'); // Initialize state
 });
-$('#page_title').on('input', function() {
-    if (document.getElementById('check_url').checked) {
-        var result = process($('#page_title').val());
-        $('#page_url').empty().val(result + ".html");
-        $('#meta_title').val($('#page_title').val());
-    }
+
+var initialTemplateValues;
+
+$(document).ready(function() {
+
+    // Store initial template values when page loads
+      initialTemplateValues = {
+        template_page: parseInt($('#template_page').val()),
+        site_template: parseInt($('#site_template').val())
+    };
+
+    console.log("initialTemplateValues.template_page : "+initialTemplateValues.template_page);
+    console.log("initialTemplateValues.site_template : "+initialTemplateValues.site_template);
+
 });
 
-validateform(function() {
-    // Existing fields
-    var page_title = $('#page_title').val();
-    var page_url = $('#page_url').val();
-    var ctname = $('#ctname').val();
-    var template_page = $('#template_page').val();
-    var site_template = $('#site_template').val();
-    var meta_title = $('#meta_title').val();
-    var meta_keywords = $('#meta_keywords').val();
-    var meta_desc = $('#meta_desc').val();
-    var header = $('#header').val();
-    var menu_content = $('#menu_content').val();
-    var footer_content = $('#footer_content').val();
-    var scripts_content = $('#scripts_content').val();
-    var p_image = $('#p_image').val();
-    var is_active = $('#is_active option:selected').val();
-    var postVisibility = $('#postVisibility option:selected').val();
-    var showInNavbar = $('#showInNavbar option:selected').val();
-    var category_list = $('#category_list').children("option:selected").val();
-    const useCKEditor = $('#editorToggle').is(':checked')? 1 : 0;
 
-    var editorContent = $('#editorToggle').is(':checked') ? 
-          (CKEDITOR.instances.editor1 ? CKEDITOR.instances.editor1.getData() : $('#editor1').val()) : 
-          $('#simpleEditor').val();
+validateform(function() {
+    // Get current form values
+    var currentValues = {
+        template_page: parseInt($('#template_page').val()),
+        site_template: parseInt($('#site_template').val()),
+        // Other form fields...
+        page_title: $('#page_title').val(),
+        page_url: $('#page_url').val(),
+        ctname: $('#ctname').val(),
+        meta_title: $('#meta_title').val(),
+        meta_keywords: $('#meta_keywords').val(),
+        meta_desc: $('#meta_desc').val(),
+        header: $('#header').val(),
+        menu_content: $('#menu_content').val(),
+        footer_content: $('#footer_content').val(),
+        scripts_content: $('#scripts_content').val(),
+        p_image: $('#p_image').val(),
+        is_active: $('#is_active option:selected').val(),
+        postVisibility: $('#postVisibility option:selected').val(),
+        showInNavbar: $('#showInNavbar option:selected').val(),
+        category_list: $('#category_list').children("option:selected").val(),
+        useCKEditor: $('#editorToggle').is(':checked') ? 1 : 0
+    };
+
+
+    // Check if templates have changed
+    var templatesChanged = 
+        (currentValues.template_page !== initialTemplateValues.template_page) || 
+        (currentValues.site_template !== initialTemplateValues.site_template);
+
+    // Get editor content
+    var editorContent = currentValues.useCKEditor ? 
+        (CKEDITOR.instances.editor1 ? CKEDITOR.instances.editor1.getData() : $('#editor1').val()) : 
+        $('#simpleEditor').val();
     
+    // Get selected categories
     var selectedcategory_list = [];
     $("#category_list input:checked").each(function() {
         selectedcategory_list.push($(this).attr('datachck-id'));
     });
 
-    // Collect dynamic attributes with proper multiselect handling
+    // Collect dynamic attributes
     var attributes = {};
     $('[name^="attribute["]').each(function() {
         var name = $(this).attr('name');
@@ -196,14 +224,12 @@ validateform(function() {
             value = $(this).is(':checked') ? '1' : '0';
         } 
         else if ($(this).hasClass('select2-multiple')) {
-            // Handle multiselect values
             value = $(this).val() ? $(this).val().join(',') : '';
         }
         else {
             value = $(this).val();
         }
         
-        // Only add if value exists (or is 0 for checkboxes)
         if (value !== '' || ($(this).is(':checkbox') && value === '0')) {
             attributes[attrId] = value;
         }
@@ -211,32 +237,14 @@ validateform(function() {
 
     // Create FormData object
     const formData = new FormData();
-
-    // Append existing fields
-    formData.append("page_title", page_title);
-    formData.append("page_url", page_url);
-    formData.append("ctname", ctname);
-    formData.append("menu_content", menu_content);
-    formData.append("footer_content", footer_content);
-    formData.append("scripts_content", scripts_content);
-    formData.append("header", header);
-    formData.append("template_page", template_page);
-    formData.append("site_template", site_template);
-    formData.append("is_active", is_active);
-    formData.append("postVisibility", postVisibility);
-    formData.append("showInNavbar", showInNavbar);
+    for (var key in currentValues) {
+        formData.append(key, currentValues[key]);
+    }
     formData.append("editor1", editorContent);
-    formData.append("p_image", p_image);
-    formData.append("meta_title", meta_title);
-    formData.append("meta_keywords", meta_keywords);
-    formData.append("meta_desc", meta_desc);
-    formData.append("useCKEditor", useCKEditor);
     formData.append("selectedcategory_list", selectedcategory_list.join(','));
     formData.append("attributes", JSON.stringify(attributes));
     formData.append("page_id", page_id);
     formData.append("submit", true);
-
-    console.log([...formData]); // For debugging
 
     // Send data to server
     senddata_file(
@@ -244,25 +252,65 @@ validateform(function() {
         "POST",
         formData,
         function(result) {
-            console.log('success');
-            console.log(result);
-            $("#error_id").fadeIn(300).delay(1500);
-
+            console.log('success', result);
+            
             if (result > 0) {
-                $('#error_id').empty();
-                $('#error_id').html('<div class="alert alert-success alert-dismissible fade show" role="alert"> <strong>Success !</strong> Page Updated <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div>');
+                // Show success message
+                $("#error_id").html(
+                    '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                    '<strong>Success!</strong> Page Updated ' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                    '<span aria-hidden="true">&times;</span></button></div>'
+                ).fadeIn(300).delay(1500);
+                
+                // Reload only if templates changed
+                if (templatesChanged) {
+                    console.log('Templates changed - reloading page');
+                    setTimeout(function() {
+                        location.reload(true); // Force reload from server
+                    }, 1000);
+                } else {
+                    // Update initial values if not reloading
+                    initialTemplateValues = {
+                        template_page: currentValues.template_page,
+                        site_template: currentValues.site_template
+                    };
+                }
+            } else {
+                $("#error_id").html(
+                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                    '<strong>Error!</strong> Update failed ' +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                    '<span aria-hidden="true">&times;</span></button></div>'
+                ).fadeIn(300).delay(1500);
             }
         },
-        function(result) {
-            console.log('failure');
-            console.log(result);
-            $("#error_id").empty().html('<div class="alert alert-alert alert-dismissible fade show" role="alert"> <strong>Alert !</strong> Something went wrong double check and try again <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div>').fadeIn(300).delay(1500);
+        function(error) {
+            console.log('failure', error);
+            $("#error_id").html(
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                '<strong>Error!</strong> Something went wrong ' +
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span></button></div>'
+            ).fadeIn(300).delay(1500);
         }
     );
 }, function() {
     // Validation failed
-    $('#error_id').empty().fadeIn(50).delay(1500).html('<div class="alert alert-warning alert-dismissible fade show" role="alert"> <strong>Alert !</strong> Please fill out all required field <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div>').fadeOut(10);
+    $('#error_id').html(
+        '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
+        '<strong>Warning!</strong> Please fill all required fields ' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span></button></div>'
+    ).fadeIn(50).delay(1500);
 });
+
+// Optional: Update initial values when templates change (without submitting)
+$('#template_page, #site_template').change(function() {
+    initialTemplateValues[this.id] = $(this).val();
+});
+
+
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('previewLink').addEventListener('click', function(event) {
@@ -271,5 +319,130 @@ document.addEventListener('DOMContentLoaded', function() {
         if (previewWindow) {
             previewWindow.focus();
         }
+    });
+});
+
+
+
+  $(document).ready(function() {
+    // Initialize all editor instances
+    function initEditor($textarea) {
+        const $container = $textarea.closest('.ib-textarea-wrapper, .ib-simple-editor-container');
+        const target = $textarea.attr('id');
+        const editorLabel = $textarea.closest('.tab-pane').find('.nav-link.active').text().trim() || 'Content';
+
+        // Set up maximize button
+        $container.find('.ib-maximize-btn').off('click').click(function(e) {
+            e.preventDefault();
+            
+            if ($container.hasClass('ib-textarea-fullscreen')) {
+                // Minimize
+                $container.removeClass('ib-textarea-fullscreen');
+                $(this).html('<i class="fas fa-expand"></i>');
+                $(this).attr('title', 'Maximize');
+                $('.ib-fullscreen-nav').remove();
+            } else {
+                // Maximize
+                $container.addClass('ib-textarea-fullscreen');
+                $(this).html('<i class="fas fa-compress"></i>');
+                $(this).attr('title', 'Minimize');
+                
+                // Create navigation bar
+                const navBar = $(`
+                    <div class="ib-fullscreen-nav">
+                        <span class="ib-fullscreen-title">Editing ${editorLabel}</span>
+                        <div class="ib-fullscreen-actions">
+                            <button type="button" class="ib-fullscreen-btn preview-btn ib-preview-fullscreen">
+                                <i class="fas fa-eye"></i> Preview
+                            </button>
+                            <button type="button" class="ib-fullscreen-btn ib-save-btn">
+                                <i class="fas fa-save"></i> Save
+                            </button>
+                            <button type="button" class="ib-fullscreen-btn ib-close-fullscreen">
+                                <i class="fas fa-times"></i> Close
+                            </button>
+                        </div>
+                    </div>
+                `);
+                
+                $('body').append(navBar);
+                
+                // Close button handler
+                navBar.find('.ib-close-fullscreen').click(function() {
+                    $container.removeClass('ib-textarea-fullscreen');
+                    navBar.remove();
+                    $container.find('.ib-maximize-btn').html('<i class="fas fa-expand"></i>').attr('title', 'Maximize');
+                });
+                
+                // Save button handler
+                navBar.find('.ib-save-btn').click(function() {
+                     $('#submit_btn').click();
+                });
+                
+                // Preview button handler
+                navBar.find('.ib-preview-fullscreen').click(function() {
+                   $('#previewLink')[0].click();
+                });
+            }
+        });
+        
+        // Indent functionality
+        $container.find('.ib-indent-btn').off('click').click(function(e) {
+            e.preventDefault();
+            const textarea = $textarea[0];
+            const startPos = textarea.selectionStart;
+            const endPos = textarea.selectionEnd;
+            const value = textarea.value;
+            
+            // Insert 4 spaces at cursor position
+            textarea.value = value.substring(0, startPos) + '    ' + value.substring(endPos);
+            
+            // Restore cursor position
+            textarea.selectionStart = textarea.selectionEnd = startPos + 4;
+            textarea.focus();
+        });
+        
+        // Outdent functionality
+        $container.find('.ib-outdent-btn').off('click').click(function(e) {
+            e.preventDefault();
+            const textarea = $textarea[0];
+            const startPos = textarea.selectionStart;
+            const endPos = textarea.selectionEnd;
+            const value = textarea.value;
+            const selectedText = value.substring(startPos, endPos);
+            
+            // Remove 4 spaces if they exist
+            if (selectedText.startsWith('    ')) {
+                textarea.value = value.substring(0, startPos) + selectedText.substring(4) + value.substring(endPos);
+                textarea.selectionStart = startPos;
+                textarea.selectionEnd = endPos - 4;
+                textarea.focus();
+            }
+        });
+    }
+
+    // Initialize all textareas with editor controls
+    function initAllEditors() {
+        $('.ib-textarea-wrapper textarea, .ib-simple-editor-container textarea').each(function() {
+            initEditor($(this));
+        });
+    }
+
+    // Initialize when page loads
+    initAllEditors();
+
+    // Handle CKEditor toggle
+    $('#editorToggle').change(function() {
+        if ($(this).is(':checked')) {
+            $('#simpleEditor').hide();
+        } else {
+            $('#simpleEditor').show();
+            initEditor($('#simpleEditor'));
+        }
+    });
+
+    // Reinitialize editors when tabs are switched
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function() {
+        setTimeout(initAllEditors, 50);
     });
 });
