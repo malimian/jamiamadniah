@@ -257,7 +257,7 @@ AdminHeader(
 
                                             <?php if($has_add && canEdit($page['isSystemOperated'])): ?>
                                             <a class="btn btn-sm btn-outline-secondary mr-2 duplicate-page" href="#" data-pageid="<?=$page['pid']?>">
-                                                <i class="fas fa-copy fa-fw"></i> Duplicate
+                                                <i class="fas fa-copy fa-fw"></i> Duplicate this page
                                             </a>
                                             <?php endif; ?>
 
@@ -676,5 +676,8 @@ AdminHeader(
          <!-- /.content-wrapper -->
       </div>
       <!-- /#wrapper -->
+
+      <?php echo include_module('modules/page/add_page_module.php', null); ?>
+
       <?php echo include_module('modules/upload_image.php', null); ?>
       <?php include 'includes/footer.php'; ?>
