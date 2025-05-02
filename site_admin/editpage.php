@@ -423,7 +423,6 @@ AdminHeader(
                 <script type="text/javascript">
                     var page_id = "<?php echo $page['pid']; ?>";
                 </script>
-                <script type="text/javascript" src="js/page/editpage.js"></script>
             </div>
 
             <!-- Page Categories and Publish Section (3 columns) -->
@@ -551,6 +550,9 @@ AdminHeader(
         </div>
     </div>
 </div>
+
+                <script type="text/javascript" src="js/page/editpage.js"></script>
+
             </div>
             <!-- /.container-fluid -->
             <?php include 'includes/footer_copyright.php'; ?>
