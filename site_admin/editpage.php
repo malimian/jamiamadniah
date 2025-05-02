@@ -180,6 +180,36 @@ AdminHeader(
         gap: 5px;
     }
 
+
+        /* Action Bar Styles */
+        .ib-action-bar {
+            border-left: 4px solid #4e73df;
+            box-shadow: 0 0.15rem 0.5rem rgba(0, 0, 0, 0.05);
+        }
+
+        .ib-action-bar .card-body {
+            padding: 0.5rem 1.25rem;
+        }
+
+        .ib-action-bar .btn {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .ib-action-bar .btn i {
+            margin-right: 0.25rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .ib-action-bar .d-flex {
+                flex-wrap: wrap;
+            }
+            .ib-action-bar .btn {
+                margin-bottom: 0.25rem;
+            }
+        }
+
 </style>
 
 
@@ -206,21 +236,71 @@ AdminHeader(
 
    ?>
 
-   <div id="wrapper">
-      <?php include 'includes/sidebar.php'; ?>
-      <div id="content-wrapper">
-         <div class="container-fluid">
+  <div id="wrapper">
+    <?php include 'includes/sidebar.php'; ?>
+    <div id="content-wrapper">
+        <div class="container-fluid">
             <div class="container-fluid">
-               <!-- Page Heading -->
-               <div class="row">
-                  <div class="col-lg-12">
-                     <h3 class="page-header">Update Page</h3>
-                  </div>
-               </div>
-               <!-- /.Content From Here -fluid -->
-               <!-- Page Content -->
-               <div id="error_id"></div>
-               <div id="page-content-wrapper">
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="page-header">Update Page</h3>
+                    </div>
+                </div>
+                
+                <!-- New Action Bar -->
+                <div class="row mb-4">
+                    <div class="col-lg-12">
+                        <div class="ib-action-bar card">
+                            <div class="card-body py-2">
+                                <div class="d-flex align-items-center">
+
+                                    <!-- Duplicate Action -->
+                                    <?php if($has_add && canEdit($page['isSystemOperated'])): ?>
+                                    <a class="btn btn-sm btn-outline-secondary mr-2 duplicate-page" href="#" data-pageid="<?=$page['pid']?>">
+                                        <i class="fas fa-copy fa-fw"></i> Duplicate
+                                    </a>
+                                    <?php endif; ?>
+                                    
+                                    <!-- Status Toggle -->
+                                    <?php if($has_status && canActivate($page['isSystemOperated'])): ?>
+                                    <div class="dropdown d-inline-block mr-2">
+                                        <button class="btn btn-sm btn-outline-<?=$page['isactive'] ? 'success' : 'warning'?> dropdown-toggle" 
+                                                type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fas fa-power-off fa-fw"></i> <?=$page['isactive'] ? 'Active' : 'Inactive'?>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#" onclick="toggleStatus(<?=$page['pid']?>, <?=$page['isactive']?>)">
+                                                <i class="fas fa-power-off fa-fw"></i> <?=$page['isactive'] ? 'Deactivate' : 'Activate'?>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <?php endif; ?>
+                                    
+                                    <!-- Delete Action -->
+                                    <?php if($has_delete && canDelete($page['isSystemOperated'])): ?>
+                                    <button class="btn btn-sm btn-outline-danger" onclick="delete_(<?=$page['pid']?>)">
+                                        <i class="fas fa-trash fa-fw"></i> Move to Recycle Bin
+                                    </button>
+                                    <?php endif; ?>
+                                    
+                                    <!-- Optional Spacer -->
+                                    <div class="ml-auto">
+                                        <!-- Any right-aligned items can go here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Action Bar -->
+                
+                <!-- /.Content From Here -fluid -->
+                <div id="error_id"></div>
+                <div id="page-content-wrapper">
+                    <!-- Your existing content goes here -->
+
+
     <div class="container-fluid">
         <div class="row">
             <!-- Form Section (9 columns) -->
