@@ -39,7 +39,8 @@ try {
 
 // Additional CSS/JS libraries
 $extra_libs = [
-
+    '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">',
+    '<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>'
 ];
 
 // Include admin header
@@ -112,7 +113,7 @@ AdminHeader("Manage Page Template Attributes", "", $extra_libs);
                             <div class="form-group row">
                                 <label for="template_id" class="col-md-3 col-form-label">Select Template:</label>
                                 <div class="col-md-9">
-                                    <select class="form-control selectpicker" id="template_id" name="template_id" data-live-search="true" required>
+                                    <select class="form-control select2" id="template_id" name="template_id" required>
                                         <option value="">-- Select a Template --</option>
                                         <?php foreach ($templates as $id => $title): ?>
                                             <option value="<?= (int)$id ?>"><?= $title ?></option>
@@ -187,6 +188,19 @@ AdminHeader("Manage Page Template Attributes", "", $extra_libs);
                             </div>
 
                             <div class="form-group row">
+                              <label for="is_dynamic" class="col-md-3 col-form-label">Dynamic Attribute:</label>
+                              <div class="col-md-9">
+                                <select class="form-control" name="is_dynamic" id="is_dynamic">
+                                  <option value="0">No (Single Value)</option>
+                                  <option value="1">Yes (Multiple Values)</option>
+                                </select>
+                                <small class="form-text text-muted">
+                                  Dynamic attributes can have multiple values/sets
+                                </small>
+                              </div>
+                            </div>
+
+                            <div class="form-group row">
                               <label for="icon_class" class="col-md-3 col-form-label">Icon Class:</label>
                               <div class="col-md-9">
                                 <input type="text" class="form-control" name="icon_class" id="icon_class" 
@@ -229,128 +243,159 @@ AdminHeader("Manage Page Template Attributes", "", $extra_libs);
                           </div>
                         </div>
 
-                                <!-- Tab Grouping Section -->
-                                <div class="card mb-4">
-                                  <div class="card-header bg-warning text-dark">
-                                    <h5 class="mb-0">Tab Grouping (Optional)</h5>
+                        <!-- Tab Grouping Section -->
+                        <div class="card mb-4">
+                          <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">Tab Grouping (Optional)</h5>
+                          </div>
+                          <div class="card-body">
+                            <div class="form-group row">
+                              <label for="tab_name" class="col-md-3 col-form-label">Tab Name:</label>
+                              <div class="col-md-9">
+                                <div class="input-group">
+                                  <select class="form-control" name="tab_name" id="tab_name">
+                                    <option value="">-- Select Existing Tab --</option>
+                                    <?php 
+                                    // Get existing tabs from database
+                                    $tabs_sql = "SELECT DISTINCT tab_name FROM page_attributes WHERE tab_name IS NOT NULL AND tab_name != ''";
+                                    $tabs_result = return_multiple_rows($tabs_sql);
+                                    if ($tabs_result) {
+                                      foreach ($tabs_result as $tab) {
+                                        echo '<option value="'.htmlspecialchars($tab['tab_name'], ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($tab['tab_name'], ENT_QUOTES, 'UTF-8').'</option>';
+                                      }
+                                    }
+                                    ?>
+                                  </select>
+                                  <div class="input-group-append">
+                                    <span class="input-group-text">OR</span>
                                   </div>
-                                  <div class="card-body">
-                                    <div class="form-group row">
-                                      <label for="tab_name" class="col-md-3 col-form-label">Tab Name:</label>
-                                      <div class="col-md-9">
-                                        <div class="input-group">
-                                          <select class="form-control" name="tab_name" id="tab_name">
-                                            <option value="">-- Select Existing Tab --</option>
-                                            <?php 
-                                            // Get existing tabs from database
-                                            $tabs_sql = "SELECT DISTINCT tab_name FROM page_attributes WHERE tab_name IS NOT NULL AND tab_name != ''";
-                                            $tabs_result = return_multiple_rows($tabs_sql);
-                                            if ($tabs_result) {
-                                              foreach ($tabs_result as $tab) {
-                                                echo '<option value="'.htmlspecialchars($tab['tab_name'], ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($tab['tab_name'], ENT_QUOTES, 'UTF-8').'</option>';
-                                              }
-                                            }
-                                            ?>
-                                          </select>
-                                          <div class="input-group-append">
-                                            <span class="input-group-text">OR</span>
-                                          </div>
-                                          <input type="text" class="form-control" id="new_tab_name" placeholder="Create New Tab">
-                                        </div>
-                                        <small class="form-text text-muted">
-                                          Group attributes under tabs in the editor. Leave blank for default section.
-                                        </small>
-                                        <input type="hidden" name="tab_group" id="tab_group">
-                                      </div>
-                                    </div>
-                                  </div>
+                                  <input type="text" class="form-control" id="new_tab_name" placeholder="Create New Tab">
                                 </div>
+                                <small class="form-text text-muted">
+                                  Group attributes under tabs in the editor. Leave blank for default section.
+                                </small>
+                                <input type="hidden" name="tab_group" id="tab_group">
+                              </div>
+                            </div>
 
-            <!-- Additional Settings -->
-            <div class="card mb-4">
-              <div class="card-header bg-secondary text-white">
-                <h5 class="mb-0">Additional Settings</h5>
-              </div>
-              <div class="card-body">
-                <div class="form-group row">
-                  <label for="default_value" class="col-md-3 col-form-label">Default Value:</label>
-                  <div class="col-md-9">
-                    <input type="text" class="form-control" name="default_value" id="default_value">
-                  </div>
-                </div>
+                            <div class="form-group row">
+                              <label for="section_name" class="col-md-3 col-form-label">Section Name:</label>
+                              <div class="col-md-9">
+                                <input type="text" class="form-control" name="section_name" id="section_name" placeholder="e.g., General, Advanced">
+                                <small class="form-text text-muted">
+                                  Group attributes within the tab (optional)
+                                </small>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
-                <div class="form-group row">
-                  <label for="is_required" class="col-md-3 col-form-label">Is Required?</label>
-                  <div class="col-md-9">
-                    <select class="form-control" name="is_required" id="is_required">
-                      <option value="0">No</option>
-                      <option value="1">Yes</option>
-                    </select>
-                  </div>
-                </div>
+                        <!-- Additional Settings -->
+                        <div class="card mb-4">
+                          <div class="card-header bg-secondary text-white">
+                            <h5 class="mb-0">Additional Settings</h5>
+                          </div>
+                          <div class="card-body">
+                            <div class="form-group row">
+                              <label for="default_value" class="col-md-3 col-form-label">Default Value:</label>
+                              <div class="col-md-9">
+                                <input type="text" class="form-control" name="default_value" id="default_value">
+                              </div>
+                            </div>
 
-                <div class="form-group row">
-                  <label for="sort_order" class="col-md-3 col-form-label">Sort Order:</label>
-                  <div class="col-md-9">
-                    <input type="number" class="form-control" name="sort_order" id="sort_order" value="0" min="0">
-                  </div>
-                </div>
-              </div>
-            </div>
+                            <div class="form-group row">
+                              <label for="is_required" class="col-md-3 col-form-label">Is Required?</label>
+                              <div class="col-md-9">
+                                <select class="form-control" name="is_required" id="is_required">
+                                  <option value="0">No</option>
+                                  <option value="1">Yes</option>
+                                </select>
+                              </div>
+                            </div>
 
-            <div class="form-group text-right">
-              <button type="reset" class="btn btn-secondary mr-2">
-                <i class="fas fa-undo mr-1"></i> Reset Form
-              </button>
-              <button type="submit" class="btn btn-success">
-                <i class="fas fa-check mr-1"></i> Create Attribute
-              </button>
-            </div>
-          </form>
-        </div>
+                            <div class="form-group row">
+                              <label for="sort_order" class="col-md-3 col-form-label">Sort Order:</label>
+                              <div class="col-md-9">
+                                <input type="number" class="form-control" name="sort_order" id="sort_order" value="0" min="0">
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
-                </div>
-            </div>
-
-<!-- Edit Attribute Modal -->
-<div class="modal fade" id="editAttributeModal" tabindex="-1" role="dialog" aria-labelledby="editAttributeModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editAttributeModalLabel">Update Attribute</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editAttributeForm">
-                    <input type="hidden" id="edit_attribute_id" name="id">
-                    <div class="form-group">
-                        <label for="edit_attribute_label">Attribute Label</label>
-                        <input type="text" class="form-control" id="edit_attribute_label" name="attribute_label" required>
+                        <div class="form-group text-right">
+                          <button type="reset" class="btn btn-secondary mr-2">
+                            <i class="fas fa-undo mr-1"></i> Reset Form
+                          </button>
+                          <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check mr-1"></i> Create Attribute
+                          </button>
+                        </div>
+                      </form>
                     </div>
-                    <div class="form-group">
-                        <label for="edit_attribute_name">Attribute Name</label>
-                        <input type="text" class="form-control" id="edit_attribute_name" name="attribute_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_tab_group">Tab Group</label>
-                        <input type="text" class="form-control" id="edit_tab_group" name="tab_group" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_sort_order">Sort Order</label>
-                        <input type="number" class="form-control" id="edit_sort_order" name="sort_order" required>
-                    </div>
-                </form>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveAttributeChanges">Save changes</button>
+
+            <!-- Edit Attribute Modal -->
+            <div class="modal fade" id="editAttributeModal" tabindex="-1" role="dialog" aria-labelledby="editAttributeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editAttributeModalLabel">Update Attribute</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editAttributeForm">
+                                <input type="hidden" id="edit_attribute_id" name="id">
+                                <div class="form-group row">
+                                    <label for="edit_attribute_label" class="col-md-3 col-form-label">Attribute Label</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="edit_attribute_label" name="attribute_label" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="edit_attribute_name" class="col-md-3 col-form-label">Attribute Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="edit_attribute_name" name="attribute_name" required>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="edit_is_dynamic" class="col-md-3 col-form-label">Dynamic Attribute</label>
+                                    <div class="col-md-9">
+                                        <select class="form-control" id="edit_is_dynamic" name="is_dynamic">
+                                            <option value="0">No (Single Value)</option>
+                                            <option value="1">Yes (Multiple Values)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="edit_tab_name" class="col-md-3 col-form-label">Tab Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="edit_tab_name" name="tab_name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="edit_section_name" class="col-md-3 col-form-label">Section Name</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" id="edit_section_name" name="section_name">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="edit_sort_order" class="col-md-3 col-form-label">Sort Order</label>
+                                    <div class="col-md-9">
+                                        <input type="number" class="form-control" id="edit_sort_order" name="sort_order" required>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" id="saveAttributeChanges">Save changes</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
- <!-- Edit Attribute Modal -->
            
             <?php include 'includes/footer.php'; ?>
         </div>
@@ -364,36 +409,40 @@ AdminHeader("Manage Page Template Attributes", "", $extra_libs);
     <!-- JavaScript -->
     <script>
     $(document).ready(function() {
-   
-             // Tab name handling
-          $('#tab_name, #new_tab_name').change(function() {
+        // Initialize Select2
+        $('.select2').select2({
+            placeholder: "Select an option",
+            allowClear: true,
+            width: '100%'
+        });
+
+        // Tab name handling
+        $('#tab_name, #new_tab_name').change(function() {
             let tabName = $('#new_tab_name').val() || $('#tab_name').val();
             if (tabName) {
-              // Generate tab_group - lowercase, no spaces, underscores for spaces
-              let tabGroup = tabName.toLowerCase()
-                                  .replace(/\s+/g, '_')
-                                  .replace(/[^a-z0-9_]/g, '');
-              $('#tab_group').val(tabGroup);
+                // Generate tab_group - lowercase, no spaces, underscores for spaces
+                let tabGroup = tabName.toLowerCase()
+                                    .replace(/\s+/g, '_')
+                                    .replace(/[^a-z0-9_]/g, '');
+                $('#tab_group').val(tabGroup);
             } else {
-              $('#tab_group').val('');
+                $('#tab_group').val('');
             }
-          });
+        });
 
-          // When typing in new tab name, clear the select
-          $('#new_tab_name').on('input', function() {
+        // When typing in new tab name, clear the select
+        $('#new_tab_name').on('input', function() {
             if ($(this).val()) {
-              $('#tab_name').val('');
+                $('#tab_name').val('');
             }
-          });
+        });
 
-          // When selecting from dropdown, clear the new tab input
-          $('#tab_name').change(function() {
+        // When selecting from dropdown, clear the new tab input
+        $('#tab_name').change(function() {
             if ($(this).val()) {
-              $('#new_tab_name').val('');
+                $('#new_tab_name').val('');
             }
-          });
-
-
+        });
 
         // Template change - fetch attributes
         $('#template_id').change(function() {
@@ -511,82 +560,77 @@ AdminHeader("Manage Page Template Attributes", "", $extra_libs);
             }
             return true;
         });
+
+        // Edit attribute modal handling
+        $(document).on('click', '.edit-attribute-btn', function() {
+            const attrId = $(this).data('id');
+            const attrLabel = $(this).data('label');
+            const attrName = $(this).data('name');
+            const isDynamic = $(this).data('dynamic');
+            const tabName = $(this).data('tab');
+            const sectionName = $(this).data('section');
+            const sortOrder = $(this).data('sort');
+            
+            $('#edit_attribute_id').val(attrId);
+            $('#edit_attribute_label').val(attrLabel);
+            $('#edit_attribute_name').val(attrName);
+            $('#edit_is_dynamic').val(isDynamic);
+            $('#edit_tab_name').val(tabName);
+            $('#edit_section_name').val(sectionName);
+            $('#edit_sort_order').val(sortOrder);
+            
+            $('#editAttributeModal').modal('show');
+        });
+
+        // Save attribute changes
+        $('#saveAttributeChanges').click(function() {
+            const formData = $('#editAttributeForm').serialize();
+            
+            $.ajax({
+                url: 'update_attribute.php',
+                type: 'POST',
+                data: formData,
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Error updating attribute: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Error updating attribute. Please try again.');
+                }
+            });
+        });
+
+        // Delete attribute
+        $(document).on('click', '.delete-attribute-btn', function() {
+            if (!confirm('Are you sure you want to delete this attribute? This action cannot be undone.')) {
+                return false;
+            }
+            
+            const attrId = $(this).data('id');
+            const templateId = $('#template_id').val();
+            
+            $.ajax({
+                url: 'delete_attribute.php',
+                type: 'POST',
+                data: { 
+                    id: attrId,
+                    template_id: templateId,
+                    csrf_token: '<?= $_SESSION['csrf_token'] ?? '' ?>'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        location.reload();
+                    } else {
+                        alert('Error deleting attribute: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('Error deleting attribute. Please try again.');
+                }
+            });
+        });
     });
     </script>
-
-
-    <script>
-$(document).ready(function() {
-  // Toggle select options section when attribute type changes
-  $('#attribute_type').change(function() {
-    if ($(this).val() === 'select') {
-      $('#select-options-section').show();
-      // Ensure at least one option exists
-      if ($('.option-row').length === 0) {
-        addOptionRow();
-      }
-    } else {
-      $('#select-options-section').hide();
-    }
-  });
-
-  // Add new option row
-  $('#add-option').click(addOptionRow);
-
-  function addOptionRow() {
-    const row = `
-      <div class="option-row form-row mb-2">
-        <div class="col">
-          <input type="text" class="form-control" name="option_label[]" placeholder="Display Label" required>
-        </div>
-        <div class="col">
-          <input type="text" class="form-control" name="option_value[]" placeholder="Stored Value" required>
-        </div>
-        <div class="col-auto">
-          <button type="button" class="btn btn-danger remove-option">
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-      </div>`;
-    $('#option-container').append(row);
-    
-    // Enable all remove buttons except if it's the only one
-    $('.remove-option').prop('disabled', $('.option-row').length === 1);
-  }
-
-  // Remove option row
-  $(document).on('click', '.remove-option', function() {
-    $(this).closest('.option-row').remove();
-    // Disable remove button if only one row left
-    $('.remove-option').prop('disabled', $('.option-row').length === 1);
-  });
-
-  // Tab name handling
-  $('#tab_name, #new_tab_name').change(function() {
-    let tabName = $('#new_tab_name').val() || $('#tab_name').val();
-    if (tabName) {
-      // Generate tab_group - lowercase, no spaces, underscores for spaces
-      let tabGroup = tabName.toLowerCase()
-                          .replace(/\s+/g, '_')
-                          .replace(/[^a-z0-9_]/g, '');
-      $('#tab_group').val(tabGroup);
-    } else {
-      $('#tab_group').val('');
-    }
-  });
-
-  // When typing in new tab name, clear the select
-  $('#new_tab_name').on('input', function() {
-    if ($(this).val()) {
-      $('#tab_name').val('');
-    }
-  });
-
-  // When selecting from dropdown, clear the new tab input
-  $('#tab_name').change(function() {
-    if ($(this).val()) {
-      $('#new_tab_name').val('');
-    }
-  });
-});
-</script>
