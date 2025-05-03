@@ -301,17 +301,17 @@ if ($page_id > 0) {
             </div>
             <?php endforeach; ?>
         </div>
-        <?php if ($is_section_dynamic && !$is_first_set): ?>
-        <div class="card-footer text-right">
-            <button type="button" class="btn btn-sm btn-danger remove-section-set">
-                <i class="fa fa-trash"></i> Remove This Set
-            </button>
-        </div>
-        <?php endif; ?>
-    </div>
-    <?php endfor; ?>
-</div>
-<!-- End of section attributes -->
+                        <?php if ($is_section_dynamic && !$is_first_set): ?>
+                        <div class="card-footer text-right">
+                            <button type="button" class="btn btn-sm btn-danger remove-section-set">
+                                <i class="fa fa-trash"></i> Remove This Set
+                            </button>
+                        </div>
+                        <?php endif; ?>
+                    </div>
+                    <?php endfor; ?>
+                </div>
+                <!-- End of section attributes -->
 
                         </div>
                     <?php endforeach; ?>
