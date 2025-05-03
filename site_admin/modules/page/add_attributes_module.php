@@ -56,29 +56,44 @@ foreach ($attributes as $attr) {
 
 // Fetch existing attribute values for this page
 $attribute_values = [];
+$attribute_value_sets = [];
+$dynamic_sets = [];
+
 if ($page_id > 0) {
+    // Get all attribute values grouped by attribute_id
     $values = return_multiple_rows("
-        SELECT attribute_id, attribute_value 
+        SELECT id, attribute_id, attribute_value 
         FROM page_attribute_values 
         WHERE page_id = $page_id
+        ORDER BY attribute_id, id
     ");
+    
+    // Organize values by attribute_id and track set counts
     foreach ($values as $value) {
-        $attribute_values[$value['attribute_id']] = $value['attribute_value'];
+        if (!isset($attribute_value_sets[$value['attribute_id']])) {
+            $attribute_value_sets[$value['attribute_id']] = [];
+        }
+        $attribute_value_sets[$value['attribute_id']][] = $value['attribute_value'];
     }
-}
-
-// Check for dynamic sections
-$has_dynamic_sections = false;
-foreach ($section_attributes as $tab_sections) {
-    foreach ($tab_sections as $section_name => $section_attrs) {
-        foreach ($section_attrs as $attr) {
-            if ($attr['is_dynamic']) {
-                $has_dynamic_sections = true;
-                break 3;
+    
+    // For backward compatibility with non-dynamic attributes
+    foreach ($attribute_value_sets as $attrId => $values) {
+        $attribute_values[$attrId] = $values[0] ?? '';
+        
+        // Track maximum sets needed for each dynamic attribute
+        $attr = array_filter($attributes, function($a) use ($attrId) { return $a['id'] == $attrId; });
+        $attr = reset($attr);
+        if ($attr && $attr['is_dynamic']) {
+            $section_name = $attr['section_name'] ?: 'General';
+            if (!isset($dynamic_sets[$section_name])) {
+                $dynamic_sets[$section_name] = 1;
             }
+            $dynamic_sets[$section_name] = max($dynamic_sets[$section_name], count($values));
         }
     }
 }
+
+
 ?>
 <div class="container mt-5">
     
@@ -135,150 +150,169 @@ foreach ($section_attributes as $tab_sections) {
                                 <?php endif; ?>
                             </div>
                             
-                            <div class="attribute-sets-container">
-                                <div class="attribute-set card mb-4">
-                                    <div class="card-body">
-                                        <?php foreach ($section_attrs as $attribute):  
-                                            $attribute_id = $attribute['id'];
-                                            $current_value = isset($attribute_values[$attribute_id]) ? $attribute_values[$attribute_id] : $attribute['default_value'];
-                                            $required = $attribute['is_required'] ? 'required' : '';
-                                            $icon_class = $attribute['icon_class'] ?? 'fa fa-circle';
-                                        ?>
-                                        <div class="form-group row">
-                                            <label for="attr_<?php echo $attribute_id; ?>" class="col-sm-2 col-form-label">
-                                                <?php echo htmlspecialchars($attribute['attribute_label']); ?>
-                                                <?php if ($required): ?>
-                                                    <span class="text-danger">*</span>
-                                                <?php endif; ?>
-                                            </label>
-                                            <div class="col-sm-10">
-                                                <div class="input-group">
-                                                    <?php if ($icon_class): ?>
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text"><i class="<?php echo $icon_class; ?>"></i></span>
-                                                        </div>
-                                                    <?php endif; ?>
-                                                    
-                                                    <?php switch($attribute['attribute_type']):
-                                                      case 'text': ?>
-                                                            <input type="text" class="form-control" id="attr_<?php echo $attribute_id; ?>"
-                                                                  attribute-id="<?php echo $attribute_id; ?>" 
-                                                                   name="attribute[<?php echo $attribute_id; ?>][]" 
-                                                                   value="<?php echo htmlspecialchars($current_value); ?>" 
-                                                                   <?php echo $required; ?>>
-                                                            <?php break; ?>
-                                                        
-                                                    <?php   case 'textarea': ?>
-                                                            <textarea class="form-control" attribute-id="<?php echo $attribute_id; ?>"  
-                                                                      id="attr_<?php echo $attribute_id; ?>" 
-                                                                      name="attribute[<?php echo $attribute_id; ?>][]" 
-                                                                      <?php echo $required; ?> rows="3"><?php echo htmlspecialchars($current_value); ?></textarea>
-                                                            <?php break; ?>
-                                                                                    
-                                                    <?php   case 'richtextarea':
-                                                            $isrich_textarea = true;
-                                                            ?>
-                                                            <textarea class="form-control trumbowyg-editor" attribute-id="<?php echo $attribute_id; ?>" 
-                                                                      id="attr_<?php echo $attribute_id; ?>" 
-                                                                      name="attribute[<?php echo $attribute_id; ?>][]" 
-                                                                      <?php echo $required; ?> rows="3"><?php echo htmlspecialchars($current_value); ?></textarea>
-                                                            <?php break; ?>
+<div class="attribute-sets-container">
+    <?php
+    // Determine how many sets to create for this section
+    $sets_count = isset($dynamic_sets[$section_name]) ? $dynamic_sets[$section_name] : 1;
+    
+    for ($set_index = 0; $set_index < $sets_count; $set_index++):
+        $is_first_set = ($set_index === 0);
+    ?>
+    <div class="attribute-set card mb-4" data-set-index="<?php echo $set_index; ?>">
+        <div class="card-body">
+            <?php foreach ($section_attrs as $attribute):  
+                $attribute_id = $attribute['id'];
+                $current_value = '';
+                
+                // Get value for this set index if it exists
+                if (isset($attribute_value_sets[$attribute_id][$set_index])) {
+                    $current_value = $attribute_value_sets[$attribute_id][$set_index];
+                } elseif ($is_first_set) {
+                    $current_value = $attribute_values[$attribute_id] ?? $attribute['default_value'];
+                }
+                
+                $required = $attribute['is_required'] ? 'required' : '';
+                $icon_class = $attribute['icon_class'] ?? 'fa fa-circle';
+            ?>
+            <div class="form-group row">
+                <label for="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>" class="col-sm-2 col-form-label">
+                    <?php echo htmlspecialchars($attribute['attribute_label']); ?>
+                    <?php if ($required): ?>
+                        <span class="text-danger">*</span>
+                    <?php endif; ?>
+                </label>
+                <div class="col-sm-10">
+                    <div class="input-group">
+                        <?php if ($icon_class): ?>
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="<?php echo $icon_class; ?>"></i></span>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <?php switch($attribute['attribute_type']):
+                          case 'text': ?>
+                                <input type="text" class="form-control" 
+                                      id="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>"
+                                      attribute-id="<?php echo $attribute_id; ?>" 
+                                       name="attribute[<?php echo $attribute_id; ?>][<?php echo $set_index; ?>]" 
+                                       value="<?php echo htmlspecialchars($current_value); ?>" 
+                                       <?php echo $required; ?>>
+                                <?php break; ?>
+                            
+                        <?php   case 'textarea': ?>
+                                <textarea class="form-control" attribute-id="<?php echo $attribute_id; ?>"  
+                                          id="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>" 
+                                          name="attribute[<?php echo $attribute_id; ?>][<?php echo $set_index; ?>]" 
+                                          <?php echo $required; ?> rows="3"><?php echo htmlspecialchars($current_value); ?></textarea>
+                                <?php break; ?>
+                                                            
+                        <?php   case 'richtextarea':
+                                $isrich_textarea = true;
+                                ?>
+                                <textarea class="form-control trumbowyg-editor" attribute-id="<?php echo $attribute_id; ?>" 
+                                          id="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>" 
+                                          name="attribute[<?php echo $attribute_id; ?>][<?php echo $set_index; ?>]" 
+                                          <?php echo $required; ?> rows="3"><?php echo htmlspecialchars($current_value); ?></textarea>
+                                <?php break; ?>
 
-                                                    <?php   case 'select': ?>
-                                                            <select class="form-control" attribute-id="<?php echo $attribute_id; ?>" 
-                                                                    id="attr_<?php echo $attribute_id; ?>" 
-                                                                    name="attribute[<?php echo $attribute_id; ?>][]" <?php echo $required; ?>>
-                                                                <option value="">-- Select --</option>
-                                                                <?php if (isset($options_by_attribute[$attribute_id])): ?>
-                                                                    <?php foreach ($options_by_attribute[$attribute_id] as $option): ?>
-                                                                        <option value="<?php echo htmlspecialchars($option['option_value']); ?>" 
-                                                                                <?php echo ($current_value == $option['option_value']) ? 'selected' : ''; ?>>
-                                                                            <?php echo htmlspecialchars($option['option_label']); ?>
-                                                                        </option>
-                                                                    <?php endforeach; ?>
-                                                                <?php endif; ?>
-                                                            </select>
-                                                            <?php break; ?>
-                                                        
-                                                    <?php   case 'checkbox': ?>
-                                                            <div class="form-check">
-                                                                <input type="checkbox" class="form-check-input" 
-                                                                       id="attr_<?php echo $attribute_id; ?>"
-                                                                       attribute-id="<?php echo $attribute_id; ?>"
-                                                                       name="attribute[<?php echo $attribute_id; ?>][]" 
-                                                                       value="1" <?php echo ($current_value == '1') ? 'checked' : ''; ?>>
-                                                                <label class="form-check-label" for="attr_<?php echo $attribute_id; ?>">Yes</label>
-                                                            </div>
-                                                            <?php break; ?>
-                                                        
-                                                    <?php   case 'number': ?>
-                                                            <input type="number" step="0.01" class="form-control" 
-                                                                   id="attr_<?php echo $attribute_id; ?>"
-                                                                   attribute-id="<?php echo $attribute_id; ?>" 
-                                                                   name="attribute[<?php echo $attribute_id; ?>][]" 
-                                                                   value="<?php echo htmlspecialchars($current_value); ?>" 
-                                                                   <?php echo $required; ?>>
-                                                            <?php break; ?>
-                                                        
-                                                   <?php    case 'date': ?>
-                                                            <input type="date" class="form-control" id="attr_<?php echo $attribute_id; ?>" 
-                                                                   name="attribute[<?php echo $attribute_id; ?>][]"
-                                                                   attribute-id="<?php echo $attribute_id; ?>" 
-                                                                   value="<?php echo htmlspecialchars($current_value); ?>" 
-                                                                   <?php echo $required; ?>>
-                                                            <?php break; ?>
-
-                                                    <?php   case 'image': ?>
-                                                            <div class="input-group">
-                                                                <input type="text" placeholder="Choose Image" 
-                                                                       name="attribute[<?php echo $attribute_id; ?>][]" 
-                                                                       class="form-control" 
-                                                                       id="attr_<?php echo $attribute_id; ?>" 
-                                                                       attribute-id="<?php echo $attribute_id; ?>"   
-                                                                       value="<?php echo htmlspecialchars($current_value); ?>" 
-                                                                       <?php echo $required; ?>>
-                                                                <div class="input-group-append">
-                                                                    <button class="btn btn-primary" 
-                                                                            onclick="OpenMediaGallery('attr_<?php echo $attribute_id; ?>', 'page/attr')" 
-                                                                            type="button">
-                                                                        <i class="fa fa-picture-o"></i>&nbsp;Gallery
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            <?php break; ?>
-
-                                                    <?php   case 'multiselect': 
-                                                            $current_values = !empty($current_value) ? explode(',', $current_value) : []; ?>
-                                                            <select class="form-control select2-multiple" 
-                                                                    id="attr_<?php echo $attribute_id; ?>"
-                                                                    attribute-id="<?php echo $attribute_id; ?>" 
-                                                                    name="attribute[<?php echo $attribute_id; ?>][]" 
-                                                                    multiple="multiple" <?php echo $required; ?>>
-                                                                <?php if (isset($options_by_attribute[$attribute_id])): ?>
-                                                                    <?php foreach ($options_by_attribute[$attribute_id] as $option): ?>
-                                                                        <option value="<?php echo htmlspecialchars($option['option_value']); ?>" 
-                                                                                <?php echo in_array($option['option_value'], $current_values) ? 'selected' : ''; ?>>
-                                                                            <?php echo htmlspecialchars($option['option_label']); ?>
-                                                                        </option>
-                                                                    <?php endforeach; ?>
-                                                                <?php endif; ?>
-                                                            </select>
-                                                            <?php break; ?>
-                                                    <?php endswitch; ?>
-                                                </div>
-                                            </div>
-                                        </div>
+                        <?php   case 'select': ?>
+                                <select class="form-control" attribute-id="<?php echo $attribute_id; ?>" 
+                                        id="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>" 
+                                        name="attribute[<?php echo $attribute_id; ?>][<?php echo $set_index; ?>]" <?php echo $required; ?>>
+                                    <option value="">-- Select --</option>
+                                    <?php if (isset($options_by_attribute[$attribute_id])): ?>
+                                        <?php foreach ($options_by_attribute[$attribute_id] as $option): ?>
+                                            <option value="<?php echo htmlspecialchars($option['option_value']); ?>" 
+                                                    <?php echo ($current_value == $option['option_value']) ? 'selected' : ''; ?>>
+                                                <?php echo htmlspecialchars($option['option_label']); ?>
+                                            </option>
                                         <?php endforeach; ?>
-                                    </div>
-                                    <?php if ($is_section_dynamic): ?>
-                                    <div class="card-footer text-right">
-                                        <button type="button" class="btn btn-sm btn-danger remove-section-set">
-                                            <i class="fa fa-trash"></i> Remove This Set
+                                    <?php endif; ?>
+                                </select>
+                                <?php break; ?>
+                            
+                        <?php   case 'checkbox': ?>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" 
+                                           id="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>"
+                                           attribute-id="<?php echo $attribute_id; ?>"
+                                           name="attribute[<?php echo $attribute_id; ?>][<?php echo $set_index; ?>]" 
+                                           value="1" <?php echo ($current_value == '1') ? 'checked' : ''; ?>>
+                                    <label class="form-check-label" for="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>">Yes</label>
+                                </div>
+                                <?php break; ?>
+                            
+                        <?php   case 'number': ?>
+                                <input type="number" step="0.01" class="form-control" 
+                                       id="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>"
+                                       attribute-id="<?php echo $attribute_id; ?>" 
+                                       name="attribute[<?php echo $attribute_id; ?>][<?php echo $set_index; ?>]" 
+                                       value="<?php echo htmlspecialchars($current_value); ?>" 
+                                       <?php echo $required; ?>>
+                                <?php break; ?>
+                            
+                        <?php   case 'date': ?>
+                                <input type="date" class="form-control" id="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>" 
+                                       name="attribute[<?php echo $attribute_id; ?>][<?php echo $set_index; ?>]"
+                                       attribute-id="<?php echo $attribute_id; ?>" 
+                                       value="<?php echo htmlspecialchars($current_value); ?>" 
+                                       <?php echo $required; ?>>
+                                <?php break; ?>
+
+                        <?php   case 'image': ?>
+                                <div class="input-group">
+                                    <input type="text" placeholder="Choose Image" 
+                                           name="attribute[<?php echo $attribute_id; ?>][<?php echo $set_index; ?>]" 
+                                           class="form-control" 
+                                           id="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>" 
+                                           attribute-id="<?php echo $attribute_id; ?>"   
+                                           value="<?php echo htmlspecialchars($current_value); ?>" 
+                                           <?php echo $required; ?>>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" 
+                                                onclick="OpenMediaGallery('attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>', 'page/attr')" 
+                                                type="button">
+                                            <i class="fa fa-picture-o"></i>&nbsp;Gallery
                                         </button>
                                     </div>
-                                    <?php endif; ?>
                                 </div>
-                            </div>
+                                <?php break; ?>
+
+                        <?php   case 'multiselect': 
+                                $current_values = !empty($current_value) ? explode(',', $current_value) : []; ?>
+                                <select class="form-control select2-multiple" 
+                                        id="attr_<?php echo $attribute_id; ?>_<?php echo $set_index; ?>"
+                                        attribute-id="<?php echo $attribute_id; ?>" 
+                                        name="attribute[<?php echo $attribute_id; ?>][<?php echo $set_index; ?>]" 
+                                        multiple="multiple" <?php echo $required; ?>>
+                                    <?php if (isset($options_by_attribute[$attribute_id])): ?>
+                                        <?php foreach ($options_by_attribute[$attribute_id] as $option): ?>
+                                            <option value="<?php echo htmlspecialchars($option['option_value']); ?>" 
+                                                    <?php echo in_array($option['option_value'], $current_values) ? 'selected' : ''; ?>>
+                                                <?php echo htmlspecialchars($option['option_label']); ?>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    <?php endif; ?>
+                                </select>
+                                <?php break; ?>
+                        <?php endswitch; ?>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php if ($is_section_dynamic && !$is_first_set): ?>
+        <div class="card-footer text-right">
+            <button type="button" class="btn btn-sm btn-danger remove-section-set">
+                <i class="fa fa-trash"></i> Remove This Set
+            </button>
+        </div>
+        <?php endif; ?>
+    </div>
+    <?php endfor; ?>
+</div>
+<!-- End of section attributes -->
+
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -300,13 +334,16 @@ if($isrich_textarea){
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function() {
+
     // Track dynamic attributes
     const dynamicAttributes = {
         <?php foreach ($attributes as $attr): ?>
         <?php echo $attr['id']; ?>: <?php echo $attr['is_dynamic'] ? 'true' : 'false'; ?>,
         <?php endforeach; ?>
     };
+
+
+$(document).ready(function() {
 
     // Initialize Select2
     $('.select2-multiple').select2({
@@ -329,7 +366,7 @@ $(document).ready(function() {
     }
 
     // Add section set
-    $(document).on('click', '.add-section-set', function() {
+       $(document).on('click', '.add-section-set', function() {
         const sectionName = $(this).data('section');
         const $container = $(this).closest('.section-container').find('.attribute-sets-container');
         const $template = $container.find('.attribute-set').first().clone(true);

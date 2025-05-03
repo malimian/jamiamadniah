@@ -166,9 +166,6 @@ $(document).ready(function() {
         site_template: parseInt($('#site_template').val())
     };
 
-    console.log("initialTemplateValues.template_page : "+initialTemplateValues.template_page);
-    console.log("initialTemplateValues.site_template : "+initialTemplateValues.site_template);
-
 });
 
 
@@ -213,26 +210,49 @@ validateform(function() {
         selectedcategory_list.push($(this).attr('datachck-id'));
     });
 
-    // Collect dynamic attributes
-    var attributes = {};
-    $('[name^="attribute["]').each(function() {
-        var name = $(this).attr('name');
-        var attrId = name.match(/\[(\d+)\]/)[1];
-        var value;
-        
-        if ($(this).is(':checkbox')) {
-            value = $(this).is(':checked') ? '1' : '0';
-        } 
-        else if ($(this).hasClass('select2-multiple')) {
-            value = $(this).val() ? $(this).val().join(',') : '';
+        var attributes = {};
+        $('.attribute-set').each(function() {
+            $(this).find('[name^="attribute["]').each(function() {
+                var name = $(this).attr('name');
+                var attrId = name.match(/\[(\d+)\]/)[1];
+                var value;
+                
+                if ($(this).is(':checkbox')) {
+                    value = $(this).is(':checked') ? '1' : '0';
+                } 
+                else if ($(this).hasClass('select2-multiple')) {
+                    value = $(this).val() ? $(this).val().join(',') : '';
+                }
+                else {
+                    value = $(this).val();
+                }
+                
+                // Initialize array if not exists
+                if (!attributes[attrId]) {
+                    attributes[attrId] = [];
+                }
+                
+                // Only push if value is not empty (or is checkbox which can be 0)
+                if (value !== '' || ($(this).is(':checkbox') && value === '0')) {
+                    attributes[attrId].push(value);
+                }
+            });
+        });
+
+    $(document).ready(function() {
+    
+    // Process the collected attributes
+    var processedAttributes = {};
+    for (var attrId in attributes) {
+        if (dynamicAttributes[attrId]) {
+            // For dynamic attributes, keep all values
+            processedAttributes[attrId] = attributes[attrId];
+        } else {
+            // For non-dynamic, take only the first value
+            processedAttributes[attrId] = attributes[attrId][0] || '';
         }
-        else {
-            value = $(this).val();
-        }
-        
-        if (value !== '' || ($(this).is(':checkbox') && value === '0')) {
-            attributes[attrId] = value;
-        }
+    }
+
     });
 
     // Create FormData object

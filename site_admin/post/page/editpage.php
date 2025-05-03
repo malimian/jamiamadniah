@@ -51,23 +51,31 @@ if(isset($_POST['submit'])) {
 
     if($id > 0) {
         // Handle dynamic attributes
-        if (isset($_POST['attributes']) && !empty($_POST['attributes'])) {
-            $attributes = json_decode($_POST['attributes'], true);
+     if (isset($_POST['attributes']) && !empty($_POST['attributes'])) {
+       
+        $attributes = json_decode($_POST['attributes'], true);
+        
+        // Delete existing attributes for this page
+        Delete("DELETE FROM page_attribute_values WHERE page_id = $page_id");
+        
+        // Insert new attribute values
+        foreach ($attributes as $attrId => $values) {
+            $attrId = (int)$attrId;
             
-            // Delete existing attributes for this page
-            Delete("DELETE FROM page_attribute_values WHERE page_id = $page_id");
+            // Ensure $values is always an array
+            if (!is_array($values)) {
+                $values = [$values];
+            }
             
-            // Insert new attribute values
-            foreach ($attributes as $attrId => $value) {
-                $attrId = (int)$attrId;
+            foreach ($values as $value) {
                 $value = escape($value);
-                
                 if ($value !== '' && $value !== null) {
                     Insert("INSERT INTO page_attribute_values (page_id, attribute_id, attribute_value) 
                            VALUES ($page_id, $attrId, '$value')");
                 }
             }
         }
+    }
 
         // Handle categories
         Delete("DELETE FROM page_category WHERE page_id = $page_id");
