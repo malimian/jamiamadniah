@@ -90,7 +90,5 @@ define('USD_RATE', '0.0058');
 
 
 
-########################## ADD NUMBER PF PERCENTAGE IN ORIGNALPRICE
-define('ORIGNALPRICE_PERCENTAGE', '40');
 
 ?> 

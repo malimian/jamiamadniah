@@ -45,144 +45,10 @@ function checkForDangerousFunctions($inputString, $dangerousFunctions) {
     return $foundFunctions;
 }
 
-function RunPhp($inputString) {
-
-$dangerousFunctions = [
-    // Code execution functions
-    'eval',
-    'exec',
-    'shell_exec',
-    'system',
-    'passthru',
-    'popen',
-    'proc_open',
-    'pcntl_exec',
-
-    // File system functions
-    'fopen',
-    'file_put_contents',
-    'unlink',
-    'delete',
-    'rmdir',
-    'rename',
-    'copy',
-    'chmod',
-    'chown',
-    'chgrp',
-    'symlink',
-    'link',
-    'file_get_contents',
-    'file',
-    'scandir',
-    'glob',
-
-    // Database functions
-    'mysqli_query',
-    'mysql_query',
-    'pg_query',
-    'odbc_exec',
-
-    // PHP information and configuration
-    'phpinfo',
-    'ini_set',
-    'ini_get',
-    'ini_restore',
-
-    // Variable functions
-    'extract',
-    'parse_str',
-    'putenv',
-
-    // Serialization functions
-    'unserialize',
-    'serialize', // if data is coming from an untrusted source
-
-    // Command-line interface functions
-    'pcntl_fork',
-    'pcntl_signal',
-    'pcntl_waitpid',
-    'pcntl_wait',
-    'pcntl_wexitstatus',
-    'pcntl_wifcontinued',
-    'pcntl_wifexited',
-    'pcntl_wifsignaled',
-    'pcntl_wifstopped',
-    'pcntl_wstopsig',
-    'pcntl_wtermsig',
-
-    // Network functions
-    'curl_exec',
-    'curl_multi_exec',
-    'parse_url',
-    'fsockopen',
-    'pfsockopen',
-    'stream_socket_server',
-    'stream_socket_client',
-
-    // File Uploads
-    'move_uploaded_file',
-
-    // Session handling
-    'session_start',
-    'session_regenerate_id',
-    'session_destroy',
-
-    // Error handling
-    'set_error_handler',
-    'set_exception_handler',
-
-    // Miscellaneous
-    'dl', // Loads a PHP extension at runtime
-
-    // Input/output functions
-    'readfile',
-    'fpassthru',
-
-    // Functions that execute external programs
-    'proc_nice',
-    'proc_terminate',
-    'proc_close',
-    
-    // Functions for modifying execution environment
-    'putenv',
-
-    // Reflection
-    'ReflectionClass',
-    'ReflectionMethod',
-    'ReflectionFunction',
-    'ReflectionProperty',
-    
-    // Magic Functions
-    '__wakeup',
-    '__destruct',
-];
-
-    
-    // Regular expression pattern to extract the content between run_php{{ and }}
-    
-    $pattern = '/start_php(.*?)end_php/s';
-    
-    // Perform a regular expression match to extract the PHP code
-    if (preg_match($pattern, $inputString, $matches)) {
-        
-        $phpCode = html_entity_decode($matches[1]);
-
-        $foundFunctions = checkForDangerousFunctions($phpCode ,  $dangerousFunctions);
-
-        if (empty($foundFunctions)) {
-                  // Execute the PHP code within the string using eval
-                  $phpCode = html_entity_decode($phpCode , ENT_QUOTES, 'UTF-8' );
-                  eval($phpCode);
-        }
-
-    }
-
-    return false;
-}
-
 function include_module($filePath, $variables = array(), $print = false)
 {
     $output = NULL;
+   
     if(file_exists($filePath)){
 
         // Extract the variables to a local namespace
@@ -203,6 +69,7 @@ function include_module($filePath, $variables = array(), $print = false)
     if ($print) {
         print $output;
     }
+
     return $output;
 
 }
@@ -715,35 +582,43 @@ function upload_mutiple_image( $file_name , $target_dir){
 
 
 
-function replace_sysvari($content , $module_location = null){
-
-  $modules = return_multiple_rows("Select * from og_packages_category Where soft_delete = 0 and isactive = 1 ");
-  
-
-  if(!empty($module_location)){
-    foreach ($modules as $module) {
-    
-    $modules_content = include_module( $module_location.$module['location'] , array('packages_category' => $module['og_all_packages_id']));
-      
-      $content = str_replace($module['short_code'], $modules_content , $content);
-      
+/**
+ * Replace system variables and shortcodes in content
+ * 
+ * @param string $content The content to process
+ * @param string|null $module_location Path to module locations
+ * @return string Processed content with all replacements
+ */
+function replace_sysvari($content, $module_location = null) {
+    // First process module shortcodes if location provided
+    if (!empty($module_location)) {
+        $modules = return_multiple_rows("SELECT * FROM og_packages_category WHERE soft_delete = 0 AND isactive = 1");
+        
+        foreach ($modules as $module) {
+            $modules_content = include_module(
+                $module_location . $module['location'],
+                array('packages_category' => $module['og_all_packages_id'])
+            );
+            $content = str_replace($module['short_code'], $modules_content, $content);
+        }
     }
-  }
-  
 
-  $settings_codes = return_multiple_rows("Select * from og_settings Where soft_delete = 0 and isactive = 1 and short_code IS NOT NULL ");
-  
-  foreach ($settings_codes as $settings_code) {
+    // Process settings shortcodes
+    $settings_codes = return_multiple_rows(
+        "SELECT * FROM og_settings WHERE soft_delete = 0 AND isactive = 1 AND short_code IS NOT NULL"
+    );
+    
+    foreach ($settings_codes as $settings_code) {
+        $content = str_replace($settings_code['short_code'], $settings_code['settings_value'], $content);
+    }
 
-  $content = str_replace($settings_code['short_code'], $settings_code['settings_value'] ,$content);
+    // Process custom shortcodes (like date)
+    $content = process_custom_shortcodes($content);
 
-  }
-
+    // Final cleanup
     $content = replaceTxtArea(remove_non_utf($content));
     
-
     return $content;
-    
 }
 
 

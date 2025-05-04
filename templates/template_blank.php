@@ -5,7 +5,7 @@
 	<div id="div_content"></div>
 
 <?php } else {
-	echo replace_sysvari(RunPhp($content['page_desc']) , getcwd()."/");
+	echo replace_sysvari( $content['page_desc'] , getcwd()."/");
 }?>
 
 </section>

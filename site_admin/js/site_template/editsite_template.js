@@ -1,175 +1,199 @@
-// Declare CodeMirror instances globally
-var headerEditor, menuEditor, footerEditor, scriptEditor;
-
 document.addEventListener("DOMContentLoaded", function() {
-    // Initialize CodeMirror for Header
-    headerEditor = CodeMirror.fromTextArea(document.getElementById('st_header'), {
-        lineNumbers: true,
-        mode: 'htmlmixed',
-        matchBrackets: true,
-        autoCloseBrackets: true,
-        theme: 'default',
+    // Create top nav save button
+    const topNavSaveBtn = document.createElement('button');
+    topNavSaveBtn.className = 'btn btn-info top-nav-save-btn';
+    topNavSaveBtn.id = 'top-nav-save-btn';
+    topNavSaveBtn.textContent = 'Save Template';
+    topNavSaveBtn.type = 'button'; // Prevent form submission
+    document.body.appendChild(topNavSaveBtn);
+
+    // Initialize all editors as expanded by default
+    document.querySelectorAll('.editor-container').forEach(container => {
+        container.classList.add('expanded');
     });
 
-    // Initialize CodeMirror for Menu
-    menuEditor = CodeMirror.fromTextArea(document.getElementById('st_menue'), {
-        lineNumbers: true,
-        mode: 'htmlmixed',
-        matchBrackets: true,
-        autoCloseBrackets: true,
-        theme: 'default',
+    // Toggle editor collapse/expand
+    document.querySelectorAll('.editor-header').forEach(header => {
+        header.addEventListener('click', function() {
+            const container = this.closest('.editor-container');
+            container.classList.toggle('collapsed');
+            container.classList.toggle('expanded');
+            
+            const icon = this.querySelector('.toggle-collapse');
+            if (container.classList.contains('collapsed')) {
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            } else {
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            }
+        });
     });
 
-    // Initialize CodeMirror for Footer
-    footerEditor = CodeMirror.fromTextArea(document.getElementById('st_footer'), {
-        lineNumbers: true,
-        mode: 'htmlmixed',
-        matchBrackets: true,
-        autoCloseBrackets: true,
-        theme: 'default',
+    // Maximize button functionality
+    document.querySelectorAll('.maximize-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const target = this.getAttribute('data-target');
+            const editorContainer = this.closest('.editor-container');
+            const editor = document.getElementById(target);
+            const icon = this.querySelector('i');
+            
+            if (editorContainer.classList.contains('maximized-textarea')) {
+                editorContainer.classList.remove('maximized-textarea');
+                icon.classList.remove('fa-compress');
+                icon.classList.add('fa-expand');
+                this.setAttribute('title', 'Maximize');
+                topNavSaveBtn.style.display = 'none';
+            } else {
+                editorContainer.classList.add('maximized-textarea');
+                icon.classList.remove('fa-expand');
+                icon.classList.add('fa-compress');
+                this.setAttribute('title', 'Minimize');
+                topNavSaveBtn.style.display = 'block';
+            }
+        });
     });
 
-    // Initialize CodeMirror for Scripts
-    scriptEditor = CodeMirror.fromTextArea(document.getElementById('st_script'), {
-        lineNumbers: true,
-        mode: 'javascript',
-        matchBrackets: true,
-        autoCloseBrackets: true,
-        theme: 'default',
-    });
-
-    // Map editor IDs to their CodeMirror instances
-    var editors = {
-        st_header: headerEditor,
-        st_menue: menuEditor,
-        st_footer: footerEditor,
-        st_script: scriptEditor,
-    };
-
-    // Add maximize functionality
-    document.querySelectorAll('.maximize-btn').forEach(function(button) {
-        // Check if the button already has an event listener
-        if (!button.hasEventListener) {
-            button.hasEventListener = true; // Mark the button as having an event listener
-            button.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent form submission
-                var target = button.getAttribute('data-target'); // Get the target editor ID
-                var editor = editors[target]; // Get the CodeMirror instance
-                var editorElement = editor.getWrapperElement(); // Get the editor's wrapper element
-
-                // Toggle full-screen mode
-                if (editorElement.classList.contains('fullscreen')) {
-                    editorElement.classList.remove('fullscreen');
-                    button.textContent = 'Maximize';
-                } else {
-                    editorElement.classList.add('fullscreen');
-                    button.textContent = 'Minimize';
-                }
-
-                // Toggle maximize and minimize buttons
-                toggleMaximizeMinimizeButtons(button);
-
-                // Refresh the editor to adjust its size
-                editor.refresh();
-            });
-        }
-    });
-
-    // Function to toggle maximize and minimize buttons
-    function toggleMaximizeMinimizeButtons(button) {
-        var maximizeButtons = document.querySelectorAll('.maximize-btn');
-        var minimizeButtons = document.querySelectorAll('.minimize-btn');
-
-        if (button.textContent === 'Minimize') {
-            // Hide all maximize buttons
-            maximizeButtons.forEach(function(btn) {
-                btn.classList.add('hidden');
-            });
-            // Show all minimize buttons
-            minimizeButtons.forEach(function(btn) {
-                btn.classList.remove('hidden');
-            });
-        } else {
-            // Show all maximize buttons
-            maximizeButtons.forEach(function(btn) {
-                btn.classList.remove('hidden');
-            });
-            // Hide all minimize buttons
-            minimizeButtons.forEach(function(btn) {
-                btn.classList.add('hidden');
-            });
-        }
+    // HTML Beautify function
+    function beautifyHTML(textareaId) {
+        const textarea = document.getElementById(textareaId);
+        const ugly = textarea.value;
+        const beautiful = html_beautify(ugly, {
+            indent_size: 2,
+            indent_char: ' ',
+            max_preserve_newlines: 1,
+            preserve_newlines: true,
+            keep_array_indentation: false,
+            break_chained_methods: false,
+            indent_scripts: 'normal',
+            brace_style: 'collapse',
+            space_before_conditional: true,
+            unescape_strings: false,
+            jslint_happy: false,
+            end_with_newline: false,
+            wrap_line_length: 0,
+            indent_inner_html: true,
+            comma_first: false,
+            e4x: false,
+            indent_empty_lines: false
+        });
+        textarea.value = beautiful;
     }
-});
 
-validateform(function(){
-    // Get values from CodeMirror editors
-    var st_name = $('#st_name').val();
-    var st_header = headerEditor.getValue(); // Get value from CodeMirror editor
-    var st_menue = menuEditor.getValue();   // Get value from CodeMirror editor
-    var st_footer = footerEditor.getValue(); // Get value from CodeMirror editor
-    var st_script = scriptEditor.getValue(); // Get value from CodeMirror editor
-    var is_active = $('#is_active option:selected').val();
+    // Add event listeners for beautify buttons
+    document.querySelectorAll('.beautify-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const target = this.getAttribute('data-target');
+            beautifyHTML(target);
+        });
+    });
 
-    // Send data via AJAX
-    senddata(
-        'post/site_template/editsite_template.php',
-        "POST",
-        {
-            st_name: st_name,
-            st_header: st_header,
-            st_menue: st_menue,
-            st_footer: st_footer,
-            st_script: st_script,
-            is_active: is_active,
-            sitetemp_id: sitetemp_id,
+    // Prevent toolbar buttons from submitting form
+    document.querySelectorAll('.toolbar-buttons button').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const target = this.getAttribute('data-target');
+            const textarea = document.getElementById(target);
+            
+            if (this.classList.contains('indent-btn')) {
+                // Get selected text or use full content
+                let text = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) || textarea.value;
+                // Indent each line
+                text = text.split('\n').map(line => '    ' + line).join('\n');
+                
+                if (textarea.selectionStart !== textarea.selectionEnd) {
+                    // Replace selected text
+                    textarea.setRangeText(text, textarea.selectionStart, textarea.selectionEnd, 'end');
+                } else {
+                    // Replace entire content
+                    textarea.value = text;
+                }
+            } 
+            else if (this.classList.contains('outdent-btn')) {
+                // Get selected text or use full content
+                let text = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) || textarea.value;
+                // Outdent each line (remove up to 4 spaces)
+                text = text.split('\n').map(line => line.replace(/^ {1,4}/, '')).join('\n');
+                
+                if (textarea.selectionStart !== textarea.selectionEnd) {
+                    // Replace selected text
+                    textarea.setRangeText(text, textarea.selectionStart, textarea.selectionEnd, 'end');
+                } else {
+                    // Replace entire content
+                    textarea.value = text;
+                }
+            }
+            
+            textarea.focus();
+        });
+    });
+
+    // Save button in top nav
+    topNavSaveBtn.addEventListener('click', function() {
+        document.getElementById('submit_btn').click();
+    });
+
+    // Form submission using your existing functions
+    validateform(function(){
+        const formData = {
+            st_name: document.getElementById('st_name').value,
+            st_header: document.getElementById('st_header').value,
+            st_menu: document.getElementById('st_menu').value,
+            st_footer: document.getElementById('st_footer').value,
+            st_script: document.getElementById('st_script').value,
+            is_active: document.getElementById('is_active').value,
+            st_id : sitetemp_id,
             submit: true
-        },
-        function(result) {
-            console.log('success');
-            console.log(result);
+        };
 
-            $("#error_id").fadeIn(300).delay(1500);
+        senddata(
+            'post/site_template/editsite_template.php',
+            "POST",
+            formData,
+            function(result) {
+                console.log('success', result);
+                $("#error_id").fadeIn(300).delay(1500);
 
-            if (result > 0) {
-                $('#error_id').empty();
-                $('#error_id').html(
-                    '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                    '<strong>Success!</strong> Site Template Updated Successfully' +
+                if (result > 0) {
+                    $('#error_id').empty().html(
+                        '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                        '<strong>Success!</strong> Site Template Updated' +
+                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                        '<span aria-hidden="true">&times;</span>' +
+                        '</button>' +
+                        '</div>'
+                    );
+                    $.notify('Template Updated', "success");
+                } else if (result == 0) {
+                    $.notify('Already Updated', "info");
+                }
+            },
+            function(result) {
+                console.log('failure', result);
+                $("#error_id").empty().html(
+                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                    '<strong>Error!</strong> Something went wrong. Please try again.' +
                     '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
                     '<span aria-hidden="true">&times;</span>' +
                     '</button>' +
                     '</div>'
-                );
-
-                $.notify('Template Updated', "success");
+                ).fadeIn(300).delay(1500);
             }
+        );
+    }, function() {
+        $('#error_id').empty().html(
+            '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
+            '<strong>Warning!</strong> Please fill out all required fields.' +
+            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+            '<span aria-hidden="true">&times;</span>' +
+            '</button>' +
+            '</div>'
+        ).fadeIn(300).delay(1500);
+    });
 
-            if (result == 0) {
-                $.notify('Already Updated', "info");
-            }
-        },
-        function(result) {
-            console.log('failure');
-            console.log(result);
-            $("#error_id").empty().html(
-                '<div class="alert alert-alert alert-dismissible fade show" role="alert">' +
-                '<strong>Alert!</strong> Something went wrong. Double-check and try again.' +
-                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                '<span aria-hidden="true">&times;</span>' +
-                '</button>' +
-                '</div>'
-            ).fadeIn(300).delay(1500);
-        }
-    );
-}, function() {
-    // Validation failed
-    $('#error_id').empty().fadeIn(50).delay(1500).html(
-        '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
-        '<strong>Alert!</strong> Please fill out all required fields.' +
-        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-        '<span aria-hidden="true">&times;</span>' +
-        '</button>' +
-        '</div>'
-    ).fadeOut(10);
+    // Initialize all textareas with HTML content
+    document.querySelectorAll('.custom-editor').forEach(textarea => {
+        // Beautify the HTML on load
+        beautifyHTML(textarea.id);
+    });
 });

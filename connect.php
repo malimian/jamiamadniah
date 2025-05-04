@@ -13,6 +13,7 @@ require_once ('email/index.php');
 
 
 require_once (SITE_ADMIN.'/setting/general_function.php');
+require_once (SITE_ADMIN.'/setting/shortcodes.php');
 require_once (SITE_ADMIN.'/setting/encryption.php');
 
 
