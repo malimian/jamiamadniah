@@ -750,3 +750,52 @@ function canActivate($isSystemOperated) {
 function canDelete($isSystemOperated) {
     return in_array($isSystemOperated, [3, 5, 6 ,0]);
 }
+
+    // Function to build menu items
+    function buildMenuItem($item, &$menuItems, &$idToItemMap, &$processedItems) {
+        if (in_array($item['id'], $processedItems)) return;
+        
+        $processedItems[] = $item['id'];
+        $hasChildren = isset($menuItems[$item['id']]);
+        
+        echo '<li class="nav-item' . ($hasChildren ? ' dropdown' : '') . '">';
+        
+        if ($hasChildren) {
+            echo '<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown'.$item['id'].'" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">';
+        } else {
+            echo '<a class="nav-link" href="'.$item['url'].'">';
+        }
+        
+        echo '<i class="'.$item['iconclass'].'"></i>&nbsp;';
+        echo '<span>'.$item['title'].'</span>';
+        echo '</a>';
+        
+        if ($hasChildren) {
+            echo '<div class="dropdown-menu" aria-labelledby="navbarDropdown'.$item['id'].'">';
+            buildMenu($item['id'], $menuItems, $idToItemMap, $processedItems);
+            echo '</div>';
+        }
+        
+        echo '</li>';
+    }
+    
+    // Function to build menu hierarchy
+    function buildMenu($parentId, &$menuItems, &$idToItemMap, &$processedItems) {
+        if (!isset($menuItems[$parentId])) return;
+        
+        foreach ($menuItems[$parentId] as $item) {
+            if ($parentId != 0) {
+                // Child items in dropdown
+                if (!in_array($item['id'], $processedItems)) {
+                    echo '<a class="dropdown-item" href="'.$item['url'].'">';
+                    echo '<i class="'.$item['iconclass'].'"></i>&nbsp;';
+                    echo $item['title'];
+                    echo '</a>';
+                    $processedItems[] = $item['id'];
+                }
+            } else {
+                // Top-level items
+                buildMenuItem($item, $menuItems, $idToItemMap, $processedItems);
+            }
+        }
+    }
