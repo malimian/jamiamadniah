@@ -62,6 +62,20 @@ if (!empty($username) && !empty($password)) {
 
       $_SESSION['user']['sidebar_modules'] = $og_sidebar_modules;
 
+        $ip = escape( $_SERVER['REMOTE_ADDR']);
+        
+        // Update last access
+        Update("UPDATE loginuser SET lastaccessip = '$ip', lastaccess = NOW() WHERE id = $uid ");
+
+        // 2. Record login activity
+        $activity_query = "INSERT INTO activity_log 
+                          (user_id, action, entity_type, ip_address, details) 
+                          VALUES 
+                          ($uid, 'login', 'user', '$ip', 'User logged in')";
+
+        Insert( $activity_query);
+
+
        echo $dashboard;
 
     }
