@@ -117,6 +117,40 @@ if (isset($_GET['export']) && $_GET['export'] == 'csv') {
     exit();
 }
 
+// Handle CSV export
+if (isset($_GET['export']) && $_GET['export'] == 'activity_csv') {
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=activity_log_'.date('Y-m-d').'.csv');
+    
+    $output = fopen('php://output', 'w');
+    
+    // Write CSV header
+    fputcsv($output, ['Timestamp', 'User', 'Action', 'Entity Type', 'Entity ID', 'Details', 'IP Address']);
+    
+    // Build the export query (similar to the display query)
+    $export_query = "SELECT al.*, lu.fullname, lu.username 
+                    FROM activity_log al
+                    LEFT JOIN loginuser lu ON al.user_id = lu.id
+                    ORDER BY al.created_at DESC LIMIT 1000";
+    
+    $activities = return_multiple_rows($export_query);
+    
+    foreach ($activities as $row) {
+        fputcsv($output, [
+            $row['created_at'],
+            $row['fullname'] ?: $row['username'],
+            $row['action'],
+            $row['entity_type'],
+            $row['entity_id'],
+            $row['details'],
+            $row['ip_address']
+        ]);
+    }
+    
+    fclose($output);
+    exit();
+}
+
 // Define all dashboard cards with their metadata
 $hardcoded_cards = [
     'orders' => [
@@ -538,27 +572,125 @@ AdminHeader(
                                     </div>
                                 </div>
                                 <div class="mt-2">
-                                    <h6 class="font-weight-bold">Recent Activity</h6>
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered table-sm small">
-                                            <thead>
-                                                <tr>
-                                                    <th>Timestamp</th>
-                                                    <th>User</th>
-                                                    <th>Action</th>
-                                                    <th>Details</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                // This would need an activity log table to work properly
-                                                // Example placeholder - you'd need to implement actual logging
-                                                echo "<tr><td colspan='4' class='text-center'>Activity logging not implemented</td></tr>";
-                                                ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+    <h6 class="font-weight-bold">Recent Activity</h6>
+    <div class="d-flex justify-content-between mb-2">
+        <div>
+            <a href="?export=activity_csv" class="btn btn-sm btn-success">
+                <i class="fas fa-download"></i> Export as CSV
+            </a>
+        </div>
+        <div>
+            <form method="get" class="form-inline">
+                <select name="action_filter" class="form-control form-control-sm mr-2">
+                    <option value="">All Actions</option>
+                    <option value="login" <?= isset($_GET['action_filter']) && $_GET['action_filter'] == 'login' ? 'selected' : '' ?>>Logins</option>
+                    <option value="logout" <?= isset($_GET['action_filter']) && $_GET['action_filter'] == 'logout' ? 'selected' : '' ?>>Logouts</option>
+                    <option value="create" <?= isset($_GET['action_filter']) && $_GET['action_filter'] == 'create' ? 'selected' : '' ?>>Creations</option>
+                    <option value="update" <?= isset($_GET['action_filter']) && $_GET['action_filter'] == 'update' ? 'selected' : '' ?>>Updates</option>
+                    <option value="delete" <?= isset($_GET['action_filter']) && $_GET['action_filter'] == 'delete' ? 'selected' : '' ?>>Deletions</option>
+                </select>
+                <input type="text" name="search" class="form-control form-control-sm mr-2" placeholder="Search..." value="<?= clean($_GET['search'] ?? '') ?>">
+                <button type="submit" class="btn btn-sm btn-primary">Filter</button>
+                <a href="?" class="btn btn-sm btn-secondary ml-1">Reset</a>
+            </form>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-sm small">
+            <thead class="thead-light">
+                <tr>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Entity</th>
+                    <th>Details</th>
+                    <th>IP Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                // Build the base query
+                $query = "SELECT al.*, lu.fullname, lu.username 
+                          FROM activity_log al
+                          LEFT JOIN loginuser lu ON al.user_id = lu.id
+                          WHERE 1=1";
+                
+                // Add filters
+                $where = [];
+                $params = [];
+                
+                if (!empty($_GET['action_filter'])) {
+                    $where[] = "al.action = '".escape($_GET['action_filter'])."'";
+                }
+                
+                if (!empty($_GET['search'])) {
+                    $search = escape($_GET['search']);
+                    $where[] = "(al.details LIKE '%$search%' OR lu.fullname LIKE '%$search%' OR lu.username LIKE '%$search%')";
+                }
+                
+                // Combine WHERE clauses
+                if (!empty($where)) {
+                    $query .= " AND " . implode(" AND ", $where);
+                }
+                
+                // Complete the query
+                $query .= " ORDER BY al.created_at DESC LIMIT 50";
+                
+                // Execute query using your function
+                $activities = return_multiple_rows($query);
+                
+                if (!empty($activities)) {
+                    foreach ($activities as $row) {
+                        echo "<tr>
+                            <td>".htmlspecialchars($row['created_at'])."</td>
+                            <td>".htmlspecialchars($row['fullname'] ?: $row['username'])."</td>
+                            <td><span class='badge badge-".get_action_badge($row['action'])."'>".ucfirst($row['action'])."</span></td>
+                            <td>".format_entity($row['entity_type'], $row['entity_id'])."</td>
+                            <td>".htmlspecialchars($row['details'])."</td>
+                            <td>".htmlspecialchars($row['ip_address'])."</td>
+                        </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='6' class='text-center'>No activity found</td></tr>";
+                }
+                
+                // Helper function for action badges
+                function get_action_badge($action) {
+                    switch ($action) {
+                        case 'login': return 'success';
+                        case 'logout': return 'secondary';
+                        case 'create': return 'primary';
+                        case 'update': return 'info';
+                        case 'delete': return 'danger';
+                        default: return 'warning';
+                    }
+                }
+                
+                // Helper function to format entity references
+                function format_entity($type, $id) {
+                    if (!$type || !$id) return '';
+                    
+                    $name = '';
+                    switch ($type) {
+                        case 'user':
+                            $user = return_single_row("SELECT fullname, username FROM loginuser WHERE id = ".(int)$id);
+                            $name = $user ? ($user['fullname'] ?: $user['username']) : 'User #'.$id;
+                            break;
+                        case 'page':
+                            $page = return_single_row("SELECT page_title FROM pages WHERE pid = ".(int)$id);
+                            $name = $page ? $page['page_title'] : 'Page #'.$id;
+                            break;
+                        default:
+                            $name = ucfirst($type).' #'.$id;
+                    }
+                    
+                    return htmlspecialchars($name);
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
                             </div>
                         </div>
                     </div>
