@@ -622,6 +622,8 @@ AdminHeader(
 
             </div>
             </form>
+                
+                <?php echo include_module('modules/shortcode/short_code.php', array( 'css' => '.shortcode-panel {top:0px;}' )); ?>
         </div>
     </div>
 </div>

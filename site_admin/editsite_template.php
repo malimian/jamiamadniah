@@ -134,10 +134,10 @@ $site_template = return_single_row("SELECT * FROM site_template WHERE st_id = ".
                             </div>
 
                         </form>
-                        
-                         <?php echo include_module('modules/shortcode/short_code.php', array('action' => "edit" , 'page' => array($page) )); ?>
-                     
                      </div>
+
+                         <?php echo include_module('modules/shortcode/short_code.php'); ?>
+
                   </div>
                </div>
             </div>

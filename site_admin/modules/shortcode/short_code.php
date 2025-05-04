@@ -6,6 +6,9 @@ $og_packages = return_multiple_rows("SELECT * FROM og_packages_category WHERE is
 
 <style>
 /* Add this CSS to make the shortcode panel scrollable */
+
+<?php if(isset($css)) echo $css;?>
+
 .shortcode-panel {
     position: fixed;
     right: 0;
