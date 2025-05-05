@@ -76,7 +76,7 @@ $users = return_multiple_rows("SELECT * FROM loginuser WHERE soft_delete = 0");
                 <h3 class="page-header">
                     All Templates (<?php echo $total_items; ?>)
                     <?php if($has_add): ?>
-                        <a href="add_template.php" style="float:right;color: #fff" class="btn btn-danger btn-md">
+                        <a href="editsite_template.php" style="float:right;color: #fff" class="btn btn-danger btn-md">
                             <i class="fa fa-plus">&nbsp;</i>Add New
                         </a>
                     <?php endif; ?>
