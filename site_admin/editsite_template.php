@@ -8,17 +8,33 @@ $extra_libs = [
     '<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-html.min.js"></script>'
 ];
 
+$page_title = isset($_GET['id']) ? "Edit Template" : "Add New Template";
 AdminHeader(
-    "dashboard Admin", 
+    $page_title, 
     "", 
     $extra_libs,
     null,
     ''
 );
 
-// Get site template data
-$site_template = return_single_row("SELECT * FROM site_template WHERE st_id = ".escape($_GET['id'])." $and_gc");
+// Initialize empty template data for new template
+$site_template = [
+    'st_id' => '',
+    'st_name' => '',
+    'st_header' => '',
+    'st_menu' => '',
+    'st_footer' => '',
+    'st_script' => '',
+    'isactive' => 1
+];
 
+// If editing existing template, fetch data
+if(isset($_GET['id'])) {
+    $site_template = return_single_row("SELECT * FROM site_template WHERE st_id = ".escape($_GET['id'])." $and_gc");
+    if(!$site_template) {
+        exit("<script>location = site_templates.php</script>");
+    }
+}
 ?>
 
 <body id="page-top">
@@ -27,6 +43,47 @@ $site_template = return_single_row("SELECT * FROM site_template WHERE st_id = ".
    <?php include 'includes/sidebar.php'; ?>
    <div id="content-wrapper">
       <div class="container-fluid">
+         <!-- Navigation Tabs -->
+         <div class="row mb-4">
+            <!-- Breadcrumb Column -->
+            <div class="col-md-12">
+               <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb bg-light p-3 rounded">
+                     <li class="breadcrumb-item">
+                        <a href="dashboard_admin.php"><i class="fas fa-home"></i> Dashboard</a>
+                     </li>
+                     <li class="breadcrumb-item">
+                        <a href="site_template.php">Templates</a>
+                     </li>
+                     <li class="breadcrumb-item active"><?php echo $page_title ?></li>
+                  </ol>
+               </nav>
+            </div>
+            
+            <!-- Action Buttons Column -->
+            <div class="col-md-12">
+                <div class="btn-toolbar justify-content-end" role="toolbar">
+                    <div class="btn-group" role="group">
+                        <a href="editsite_template.php" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> New Template
+                        </a>
+                        <?php if(isset($_GET['id'])): ?>
+                        <a href="editsite_template.php?id=<?php echo $_GET['id'] ?>&action=duplicate" class="btn btn-secondary">
+                            <i class="fas fa-copy"></i> Duplicate
+                        </a>
+                        <a href="preview_template.php?id=<?php echo $_GET['id'] ?>" target="_blank" class="btn btn-info">
+                            <i class="fas fa-eye"></i> Preview
+                        </a>
+                        <button type="button" class="btn btn-danger" id="recycleBinBtn">
+                            <i class="fas fa-trash-alt"></i> Move to Recycle Bin
+                        </button>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+
+         </div>
+         
          <div class="container-fluid">
             <div id="error_id"></div>
             <div id="page-content-wrapper">
@@ -34,11 +91,14 @@ $site_template = return_single_row("SELECT * FROM site_template WHERE st_id = ".
                   <div class="row">
                      <div class="col-lg-12">
                         <form class="needs-validation" onsubmit="return false" novalidate>
+                           <!-- Hidden field for template ID -->
+                           <input type="hidden" id="st_id" name="st_id" value="<?php echo $site_template['st_id']; ?>">
+                           
                            <!-- Template Name and Active Status in one row -->
-                         <div class="form-row align-items-center mb-4">
+                           <div class="form-row align-items-center mb-4">
                                 <div class="col-md-6">
                                     <label class="form-label-row">Template Name</label>
-                                    <input type="text" class="form-control" id="st_name" placeholder="Update Name" name="st_name" value="<?php echo htmlspecialchars($site_template['st_name']); ?>">
+                                    <input type="text" class="form-control" id="st_name" placeholder="Template Name" name="st_name" value="<?php echo htmlspecialchars($site_template['st_name']); ?>" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label-row">Is Active</label>
@@ -130,7 +190,9 @@ $site_template = return_single_row("SELECT * FROM site_template WHERE st_id = ".
                            </div>
 
                             <div class="col-md-2 d-flex align-items-end">
-                                    <button type="submit" name="submit" class="btn btn-info w-100" id="submit_btn">Save Changes</button>
+                                    <button type="submit" name="submit" class="btn btn-info w-100" id="submit_btn">
+                                        <?php echo isset($_GET['id']) ? 'Save Changes' : 'Create Template'; ?>
+                                    </button>
                             </div>
 
                         </form>
@@ -145,6 +207,6 @@ $site_template = return_single_row("SELECT * FROM site_template WHERE st_id = ".
       </div>
    </div>
    <script>
-           const sitetemp_id = "<?php echo intval($_GET['id']); ?>";
+           const sitetemp_id = "<?php echo isset($_GET['id']) ? intval($_GET['id']) : 'new'; ?>";
    </script>
    <script src="js/site_template/editsite_template.js"></script>

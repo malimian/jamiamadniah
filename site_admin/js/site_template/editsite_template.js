@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
     topNavSaveBtn.className = 'btn btn-info top-nav-save-btn';
     topNavSaveBtn.id = 'top-nav-save-btn';
     topNavSaveBtn.textContent = 'Save Template';
-    topNavSaveBtn.type = 'button'; // Prevent form submission
+    topNavSaveBtn.type = 'button';
     document.body.appendChild(topNavSaveBtn);
 
     // Initialize all editors as expanded by default
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // Prevent toolbar buttons from submitting form
+    // Indent/Outdent functionality
     document.querySelectorAll('.toolbar-buttons button').forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
@@ -96,30 +96,22 @@ document.addEventListener("DOMContentLoaded", function() {
             const textarea = document.getElementById(target);
             
             if (this.classList.contains('indent-btn')) {
-                // Get selected text or use full content
                 let text = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) || textarea.value;
-                // Indent each line
                 text = text.split('\n').map(line => '    ' + line).join('\n');
                 
                 if (textarea.selectionStart !== textarea.selectionEnd) {
-                    // Replace selected text
                     textarea.setRangeText(text, textarea.selectionStart, textarea.selectionEnd, 'end');
                 } else {
-                    // Replace entire content
                     textarea.value = text;
                 }
             } 
             else if (this.classList.contains('outdent-btn')) {
-                // Get selected text or use full content
                 let text = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd) || textarea.value;
-                // Outdent each line (remove up to 4 spaces)
                 text = text.split('\n').map(line => line.replace(/^ {1,4}/, '')).join('\n');
                 
                 if (textarea.selectionStart !== textarea.selectionEnd) {
-                    // Replace selected text
                     textarea.setRangeText(text, textarea.selectionStart, textarea.selectionEnd, 'end');
                 } else {
-                    // Replace entire content
                     textarea.value = text;
                 }
             }
@@ -133,67 +125,117 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('submit_btn').click();
     });
 
-    // Form submission using your existing functions
-    validateform(function(){
+// Form submission handler
+document.getElementById('submit_btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Validate form
+            if (!document.getElementById('st_name').value) {
+                showAlert('warning', 'Template name is required');
+                return;
+            }
+
+            // Create regular form data object (not FormData)
+            const formData = {
+                st_name: document.getElementById('st_name').value,
+                st_header: document.getElementById('st_header').value,
+                st_menu: document.getElementById('st_menu').value,
+                st_footer: document.getElementById('st_footer').value,
+                st_script: document.getElementById('st_script').value,
+                is_active: document.getElementById('is_active').value,
+                st_id: sitetemp_id,
+                submit: true
+            };
+
+            // Use jQuery AJAX directly to avoid the illegal invocation error
+            $.ajax({
+                url: 'post/site_template/editsite_template.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json', // Expect JSON response
+                success: function(result) {
+                    console.log('success', result);
+                    
+                    if (result.success) {
+                        showAlert('success', result.message);
+                        $.notify(result.message, "success");
+                        
+                        // If new template, redirect to edit page
+                        if (sitetemp_id === 'new' && result.data && result.data.id) {
+                            window.location.href = 'editsite_template.php?id=' + result.data.id;
+                        }
+                    } else {
+                        showAlert('danger', result.message || 'Operation failed');
+                        $.notify(result.message || 'Operation failed', "error");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log('failure', error);
+                    showAlert('danger', 'Something went wrong. Please try again.');
+                    $.notify('Error saving template', "error");
+                }
+            });
+        });
+
+        // Helper function to show alerts
+        function showAlert(type, message) {
+            const alertClass = {
+                'success': 'alert-success',
+                'danger': 'alert-danger',
+                'warning': 'alert-warning',
+                'info': 'alert-info'
+            }[type] || 'alert-info';
+            
+            $('#error_id').empty().html(
+                `<div class="alert ${alertClass} alert-dismissible fade show" role="alert">
+                    <strong>${type.charAt(0).toUpperCase() + type.slice(1)}!</strong> ${message}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>`
+            ).fadeIn(300).delay(1500);
+        }
+
+    // Beautify all textareas on load
+    document.querySelectorAll('.custom-editor').forEach(textarea => {
+        beautifyHTML(textarea.id);
+    });
+
+
+});
+
+
+// Recycle Bin Button Handler
+document.getElementById('recycleBinBtn')?.addEventListener('click', function() {
+    if (confirm('Are you sure you want to move this template to the recycle bin?')) {
         const formData = {
-            st_name: document.getElementById('st_name').value,
-            st_header: document.getElementById('st_header').value,
-            st_menu: document.getElementById('st_menu').value,
-            st_footer: document.getElementById('st_footer').value,
-            st_script: document.getElementById('st_script').value,
-            is_active: document.getElementById('is_active').value,
-            st_id : sitetemp_id,
+            st_id: sitetemp_id,
+            action: 'recycle',
             submit: true
         };
 
-        senddata(
-            'post/site_template/editsite_template.php',
-            "POST",
-            formData,
-            function(result) {
-                console.log('success', result);
-                $("#error_id").fadeIn(300).delay(1500);
-
-                if (result > 0) {
-                    $('#error_id').empty().html(
-                        '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
-                        '<strong>Success!</strong> Site Template Updated' +
-                        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                        '<span aria-hidden="true">&times;</span>' +
-                        '</button>' +
-                        '</div>'
-                    );
-                    $.notify('Template Updated', "success");
-                } else if (result == 0) {
-                    $.notify('Already Updated', "info");
+        $.ajax({
+            url: 'post/site_template/editsite_template.php',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(result) {
+                if (result.success) {
+                    showAlert('success', result.message);
+                    $.notify(result.message, "success");
+                    setTimeout(() => {
+                        window.location.href = 'site_template.php';
+                    }, 1500);
+                } else {
+                    showAlert('danger', result.message || 'Operation failed');
+                    $.notify(result.message || 'Operation failed', "error");
                 }
             },
-            function(result) {
-                console.log('failure', result);
-                $("#error_id").empty().html(
-                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
-                    '<strong>Error!</strong> Something went wrong. Please try again.' +
-                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-                    '<span aria-hidden="true">&times;</span>' +
-                    '</button>' +
-                    '</div>'
-                ).fadeIn(300).delay(1500);
+            error: function(xhr, status, error) {
+                console.log('failure', error);
+                showAlert('danger', 'Something went wrong. Please try again.');
+                $.notify('Error moving to recycle bin', "error");
             }
-        );
-    }, function() {
-        $('#error_id').empty().html(
-            '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
-            '<strong>Warning!</strong> Please fill out all required fields.' +
-            '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
-            '<span aria-hidden="true">&times;</span>' +
-            '</button>' +
-            '</div>'
-        ).fadeIn(300).delay(1500);
-    });
-
-    // Initialize all textareas with HTML content
-    document.querySelectorAll('.custom-editor').forEach(textarea => {
-        // Beautify the HTML on load
-        beautifyHTML(textarea.id);
-    });
+        });
+    }
 });
