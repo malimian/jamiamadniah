@@ -125,76 +125,6 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('submit_btn').click();
     });
 
-// Form submission handler
-document.getElementById('submit_btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Validate form
-            if (!document.getElementById('st_name').value) {
-                showAlert('warning', 'Template name is required');
-                return;
-            }
-
-            // Create regular form data object (not FormData)
-            const formData = {
-                st_name: document.getElementById('st_name').value,
-                st_header: document.getElementById('st_header').value,
-                st_menu: document.getElementById('st_menu').value,
-                st_footer: document.getElementById('st_footer').value,
-                st_script: document.getElementById('st_script').value,
-                is_active: document.getElementById('is_active').value,
-                st_id: sitetemp_id,
-                submit: true
-            };
-
-            // Use jQuery AJAX directly to avoid the illegal invocation error
-            $.ajax({
-                url: 'post/site_template/editsite_template.php',
-                type: 'POST',
-                data: formData,
-                dataType: 'json', // Expect JSON response
-                success: function(result) {
-                    console.log('success', result);
-                    
-                    if (result.success) {
-                        showAlert('success', result.message);
-                        $.notify(result.message, "success");
-                        
-                        // If new template, redirect to edit page
-                        if (sitetemp_id === 'new' && result.data && result.data.id) {
-                            window.location.href = 'editsite_template.php?id=' + result.data.id;
-                        }
-                    } else {
-                        showAlert('danger', result.message || 'Operation failed');
-                        $.notify(result.message || 'Operation failed', "error");
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.log('failure', error);
-                    showAlert('danger', 'Something went wrong. Please try again.');
-                    $.notify('Error saving template', "error");
-                }
-            });
-        });
-
-        // Helper function to show alerts
-        function showAlert(type, message) {
-            const alertClass = {
-                'success': 'alert-success',
-                'danger': 'alert-danger',
-                'warning': 'alert-warning',
-                'info': 'alert-info'
-            }[type] || 'alert-info';
-            
-            $('#error_id').empty().html(
-                `<div class="alert ${alertClass} alert-dismissible fade show" role="alert">
-                    <strong>${type.charAt(0).toUpperCase() + type.slice(1)}!</strong> ${message}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>`
-            ).fadeIn(300).delay(1500);
-        }
 
     // Beautify all textareas on load
     document.querySelectorAll('.custom-editor').forEach(textarea => {
@@ -238,4 +168,87 @@ document.getElementById('recycleBinBtn')?.addEventListener('click', function() {
             }
         });
     }
+});
+
+
+
+// Form submission handler using validateform and senddata
+validateform(function(){
+    // Get form values
+    var st_name = $('#st_name').val();
+    var st_header = $('#st_header').val();
+    var st_menu = $('#st_menu').val();  // Fixed typo from st_menue to st_menu
+    var st_footer = $('#st_footer').val();
+    var st_script = $('#st_script').val();
+    var is_active = $('#is_active').val();
+    
+    // Prepare data object
+    var formData = {
+        st_name: st_name,
+        st_header: st_header,
+        st_menu: st_menu,
+        st_footer: st_footer,
+        st_script: st_script,
+        is_active: is_active,
+        st_id: sitetemp_id || 'new',  // Include the template ID if it exists
+        submit: true
+    };
+
+    // Use your senddata function
+    senddata('post/site_template/editsite_template.php', "POST", formData,
+        function(result) {
+            console.log('success', result);
+            
+            if (result.success) {
+                // Show success message
+                $('#error_id').empty().html(
+                    '<div class="alert alert-success alert-dismissible fade show" role="alert">' +
+                    '<strong>Success!</strong> ' + (result.message || 'Operation completed successfully') +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                    '<span aria-hidden="true">&times;</span></button></div>'
+                ).fadeIn(300).delay(1500);
+                
+                // Show notification
+                $.notify(result.message || "Operation completed successfully", "success");
+                
+                // If new template, redirect to edit page
+                if ((sitetemp_id === 'new' || !sitetemp_id) && result.data && result.data.id) {
+                    setTimeout(function() {
+                        window.location.href = 'editsite_template.php?id=' + result.data.id;
+                    }, 1500);
+                }
+            } else {
+                // Show error message
+                $('#error_id').empty().html(
+                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                    '<strong>Error!</strong> ' + (result.message || 'Operation failed') +
+                    '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                    '<span aria-hidden="true">&times;</span></button></div>'
+                ).fadeIn(300).delay(1500);
+            }
+        },
+        function(error) {
+            console.log('failure', error);
+            $('#error_id').empty().html(
+                '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                '<strong>Error!</strong> Something went wrong. Please try again.' +
+                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                '<span aria-hidden="true">&times;</span></button></div>'
+            ).fadeIn(300).delay(1500);
+        }
+    );
+},
+function() {
+    // Validation failed callback
+    $('#error_id').empty().html(
+        '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
+        '<strong>Warning!</strong> Please fill out all required fields' +
+        '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+        '<span aria-hidden="true">&times;</span></button></div>'
+    ).fadeIn(300).delay(1500);
+});
+
+// Beautify all textareas on load
+document.querySelectorAll('.custom-editor').forEach(textarea => {
+    beautifyHTML(textarea.id);
 });
