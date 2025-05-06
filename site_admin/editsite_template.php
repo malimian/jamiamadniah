@@ -61,26 +61,35 @@ if(isset($_GET['id'])) {
             </div>
             
             <!-- Action Buttons Column -->
-            <div class="col-md-12">
-                <div class="btn-toolbar justify-content-end" role="toolbar">
-                    <div class="btn-group" role="group">
+          <div class="col-md-12">
+            <div class="btn-toolbar justify-content-end" role="toolbar">
+                <div class="btn-group" role="group">
+                    <?php if($has_add): ?>
                         <a href="editsite_template.php" class="btn btn-primary">
                             <i class="fas fa-plus"></i> New Template
                         </a>
-                        <?php if(isset($_GET['id'])): ?>
-                        <a href="editsite_template.php?id=<?php echo $_GET['id'] ?>&action=duplicate" class="btn btn-secondary">
-                            <i class="fas fa-copy"></i> Duplicate
-                        </a>
+                    <?php endif; ?>
+                    
+                    <?php if(isset($_GET['id'])): ?>
+                        <?php if($has_add && canEdit($site_template['isSystemOperated'])): ?>
+                            <a href="editsite_template.php?id=<?php echo $_GET['id'] ?>&action=duplicate" class="btn btn-secondary">
+                                <i class="fas fa-copy"></i> Duplicate
+                            </a>
+                        <?php endif; ?>
+                        
                         <a href="preview_template.php?id=<?php echo $_GET['id'] ?>" target="_blank" class="btn btn-info">
                             <i class="fas fa-eye"></i> Preview
                         </a>
-                        <button type="button" class="btn btn-danger" id="recycleBinBtn">
-                            <i class="fas fa-trash-alt"></i> Move to Recycle Bin
-                        </button>
+                        
+                        <?php if($has_delete && canDelete($site_template['isSystemOperated'])): ?>
+                            <button type="button" class="btn btn-danger" id="recycleBinBtn">
+                                <i class="fas fa-trash-alt"></i> Move to Recycle Bin
+                            </button>
                         <?php endif; ?>
-                    </div>
+                    <?php endif; ?>
                 </div>
-            </div>
+            </div> 
+        </div>
 
          </div>
          
