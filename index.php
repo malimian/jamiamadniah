@@ -617,6 +617,3 @@ echo replace_sysvari(front_footer(null, $template_id), getcwd() . "/");
 <?php 
 echo replace_sysvari(front_script(null, $template_id), getcwd() . "/");
 ?>
-
-</body>
-</html>
