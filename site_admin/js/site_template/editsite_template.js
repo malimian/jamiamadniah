@@ -137,6 +137,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 // Recycle Bin Button Handler
 document.getElementById('recycleBinBtn')?.addEventListener('click', function() {
+  
     if (confirm('Are you sure you want to move this template to the recycle bin?')) {
         const formData = {
             st_id: sitetemp_id,
@@ -144,14 +145,11 @@ document.getElementById('recycleBinBtn')?.addEventListener('click', function() {
             submit: true
         };
 
-        $.ajax({
-            url: 'post/site_template/editsite_template.php',
-            type: 'POST',
-            data: formData,
-            dataType: 'json',
-            success: function(result) {
+       // Converted to use senddata function
+        senddata('post/site_template/editsite_template.php', 'POST', formData,
+            function(result) {
+                // Success callback
                 if (result.success) {
-                    showAlert('success', result.message);
                     $.notify(result.message, "success");
                     setTimeout(() => {
                         window.location.href = 'site_template.php';
@@ -161,12 +159,14 @@ document.getElementById('recycleBinBtn')?.addEventListener('click', function() {
                     $.notify(result.message || 'Operation failed', "error");
                 }
             },
-            error: function(xhr, status, error) {
+            function(error) {
+                // Error callback
                 console.log('failure', error);
                 showAlert('danger', 'Something went wrong. Please try again.');
                 $.notify('Error moving to recycle bin', "error");
             }
-        });
+        );
+
     }
 });
 
@@ -246,9 +246,4 @@ function() {
         '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
         '<span aria-hidden="true">&times;</span></button></div>'
     ).fadeIn(300).delay(1500);
-});
-
-// Beautify all textareas on load
-document.querySelectorAll('.custom-editor').forEach(textarea => {
-    beautifyHTML(textarea.id);
 });

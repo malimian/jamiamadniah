@@ -10,15 +10,19 @@ $response = [
 ];
 
 if(isset($_POST['submit'])) {
+   
     $st_id = $_POST['st_id'] ?? '';
     
     // Handle recycle bin action
+
     if(isset($_POST['action']) && $_POST['action'] === 'recycle' && is_numeric($st_id)) {
+
         try {
-            $sql = "UPDATE `site_template` SET `soft_delete` = 0 WHERE `st_id` = $st_id";
+          
+            $sql = "UPDATE `site_template` SET `soft_delete` = 1 WHERE `st_id` = $st_id";
             $result = Update($sql);
             
-            if($result) {
+            if(isset($result)) {
                 $response = [
                     'success' => true,
                     'message' => 'Template moved to Recycle bin',
