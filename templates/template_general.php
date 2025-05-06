@@ -57,13 +57,13 @@
                             
                             <div class="social-share">
                                 <span class="me-2 text-muted">Share:</span>
-                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle me-2">
+                                <a href="{FACEBOOK}" class="btn btn-sm btn-outline-secondary me-2">
                                     <i class="fab fa-facebook-f"></i>
                                 </a>
-                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle me-2">
+                                <a href="{TWITTER}" class="btn btn-sm btn-outline-secondary me-2">
                                     <i class="fab fa-twitter"></i>
                                 </a>
-                                <a href="#" class="btn btn-sm btn-outline-secondary rounded-circle">
+                                <a href="{LINKEDIN}" class="btn btn-sm btn-outline-secondary">
                                     <i class="fab fa-linkedin-in"></i>
                                 </a>
                             </div>
