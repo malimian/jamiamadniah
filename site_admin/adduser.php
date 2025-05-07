@@ -105,18 +105,21 @@ AdminHeader(
                   </div>
               </div>
           </div>
+          
           <div class="row">
               <div class="col-12">
                   <label class="col-form-label">Profile Image</label>
-                    <input type="text" class="form-control col-sm-10" id="p_image" required="required" placeholder="Insert Image" name="p_image">
-                      <button class="btn btn-primary form-control col-sm-2" onclick="OpenMediaGallery('p_image')" type="button">
-                       <i class="fa fa-picture-o"></i>&nbsp;Gallery
-                     </button> 
-                      <div class="valid-feedback">Valid.</div>
-                 <div class="invalid-feedback">Please fill out this field.</div>
-                 </div>
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="p_image" required="required" placeholder="Insert Image" name="p_image">
+                      <div class="input-group-append">
+                          <button class="btn btn-primary" onclick="OpenMediaGallery('p_image')" type="button">
+                              <i class="fa fa-picture-o"></i>&nbsp;Gallery
+                          </button>
+                      </div>
+                  </div>
+                  <div class="valid-feedback">Valid.</div>
+                  <div class="invalid-feedback">Please fill out this field.</div>
               </div>
-            
           </div>
 
           <label class="col-form-label col-lg-2">User Modules</label>
@@ -165,14 +168,12 @@ AdminHeader(
                  </div>
             </div>
         </div>
-<!--         <div class="form-group">
-          <label for="uname">Username:</label>
-          <input type="text" class="form-control" id="uname" placeholder="Enter username" name="uname" required>
-          <div class="valid-feedback">Valid.</div>
-          <div class="invalid-feedback">Please fill out this field.</div>
-        </div> -->
         
-        <button class="btn btn-primary">Save</button>
+        <div class="form-group row mt-4">
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary px-4 py-2">Save</button>
+            </div>
+        </div>
       </form>
     </div>
       
