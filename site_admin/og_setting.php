@@ -178,6 +178,21 @@ AdminHeader(
                                 
                                 <div class="form-group col-sm-6">
                                     <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-phone"></i> Phone Number
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-phone"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter Phone Number" id="site_telno" value="<?php echo isset($setting[16]['settings_value']) ? $setting[16]['settings_value'] : '+0123 456 789' ?>">
+                                    </div>
+                                    <small class="form-text text-muted">Use Short Code {SITE_TELNO}</small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
                                         <i class="fa fa-clock-o"></i> Time Zone
                                     </label>
                                     <div class="input-group">
@@ -194,6 +209,19 @@ AdminHeader(
                                         </select>
                                     </div>
                                     <small class="form-text text-muted">Use Short Code <?php echo $setting[10]['short_code']?></small>
+                                </div>
+                                
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-map-marker"></i> Shop Location
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
+                                        </div>
+                                        <textarea class="form-control" placeholder="Enter Shop Location" id="shop_location" rows="2"><?php echo isset($setting[17]['settings_value']) ? $setting[17]['settings_value'] : 'NO. 342 - London Oxford Street. 012 United Kingdom' ?></textarea>
+                                    </div>
+                                    <small class="form-text text-muted">Use Short Code {SHOP_LOCATION}</small>
                                 </div>
                             </div>
                         </div>

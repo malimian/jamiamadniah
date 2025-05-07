@@ -14,6 +14,8 @@ if(isset($_POST['submit'])){
     $img_path = $_POST['img_path'];
     $time_zone = $_POST['time_zone'];
     $file_path = $_POST['file_path'];
+    $site_telno = $_POST['site_telno'];
+    $shop_location = $_POST['shop_location'];
     $uid = $_SESSION['user']['id'];
     $friendly_url = $_POST['friendly_url'];
     $page_loader = $_POST['page_loader'];
@@ -32,7 +34,9 @@ if(isset($_POST['submit'])){
         ['time_zone', 11],
         ['file_path', 12],
         ['friendly_url', 13],
-        ['page_loader', 14]
+        ['page_loader', 14],
+        ['site_telno', 17],
+        ['shop_location', 18]
     ];
 
     // Loop through and update each setting
