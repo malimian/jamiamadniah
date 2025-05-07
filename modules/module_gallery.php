@@ -11,7 +11,7 @@ $images = array_filter($images, function($file) use ($basePath) {
 
 // Shuffle and get 9 random images
 shuffle($images);
-$images = array_slice($images, 0, 9);
+$images = array_slice($images, 0, 6);
 ?>
 
 <?php foreach ($images as $img): ?>
