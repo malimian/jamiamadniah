@@ -1,6 +1,7 @@
+<!-- Basic SEO Card -->
 <div class="card mb-4">
     <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">SEO Settings</h5>
+        <h5 class="mb-0">Basic SEO Settings</h5>
     </div>
     <div class="card-body">
         <div class="form-group row">
@@ -27,6 +28,22 @@
             </div>
         </div>
 
+        <div class="form-group row">
+            <label for="focus_keyword" class="col-sm-2 col-form-label">Focus Keyword</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="focus_keyword" placeholder="Primary keyword for this page" name="focus_keyword" value="<?php echo htmlspecialchars($page[0]['focus_keyword'] ?? ''); ?>">
+                <small class="form-text text-muted">Used for SEO analysis and optimization</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Advanced SEO Card -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Advanced SEO Settings</h5>
+    </div>
+    <div class="card-body">
         <div class="form-group row">
             <label for="canonical_url" class="col-sm-2 col-form-label">Canonical URL</label>
             <div class="col-sm-10">
@@ -66,7 +83,15 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
+<!-- Sitemap Settings Card -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Sitemap Settings</h5>
+    </div>
+    <div class="card-body">
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Sitemap Settings</label>
             <div class="col-sm-10">
@@ -103,7 +128,15 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
+<!-- Social & Schema Card -->
+<div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h5 class="mb-0">Social & Schema</h5>
+    </div>
+    <div class="card-body">
         <div class="form-group row">
             <label for="social_image" class="col-sm-2 col-form-label">Social Share Image</label>
             <div class="col-sm-10">
@@ -121,14 +154,6 @@
             <div class="col-sm-10">
                 <textarea class="form-control" id="schema_markup" name="schema_markup" rows="4" placeholder="Custom JSON-LD schema markup"><?php echo htmlspecialchars($page[0]['schema_markup'] ?? ''); ?></textarea>
                 <small class="form-text text-muted">Add custom schema.org JSON-LD markup for this page</small>
-            </div>
-        </div>
-
-        <div class="form-group row">
-            <label for="focus_keyword" class="col-sm-2 col-form-label">Focus Keyword</label>
-            <div class="col-sm-10">
-                <input type="text" class="form-control" id="focus_keyword" placeholder="Primary keyword for this page" name="focus_keyword" value="<?php echo htmlspecialchars($page[0]['focus_keyword'] ?? ''); ?>">
-                <small class="form-text text-muted">Used for SEO analysis and optimization</small>
             </div>
         </div>
     </div>
