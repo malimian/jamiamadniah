@@ -411,31 +411,7 @@ AdminHeader(
 
                         <!-- SEO Tab Content -->
                         <div id="menu1" class="container tab-pane fade">
-                            <!-- Meta Title -->
-                            <div class="form-group row">
-                                <label for="colFormLabel" class="col-sm-2 col-form-label">Meta Title</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="meta_title" placeholder="Update Title" name="meta_title" value="<?php echo $page['page_meta_title']; ?>">
-                                </div>
-                            </div>
-
-                            <!-- Meta Keywords -->
-                            <div class="form-group row">
-                                <label for="colFormLabel" class="col-sm-2 col-form-label">Meta Keywords</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" id="meta_keywords" placeholder="Comma separated" name="meta_keywords" value="<?php echo $page['page_meta_keywords']; ?>">
-                                </div>
-                            </div>
-
-                            <!-- Meta Description -->
-                            <div class="form-group row">
-                                <label for="colFormLabel" class="col-sm-2 col-form-label">Meta Description</label>
-                                <div class="col-sm-10">
-                                    <textarea class="form-control" id="meta_desc" name="meta_desc"><?php echo $page['page_meta_desc']; ?></textarea>
-                                    <div class="valid-feedback">Valid.</div>
-                                    <div class="invalid-feedback">Please fill out this field.</div>
-                                </div>
-                            </div>
+                          <?php echo include_module('modules/page/seo_tab_module.php', array('action' => "edit" , 'page' => array($page) )); ?>
                         </div>
 
                         <!-- HEADER FOOTER SCRIPTS Tab Content -->

@@ -24,8 +24,22 @@ if(isset($_POST['submit'])) {
     $page_id = $_POST['page_id'];
     $useCKEditor = (int)$_POST['useCKEditor'];
 
+    // New fields from SEO settings
+    $canonical_url = escape($_POST['canonical_url']);
+    $meta_index = isset($_POST['meta_index']) ? 1 : 0;
+    $meta_follow = isset($_POST['meta_follow']) ? 1 : 0;
+    $meta_archive = isset($_POST['meta_archive']) ? 1 : 0;
+    $meta_imageindex = isset($_POST['meta_imageindex']) ? 1 : 0;
+    $include_in_sitemap = isset($_POST['include_in_sitemap']) ? 1 : 0;
+    $sitemap_priority = $_POST['sitemap_priority'];
+    $sitemap_changefreq = $_POST['sitemap_changefreq'];
+    $social_image = escape($_POST['social_image']);
+    $schema_markup = escape($_POST['schema_markup']);
+    $focus_keyword = escape($_POST['focus_keyword']);
 
-    $sql = "UPDATE `pages` SET 
+
+    
+    $sql = "UPDATE `pages` SET
         `page_url` = '$page_url',
         `template_id` = '$template_page',
         `site_template_id` = '$site_template',
@@ -43,8 +57,19 @@ if(isset($_POST['submit'])) {
         `isactive` = '$is_active',
         `visibility` = '$postVisibility',
         `useCKEditor` = '$useCKEditor',
-        `updatedon` = NOW(), 
-        `catid` = '$ctname'
+        `updatedon` = NOW(),
+        `catid` = '$ctname',
+        `page_canonical_url` = '$canonical_url',
+        `page_meta_index` = '$meta_index',
+        `page_meta_follow` = '$meta_follow',
+        `page_meta_archive` = '$meta_archive',
+        `page_meta_imageindex` = '$meta_imageindex',
+        `include_in_sitemap` = '$include_in_sitemap',
+        `sitemap_priority` = '$sitemap_priority',
+        `sitemap_changefreq` = '$sitemap_changefreq',
+        `social_image` = '$social_image',
+        `schema_markup` = '$schema_markup',
+        `focus_keyword` = '$focus_keyword'
         WHERE `pages`.`pid` = ".$page_id;
 
     $id = Update($sql);

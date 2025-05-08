@@ -158,7 +158,7 @@ $(document).ready(function() {
 
 var initialTemplateValues;
 
-$(document).ready(function() {
+$(document).ready(function() { 
 
     // Store initial template values when page loads
       initialTemplateValues = {
@@ -171,27 +171,37 @@ $(document).ready(function() {
 
 validateform(function() {
     // Get current form values
-    var currentValues = {
-        template_page: parseInt($('#template_page').val()),
-        site_template: parseInt($('#site_template').val()),
-        // Other form fields...
-        page_title: $('#page_title').val(),
-        page_url: $('#page_url').val(),
-        ctname: $('#ctname').val(),
-        meta_title: $('#meta_title').val(),
-        meta_keywords: $('#meta_keywords').val(),
-        meta_desc: $('#meta_desc').val(),
-        header: $('#header').val(),
-        menu_content: $('#menu_content').val(),
-        footer_content: $('#footer_content').val(),
-        scripts_content: $('#scripts_content').val(),
-        p_image: $('#p_image').val(),
-        is_active: $('#is_active option:selected').val(),
-        postVisibility: $('#postVisibility option:selected').val(),
-        showInNavbar: $('#showInNavbar option:selected').val(),
-        category_list: $('#category_list').children("option:selected").val(),
-        useCKEditor: $('#editorToggle').is(':checked') ? 1 : 0
-    };
+var currentValues = {
+    template_page: parseInt($('#template_page').val()),
+    site_template: parseInt($('#site_template').val()),
+    page_title: $('#page_title').val(),
+    page_url: $('#page_url').val(),
+    ctname: $('#ctname').val(),
+    meta_title: $('#meta_title').val(),
+    meta_keywords: $('#meta_keywords').val(),
+    meta_desc: $('#meta_desc').val(),
+    header: $('#header').val(),
+    menu_content: $('#menu_content').val(),
+    footer_content: $('#footer_content').val(),
+    scripts_content: $('#scripts_content').val(),
+    p_image: $('#p_image').val(),
+    is_active: $('#is_active option:selected').val(),
+    postVisibility: $('#postVisibility option:selected').val(),
+    showInNavbar: $('#showInNavbar option:selected').val(),
+    category_list: $('#category_list').children("option:selected").val(),
+    useCKEditor: $('#editorToggle').is(':checked') ? 1 : 0,
+    canonical_url: $('#canonical_url').val(),
+    meta_index: $('#meta_index').is(':checked') ? 1 : 0,
+    meta_follow: $('#meta_follow').is(':checked') ? 1 : 0,
+    meta_archive: $('#meta_archive').is(':checked') ? 1 : 0,
+    meta_imageindex: $('#meta_imageindex').is(':checked') ? 1 : 0,
+    include_in_sitemap: $('#include_in_sitemap').is(':checked') ? 1 : 0,
+    sitemap_priority: $('#sitemap_priority option:selected').val(),
+    sitemap_changefreq: $('#sitemap_changefreq option:selected').val(),
+    social_image: $('#social_image').val(),
+    schema_markup: $('#schema_markup').val(),
+    focus_keyword: $('#focus_keyword').val()
+};
 
 
     // Check if templates have changed
