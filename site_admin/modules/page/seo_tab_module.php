@@ -143,7 +143,9 @@
                 <div class="input-group">
                     <input type="text" class="form-control" id="social_image" placeholder="URL for social sharing (1200x630px)" name="social_image" value="<?php echo htmlspecialchars($page[0]['social_image'] ?? ''); ?>">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="social_image_button">Upload</button>
+                        <button class="btn btn-outline-secondary" onclick="OpenMediaGallery('social_image')" type="button">
+                            <i class="fa fa-picture-o"></i> Gallery
+                        </button>
                     </div>
                 </div>
             </div>
