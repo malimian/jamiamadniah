@@ -50,7 +50,7 @@ if(isset($_GET['search']) && !empty($_GET['search'])) {
 // Get total count
 $total_query = "SELECT COUNT(*) as total FROM loginuser 
     INNER JOIN og_usertype ON og_usertype.id = loginuser.usertypeid 
-    WHERE loginuser.usertypeid < 4 AND loginuser.soft_delete = 0 AND og_usertype.soft_delete = 0 
+    WHERE  loginuser.soft_delete = 0 AND og_usertype.soft_delete = 0 
     $status_filter $type_filter $search_filter";
 $total_result = return_single_row($total_query);
 $total_items = $total_result['total'];
@@ -63,7 +63,7 @@ $offset = ($current_page - 1) * $per_page;
 $query = "SELECT *, loginuser.isactive as user_isactive, loginuser.id as loginuser_id, 
           loginuser.createdon as loginuser_createdon FROM loginuser 
           INNER JOIN og_usertype ON og_usertype.id = loginuser.usertypeid 
-          WHERE loginuser.usertypeid < 4 AND loginuser.soft_delete = 0 AND og_usertype.soft_delete = 0 
+          WHERE  loginuser.soft_delete = 0 AND og_usertype.soft_delete = 0 
           $status_filter $type_filter $search_filter
           ORDER BY loginuser.createdon DESC";
     
@@ -74,7 +74,7 @@ if ($per_page > 0) {
 $users = return_multiple_rows($query);
 
 // Get all user types for filter dropdown
-$user_types = return_multiple_rows("SELECT * FROM og_usertype WHERE id < 4 AND soft_delete = 0");
+$user_types = return_multiple_rows("SELECT * FROM og_usertype WHERE soft_delete = 0");
 ?>
 
 <body id="page-top">
