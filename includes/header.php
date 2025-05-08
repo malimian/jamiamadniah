@@ -1,5 +1,118 @@
 <?php
 /**
+ * Generate JavaScript global variables from og_settings
+ */
+function generate_js_globals() {
+    global $and_gc;
+    
+    // Fetch all settings where call_on is 0 (all) or 1 (frontend only) and are active
+    $query = "SELECT settings_name, settings_value 
+              FROM og_settings 
+              WHERE (call_on = 0 OR call_on = 1) 
+              AND isactive = 1 
+              AND soft_delete = 0";
+    
+    $settings = return_multiple_rows($query);
+
+    $js_output = "<script>\n";
+    $js_output .= "// Auto-generated global JS variables from og_settings\n";
+    
+    if (!empty($settings)) {
+        foreach ($settings as $setting) {
+            $var_name = $setting['settings_name'];
+            $var_value = $setting['settings_value'];
+            
+            // Sanitize the variable name for JavaScript
+            $js_var_name = preg_replace('/[^a-zA-Z0-9_]/', '_', $var_name);
+            
+            // Convert numeric/boolean values and JSON strings
+            if (is_numeric($var_value)) {
+                $js_value = $var_value;
+            } elseif ($var_value === 'true' || $var_value === 'false') {
+                $js_value = $var_value;
+            } elseif (json_decode($var_value) !== null) {
+                $js_value = json_decode($var_value);
+            } else {
+                $js_value = '"' . addslashes($var_value) . '"';
+            }
+            
+            $js_output .= "var {$js_var_name} = {$js_value};\n";
+        }
+    }
+    
+    $js_output .= "</script>\n";
+    return $js_output;
+}
+
+
+/**
+ * Generate Organization Schema.org JSON-LD markup using settings from og_settings
+ */
+function generate_organization_schema() {
+    global $and_gc;
+    
+    // Fetch all settings where call_on is 0 (all) or 1 (frontend only) and are active
+    $query = "SELECT settings_name, settings_value 
+              FROM og_settings 
+              WHERE (call_on = 0 OR call_on = 1) 
+              AND isactive = 1 
+              AND soft_delete = 0";
+    
+    $settings = return_multiple_rows($query);
+    
+    // Convert settings to associative array for easy access
+    $settings_array = [];
+    foreach ($settings as $setting) {
+        $settings_array[$setting['settings_name']] = $setting['settings_value'];
+    }
+
+    // Build sameAs array from social media URLs
+    $social_fields = [
+        'FACEBOOK', 'TWITTER', 'INSTAGRAM', 'LINKEDIN', 'YOUTUBE',
+        'PINTEREST', 'SNAPCHAT', 'TIKTOK', 'REDDIT', 'WHATSAPP', 'TELEGRAM'
+    ];
+    
+    $sameAs = [];
+    foreach ($social_fields as $field) {
+        if (!empty($settings_array[$field])) {
+            $sameAs[] = $settings_array[$field];
+        }
+    }
+
+    // Build the schema structure
+    $schema = [
+        "@context" => "http://schema.org",
+        "@type" => "Organization",
+        "name" => $settings_array['SITE_TITLE'] ?? 'Default Organization',
+        "url" => $settings_array['SITE_BASE_URL'] ?? '',
+        "sameAs" => $sameAs
+    ];
+
+    // Add optional fields if they exist
+    $optional_fields = [
+        'logo' => 'SITE_LOGO',
+        'telephone' => 'SITE_TELNO',
+        'email' => 'SITE_EMAIL',
+        'description' => 'SITE_TAGLINE'
+    ];
+    
+    foreach ($optional_fields as $schema_field => $db_field) {
+        if (!empty($settings_array[$db_field])) {
+            $schema[$schema_field] = $settings_array[$db_field];
+        }
+    }
+
+    // Remove empty values (except sameAs which can be empty array)
+    $schema = array_filter($schema, function($value, $key) {
+        return !empty($value) || $key === 'sameAs';
+    }, ARRAY_FILTER_USE_BOTH);
+
+    return '<script type="application/ld+json">' . 
+           json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . 
+           '</script>';
+}
+
+/**
  * front_header Function with Template Support
  * 
  * @param string|null $title Page title
@@ -50,7 +163,13 @@ function front_header($title = null, $keywords = null, $description = null, $lib
         }
     }
 
-    return <<<HTML
+    $js_globals = generate_js_globals();
+
+    // Generate the schema markup
+    $organization_schema = generate_organization_schema();
+
+
+return <<<HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,6 +187,14 @@ function front_header($title = null, $keywords = null, $description = null, $lib
 
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 
+    <!-- Organization Schema -->
+    {$organization_schema}
+
+
+    <!-- Global JavaScript Variables -->
+    {$js_globals}
+
+
     <!-- Google Translate -->
     <script type="text/javascript">
     function googleTranslateElementInit() {
@@ -81,7 +208,6 @@ function front_header($title = null, $keywords = null, $description = null, $lib
     var islive_streaming = {$islive_streaming};
     </script>
     <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
     {$header}
     {$libs_output}
 </head>
