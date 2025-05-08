@@ -514,8 +514,10 @@ AdminHeader(
                                 <option <?php echo ($page['visibility'] == 0) ? 'selected' : ''; ?> value="0">Private</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <button type="submit" id="submit_btn" class="btn btn-primary btn-block ib-publish-btn">Publish</button>
+                       <div class="form-group">
+                            <button type="submit" id="submit_btn" class="btn btn-primary btn-block ib-publish-btn">
+                                <span class="fas fa-save"></span> Save Changes
+                            </button>
                         </div>
                     </div>
                 </div>
