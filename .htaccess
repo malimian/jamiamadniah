@@ -24,11 +24,6 @@ ErrorDocument 404 /error404.html
 
 #ModPagespeed off
 
-<IfModule mod_pagespeed.c>
-    # Turn off ModPagespeed if not localhost
-    RewriteEngine On
-    RewriteCond %{REMOTE_ADDR} !^127\.0\.0\.1$
-    RewriteCond %{REMOTE_ADDR} !^::1$
-    RewriteRule .* - [E=MOD_PAGESPEED_OFF:1]
+<IfModule pagespeed_module>
+    ModPagespeed off
 </IfModule>
-
