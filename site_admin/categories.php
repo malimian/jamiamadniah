@@ -234,7 +234,7 @@ $parentCategories = return_multiple_rows("SELECT catid, catname FROM category WH
                                         </td>
                                         <td>
                                             <div class="custom-control custom-switch">
-                                                <input type="checkbox" class="custom-control-input navbar-switch" 
+                                                <input type="checkbox" class="custom-control-input js-switch" 
                                                        id="navbar_<?=$category['catid']?>" 
                                                        data-id="<?=$category['catid']?>"
                                                        <?=$category['showInNavBar'] == 1 ? 'checked' : ''?>>

@@ -483,7 +483,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                             <?php else: ?>
                                                                 <span id="status_<?=$page['pid']?>" class="badge badge-warning">Draft</span>
                                                                 <input type="checkbox" data-id="<?=$page['pid']?>" class="js-switch" />
-                                                            <?php endif; ?>
+                                                            <?php endif; ?> 
                                                         <?php else: ?>
                                                             <span class="badge badge-<?=$status_class?>"><?=$status_label?></span>
                                                         <?php endif; ?>
