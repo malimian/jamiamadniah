@@ -46,9 +46,9 @@ function generate_js_globals() {
 
 
 /**
- * Generate Organization Schema.org JSON-LD markup using settings from og_settings
+ * Generate Organization Schema.org JSON-LD markup with integrated SEO settings
  */
-function generate_organization_schema() {
+function generate_organization_schema($page_meta = []) {
     global $and_gc;
     
     // Fetch all settings where call_on is 0 (all) or 1 (frontend only) and are active
@@ -79,27 +79,47 @@ function generate_organization_schema() {
         }
     }
 
-    // Build the schema structure
+    // Build the schema structure with page-specific overrides
     $schema = [
         "@context" => "http://schema.org",
         "@type" => "Organization",
-        "name" => $settings_array['SITE_TITLE'] ?? 'Default Organization',
-        "url" => $settings_array['SITE_BASE_URL'] ?? '',
-        "sameAs" => $sameAs
+        "name" => $page_meta['page_meta_title'] ?? $settings_array['SITE_TITLE'] ?? 'Default Organization',
+        "url" => $page_meta['page_canonical_url'] ?? $settings_array['SITE_BASE_URL'] ?? '',
+        "sameAs" => $sameAs,
+        "potentialAction" => [
+            "@type" => "SearchAction",
+            "target" => ($settings_array['SITE_BASE_URL'] ?? '') . "search?q={search_term_string}",
+            "query-input" => "required name=search_term_string"
+        ]
     ];
 
-    // Add optional fields if they exist
+    // Add optional fields with page meta fallback
     $optional_fields = [
-        'logo' => 'SITE_LOGO',
-        'telephone' => 'SITE_TELNO',
-        'email' => 'SITE_EMAIL',
-        'description' => 'SITE_TAGLINE'
+        'logo' => ['SITE_LOGO', 'social_image'],
+        'telephone' => ['SITE_TELNO', 'page_telno'],
+        'email' => ['SITE_EMAIL', 'page_email'],
+        'description' => ['SITE_TAGLINE', 'page_meta_desc']
     ];
     
-    foreach ($optional_fields as $schema_field => $db_field) {
-        if (!empty($settings_array[$db_field])) {
-            $schema[$schema_field] = $settings_array[$db_field];
+    foreach ($optional_fields as $schema_field => $field_options) {
+        foreach ($field_options as $field) {
+            if (!empty($page_meta[$field])) {
+                $schema[$schema_field] = $page_meta[$field];
+                break;
+            } elseif (!empty($settings_array[$field])) {
+                $schema[$schema_field] = $settings_array[$field];
+                break;
+            }
         }
+    }
+
+    // Add indexing information if available
+    if (isset($page_meta['page_meta_index'])) {
+        $schema['mainEntityOfPage'] = [
+            "@type" => "WebPage",
+            "@id" => $page_meta['page_canonical_url'] ?? $settings_array['SITE_BASE_URL'] ?? '',
+            "isIndexed" => (bool)$page_meta['page_meta_index']
+        ];
     }
 
     // Remove empty values (except sameAs which can be empty array)
@@ -122,14 +142,13 @@ function generate_organization_schema() {
  * @param int|null $template_id Template ID from database
  * @return string Generated header content
  */
-function front_header($title = null, $keywords = null, $description = null, $libs = null, $template_id = null) {
+function front_header($title = null, $keywords = null, $description = null, $libs = null, $template_id = null , $content = null) {
     global $and_gc;
 
     // Sanitize inputs
     $title = htmlspecialchars($title ?? '', ENT_QUOTES, 'UTF-8');
     $keywords = htmlspecialchars($keywords ?? '', ENT_QUOTES, 'UTF-8');
     $description = htmlspecialchars($description ?? '', ENT_QUOTES, 'UTF-8');
-    $author = htmlspecialchars(Company ?? 'Company', ENT_QUOTES, 'UTF-8');
     $template_id = filter_var($template_id, FILTER_VALIDATE_INT);
 
     // Fetch header from template if ID is valid
@@ -166,7 +185,7 @@ function front_header($title = null, $keywords = null, $description = null, $lib
     $js_globals = generate_js_globals();
 
     // Generate the schema markup
-    $organization_schema = generate_organization_schema();
+    $organization_schema = generate_organization_schema($content);
 
 
 return <<<HTML
@@ -181,9 +200,7 @@ return <<<HTML
     <meta name="title" content="{$title}">
     <meta name="description" content="{$description}">
     <meta name="keywords" content="{$keywords}">
-    <meta name="robots" content="index, follow">
     <meta name="language" content="English">
-    <meta name="author" content="{$author}">
 
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 
@@ -211,6 +228,7 @@ return <<<HTML
     {$header}
     {$libs_output}
 </head>
+
 HTML;
 }
 ?>

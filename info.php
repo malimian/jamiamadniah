@@ -109,12 +109,16 @@ if (!empty($template_page)) {
     }
 }
 
+   $header[] = "<!-- Social Meta -->\n".generate_social_meta( $content , $type = 'website');
+
 // Build the main components
 $main_header = front_header(
     $content['page_meta_title'], 
     $content['page_meta_keywords'], 
     $content['page_meta_desc'], 
-    $header
+    $header,
+    null,
+    $content
 );
 
 $main_menu = front_menu($menu);

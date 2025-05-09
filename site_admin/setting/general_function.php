@@ -799,3 +799,66 @@ function canDelete($isSystemOperated) {
             }
         }
     }
+
+
+/**
+ * Generate comprehensive social media meta tags with SEO limits
+ * 
+ * @param array $content Page content array with SEO fields
+ * @param string $type Content type (website/article/product/etc)
+ * @return string Generated meta tags
+ */
+function generate_social_meta($content, $type = 'website') {
+    $output = '';
+    
+    // Base information
+    $site_name = $GLOBALS['SITE_TITLE'] ?? '';
+    $url = ($content['page_canonical_url'] ?? $content['page_url'] ?? '') . ($_SERVER['REQUEST_URI'] ?? '');
+    $title = substr($content['page_meta_title'] ?? $content['page_title'] ?? '', 0, 60);
+    $description = substr($content['page_meta_desc'] ?? $content['page_desc'] ?? '', 0, 160);
+    $image = $content['social_image'] ?? $content['featured_image'] ?? $GLOBALS['SITE_LOGO'] ?? '';
+    $twitter_handle = $GLOBALS['TWITTER_HANDLE'] ?? '';
+    $fb_app_id = $GLOBALS['FB_APP_ID'] ?? '';
+
+    // Open Graph (Facebook)
+    $output .= "\n<!-- Open Graph / Facebook -->\n";
+    $output .= '<meta property="og:type" content="' . htmlspecialchars($type) . '">' . "\n";
+    $output .= '<meta property="og:site_name" content="' . htmlspecialchars($site_name) . '">' . "\n";
+    $output .= '<meta property="og:title" content="' . htmlspecialchars($title) . '">' . "\n";
+    $output .= '<meta property="og:description" content="' . htmlspecialchars($description) . '">' . "\n";
+    $output .= '<meta property="og:url" content="' . htmlspecialchars($url) . '">' . "\n";
+    $output .= '<meta property="og:image" content="' . htmlspecialchars($image) . '">' . "\n";
+    
+    if ($fb_app_id) {
+        $output .= '<meta property="fb:app_id" content="' . htmlspecialchars($fb_app_id) . '">' . "\n";
+    }
+
+    // Twitter Card
+    $output .= "\n<!-- Twitter Card -->\n";
+    $output .= '<meta name="twitter:card" content="summary_large_image">' . "\n";
+    if ($twitter_handle) {
+        $output .= '<meta name="twitter:site" content="' . htmlspecialchars($twitter_handle) . '">' . "\n";
+        $output .= '<meta name="twitter:creator" content="' . htmlspecialchars($twitter_handle) . '">' . "\n";
+    }
+    $output .= '<meta name="twitter:title" content="' . htmlspecialchars($title) . '">' . "\n";
+    $output .= '<meta name="twitter:description" content="' . htmlspecialchars($description) . '">' . "\n";
+    $output .= '<meta name="twitter:image" content="' . htmlspecialchars($image) . '">' . "\n";
+
+
+    // Robots directives
+    $robots = [];
+    $robots[] = ($content['page_meta_index'] ?? 1) ? 'index' : 'noindex';
+    $robots[] = ($content['page_meta_follow'] ?? 1) ? 'follow' : 'nofollow';
+    $robots[] = ($content['page_meta_archive'] ?? 1) ? 'archive' : 'noarchive';
+    $robots[] = ($content['page_meta_imageindex'] ?? 1) ? 'imageindex' : 'noimageindex';
+    
+    $output .= '<meta name="robots" content="' . implode(', ', $robots) . '">' . "\n";
+
+    // Canonical URL
+    if (!empty($content['page_canonical_url'])) {
+        $output .= "\n<!-- Canonical URL -->\n";
+        $output .= '<link rel="canonical" href="' . htmlspecialchars($content['page_canonical_url']) . '">' . "\n";
+    }
+
+    return $output;
+}

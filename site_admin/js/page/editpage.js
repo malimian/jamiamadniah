@@ -203,6 +203,7 @@ var currentValues = {
     focus_keyword: $('#focus_keyword').val()
 };
 
+    console.log(currentValues);
 
     // Check if templates have changed
     var templatesChanged = 
