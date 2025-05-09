@@ -47,9 +47,6 @@ function generate_js_globals() {
 
 /**
  * Generate Organization Schema.org JSON-LD markup with integrated SEO settings
- */
-/**
- * Generate Organization Schema.org JSON-LD markup with integrated SEO settings
  * Includes all recommended and optional fields per Google's guidelines
  */
 function generate_organization_schema($page_meta = []) {
@@ -102,17 +99,40 @@ function generate_organization_schema($page_meta = []) {
         ]
     ];
 
-    // Add address if available
-    if (!empty($settings_array['COMPANY_ADDRESS'])) {
-        $schema["address"] = [
+    // Parse address if SHOP_LOCATION exists
+    $address = [];
+    if (!empty($settings_array['SHOP_LOCATION'])) {
+        // Sample format: "6101 Cherry Avenue Suite 102A - 206 Fontana CA 92336"
+        $location = $settings_array['SHOP_LOCATION'];
+        
+        // Extract ZIP code (last 5-digit group)
+        preg_match('/\b(\d{5})\b/', $location, $zip_matches);
+        $postalCode = $zip_matches[1] ?? '';
+        $location = trim(str_replace($postalCode, '', $location));
+        
+        // Extract state (2-letter code before ZIP)
+        preg_match('/\b([A-Z]{2})\b/', $location, $state_matches);
+        $addressRegion = $state_matches[1] ?? '';
+        $location = trim(str_replace($addressRegion, '', $location));
+        
+        // Extract city (last remaining word before state)
+        $parts = explode(' ', $location);
+        $addressLocality = array_pop($parts);
+        $location = trim(implode(' ', $parts));
+        
+        // The rest is street address
+        $streetAddress = str_replace([' ,', ', '], ', ', $location); // Normalize commas
+        
+        $address = [
             "@type" => "PostalAddress",
-            "streetAddress" => $settings_array['COMPANY_STREET'] ?? '',
-            "addressLocality" => $settings_array['COMPANY_CITY'] ?? '',
-            "addressRegion" => $settings_array['COMPANY_STATE'] ?? '',
-            "postalCode" => $settings_array['COMPANY_ZIP'] ?? '',
-            "addressCountry" => $settings_array['COMPANY_COUNTRY'] ?? ''
+            "streetAddress" => $streetAddress,
+            "addressLocality" => $addressLocality,
+            "addressRegion" => $addressRegion,
+            "postalCode" => $postalCode,
+            "addressCountry" => "US" // Default to US, can be made configurable
         ];
     }
+
 
     // Add contact information
     $optional_fields = [
@@ -148,6 +168,11 @@ function generate_organization_schema($page_meta = []) {
         ];
     }
 
+      // Add address if successfully parsed
+    if (!empty($address)) {
+        $schema["address"] = $address;
+    }
+    
     // Clean up empty values
     $schema = array_filter($schema, function($value) {
         if (is_array($value)) {
