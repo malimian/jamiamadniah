@@ -300,14 +300,17 @@ if ($page_id > 0) {
                 </div>
             </div>
             <?php endforeach; ?>
+            <?php if ($is_section_dynamic && !$is_first_set): ?>
+                                <!-- Single Remove button placed here after all attributes -->
+                                <div class="form-group row">
+                                    <div class="col-sm-10 offset-sm-2 text-right">
+                                        <button type="button" class="btn btn-sm btn-danger remove-section-set">
+                                            <i class="fa fa-trash"></i> Remove This Set
+                                        </button>
+                                    </div>
+                                </div>
+                            <?php endif; ?>
         </div>
-                        <?php if ($is_section_dynamic && !$is_first_set): ?>
-                        <div class="card-footer text-right">
-                            <button type="button" class="btn btn-sm btn-danger remove-section-set">
-                                <i class="fa fa-trash"></i> Remove This Set
-                            </button>
-                        </div>
-                        <?php endif; ?>
                     </div>
                     <?php endfor; ?>
                 </div>
@@ -366,55 +369,68 @@ $(document).ready(function() {
     }
 
     // Add section set
-       $(document).on('click', '.add-section-set', function() {
-        const sectionName = $(this).data('section');
-        const $container = $(this).closest('.section-container').find('.attribute-sets-container');
-        const $template = $container.find('.attribute-set').first().clone(true);
-        
-        // Clear values
-        $template.find('input[type="text"], input[type="number"], input[type="date"], textarea').val('');
-        $template.find('input[type="checkbox"]').prop('checked', false);
-        $template.find('select').val('').trigger('change');
-        
-        // Remove non-dynamic attributes from the cloned set
-        $template.find('.form-group.row').each(function() {
-            const $attributeField = $(this).find('[attribute-id]').first();
-            if ($attributeField.length) {
-                const attributeId = $attributeField.attr('attribute-id');
-                if (!dynamicAttributes[attributeId]) {
-                    $(this).remove();
-                }
+// Add section set
+$(document).on('click', '.add-section-set', function() {
+    const sectionName = $(this).data('section');
+    const $container = $(this).closest('.section-container').find('.attribute-sets-container');
+    const $template = $container.find('.attribute-set').first().clone(true);
+    
+    // Clear values
+    $template.find('input[type="text"], input[type="number"], input[type="date"], textarea').val('');
+    $template.find('input[type="checkbox"]').prop('checked', false);
+    $template.find('select').val('').trigger('change');
+    
+    // Remove non-dynamic attributes from the cloned set
+    $template.find('.form-group.row').each(function() {
+        const $attributeField = $(this).find('[attribute-id]').first();
+        if ($attributeField.length) {
+            const attributeId = $attributeField.attr('attribute-id');
+            if (!dynamicAttributes[attributeId]) {
+                $(this).remove();
             }
-        });
-
-        // Only append if there are dynamic attributes left
-        if ($template.find('.form-group.row').length > 0) {
-            $container.append($template);
-            
-            // Initialize editors and select2 for the new set
-            $template.find('.trumbowyg-editor').each(function() {
-                if (!$(this).hasClass('trumbowyg-initialized')) {
-                    $(this).trumbowyg();
-                    $(this).addClass('trumbowyg-initialized');
-                }
-            });
-            
-            $template.find('.select2-multiple').each(function() {
-                if (!$(this).hasClass('select2-initialized')) {
-                    $(this).select2({
-                        placeholder: "Select options",
-                        allowClear: true,
-                        width: '100%',
-                        closeOnSelect: false
-                    });
-                    $(this).addClass('select2-initialized');
-                }
-            });
-        } else {
-            showAlert('No dynamic attributes available to duplicate in this section.');
         }
     });
 
+    // Only append if there are dynamic attributes left
+    if ($template.find('.form-group.row').length > 0) {
+        // Ensure the remove button is present in the template
+        if ($template.find('.remove-section-set').length === 0) {
+            $template.find('.card-body').append(`
+                <div class="form-group row">
+                    <div class="col-sm-10 offset-sm-2 text-right">
+                        <button type="button" class="btn btn-sm btn-danger remove-section-set">
+                            <i class="fa fa-trash"></i> Remove This Set
+                        </button>
+                    </div>
+                </div>
+            `);
+        }
+        
+        $container.append($template);
+        
+        // Initialize editors and select2 for the new set
+        $template.find('.trumbowyg-editor').each(function() {
+            if (!$(this).hasClass('trumbowyg-initialized')) {
+                $(this).trumbowyg();
+                $(this).addClass('trumbowyg-initialized');
+            }
+        });
+        
+        $template.find('.select2-multiple').each(function() {
+            if (!$(this).hasClass('select2-initialized')) {
+                $(this).select2({
+                    placeholder: "Select options",
+                    allowClear: true,
+                    width: '100%',
+                    closeOnSelect: false
+                });
+                $(this).addClass('select2-initialized');
+            }
+        });
+    } else {
+        showAlert('No dynamic attributes available to duplicate in this section.');
+    }
+});
     // Remove section set
     $(document).on('click', '.remove-section-set', function() {
         const $setsContainer = $(this).closest('.attribute-sets-container');
