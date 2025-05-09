@@ -48,6 +48,10 @@ function generate_js_globals() {
 /**
  * Generate Organization Schema.org JSON-LD markup with integrated SEO settings
  */
+/**
+ * Generate Organization Schema.org JSON-LD markup with integrated SEO settings
+ * Includes all recommended and optional fields per Google's guidelines
+ */
 function generate_organization_schema($page_meta = []) {
     global $and_gc;
     
@@ -79,37 +83,59 @@ function generate_organization_schema($page_meta = []) {
         }
     }
 
+    // Base URL with proper formatting
+    $base_url = rtrim($settings_array['SITE_BASE_URL'] ?? '', '/');
+
     // Build the schema structure with page-specific overrides
     $schema = [
-        "@context" => "http://schema.org",
+        "@context" => "https://schema.org",
         "@type" => "Organization",
         "name" => $page_meta['page_meta_title'] ?? $settings_array['SITE_TITLE'] ?? 'Default Organization',
-        "url" => $page_meta['page_canonical_url'] ?? $settings_array['SITE_BASE_URL'] ?? '',
+        "url" => $page_meta['page_canonical_url'] ?? $base_url ?? '',
+        "logo" => $page_meta['social_image'] ?? $settings_array['SITE_LOGO'] ?? '',
+        "image" => $page_meta['social_image'] ?? $settings_array['SITE_LOGO'] ?? '',
         "sameAs" => $sameAs,
         "potentialAction" => [
             "@type" => "SearchAction",
-            "target" => ($settings_array['SITE_BASE_URL'] ?? '') . "search?q={search_term_string}",
+            "target" => $base_url . "/search?q={search_term_string}",
             "query-input" => "required name=search_term_string"
         ]
     ];
 
-    // Add optional fields with page meta fallback
+    // Add address if available
+    if (!empty($settings_array['COMPANY_ADDRESS'])) {
+        $schema["address"] = [
+            "@type" => "PostalAddress",
+            "streetAddress" => $settings_array['COMPANY_STREET'] ?? '',
+            "addressLocality" => $settings_array['COMPANY_CITY'] ?? '',
+            "addressRegion" => $settings_array['COMPANY_STATE'] ?? '',
+            "postalCode" => $settings_array['COMPANY_ZIP'] ?? '',
+            "addressCountry" => $settings_array['COMPANY_COUNTRY'] ?? ''
+        ];
+    }
+
+    // Add contact information
     $optional_fields = [
-        'logo' => ['SITE_LOGO', 'social_image'],
         'telephone' => ['SITE_TELNO', 'page_telno'],
         'email' => ['SITE_EMAIL', 'page_email'],
-        'description' => ['SITE_TAGLINE', 'page_meta_desc']
+        'description' => ['SITE_TAGLINE', 'page_meta_desc'],
+        'foundingDate' => ['COMPANY_FOUNDING_DATE'],
+        'founder' => ['COMPANY_FOUNDER']
     ];
     
     foreach ($optional_fields as $schema_field => $field_options) {
-        foreach ($field_options as $field) {
-            if (!empty($page_meta[$field])) {
-                $schema[$schema_field] = $page_meta[$field];
-                break;
-            } elseif (!empty($settings_array[$field])) {
-                $schema[$schema_field] = $settings_array[$field];
-                break;
+        if (is_array($field_options)) {
+            foreach ($field_options as $field) {
+                if (!empty($page_meta[$field])) {
+                    $schema[$schema_field] = $page_meta[$field];
+                    break;
+                } elseif (!empty($settings_array[$field])) {
+                    $schema[$schema_field] = $settings_array[$field];
+                    break;
+                }
             }
+        } elseif (!empty($settings_array[$field_options])) {
+            $schema[$schema_field] = $settings_array[$field_options];
         }
     }
 
@@ -117,19 +143,24 @@ function generate_organization_schema($page_meta = []) {
     if (isset($page_meta['page_meta_index'])) {
         $schema['mainEntityOfPage'] = [
             "@type" => "WebPage",
-            "@id" => $page_meta['page_canonical_url'] ?? $settings_array['SITE_BASE_URL'] ?? '',
+            "@id" => $page_meta['page_canonical_url'] ?? $base_url ?? '',
             "isIndexed" => (bool)$page_meta['page_meta_index']
         ];
     }
 
-    // Remove empty values (except sameAs which can be empty array)
-    $schema = array_filter($schema, function($value, $key) {
-        return !empty($value) || $key === 'sameAs';
-    }, ARRAY_FILTER_USE_BOTH);
+    // Clean up empty values
+    $schema = array_filter($schema, function($value) {
+        if (is_array($value)) {
+            return !empty(array_filter($value));
+        }
+        return !empty($value);
+    });
 
-    return '<script type="application/ld+json">' . 
-           json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . 
-           '</script>';
+    // Format the JSON-LD output
+    $json_ld = json_encode($schema, 
+        JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    
+    return "<script type=\"application/ld+json\">\n{$json_ld}\n</script>";
 }
 
 /**
