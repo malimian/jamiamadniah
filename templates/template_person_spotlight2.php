@@ -767,28 +767,238 @@
 
         <div class="section-divider"></div>
 
-        <!-- Section 7: Professional Journey & Achievements -->
-        <section class="mb-5">
-            <h2 class="mb-4">Professional Journey & Achievements</h2>
-            <div class="timeline">
+<!-- Section 7: Professional Journey & Achievements -->
+<section class="mb-5 professional-journey">
+    <div class="container">
+        <h2 class="section-title mb-5 text-center">Professional Journey & Milestones</h2>
+        
+        <div class="timeline-wrapper">
+            <div class="timeline-line"></div>
+            
+            <div class="timeline-items">
+                <!-- Timeline Item 1 -->
                 <div class="timeline-item">
-                    <h3>2020-Present</h3>
-                    <h4>CEO, Iboto Empire USA</h4>
-                    <p>Leading a technology consulting firm that delivers innovative solutions to faith-based organizations and non-profits.</p>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2020 - Present</div>
+                        <h3 class="timeline-position">CEO & Founder</h3>
+                        <h4 class="timeline-company">Iboto Empire USA</h4>
+                        <div class="timeline-description">
+                            <p>Leading a technology consulting firm specializing in digital transformation for faith-based organizations and non-profits. Spearheaded initiatives that:</p>
+                            <ul>
+                                <li>Increased operational efficiency by 40% through custom CRM solutions</li>
+                                <li>Developed secure donation platforms processing $2M+ annually</li>
+                                <li>Built cross-platform mobile apps reaching 50,000+ users</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+                
+                <!-- Timeline Item 2 -->
                 <div class="timeline-item">
-                    <h3>2018-2020</h3>
-                    <h4>Senior Solutions Architect, TechFaith Inc.</h4>
-                    <p>Designed and implemented cloud solutions for Fortune 500 companies while maintaining ethical technology practices.</p>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2018 - 2020</div>
+                        <h3 class="timeline-position">Senior Solutions Architect</h3>
+                        <h4 class="timeline-company">TechFaith Inc.</h4>
+                        <div class="timeline-description">
+                            <p>Designed and implemented cloud-native solutions for Fortune 500 clients while maintaining ethical technology practices:</p>
+                            <ul>
+                                <li>Led migration of legacy systems to AWS, reducing costs by 35%</li>
+                                <li>Developed AI-powered analytics tools for faith-based metrics</li>
+                                <li>Mentored junior developers in ethical coding practices</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
+                
+                <!-- Timeline Item 3 -->
                 <div class="timeline-item">
-                    <h3>2015-2018</h3>
-                    <h4>Founder, FaithTech Collective</h4>
-                    <p>Created a platform connecting technologists and faith leaders to collaborate on projects with social impact.</p>
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <div class="timeline-date">2015 - 2018</div>
+                        <h3 class="timeline-position">Founder & Technical Lead</h3>
+                        <h4 class="timeline-company">FaithTech Collective</h4>
+                        <div class="timeline-description">
+                            <p>Created an innovative platform connecting technologists and faith leaders for social impact projects:</p>
+                            <ul>
+                                <li>Built community of 500+ developers and ministry leaders</li>
+                                <li>Launched 12 successful collaborative projects</li>
+                                <li>Developed open-source tools for small congregations</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
 
+<style>
+.professional-journey {
+    background-color: #f8f9fa;
+    padding: 4rem 0;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.section-title:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #3498db, #9b59b6);
+}
+
+.timeline-wrapper {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, #3498db, #9b59b6);
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.timeline-items {
+    position: relative;
+    z-index: 2;
+}
+
+.timeline-item {
+    display: flex;
+    justify-content: flex-end;
+    padding: 2rem 0;
+    position: relative;
+    margin: 0 2rem;
+}
+
+.timeline-item:nth-child(odd) {
+    justify-content: flex-start;
+}
+
+.timeline-dot {
+    width: 20px;
+    height: 20px;
+    background: #3498db;
+    border-radius: 50%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid white;
+    box-shadow: 0 0 0 2px #3498db;
+    z-index: 3;
+}
+
+.timeline-content {
+    width: calc(50% - 4rem);
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.timeline-item:nth-child(odd) .timeline-content {
+    margin-right: auto;
+}
+
+.timeline-item:nth-child(even) .timeline-content {
+    margin-left: auto;
+}
+
+.timeline-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.timeline-date {
+    color: #7f8c8d;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-position {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-company {
+    color: #3498db;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.timeline-description {
+    color: #34495e;
+    line-height: 1.6;
+}
+
+.timeline-description ul {
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.timeline-description li {
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .timeline-line,
+    .timeline-dot {
+        left: 2rem;
+    }
+    
+    .timeline-item {
+        justify-content: flex-start !important;
+        padding-left: 4rem;
+    }
+    
+    .timeline-content {
+        width: 100%;
+    }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    
+    // Animate timeline items on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    timelineItems.forEach((item, index) => {
+        item.style.opacity = 0;
+        item.style.transform = 'translateY(20px)';
+        item.style.transition = `all 0.5s ease ${index * 0.1}s`;
+        observer.observe(item);
+    });
+});
+</script>
         <div class="section-divider"></div>
 
         <!-- Section 8: Unique Value Proposition & Leadership Philosophy -->
