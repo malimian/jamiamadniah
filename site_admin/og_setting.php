@@ -211,18 +211,56 @@ AdminHeader(
                                     <small class="form-text text-muted">Use Short Code <?php echo $setting[10]['short_code']?></small>
                                 </div>
                                 
-                                <div class="form-group col-sm-6">
-                                    <label for="colFormLabel" class="col-form-label">
-                                        <i class="fa fa-map-marker"></i> Shop Location
-                                    </label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
-                                        </div>
-                                        <textarea class="form-control" placeholder="Enter Shop Location" id="shop_location" rows="2"><?php echo isset($setting[17]['settings_value']) ? $setting[17]['settings_value'] : 'NO. 342 - London Oxford Street. 012 United Kingdom' ?></textarea>
-                                    </div>
-                                    <small class="form-text text-muted">Use Short Code {SHOP_LOCATION}</small>
-                                </div>
+                    <div class="form-group col-sm-6">
+                        <label for="shop_location" class="col-form-label">
+                            <i class="fa fa-map-marker"></i> Shop Location
+                        </label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
+                            </div>
+                            <textarea class="form-control" placeholder="Enter Shop Location" id="shop_location" name="shop_location" rows="2"><?php echo isset($setting[17]['settings_value']) ? htmlspecialchars($setting[17]['settings_value']) : '' ?></textarea>
+                        </div>
+                        <small class="form-text text-muted">Use Short Code {SHOP_LOCATION}</small>
+                        
+                        <!-- Help Box for Address Format -->
+                        <div class="alert alert-info mt-2" id="addressFormatHelp">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h6><i class="fa fa-info-circle"></i> Address Format Guide</h6>
+                            <p>For proper parsing in organization schema, please use this format:</p>
+                            <div class="bg-light p-2 mb-2">
+                                <code>[Street Address] [City] [State/Province] [Postal Code] [Country]</code>
+                            </div>
+                            <p class="mb-1"><strong>Example:</strong></p>
+                            <ul class="list-unstyled">
+                                <li><code>6101 Cherry Avenue Suite 102A - 206 Fontana CA 92336 US</code></li>
+                                <li><code>NO. 342 - London Oxford Street London UK 012 United Kingdom</code></li>
+                            </ul>
+                            <p class="mb-0"><small>Note: Country code can be either full name (United States) or 2-letter code (US)</small></p>
+                        </div>
+                    </div>
+
+                    <!-- Optional JavaScript to toggle help visibility -->
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Toggle help box when clicking on the help icon
+                        const helpIcon = document.createElement('a');
+                        helpIcon.href = '#';
+                        helpIcon.className = 'text-info ml-2';
+                        helpIcon.innerHTML = '<i class="fa fa-question-circle"></i>';
+                        helpIcon.onclick = function(e) {
+                            e.preventDefault();
+                            document.getElementById('addressFormatHelp').classList.toggle('d-none');
+                        };
+                        document.querySelector('label[for="shop_location"]').appendChild(helpIcon);
+                        
+                        // Initialize help as visible
+                        document.getElementById('addressFormatHelp').classList.remove('d-none');
+                    });
+                    </script>
+
                             </div>
                         </div>
                         
