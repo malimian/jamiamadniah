@@ -1408,3 +1408,175 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
     </section>
+
+
+    <!-- Section 12: Digital Presence & Call to Action -->
+<section id="connect" class="py-5 bg-light">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold">Connect & Collaborate</h2>
+            <p class="lead text-muted">Let's work together to create meaningful impact</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Digital Presence Column -->
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h4 mb-4 pb-2 border-bottom"><i class="fas fa-globe text-primary me-2"></i> Digital Presence</h3>
+                        
+                        <!-- Website -->
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="flex-shrink-0 bg-primary bg-opacity-10 p-2 rounded">
+                                <i class="fas fa-link text-primary fs-5"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h4 class="h6 mb-1">Website & Blog</h4>
+                                <a href="https://jacoboroks.com" class="text-decoration-none" target="_blank">jacoboroks.com</a>
+                            </div>
+                        </div>
+                        
+                        <!-- Social Media -->
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="flex-shrink-0 bg-primary bg-opacity-10 p-2 rounded">
+                                <i class="fas fa-hashtag text-primary fs-5"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h4 class="h6 mb-2">Social Media</h4>
+                                <div class="d-flex gap-3">
+                                    <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">
+                                        <i class="fab fa-linkedin-in me-1"></i> LinkedIn
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline-info rounded-pill">
+                                        <i class="fab fa-twitter me-1"></i> Twitter
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-outline-danger rounded-pill">
+                                        <i class="fab fa-instagram me-1"></i> Instagram
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Professional Associations -->
+                        <div class="d-flex align-items-start">
+                            <div class="flex-shrink-0 bg-primary bg-opacity-10 p-2 rounded">
+                                <i class="fas fa-award text-primary fs-5"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <h4 class="h6 mb-2">Professional Associations</h4>
+                                <ul class="list-unstyled">
+                                    <li class="mb-1">
+                                        <i class="fas fa-circle-check text-success me-2"></i>
+                                        Forbes Technology Council
+                                    </li>
+                                    <li class="mb-1">
+                                        <i class="fas fa-circle-check text-success me-2"></i>
+                                        FaithTech Collective
+                                    </li>
+                                    <li class="mb-1">
+                                        <i class="fas fa-circle-check text-success me-2"></i>
+                                        Efik Diaspora Council
+                                    </li>
+                                    <li>
+                                        <i class="fas fa-circle-check text-success me-2"></i>
+                                        Royal Society of Arts
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Call to Action Column -->
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h4 mb-4 pb-2 border-bottom"><i class="fas fa-handshake-angle text-primary me-2"></i> Let's Work Together</h3>
+                        
+                        <div class="row g-3">
+                            <!-- Entrepreneurs/Consultants -->
+                            <div class="col-md-6">
+                                <div class="card bg-primary bg-opacity-10 border-primary border-opacity-25 h-100">
+                                    <div class="card-body text-center p-3">
+                                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                                            <i class="fas fa-lightbulb text-primary fs-4"></i>
+                                        </div>
+                                        <h4 class="h6 mb-2">Entrepreneurs/Consultants</h4>
+                                        <p class="small mb-3">Schedule a strategy session to explore synergies</p>
+                                        <a href="#" class="btn btn-primary btn-sm stretched-link">
+                                            Book Session <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Finance Leaders -->
+                            <div class="col-md-6">
+                                <div class="card bg-success bg-opacity-10 border-success border-opacity-25 h-100">
+                                    <div class="card-body text-center p-3">
+                                        <div class="bg-success bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                                            <i class="fas fa-chart-line text-success fs-4"></i>
+                                        </div>
+                                        <h4 class="h6 mb-2">Finance Leaders</h4>
+                                        <p class="small mb-3">Request a comprehensive financial review</p>
+                                        <a href="#" class="btn btn-success btn-sm stretched-link">
+                                            Request Review <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Real Estate Pros -->
+                            <div class="col-md-6">
+                                <div class="card bg-warning bg-opacity-10 border-warning border-opacity-25 h-100">
+                                    <div class="card-body text-center p-3">
+                                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                                            <i class="fas fa-building text-warning fs-4"></i>
+                                        </div>
+                                        <h4 class="h6 mb-2">Real Estate Professionals</h4>
+                                        <p class="small mb-3">View available investment listings</p>
+                                        <a href="#" class="btn btn-warning btn-sm stretched-link">
+                                            Browse Listings <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Product/Project Managers -->
+                            <div class="col-md-6">
+                                <div class="card bg-info bg-opacity-10 border-info border-opacity-25 h-100">
+                                    <div class="card-body text-center p-3">
+                                        <div class="bg-info bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                                            <i class="fas fa-road text-info fs-4"></i>
+                                        </div>
+                                        <h4 class="h6 mb-2">Product/Project Managers</h4>
+                                        <p class="small mb-3">Download our roadmap template</p>
+                                        <a href="#" class="btn btn-info btn-sm stretched-link">
+                                            Download <i class="fas fa-arrow-down ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Administrators -->
+                            <div class="col-md-12">
+                                <div class="card bg-secondary bg-opacity-10 border-secondary border-opacity-25 h-100">
+                                    <div class="card-body text-center p-3">
+                                        <div class="bg-secondary bg-opacity-10 p-3 rounded-circle d-inline-block mb-3">
+                                            <i class="fas fa-cogs text-secondary fs-4"></i>
+                                        </div>
+                                        <h4 class="h6 mb-2">Administrators</h4>
+                                        <p class="small mb-3">Learn about our operational services</p>
+                                        <a href="#" class="btn btn-secondary btn-sm stretched-link">
+                                            Explore Services <i class="fas fa-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
