@@ -1032,6 +1032,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+    </div>
+
 
  <!-- Section 8: Expertise & Unique Value Proposition -->
     <section id="expertise" class="py-5 bg-light">
@@ -1406,9 +1408,3 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </div>
     </section>
-    
-
-    </div>
-
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
