@@ -1001,247 +1001,45 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
         <div class="section-divider"></div>
 
-<!-- Section 8: Unique Value Proposition & Leadership Philosophy -->
-<section class="py-5 value-proposition" id="contact">
-    <div class="container">
-        <div class="section-header text-center mb-5">
-            <h2 class="display-4 mb-3">My Unique Value Proposition</h2>
-            <div class="divider mx-auto"></div>
-            <p class="lead">Bridging technology and faith to create meaningful impact</p>
-        </div>
-
-        <div class="row g-4">
-            <!-- Leadership Philosophy Card -->
-            <div class="col-lg-6">
-                <div class="philosophy-card card h-100 border-0 shadow-lg hover-effect">
-                    <div class="card-body p-4 p-lg-5">
-                        <div class="icon-box mb-4">
-                            <i class="fas fa-hands-helping"></i>
-                        </div>
-                        <h3 class="h2 mb-4">Leadership Philosophy</h3>
-                        <blockquote class="blockquote mb-4">
-                            <p class="font-italic">"True leadership emerges at the intersection of competence and character. My approach combines technical expertise with spiritual wisdom, creating organizations that excel while maintaining their soul."</p>
-                        </blockquote>
-                        
-                        <h4 class="h5 mb-3 text-primary">Core Principles:</h4>
-                        <ul class="value-list">
-                            <li class="d-flex align-items-start mb-3">
-                                <span class="badge bg-primary me-3">1</span>
-                                <span>Ethical innovation that serves human dignity</span>
-                            </li>
-                            <li class="d-flex align-items-start mb-3">
-                                <span class="badge bg-primary me-3">2</span>
-                                <span>Cultural preservation through technological advancement</span>
-                            </li>
-                            <li class="d-flex align-items-start">
-                                <span class="badge bg-primary me-3">3</span>
-                                <span>Faith as the foundation for sustainable success</span>
-                            </li>
-                        </ul>
-                        
-                        <div class="signature mt-4">
-                            <img src="https://via.placeholder.com/150x50" alt="Jacob's Signature" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Contact Form Card -->
-            <div class="col-lg-6">
-                <div class="contact-card card h-100 border-0 shadow-lg">
-                    <div class="card-body p-4 p-lg-5">
-                        <div class="icon-box mb-4">
-                            <i class="fas fa-envelope-open-text"></i>
-                        </div>
-                        <h3 class="h2 mb-4">Connect With Jacob</h3>
-                        <p class="mb-4">Ready to discuss how we can collaborate? Schedule a Spotlight Session below.</p>
-                        
-                        <form class="needs-validation" novalidate>
-                            <div class="mb-4">
-                                <label for="name" class="form-label">Your Name</label>
-                                <input type="text" class="form-control form-control-lg" id="name" placeholder="John Doe" required>
-                                <div class="invalid-feedback">
-                                    Please provide your name.
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control form-control-lg" id="email" placeholder="john@example.com" required>
-                                <div class="invalid-feedback">
-                                    Please provide a valid email.
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="message" class="form-label">Your Message</label>
-                                <textarea class="form-control form-control-lg" id="message" rows="4" placeholder="Tell me about your project..." required></textarea>
-                                <div class="invalid-feedback">
-                                    Please include a message.
-                                </div>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-calendar-check me-2"></i> Request Spotlight Session
-                                </button>
-                            </div>
-                        </form>
-                        
-                        <div class="contact-info mt-4 pt-3 border-top">
-                            <h5 class="h6 mb-3">Alternative Contact Methods:</h5>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">
-                                    <a href="mailto:jacob@ibotoempire.com" class="text-decoration-none">
-                                        <i class="fas fa-envelope me-2 text-primary"></i> jacob@ibotoempire.com
-                                    </a>
-                                </li>
-                                <li class="mb-2">
-                                    <a href="tel:+1234567890" class="text-decoration-none">
-                                        <i class="fas fa-phone me-2 text-primary"></i> (123) 456-7890
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="text-decoration-none">
-                                        <i class="fas fa-video me-2 text-primary"></i> Schedule Video Call
-                                    </a>
-                                </li>
+        <!-- Section 8: Unique Value Proposition & Leadership Philosophy -->
+        <section class="mb-5" id="contact">
+            <h2 class="mb-4">Unique Value Proposition</h2>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="h4">Leadership Philosophy</h3>
+                            <p>"True leadership emerges at the intersection of competence and character. My approach combines technical expertise with spiritual wisdom, creating organizations that excel while maintaining their soul."</p>
+                            <h4 class="h5 mt-3">Core Principles:</h4>
+                            <ul>
+                                <li>Ethical innovation that serves human dignity</li>
+                                <li>Cultural preservation through technological advancement</li>
+                                <li>Faith as the foundation for sustainable success</li>
                             </ul>
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="h4">Connect With Jacob</h3>
+                            <form>
+                                <div class="mb-3">
+                                    <input type="text" class="form-control" placeholder="Your Name">
+                                </div>
+                                <div class="mb-3">
+                                    <input type="email" class="form-control" placeholder="Email Address">
+                                </div>
+                                <div class="mb-3">
+                                    <textarea class="form-control" rows="4" placeholder="Your Message"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Request Spotlight Session</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-
-<style>
-.value-proposition {
-    background-color: #f8f9fa;
-}
-
-.section-header h2 {
-    font-weight: 700;
-    color: #2c3e50;
-}
-
-.divider {
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(90deg, #3498db, #9b59b6);
-    margin-bottom: 1.5rem;
-}
-
-.philosophy-card, .contact-card {
-    transition: transform 0.3s ease;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.hover-effect:hover {
-    transform: translateY(-5px);
-}
-
-.icon-box {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #3498db, #9b59b6);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.value-list {
-    list-style: none;
-    padding-left: 0;
-}
-
-.value-list li .badge {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: normal;
-    padding: 0;
-}
-
-.signature {
-    max-width: 150px;
-    opacity: 0.8;
-}
-
-.contact-info a {
-    color: #495057;
-    transition: color 0.2s;
-}
-
-.contact-info a:hover {
-    color: #3498db;
-}
-
-.form-control-lg {
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid #dee2e6;
-}
-
-.btn-lg {
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-}
-
-@media (max-width: 992px) {
-    .philosophy-card, .contact-card {
-        margin-bottom: 2rem;
-    }
-}
-</style>
-
-<script>
-// Form validation
-(function() {
-    'use strict';
-    window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('needs-validation');
-        var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
-})();
-
-// Animate cards on scroll
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.philosophy-card, .contact-card');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = 1;
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    cards.forEach((card, index) => {
-        card.style.opacity = 0;
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = `all 0.5s ease ${index * 0.1}s`;
-        observer.observe(card);
-    });
-});
-</script>
-
-
+        </section>
     </div>
 
 
