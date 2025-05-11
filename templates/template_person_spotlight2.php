@@ -1033,6 +1033,381 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
+ <!-- Section 8: Expertise & Unique Value Proposition -->
+    <section id="expertise" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Expertise & Unique Value Proposition</h2>
+            
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="card value-card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-chart-line fa-3x text-primary"></i>
+                            </div>
+                            <h3 class="h4 text-center">Data Driven Decision Making</h3>
+                            <p class="text-muted">Leveraging advanced analytics and business intelligence to drive strategic organizational decisions with measurable outcomes.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card value-card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-handshake fa-3x text-primary"></i>
+                            </div>
+                            <h3 class="h4 text-center">M&A Integration</h3>
+                            <p class="text-muted">Expertise in merging organizations with minimal disruption while maximizing synergies and cultural alignment.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card value-card shadow-sm h-100">
+                        <div class="card-body">
+                            <div class="text-center mb-3">
+                                <i class="fas fa-tasks fa-3x text-primary"></i>
+                            </div>
+                            <h3 class="h4 text-center">Agile Product Delivery</h3>
+                            <p class="text-muted">Implementing lean methodologies to accelerate product development cycles while maintaining quality standards.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3 class="h4 mb-3">Distinct Methodologies</h3>
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-body">
+                            <h4 class="h5">The Oroks Transformation Framework</h4>
+                            <p>A proprietary 5-phase approach to organizational transformation that balances technological innovation with cultural preservation.</p>
+                            <ol>
+                                <li>Diagnostic Assessment</li>
+                                <li>Vision Alignment</li>
+                                <li>Capability Building</li>
+                                <li>Pilot Implementation</li>
+                                <li>Scale & Institutionalize</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="h4 mb-3">Thought Leadership</h3>
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h4 class="h5">Speaking Topics</h4>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "Faith-Based Leadership in the Digital Age"</li>
+                                <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "Bridging Cultural Heritage with Technological Innovation"</li>
+                                <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "The Triple Bottom Line: Profit, People & Purpose"</li>
+                                <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "Diaspora Engagement Strategies for Community Development"</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 9: Impact Stories & Case Studies -->
+    <section id="impact" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Impact Stories & Case Studies</h2>
+            
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="h4">Case Study - Efik Cultural Preservation Initiative</h3>
+                            <h4 class="h5 text-muted mt-3">Challenge</h4>
+                            <p>Declining engagement among younger generations with Efik cultural traditions and language in the diaspora community.</p>
+                            
+                            <h4 class="h5 text-muted mt-3">Approach</h4>
+                            <p>Developed a hybrid digital-physical engagement platform combining mobile apps for language learning with community events that modernized traditional practices.</p>
+                            
+                            <h4 class="h5 text-muted mt-3">Results</h4>
+                            <ul>
+                                <li>+300% increase in youth participation in cultural events</li>
+                                <li>15,000+ downloads of language learning app in first year</li>
+                                <li>Formation of 12 new community chapters across the US</li>
+                            </ul>
+                            
+                            <div class="testimonial-card bg-light p-3 mt-3">
+                                <p class="fst-italic mb-2">"Jacob's innovative approach saved our cultural heritage from being lost to assimilation. He made our traditions accessible and relevant to our digital-native youth."</p>
+                                <p class="fw-bold mb-0">— Chief Edet Okon, President, Efik Diaspora Council</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="h4">Case Study - Faith-Based Tech Startup Accelerator</h3>
+                            <h4 class="h5 text-muted mt-3">Challenge</h4>
+                            <p>Lack of funding and mentorship for Christian entrepreneurs building technology solutions for ministry applications.</p>
+                            
+                            <h4 class="h5 text-muted mt-3">Approach</h4>
+                            <p>Created a 12-week accelerator program pairing Silicon Valley methodologies with biblical business principles, including:</p>
+                            <ul>
+                                <li>Faith-integrated lean startup curriculum</li>
+                                <li>Network of impact investors</li>
+                                <li>Ministry-market fit validation framework</li>
+                            </ul>
+                            
+                            <h4 class="h5 text-muted mt-3">Results</h4>
+                            <ul>
+                                <li>42 startups graduated in 3 cohorts</li>
+                                <li>$5.2M in total funding raised by participants</li>
+                                <li>85% of ventures still operational after 3 years (vs. industry avg. of 40%)</li>
+                            </ul>
+                            
+                            <div class="testimonial-card bg-light p-3 mt-3">
+                                <p class="fst-italic mb-2">"The accelerator gave us both the spiritual foundation and practical tools to build a sustainable business. Jacob's mentorship was transformative."</p>
+                                <p class="fw-bold mb-0">— Sarah Johnson, Founder, FaithfulMetrics</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 10: Thought Leadership & Publications -->
+    <section id="thought-leadership" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title">Thought Leadership & Publications</h2>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="h4 mb-3"><i class="fas fa-newspaper text-primary me-2"></i> Articles & Whitepapers</h3>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">"Digital Discipleship: Leveraging Technology for Spiritual Growth", <em>FaithTech Journal</em>, 2022</li>
+                                <li class="mb-2">"The Diaspora Dividend: Measuring the Economic Impact of Cultural Communities", <em>Harvard Business Review</em>, 2021</li>
+                                <li class="mb-2">"When Silicon Valley Meets Solomon: Ancient Wisdom for Modern Entrepreneurs", <em>Forbes</em>, 2020</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="h4 mb-3"><i class="fas fa-book text-primary me-2"></i> Books & E-Books</h3>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><strong>The Bilingual Leader</strong>: Navigating Between Sacred and Secular Leadership, Iboto Press, 2023</li>
+                                <li class="mb-2"><strong>Code & Covenant</strong>: Building Technology With Kingdom Values, FaithTech Publishing, 2021</li>
+                                <li class="mb-2"><strong>Diaspora 2.0</strong>: A Blueprint for Cultural Preservation in the Digital Age (e-book), 2020</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="h4 mb-3"><i class="fas fa-video text-primary me-2"></i> Conference Talks & Webinars</h3>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">"Faith in the Algorithm" - TEDxSanFrancisco, 2022 <a href="#" class="text-decoration-none">[Watch]</a></li>
+                                <li class="mb-2">"Building Bridges: Technology for Cultural Preservation" - UNESCO Digital Heritage Summit, 2021 <a href="#" class="text-decoration-none">[Watch]</a></li>
+                                <li class="mb-2">"The Pastor-CEO: Leading at the Intersection of Faith and Business" - Global Leadership Network, 2020 <a href="#" class="text-decoration-none">[Watch]</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 11: Media Assets & Downloads -->
+    <section id="media" class="py-5">
+        <div class="container">
+            <h2 class="section-title">Media Assets & Downloads</h2>
+            
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <h3 class="h4 mb-3">Photo Gallery</h3>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="media-thumbnail">
+                                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Team workshop" class="img-fluid">
+                                <div class="overlay">Team Workshop</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="media-thumbnail">
+                                <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Speaking engagement" class="img-fluid">
+                                <div class="overlay">Keynote Speech</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="media-thumbnail">
+                                <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Community event" class="img-fluid">
+                                <div class="overlay">Community Event</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="media-thumbnail">
+                                <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Strategy session" class="img-fluid">
+                                <div class="overlay">Strategy Session</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <h3 class="h4 mb-3">Video Clips</h3>
+                    <div class="ratio ratio-16x9 mb-3">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Sample video" allowfullscreen></iframe>
+                    </div>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            TEDx Talk: Faith in the Algorithm
+                            <span class="badge bg-primary rounded-pill">12:34</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            CNBC Interview: Faith-Based Entrepreneurship
+                            <span class="badge bg-primary rounded-pill">8:45</span>
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            Leadership Webinar: The Pastor-CEO
+                            <span class="badge bg-primary rounded-pill">45:21</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <h3 class="h4 mb-3">Downloads</h3>
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-file-pdf fa-2x text-danger me-3"></i>
+                                <div>
+                                    <h4 class="h6 mb-0">Cultural Preservation Framework</h4>
+                                    <small class="text-muted">PDF • 2.4 MB</small>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-outline-primary w-100">Download</a>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-file-powerpoint fa-2x text-warning me-3"></i>
+                                <div>
+                                    <h4 class="h6 mb-0">Faith-Tech Integration Deck</h4>
+                                    <small class="text-muted">PPTX • 5.1 MB</small>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-outline-primary w-100">Download</a>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-file-alt fa-2x text-info me-3"></i>
+                                <div>
+                                    <h4 class="h6 mb-0">Diaspora Engagement Playbook</h4>
+                                    <small class="text-muted">DOCX • 1.8 MB</small>
+                                </div>
+                            </div>
+                            <a href="#" class="btn btn-sm btn-outline-primary w-100">Download</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 12: Digital Presence & Call to Action -->
+    <section id="contact" class="py-5 bg-dark text-white">
+        <div class="container">
+            <h2 class="section-title text-white">Digital Presence & Call to Action</h2>
+            
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h3 class="h4 mb-4">Connect With Jacob</h3>
+                    
+                    <div class="mb-4">
+                        <h4 class="h5">Website & Blog</h4>
+                        <a href="https://www.jacoboroks.com" class="text-white text-decoration-none">www.jacoboroks.com</a>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="h5">Social Media</h4>
+                        <div class="d-flex gap-3">
+                            <a href="#" class="text-white fs-3"><i class="fab fa-linkedin"></i></a>
+                            <a href="#" class="text-white fs-3"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="text-white fs-3"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="text-white fs-3"><i class="fab fa-facebook"></i></a>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="h5">Professional Associations</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Member, Forbes Technology Council</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Advisor, FaithTech Collective</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Board Member, Efik Diaspora Council</li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Fellow, Royal Society of Arts</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <h3 class="h4 mb-4">Let's Collaborate</h3>
+                    
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card bg-primary text-white h-100">
+                                <div class="card-body">
+                                    <h4 class="h5"><i class="fas fa-lightbulb me-2"></i> Entrepreneurs/Consultants</h4>
+                                    <p>Schedule a Strategy Session to explore synergies and growth opportunities.</p>
+                                    <a href="#" class="btn btn-light btn-sm">Book Now</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card bg-secondary text-white h-100">
+                                <div class="card-body">
+                                    <h4 class="h5"><i class="fas fa-chart-pie me-2"></i> Finance Leaders</h4>
+                                    <p>Request a Financial Review to optimize your organization's stewardship.</p>
+                                    <a href="#" class="btn btn-light btn-sm">Request Review</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card bg-success text-white h-100">
+                                <div class="card-body">
+                                    <h4 class="h5"><i class="fas fa-road me-2"></i> Product/Project Managers</h4>
+                                    <p>Download our proven Product Roadmap Template to accelerate your planning.</p>
+                                    <a href="#" class="btn btn-light btn-sm">Download</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card bg-info text-white h-100">
+                                <div class="card-body">
+                                    <h4 class="h5"><i class="fas fa-hands-helping me-2"></i> Administrators</h4>
+                                    <p>Learn About Our Services that can streamline your operations.</p>
+                                    <a href="#" class="btn btn-light btn-sm">Learn More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+
     </div>
 
 
