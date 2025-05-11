@@ -767,64 +767,133 @@
 
         <div class="section-divider"></div>
 
-<!-- Section 7: Professional Journey & Achievements -->
-<section class="mb-5 professional-journey">
+        <!-- Section 7: Professional Journey & Achievements -->
+        <section class="mb-5">
+            <h2 class="mb-4">Professional Journey & Achievements</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h3>2020-Present</h3>
+                    <h4>CEO, Iboto Empire USA</h4>
+                    <p>Leading a technology consulting firm that delivers innovative solutions to faith-based organizations and non-profits.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2018-2020</h3>
+                    <h4>Senior Solutions Architect, TechFaith Inc.</h4>
+                    <p>Designed and implemented cloud solutions for Fortune 500 companies while maintaining ethical technology practices.</p>
+                </div>
+                <div class="timeline-item">
+                    <h3>2015-2018</h3>
+                    <h4>Founder, FaithTech Collective</h4>
+                    <p>Created a platform connecting technologists and faith leaders to collaborate on projects with social impact.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider"></div>
+
+
+<!-- Section 8: Unique Value Proposition & Leadership Philosophy -->
+<section class="py-5 value-proposition" id="contact">
     <div class="container">
-        <h2 class="section-title mb-5 text-center">Professional Journey & Milestones</h2>
-        
-        <div class="timeline-wrapper">
-            <div class="timeline-line"></div>
+        <div class="section-header text-center mb-5">
+            <h2 class="display-4 mb-3">My Unique Value Proposition</h2>
+            <div class="divider mx-auto"></div>
+            <p class="lead">Bridging technology and faith to create meaningful impact</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Leadership Philosophy Card -->
+            <div class="col-lg-6">
+                <div class="philosophy-card card h-100 border-0 shadow-lg hover-effect">
+                    <div class="card-body p-4 p-lg-5">
+                        <div class="icon-box mb-4">
+                            <i class="fas fa-hands-helping"></i>
+                        </div>
+                        <h3 class="h2 mb-4">Leadership Philosophy</h3>
+                        <blockquote class="blockquote mb-4">
+                            <p class="font-italic">"True leadership emerges at the intersection of competence and character. My approach combines technical expertise with spiritual wisdom, creating organizations that excel while maintaining their soul."</p>
+                        </blockquote>
+                        
+                        <h4 class="h5 mb-3 text-primary">Core Principles:</h4>
+                        <ul class="value-list">
+                            <li class="d-flex align-items-start mb-3">
+                                <span class="badge bg-primary me-3">1</span>
+                                <span>Ethical innovation that serves human dignity</span>
+                            </li>
+                            <li class="d-flex align-items-start mb-3">
+                                <span class="badge bg-primary me-3">2</span>
+                                <span>Cultural preservation through technological advancement</span>
+                            </li>
+                            <li class="d-flex align-items-start">
+                                <span class="badge bg-primary me-3">3</span>
+                                <span>Faith as the foundation for sustainable success</span>
+                            </li>
+                        </ul>
+                        
+                        <div class="signature mt-4">
+                            <img src="https://via.placeholder.com/150x50" alt="Jacob's Signature" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
             
-            <div class="timeline-items">
-                <!-- Timeline Item 1 -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">2020 - Present</div>
-                        <h3 class="timeline-position">CEO & Founder</h3>
-                        <h4 class="timeline-company">Iboto Empire USA</h4>
-                        <div class="timeline-description">
-                            <p>Leading a technology consulting firm specializing in digital transformation for faith-based organizations and non-profits. Spearheaded initiatives that:</p>
-                            <ul>
-                                <li>Increased operational efficiency by 40% through custom CRM solutions</li>
-                                <li>Developed secure donation platforms processing $2M+ annually</li>
-                                <li>Built cross-platform mobile apps reaching 50,000+ users</li>
-                            </ul>
+            <!-- Contact Form Card -->
+            <div class="col-lg-6">
+                <div class="contact-card card h-100 border-0 shadow-lg">
+                    <div class="card-body p-4 p-lg-5">
+                        <div class="icon-box mb-4">
+                            <i class="fas fa-envelope-open-text"></i>
                         </div>
-                    </div>
-                </div>
-                
-                <!-- Timeline Item 2 -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">2018 - 2020</div>
-                        <h3 class="timeline-position">Senior Solutions Architect</h3>
-                        <h4 class="timeline-company">TechFaith Inc.</h4>
-                        <div class="timeline-description">
-                            <p>Designed and implemented cloud-native solutions for Fortune 500 clients while maintaining ethical technology practices:</p>
-                            <ul>
-                                <li>Led migration of legacy systems to AWS, reducing costs by 35%</li>
-                                <li>Developed AI-powered analytics tools for faith-based metrics</li>
-                                <li>Mentored junior developers in ethical coding practices</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Timeline Item 3 -->
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-date">2015 - 2018</div>
-                        <h3 class="timeline-position">Founder & Technical Lead</h3>
-                        <h4 class="timeline-company">FaithTech Collective</h4>
-                        <div class="timeline-description">
-                            <p>Created an innovative platform connecting technologists and faith leaders for social impact projects:</p>
-                            <ul>
-                                <li>Built community of 500+ developers and ministry leaders</li>
-                                <li>Launched 12 successful collaborative projects</li>
-                                <li>Developed open-source tools for small congregations</li>
+                        <h3 class="h2 mb-4">Connect With Jacob</h3>
+                        <p class="mb-4">Ready to discuss how we can collaborate? Schedule a Spotlight Session below.</p>
+                        
+                        <form class="needs-validation" novalidate>
+                            <div class="mb-4">
+                                <label for="name" class="form-label">Your Name</label>
+                                <input type="text" class="form-control form-control-lg" id="name" placeholder="John Doe" required>
+                                <div class="invalid-feedback">
+                                    Please provide your name.
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" class="form-control form-control-lg" id="email" placeholder="john@example.com" required>
+                                <div class="invalid-feedback">
+                                    Please provide a valid email.
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="message" class="form-label">Your Message</label>
+                                <textarea class="form-control form-control-lg" id="message" rows="4" placeholder="Tell me about your project..." required></textarea>
+                                <div class="invalid-feedback">
+                                    Please include a message.
+                                </div>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-calendar-check me-2"></i> Request Spotlight Session
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="contact-info mt-4 pt-3 border-top">
+                            <h5 class="h6 mb-3">Alternative Contact Methods:</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <a href="mailto:jacob@ibotoempire.com" class="text-decoration-none">
+                                        <i class="fas fa-envelope me-2 text-primary"></i> jacob@ibotoempire.com
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a href="tel:+1234567890" class="text-decoration-none">
+                                        <i class="fas fa-phone me-2 text-primary"></i> (123) 456-7890
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="text-decoration-none">
+                                        <i class="fas fa-video me-2 text-primary"></i> Schedule Video Call
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -835,153 +904,116 @@
 </section>
 
 <style>
-.professional-journey {
+.value-proposition {
     background-color: #f8f9fa;
-    padding: 4rem 0;
 }
 
-.section-title {
-    font-size: 2.5rem;
+.section-header h2 {
+    font-weight: 700;
     color: #2c3e50;
-    position: relative;
-    padding-bottom: 1rem;
 }
 
-.section-title:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+.divider {
     width: 80px;
     height: 4px;
     background: linear-gradient(90deg, #3498db, #9b59b6);
+    margin-bottom: 1.5rem;
 }
 
-.timeline-wrapper {
-    position: relative;
-    max-width: 1000px;
-    margin: 0 auto;
+.philosophy-card, .contact-card {
+    transition: transform 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
-.timeline-line {
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 4px;
-    background: linear-gradient(to bottom, #3498db, #9b59b6);
-    transform: translateX(-50%);
-    z-index: 1;
-}
-
-.timeline-items {
-    position: relative;
-    z-index: 2;
-}
-
-.timeline-item {
-    display: flex;
-    justify-content: flex-end;
-    padding: 2rem 0;
-    position: relative;
-    margin: 0 2rem;
-}
-
-.timeline-item:nth-child(odd) {
-    justify-content: flex-start;
-}
-
-.timeline-dot {
-    width: 20px;
-    height: 20px;
-    background: #3498db;
-    border-radius: 50%;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 4px solid white;
-    box-shadow: 0 0 0 2px #3498db;
-    z-index: 3;
-}
-
-.timeline-content {
-    width: calc(50% - 4rem);
-    padding: 2rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-}
-
-.timeline-item:nth-child(odd) .timeline-content {
-    margin-right: auto;
-}
-
-.timeline-item:nth-child(even) .timeline-content {
-    margin-left: auto;
-}
-
-.timeline-content:hover {
+.hover-effect:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-.timeline-date {
-    color: #7f8c8d;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-}
-
-.timeline-position {
-    color: #2c3e50;
+.icon-box {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #3498db, #9b59b6);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
-.timeline-company {
+.value-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.value-list li .badge {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+    padding: 0;
+}
+
+.signature {
+    max-width: 150px;
+    opacity: 0.8;
+}
+
+.contact-info a {
+    color: #495057;
+    transition: color 0.2s;
+}
+
+.contact-info a:hover {
     color: #3498db;
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    font-weight: 600;
 }
 
-.timeline-description {
-    color: #34495e;
-    line-height: 1.6;
+.form-control-lg {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
 }
 
-.timeline-description ul {
-    padding-left: 1.5rem;
-    margin-top: 0.5rem;
+.btn-lg {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
 }
 
-.timeline-description li {
-    margin-bottom: 0.5rem;
-}
-
-@media (max-width: 768px) {
-    .timeline-line,
-    .timeline-dot {
-        left: 2rem;
-    }
-    
-    .timeline-item {
-        justify-content: flex-start !important;
-        padding-left: 4rem;
-    }
-    
-    .timeline-content {
-        width: 100%;
+@media (max-width: 992px) {
+    .philosophy-card, .contact-card {
+        margin-bottom: 2rem;
     }
 }
 </style>
 
 <script>
+// Form validation
+(function() {
+    'use strict';
+    window.addEventListener('load', function() {
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+                if (form.checkValidity() === false) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    }, false);
+})();
+
+// Animate cards on scroll
 document.addEventListener('DOMContentLoaded', function() {
-    const timelineItems = document.querySelectorAll('.timeline-item');
+    const cards = document.querySelectorAll('.philosophy-card, .contact-card');
     
-    // Animate timeline items on scroll
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -991,55 +1023,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, { threshold: 0.1 });
     
-    timelineItems.forEach((item, index) => {
-        item.style.opacity = 0;
-        item.style.transform = 'translateY(20px)';
-        item.style.transition = `all 0.5s ease ${index * 0.1}s`;
-        observer.observe(item);
+    cards.forEach((card, index) => {
+        card.style.opacity = 0;
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+        observer.observe(card);
     });
 });
 </script>
-        <div class="section-divider"></div>
 
-        <!-- Section 8: Unique Value Proposition & Leadership Philosophy -->
-        <section class="mb-5" id="contact">
-            <h2 class="mb-4">Unique Value Proposition</h2>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h3 class="h4">Leadership Philosophy</h3>
-                            <p>"True leadership emerges at the intersection of competence and character. My approach combines technical expertise with spiritual wisdom, creating organizations that excel while maintaining their soul."</p>
-                            <h4 class="h5 mt-3">Core Principles:</h4>
-                            <ul>
-                                <li>Ethical innovation that serves human dignity</li>
-                                <li>Cultural preservation through technological advancement</li>
-                                <li>Faith as the foundation for sustainable success</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="h4">Connect With Jacob</h3>
-                            <form>
-                                <div class="mb-3">
-                                    <input type="text" class="form-control" placeholder="Your Name">
-                                </div>
-                                <div class="mb-3">
-                                    <input type="email" class="form-control" placeholder="Email Address">
-                                </div>
-                                <div class="mb-3">
-                                    <textarea class="form-control" rows="4" placeholder="Your Message"></textarea>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Request Spotlight Session</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+
     </div>
 
 
