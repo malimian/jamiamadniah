@@ -368,6 +368,7 @@ $(document).ready(function() {
         $('.trumbowyg-editor').trumbowyg();
     }
 
+   
     // Add section set
     $(document).on('click', '.add-section-set', function() {
         const sectionName = $(this).data('section');
@@ -383,14 +384,14 @@ $(document).ready(function() {
         const oldId = $this.attr('id');
         const oldName = $this.attr('name');
         
-        // Clear values
-        if ($this.is('input[type="text"], input[type="number"], input[type="date"], textarea')) {
-            $this.val('');
-        } else if ($this.is('input[type="checkbox"]')) {
-            $this.prop('checked', false);
-        } else if ($this.is('select')) {
-            $this.val('').trigger('change');
-        }
+        // Clear values of the text feilds
+        // if ($this.is('input[type="text"], input[type="number"], input[type="date"], textarea')) {
+        //     $this.val('');
+        // } else if ($this.is('input[type="checkbox"]')) {
+        //     $this.prop('checked', false);
+        // } else if ($this.is('select')) {
+        //     $this.val('').trigger('change');
+        // }
         
         // Update IDs and names
         if (oldId && oldId.startsWith('attr_')) {
