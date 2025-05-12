@@ -412,11 +412,13 @@ $(document).ready(function() {
             }
         }
         
-        if (oldName && oldName.includes('attribute[')) {
-            // Update name attribute to use the new set index
-            const newName = oldName.replace(/\[(\d+)\]/, '[' + newSetIndex + ']');
-            $this.attr('name', newName);
-        }
+                //change name=
+                // if (oldName && oldName.includes('attribute[')) {
+                //     // Update name attribute to use the new set index
+                //     const newName = oldName.replace(/\[(\d+)\]/, '[' + newSetIndex + ']');
+                //     $this.attr('name', newName);
+                // }
+
     });
         
         // Update data-set-index attribute
