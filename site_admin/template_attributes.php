@@ -25,7 +25,7 @@ if (isset($_GET['template_id'])) {
         pa.section_name ASC,
         pa.sort_order ASC";
 
-    $attributes_result = return_multiple_rows($attributes_sql);
+    $attributes_result = return_multiple_rows($attributes_sql);    
     $attributes = [];
 
     if($attributes_result) {
@@ -114,7 +114,8 @@ if (isset($_GET['template_id'])) {
                             <div id="attribute-list">
                                 <!-- Attributes -->
                                 <div class="template-attributes-container">
-                                    <?php if (!empty($attributes)) : ?>
+                                    <?php
+                                     if (!empty($attributes)) : ?>
                                         <?php foreach ($attributes as $tab_name => $sections) : ?>
                                             <div class="card mb-4">
                                                 <div class="card-header bg-light">
@@ -132,16 +133,16 @@ if (isset($_GET['template_id'])) {
                                                                     <div></div>
                                                                 <?php endif; ?>
                                                             <?php endif; ?>
-
                                                             <button type="button" class="btn btn-success btn-sm add-attribute-to-section"
                                                                     data-template-id="<?php echo $template_id; ?>"
                                                                     data-tab-name="<?php echo htmlspecialchars($tab_name); ?>"
+                                                                    data-tab-id="<?php echo $section_attributes[0]['tab_id'] ?? 0; ?>"
                                                                     data-section-name="<?php echo htmlspecialchars($section_name); ?>"
                                                                     data-toggle="modal"
                                                                     data-target="#attributeModal"
                                                                     data-action="add"
                                                                     title="Add New Attribute to <?php echo htmlspecialchars($section_name); ?>">
-                                                                <i class="fas fa-plus mr-1"></i> Add New Attribute
+                                                                <i class="fas fa-plus mr-1"></i> Add New Attribute to <?php echo htmlspecialchars($section_name); ?>
                                                             </button>
                                                         </div>
 
@@ -350,11 +351,11 @@ if (isset($_GET['template_id'])) {
                                             <label for="tab_name" class="col-md-3 col-form-label">Tab Name:</label>
                                             <div class="col-md-9">
                                                 <div class="input-group">
-                                                    <select class="form-control" name="tab_name" id="tab_name">
+                                                    <select class="form-control" name="tab_id" id="tab_name">
                                                         <option value="">-- Select Existing Tab --</option>
                                                         <?php 
                                                         // Get existing tabs from database
-                                                        $tabs_sql = "SELECT DISTINCT tab_name , id FROM tab WHERE tab_name IS NOT NULL AND tab_name != '' and template_id = ".$template_id;
+                                                        $tabs_sql = "SELECT DISTINCT tab_name , id FROM tab WHERE tab_name IS NOT NULL AND tab_name != '' and template_id = ".$template_id." ORDER BY tab_name " ;
                                                         $tabs_result = return_multiple_rows($tabs_sql);
                                                         if ($tabs_result) {
                                                             foreach ($tabs_result as $tab) {
@@ -367,7 +368,6 @@ if (isset($_GET['template_id'])) {
                                                 <small class="form-text text-muted">
                                                     Group attributes under tabs in the editor. Leave blank for default section.
                                                 </small>
-                                                <input type="hidden" name="tab_group" id="tab_group">
                                             </div>
                                         </div>
 
@@ -378,22 +378,6 @@ if (isset($_GET['template_id'])) {
                                                     <div class="input-group">
                                                         <select class="form-control" name="section_name" id="section_name">
                                                             <option value="">-- Select Existing Section --</option>
-                                                            <?php
-                                                            // Get existing sections from database
-                                                            $sections_sql = "SELECT DISTINCT section_name FROM page_attributes 
-                                                                            WHERE template_id = $template_id 
-                                                                            AND section_name IS NOT NULL 
-                                                                            AND section_name != ''
-                                                                            ORDER BY section_name";
-                                                            $sections_result = return_multiple_rows($sections_sql);
-                                                            if ($sections_result) {
-                                                                foreach ($sections_result as $section) {
-                                                                    echo '<option value="'.htmlspecialchars($section['section_name'], ENT_QUOTES, 'UTF-8').'">'
-                                                                        .htmlspecialchars($section['section_name'], ENT_QUOTES, 'UTF-8')
-                                                                        .'</option>';
-                                                                }
-                                                            }
-                                                            ?>
                                                         </select>
                                                         <div class="input-group-append">
                                                             <span class="input-group-text">OR</span>

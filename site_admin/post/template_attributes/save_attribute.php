@@ -30,29 +30,8 @@ try {
     $is_required = isset($_POST['is_required']) ? intval(clean($_POST['is_required'])) : 0;
     $sort_order = isset($_POST['sort_order']) ? intval(clean($_POST['sort_order'])) : 0;
     $section_name = isset($_POST['section_name']) ? clean($_POST['section_name']) : 'Main';
-    
-    // Handle tab creation/selection
-    $tab_id = null;
-    if (!empty($_POST['tab_name'])) {
-        $tab_name = clean($_POST['tab_name']);
-        $tab_group = !empty($_POST['tab_group']) ? clean($_POST['tab_group']) : strtolower(str_replace(' ', '-', $tab_name));
-        
-        // Check if tab exists
-        $tab_sql = "SELECT id FROM tab WHERE tab_name = '" . escape($tab_name) . "' AND template_id = $template_id";
-        $existing_tab = return_single_row($tab_sql);
-        
-        if ($existing_tab) {
-            $tab_id = $existing_tab['id'];
-        } else {
-            // Create new tab
-            $insert_tab_sql = "INSERT INTO tab (tab_name, tab_group, template_id) VALUES (
-                '" . escape($tab_name) . "',
-                '" . escape($tab_group) . "',
-                $template_id
-            )";
-            $tab_id = Insert($insert_tab_sql);
-        }
-    }
+    $tab_id = $_POST['tab_id'];
+   
 
     if ($action === 'add') {
         // Insert new attribute
