@@ -354,19 +354,15 @@ if (isset($_GET['template_id'])) {
                                                         <option value="">-- Select Existing Tab --</option>
                                                         <?php 
                                                         // Get existing tabs from database
-                                                        $tabs_sql = "SELECT DISTINCT tab_name FROM tab WHERE tab_name IS NOT NULL AND tab_name != '' and template_id = ".$template_id;
+                                                        $tabs_sql = "SELECT DISTINCT tab_name , id FROM tab WHERE tab_name IS NOT NULL AND tab_name != '' and template_id = ".$template_id;
                                                         $tabs_result = return_multiple_rows($tabs_sql);
                                                         if ($tabs_result) {
                                                             foreach ($tabs_result as $tab) {
-                                                                echo '<option value="'.htmlspecialchars($tab['tab_name'], ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($tab['tab_name'], ENT_QUOTES, 'UTF-8').'</option>';
+                                                                echo '<option value="'.htmlspecialchars($tab['id'], ENT_QUOTES, 'UTF-8').'">'.htmlspecialchars($tab['tab_name'], ENT_QUOTES, 'UTF-8').'</option>';
                                                             }
                                                         }
                                                         ?>
                                                     </select>
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text">OR</span>
-                                                    </div>
-                                                    <input type="text" class="form-control" id="new_tab_name" placeholder="Create New Tab">
                                                 </div>
                                                 <small class="form-text text-muted">
                                                     Group attributes under tabs in the editor. Leave blank for default section.
@@ -375,15 +371,42 @@ if (isset($_GET['template_id'])) {
                                             </div>
                                         </div>
 
-                                        <div class="form-group row">
-                                            <label for="section_name" class="col-md-3 col-form-label">Section Name:</label>
-                                            <div class="col-md-9">
-                                                <input type="text" class="form-control" name="section_name" id="section_name" placeholder="e.g., General, Advanced">
-                                                <small class="form-text text-muted">
-                                                    Group attributes within the tab (optional)
-                                                </small>
+                                    <!-- Section Grouping -->
+                                      <div class="form-group row">
+                                                <label for="section_name" class="col-md-3 col-form-label">Section Name:</label>
+                                                <div class="col-md-9">
+                                                    <div class="input-group">
+                                                        <select class="form-control" name="section_name" id="section_name">
+                                                            <option value="">-- Select Existing Section --</option>
+                                                            <?php
+                                                            // Get existing sections from database
+                                                            $sections_sql = "SELECT DISTINCT section_name FROM page_attributes 
+                                                                            WHERE template_id = $template_id 
+                                                                            AND section_name IS NOT NULL 
+                                                                            AND section_name != ''
+                                                                            ORDER BY section_name";
+                                                            $sections_result = return_multiple_rows($sections_sql);
+                                                            if ($sections_result) {
+                                                                foreach ($sections_result as $section) {
+                                                                    echo '<option value="'.htmlspecialchars($section['section_name'], ENT_QUOTES, 'UTF-8').'">'
+                                                                        .htmlspecialchars($section['section_name'], ENT_QUOTES, 'UTF-8')
+                                                                        .'</option>';
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text">OR</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="new_section_name" placeholder="Create New Section">
+                                                    </div>
+                                                    <small class="form-text text-muted">
+                                                        Group attributes within sections in the editor. Leave blank for default section.
+                                                    </small>
+                                                </div>
                                             </div>
-                                        </div>
+
+
                                     </div>
                                 </div>
 

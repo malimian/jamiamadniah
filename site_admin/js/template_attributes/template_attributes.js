@@ -1,4 +1,18 @@
 $(document).ready(function() {
+
+        $('#section_name').on('change', function() {
+        if ($(this).val()) {
+            $('#new_section_name').val('');
+        }
+    });
+
+        $('#new_section_name').on('input', function() {
+        if ($(this).val()) {
+            $('#section_name').val('');
+        }
+    });
+
+
     // Store the original modal body content
     const originalModalBody = $('#attributeModal .modal-body').html();
     
@@ -68,8 +82,18 @@ $(document).ready(function() {
                         $('#default_value').val(response.data.default_value);
                         $('#is_required').val(response.data.is_required);
                         $('#sort_order').val(response.data.sort_order);
-                        $('#section_name').val(response.data.section_name);
-                        $('#tab_name').val(response.data.tab_name);
+                        
+                        // Handle section name - check if it exists in select options
+                        const sectionSelect = $('#section_name');
+                        const sectionName = response.data.section_name;
+                        if (sectionName && sectionSelect.find('option[value="' + sectionName + '"]').length === 0) {
+                            // Section doesn't exist in select, show in new section field
+                            $('#new_section_name').val(sectionName);
+                        } else {
+                            // Section exists in select or is empty
+                            sectionSelect.val(sectionName);
+                            $('#new_section_name').val('');
+                        }
                         
                     } else {
                         modal.find('.modal-body').html(`
@@ -93,6 +117,13 @@ $(document).ready(function() {
     // Handle form submission
     $('#attribute-form').on('submit', function(e) {
         e.preventDefault();
+
+          // Use new section name if provided
+        const newSectionName = $('#new_section_name').val();
+        if (newSectionName) {
+            $('#section_name').val(newSectionName);
+        }
+
         const form = $(this);
         const submitBtn = form.find('button[type="submit"]');
         const originalText = submitBtn.text();

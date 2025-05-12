@@ -369,68 +369,109 @@ $(document).ready(function() {
     }
 
     // Add section set
-// Add section set
-$(document).on('click', '.add-section-set', function() {
-    const sectionName = $(this).data('section');
+    $(document).on('click', '.add-section-set', function() {
+        const sectionName = $(this).data('section');
     const $container = $(this).closest('.section-container').find('.attribute-sets-container');
     const $template = $container.find('.attribute-set').first().clone(true);
     
-    // Clear values
-    $template.find('input[type="text"], input[type="number"], input[type="date"], textarea').val('');
-    $template.find('input[type="checkbox"]').prop('checked', false);
-    $template.find('select').val('').trigger('change');
+    // Generate a new set index based on existing sets
+    const newSetIndex = $container.find('.attribute-set').length;
     
-    // Remove non-dynamic attributes from the cloned set
-    $template.find('.form-group.row').each(function() {
-        const $attributeField = $(this).find('[attribute-id]').first();
-        if ($attributeField.length) {
-            const attributeId = $attributeField.attr('attribute-id');
-            if (!dynamicAttributes[attributeId]) {
-                $(this).remove();
+    // Clear values and update IDs/names
+    $template.find('input, textarea, select').each(function() {
+        const $this = $(this);
+        const oldId = $this.attr('id');
+        const oldName = $this.attr('name');
+        
+        // Clear values
+        if ($this.is('input[type="text"], input[type="number"], input[type="date"], textarea')) {
+            $this.val('');
+        } else if ($this.is('input[type="checkbox"]')) {
+            $this.prop('checked', false);
+        } else if ($this.is('select')) {
+            $this.val('').trigger('change');
+        }
+        
+        // Update IDs and names
+        if (oldId && oldId.startsWith('attr_')) {
+            const newId = oldId.replace(/_(\d+)$/, '_' + newSetIndex);
+            $this.attr('id', newId);
+            
+            // Update corresponding label's 'for' attribute
+            const $label = $('label[for="' + oldId + '"]');
+            if ($label.length) {
+                $label.attr('for', newId);
             }
+            
+            // Special handling for image gallery buttons
+            if ($this.attr('attribute-id') && $this.closest('.input-group').find('.btn').length) {
+                const attributeId = $this.attr('attribute-id');
+                const newGalleryId = `attr_${attributeId}_${newSetIndex}`;
+                $this.closest('.input-group').find('.btn').attr('onclick', `OpenMediaGallery('${newGalleryId}', 'page/attr')`);
+            }
+        }
+        
+        if (oldName && oldName.includes('attribute[')) {
+            // Update name attribute to use the new set index
+            const newName = oldName.replace(/\[(\d+)\]/, '[' + newSetIndex + ']');
+            $this.attr('name', newName);
         }
     });
+        
+        // Update data-set-index attribute
+        $template.attr('data-set-index', newSetIndex);
+        
+        // Remove non-dynamic attributes from the cloned set
+        $template.find('.form-group.row').each(function() {
+            const $attributeField = $(this).find('[attribute-id]').first();
+            if ($attributeField.length) {
+                const attributeId = $attributeField.attr('attribute-id');
+                if (!dynamicAttributes[attributeId]) {
+                    $(this).remove();
+                }
+            }
+        });
 
-    // Only append if there are dynamic attributes left
-    if ($template.find('.form-group.row').length > 0) {
-        // Ensure the remove button is present in the template
-        if ($template.find('.remove-section-set').length === 0) {
-            $template.find('.card-body').append(`
-                <div class="form-group row">
-                    <div class="col-sm-10 offset-sm-2 text-right">
-                        <button type="button" class="btn btn-sm btn-danger remove-section-set">
-                            <i class="fa fa-trash"></i> Remove This Set
-                        </button>
+        // Only append if there are dynamic attributes left
+        if ($template.find('.form-group.row').length > 0) {
+            // Ensure the remove button is present in the template
+            if ($template.find('.remove-section-set').length === 0) {
+                $template.find('.card-body').append(`
+                    <div class="form-group row">
+                        <div class="col-sm-10 offset-sm-2 text-right">
+                            <button type="button" class="btn btn-sm btn-danger remove-section-set">
+                                <i class="fa fa-trash"></i> Remove This Set
+                            </button>
+                        </div>
                     </div>
-                </div>
-            `);
+                `);
+            }
+            
+            $container.append($template);
+            
+            // Initialize editors and select2 for the new set
+            $template.find('.trumbowyg-editor').each(function() {
+                if (!$(this).hasClass('trumbowyg-initialized')) {
+                    $(this).trumbowyg();
+                    $(this).addClass('trumbowyg-initialized');
+                }
+            });
+            
+            $template.find('.select2-multiple').each(function() {
+                if (!$(this).hasClass('select2-initialized')) {
+                    $(this).select2({
+                        placeholder: "Select options",
+                        allowClear: true,
+                        width: '100%',
+                        closeOnSelect: false
+                    });
+                    $(this).addClass('select2-initialized');
+                }
+            });
+        } else {
+            showAlert('No dynamic attributes available to duplicate in this section.');
         }
-        
-        $container.append($template);
-        
-        // Initialize editors and select2 for the new set
-        $template.find('.trumbowyg-editor').each(function() {
-            if (!$(this).hasClass('trumbowyg-initialized')) {
-                $(this).trumbowyg();
-                $(this).addClass('trumbowyg-initialized');
-            }
-        });
-        
-        $template.find('.select2-multiple').each(function() {
-            if (!$(this).hasClass('select2-initialized')) {
-                $(this).select2({
-                    placeholder: "Select options",
-                    allowClear: true,
-                    width: '100%',
-                    closeOnSelect: false
-                });
-                $(this).addClass('select2-initialized');
-            }
-        });
-    } else {
-        showAlert('No dynamic attributes available to duplicate in this section.');
-    }
-});
+    });
     // Remove section set
     $(document).on('click', '.remove-section-set', function() {
         const $setsContainer = $(this).closest('.attribute-sets-container');
