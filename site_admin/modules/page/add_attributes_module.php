@@ -345,6 +345,8 @@ if ($page_id > 0) {
 if($isrich_textarea){
     echo '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/trumbowyg@2.25.1/dist/ui/trumbowyg.min.css">';
     echo '<script src="https://cdn.jsdelivr.net/npm/trumbowyg@2.25.1/dist/trumbowyg.min.js"></script>';
+
+
 }
 ?>
 
@@ -378,10 +380,11 @@ $(document).ready(function() {
         'margin-bottom': '0'
     });
 
-    // Initialize Trumbowyg editors
-    if ($('.trumbowyg-editor').length > 0) {
-        $('.trumbowyg-editor').trumbowyg();
-    }
+        $('.trumbowyg-editor').each(function () {
+            if (!$(this).parent().hasClass('trumbowyg-box')) {
+                $(this).trumbowyg();
+            }
+        });
 
    
     // Add section set
@@ -468,10 +471,12 @@ $(document).ready(function() {
             $container.append($template);
             
             // Initialize editors and select2 for the new set
-            $template.find('.trumbowyg-editor').each(function() {
-                if (!$(this).hasClass('trumbowyg-initialized')) {
-                    $(this).trumbowyg();
-                    $(this).addClass('trumbowyg-initialized');
+           $template.find('.trumbowyg-editor').each(function () {
+                const $editor = $(this);
+
+                // Only initialize if not already initialized (no trumbowyg wrapper)
+                if (!$editor.parent().hasClass('trumbowyg-box')) {
+                    $editor.trumbowyg();
                 }
             });
             
@@ -500,4 +505,7 @@ $(document).ready(function() {
         }
     });
 });
+
+
+
 </script>
