@@ -1,6 +1,6 @@
 <?php 
 
-    print_r($content);
+    print_r($content['attributes']);
 
 ?>
 <!DOCTYPE html>
