@@ -115,7 +115,6 @@
     </div>
     <div class="carousel-inner">
         <?php 
-            foreach($items )
         ?>
          <div class="carousel-item">
             <img src="https://picsum.photos/1956/600?greyscale" class="d-block w-100" alt="Jacob Oroks Banner 3">
