@@ -1,8 +1,3 @@
-<?php 
-
-    print_r($content['attributes']);
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -115,13 +110,31 @@
         <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2"></button>
     </div>
     <div class="carousel-inner">
-         <div class="carousel-item">
-            <img src="https://picsum.photos/1956/600?greyscale" class="d-block w-100" alt="Jacob Oroks Banner 3">
-            <div class="carousel-caption d-none d-md-block">
-                <h1 class="display-3 fw-bold">Community Builder</h1>
-                <p class="lead">Championing Efik Heritage in the Diaspora</p>
-            </div>
-        </div>
+
+        <?php
+         foreach ($content['attributes'] as $item) {
+            if ($item['section_name'] == 'carousel section') {
+                if ($item['attribute_name'] == 'carousel-image') {
+                    ?>
+                    <div class="carousel-item">
+                        <img src="<?php echo $item['attribute_value'] ?>" class="d-block w-100" alt="Jacob Oroks Banner">
+                    </div>
+                    <?php
+                } elseif ($item['attribute_name'] == 'carousel-caption') {
+                    ?>
+                    <div class="carousel-caption d-none d-md-block">
+                        <h1 class="display-3 fw-bold"><?php echo $item['attribute_value'] ?></h1>
+                   
+                    <?php
+                } elseif ($item['attribute_name'] == 'carousel-lead') { 
+                    ?>
+                        <p class="lead"><?php echo $item['attribute_value'] ?></p>
+
+                    </div>
+                <?php }
+            }
+        }
+        ?>
         <div class="carousel-item active">
             <img src="https://picsum.photos/1921/600?blackscale" class="d-block w-100" alt="Jacob Oroks Banner 2">
             <div class="carousel-caption d-none d-md-block">
