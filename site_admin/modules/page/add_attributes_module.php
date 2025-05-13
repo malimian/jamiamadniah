@@ -96,6 +96,21 @@ if ($page_id > 0) {
 
 ?>
 <div class="container mt-5">
+  
+<?php if (!empty($tabs)): ?>
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                You can manage the attributes of this template from 
+                <a target="_blank"href="template_attributes.php?template_id=<?= htmlspecialchars($template_id) ?>" class="alert-link">
+                    Template Attribute Management
+                </a>.
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+
     
     <!-- Tabs Navigation -->
     <ul class="nav nav-tabs" id="pageTabs" role="tablist">
