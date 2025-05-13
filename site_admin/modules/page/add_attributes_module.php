@@ -506,6 +506,4 @@ $(document).ready(function() {
     });
 });
 
-
-
 </script>
