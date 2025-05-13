@@ -65,6 +65,45 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
 
 $content['attributes'] = return_multiple_rows($attribute_sql);
 
+if(!empty($content['attributes'])){
+
+// Sort by tab_id and in tab_id sort by section_name
+// First, let's group the attributes by tab_id and then by section_name
+$sortedAttributes = [];
+
+foreach ($content['attributes'] as $attribute) {
+    $tabId = $attribute['tab_id'];
+    $sectionName = $attribute['section_name'];
+    
+    if (!isset($sortedAttributes[$tabId])) {
+        $sortedAttributes[$tabId] = [
+            'tab_name' => $attribute['tab_name'],
+            'tab_group' => $attribute['tab_group'],
+            'sections' => []
+        ];
+    }
+    
+    if (!isset($sortedAttributes[$tabId]['sections'][$sectionName])) {
+        $sortedAttributes[$tabId]['sections'][$sectionName] = [];
+    }
+    
+    $sortedAttributes[$tabId]['sections'][$sectionName][] = $attribute;
+}
+
+// Sort by tab_id (keys are already tab_ids)
+ksort($sortedAttributes);
+
+// For each tab, sort sections alphabetically
+foreach ($sortedAttributes as &$tab) {
+    ksort($tab['sections']);
+}
+unset($tab); // Break the reference
+
+$content['attributes'] = $sortedAttributes;
+
+}
+
+
 // Add content components if specified
 if (!empty($content['header'])) {
     $header[] = $content['header'];

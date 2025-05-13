@@ -1,6 +1,7 @@
 <?php 
 
     print_r($content['attributes']);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
