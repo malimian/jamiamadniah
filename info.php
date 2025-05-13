@@ -50,10 +50,10 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
     LEFT JOIN 
         attribute_options ao ON ao.attribute_id = pa.id
     LEFT JOIN 
-        page_attribute_values pav ON pav.attribute_id = pa.id AND pav.page_id = 8310
+        page_attribute_values pav ON pav.attribute_id = pa.id AND pav.page_id = ".$content['pid']."
     WHERE 
         pa.isactive = 1
-        AND (pa.template_id IS NULL OR pa.template_id = 14 )
+        AND (pa.template_id IS NULL OR pa.template_id = ".$content['template_id']." )
         AND (t.id IS NULL OR (t.isactive = 1 AND t.soft_delete = 0))
     ORDER BY 
         COALESCE(t.sort_order, 99999) ASC,
