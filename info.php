@@ -42,6 +42,29 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
     exit('<script type="text/javascript">window.location = "' . ERROR_404 . '";</script>');
 }
 
+    $attribute_sql = "SELECT *
+    FROM 
+        page_attributes pa
+    LEFT JOIN 
+        tab t ON pa.tab_id = t.id AND t.isactive = 1 AND t.soft_delete = 0
+    LEFT JOIN 
+        attribute_options ao ON ao.attribute_id = pa.id
+    LEFT JOIN 
+        page_attribute_values pav ON pav.attribute_id = pa.id AND pav.page_id = 8310
+    WHERE 
+        pa.isactive = 1
+        AND (pa.template_id IS NULL OR pa.template_id = 14 )
+        AND (t.id IS NULL OR (t.isactive = 1 AND t.soft_delete = 0))
+    ORDER BY 
+        COALESCE(t.sort_order, 99999) ASC,
+        COALESCE(pa.section_name, 'General') ASC,
+        pa.sort_order ASC,
+        ao.sort_order ASC;
+
+        ";
+
+$content['attributes'] = return_multiple_rows($attribute_sql);
+
 // Add content components if specified
 if (!empty($content['header'])) {
     $header[] = $content['header'];

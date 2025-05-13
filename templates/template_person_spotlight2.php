@@ -1,3 +1,8 @@
+<?php 
+
+    print_r($content);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
