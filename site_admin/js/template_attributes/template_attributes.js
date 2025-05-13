@@ -1,71 +1,8 @@
 $(document).ready(function() {
 
-    // Handle section name switching between select and input
-    $('#section_name').on('change', function() {
-        if ($(this).val()) {
-            $('#new_section_name').val('');
-        }
-    });
-
-    $('#new_section_name').on('input', function() {
-        if ($(this).val()) {
-            $('#section_name').val('');
-        }
-    });
-
      // Store the original modal body content
     const originalModalBody = $('#attributeModal .modal-body').html();
     
-    // Function to load sections for a tab
-    function loadSectionsForTab(tabId, callback) {
-        const $sectionSelect = $('#section_name');
-        
-        // Clear existing options except the first
-        $sectionSelect.find('option').not(':first').remove();
-        
-        if (tabId) {
-            // Show loading state
-            $sectionSelect.prop('disabled', true);
-            const $loadingOption = $('<option>').text('Loading sections...').val('');
-            $sectionSelect.append($loadingOption);
-            
-            // Fetch sections for this tab
-            $.ajax({
-                url: 'get/template_attributes/get_sections_by_tab.php',
-                method: 'GET',
-                data: { tab_id: tabId },
-                dataType: 'json',
-                success: function(sections) {
-                    // Remove loading option
-                    $loadingOption.remove();
-                    
-                    // Add new options
-                    if (sections && sections.length > 0) {
-                        sections.forEach(function(section) {
-                            $sectionSelect.append(
-                                $('<option>', {
-                                    value: section.section_name,
-                                    text: section.section_name
-                                })
-                            );
-                        });
-                    }
-                    
-                    $sectionSelect.prop('disabled', false);
-                    
-                    // Execute callback if provided
-                    if (typeof callback === 'function') {
-                        callback();
-                    }
-                },
-                error: function(xhr, status, error) {
-                    $loadingOption.text('Error loading sections');
-                    $sectionSelect.prop('disabled', false);
-                }
-            });
-        }
-    }
-
     // Handle add/edit attribute modal
     $('#attributeModal').on('show.bs.modal', function(event) {
         const button = $(event.relatedTarget);
@@ -164,42 +101,36 @@ $(document).ready(function() {
         loadSectionsForTab(tabId);
     });
 
-    // Handle section name switching between select and input
-    $('#section_name').on('change', function() {
-        if ($(this).val()) {
-            $('#new_section_name').val('');
-        }
-    });
-
-    $('#new_section_name').on('input', function() {
-        if ($(this).val()) {
-            $('#section_name').val('');
-        }
-    });
-
-    // Handle form submission
+   // Handle form submission
     $('#attribute-form').on('submit', function(e) {
         e.preventDefault();
 
-        // Use new section name if provided
         const newSectionName = $('#new_section_name').val();
-        if (newSectionName) {
-            $('#section_name').val(newSectionName);
-        }
-
         const form = $(this);
         const submitBtn = form.find('button[type="submit"]');
         const originalText = submitBtn.text();
-        
+
+        let formData = form.serializeArray(); // get form fields as array of name/value pairs
+
+        // If newSectionName exists, override or inject 'section_name'
+        if (newSectionName) {
+            // Remove any existing section_name field (from select)
+            formData = formData.filter(field => field.name !== 'section_name');
+
+            // Add new value as section_name
+            formData.push({ name: 'section_name', value: newSectionName });
+        }
+
+        console.log(formData);
+
         submitBtn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Processing...');
-        
+
         $.ajax({
             url: form.attr('action'),
             type: 'POST',
-            data: form.serialize(),
+            data: $.param(formData), // convert array back to query string
             success: function(response) {
                 if (response.success) {
-                    // Show success message and reload page
                     showNotification('success', response.message);
                     setTimeout(() => location.reload(), 1500);
                 }
@@ -210,6 +141,7 @@ $(document).ready(function() {
             }
         });
     });
+
 
     // Helper function to show notifications
     function showNotification(type, message) {
@@ -296,3 +228,70 @@ $(document).ready(function() {
             $sectionSelect.prop('disabled', false);
         }
     });
+
+
+
+    // Handle section name switching between select and input using delegated events
+    $(document).on('change', '#section_name', function() {
+        if ($(this).val()) {
+            $('#new_section_name').val('');
+        }
+    });
+
+    $(document).on('input', '#new_section_name', function() {
+        if ($(this).val()) {
+            $('#section_name').val('');
+        }
+    });
+
+
+
+    // Function to load sections for a tab
+    function loadSectionsForTab(tabId, callback) {
+        const $sectionSelect = $('#section_name');
+        
+        // Clear existing options except the first
+        $sectionSelect.find('option').not(':first').remove();
+        
+        if (tabId) {
+            // Show loading state
+            $sectionSelect.prop('disabled', true);
+            const $loadingOption = $('<option>').text('Loading sections...').val('');
+            $sectionSelect.append($loadingOption);
+            
+            // Fetch sections for this tab
+            $.ajax({
+                url: 'get/template_attributes/get_sections_by_tab.php',
+                method: 'GET',
+                data: { tab_id: tabId },
+                dataType: 'json',
+                success: function(sections) {
+                    // Remove loading option
+                    $loadingOption.remove();
+                    
+                    // Add new options
+                    if (sections && sections.length > 0) {
+                        sections.forEach(function(section) {
+                            $sectionSelect.append(
+                                $('<option>', {
+                                    value: section.section_name,
+                                    text: section.section_name
+                                })
+                            );
+                        });
+                    }
+                    
+                    $sectionSelect.prop('disabled', false);
+                    
+                    // Execute callback if provided
+                    if (typeof callback === 'function') {
+                        callback();
+                    }
+                },
+                error: function(xhr, status, error) {
+                    $loadingOption.text('Error loading sections');
+                    $sectionSelect.prop('disabled', false);
+                }
+            });
+        }
+    }
