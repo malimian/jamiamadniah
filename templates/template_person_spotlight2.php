@@ -63,7 +63,7 @@ if(!function_exists("script_t")) {
             for ($i = 0; $i < $carouselCount; $i++) {
                 ?>
                 <div class="carousel-item<?= $i === 0 ? ' active' : '' ?>">
-                    <img src="<?= htmlspecialchars($images[$i]) ?>" class="d-block w-100" alt="Banner <?= $i + 1 ?>">
+                    <img src="<?= ABSOLUTE_IMAGEPATH.htmlspecialchars($images[$i]) ?>" class="d-block w-100" alt="Banner <?= $i + 1 ?>">
                     <div class="carousel-caption d-none d-md-block">
                         <h1 class="display-3 fw-bold"><?= htmlspecialchars($captions[$i]) ?></h1>
                         <p class="lead"><?= htmlspecialchars($leads[$i]) ?></p>
