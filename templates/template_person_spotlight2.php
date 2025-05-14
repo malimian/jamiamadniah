@@ -121,7 +121,7 @@
          <div class="carousel-item">
             <img src="<?php if($carousel['attribute_name'] == "carousel-image") echo $carousel['attribute_value']?>" class="d-block w-100" alt="<?php if($carousel['attribute_name'] == "carousel-caption") echo $carousel['attribute_value']?>">
             <div class="carousel-caption d-none d-md-block">
-                <h1 class="display-3 fw-bold"><?php if($carousel['attribute_name'] == "carousel-image") echo $carousel['attribute_value']?></h1>
+                <h1 class="display-3 fw-bold"><?php if($carousel['attribute_name'] == "carousel-caption") echo $carousel['attribute_value']?></h1>
                 <p class="lead"><?php if($carousel['attribute_name'] == "carousel-lead") echo $carousel['attribute_value']?></p>
             </div>
         </div>
