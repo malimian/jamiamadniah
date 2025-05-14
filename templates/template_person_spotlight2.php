@@ -1,6 +1,6 @@
 <?php 
 
-    print_r($content['attributes']);
+    print_r($content['attributes'][15]);
 
 ?>
 <!DOCTYPE html>
@@ -116,16 +116,17 @@
     </div>
     <div class="carousel-inner">
         <?php 
+        foreach($content['attributes']['15']['sections']['carousel section'] as $carousel)
         ?>
          <div class="carousel-item">
-            <img src="https://picsum.photos/1956/600?greyscale" class="d-block w-100" alt="Jacob Oroks Banner 3">
+            <img src="<?php if($carousel['attribute_name'] == "carousel-image") echo $carousel['attribute_value']?>" class="d-block w-100" alt="<?php if($carousel['attribute_name'] == "carousel-caption") echo $carousel['attribute_value']?>">
             <div class="carousel-caption d-none d-md-block">
-                <h1 class="display-3 fw-bold">Community Builder</h1>
-                <p class="lead">Championing Efik Heritage in the Diaspora</p>
+                <h1 class="display-3 fw-bold"><?php if($carousel['attribute_name'] == "carousel-image") echo $carousel['attribute_value']?></h1>
+                <p class="lead"><?php if($carousel['attribute_name'] == "carousel-lead") echo $carousel['attribute_value']?></p>
             </div>
         </div>
         <?php ?>
-        <div class="carousel-item active">
+<!--         <div class="carousel-item active">
             <img src="https://picsum.photos/1921/600?blackscale" class="d-block w-100" alt="Jacob Oroks Banner 2">
             <div class="carousel-caption d-none d-md-block">
                 <h1 class="display-3 fw-bold">Innovative Thinker</h1>
@@ -138,7 +139,8 @@
                 <h1 class="display-3 fw-bold">Community Builder</h1>
                 <p class="lead">Championing Efik Heritage in the Diaspora</p>
             </div>
-        </div>
+        </div> -->
+        
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
