@@ -286,6 +286,8 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
         
          $CommunitySections = $Personal_background['sections']['Community Section'];
 
+         print_r($CommunitySections );
+         
         // Group attributes in sets of 3 (Title, Description, Image)
         for ($i = 0; $i < count($CommunitySections); $i += 3) {
             $title = $CommunitySections[$i]['attribute_value'] ?? '';
