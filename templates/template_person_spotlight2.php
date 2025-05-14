@@ -97,7 +97,11 @@ $phone = $profile_section[5]['attribute_value'] ?? '';
 
 $social_media = $content['attributes']['26']['sections']['SocialMedia'];
 
-print_r($social_media);
+$facebook = $social_media[0]['attribute_value'] ?? '#';
+$twitter  = $social_media[1]['attribute_value'] ?? '#';
+$linkedin = $social_media[2]['attribute_value'] ?? '#';
+$instagram = $social_media[3]['attribute_value'] ?? '#';
+
 ?>
 
 <section class="container my-5">
@@ -187,10 +191,10 @@ print_r($social_media);
                 <div class="mt-4 pt-3 border-top">
                     <h4 class="h6 text-uppercase text-muted mb-3">Connect With Me</h4>
                     <div class="d-flex gap-3">
-                        <a href="#" class="btn btn-outline-primary p-2"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="btn btn-outline-primary p-2"><i class="bi bi-twitter"></i></a>
-                        <a href="#" class="btn btn-outline-primary p-2"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="btn btn-outline-primary p-2"><i class="bi bi-instagram"></i></a>
+                       <a href="<?= htmlspecialchars($linkedin) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-linkedin"></i></a>
+                        <a href="<?= htmlspecialchars($twitter) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-twitter"></i></a>
+                        <a href="<?= htmlspecialchars($facebook) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-facebook"></i></a>
+                        <a href="<?= htmlspecialchars($instagram) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-instagram"></i></a>
                     </div>
                 </div>
             </div>
@@ -1294,10 +1298,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="mb-4">
                         <h4 class="h5">Social Media</h4>
                         <div class="d-flex gap-3">
-                            <a href="#" class="text-white fs-3"><i class="fab fa-linkedin"></i></a>
-                            <a href="#" class="text-white fs-3"><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="text-white fs-3"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="text-white fs-3"><i class="fab fa-facebook"></i></a>
+                            <a href="<?= htmlspecialchars($linkedin) ?>" class="text-white fs-3"><i class="fab fa-linkedin"></i></a>
+                            <a href="<?= htmlspecialchars($twitter) ?>" class="text-white fs-3"><i class="fab fa-twitter"></i></a>
+                            <a href="<?= htmlspecialchars($instagram) ?>" class="text-white fs-3"><i class="fab fa-instagram"></i></a>
+                            <a href="<?= htmlspecialchars($facebook) ?>" class="text-white fs-3"><i class="fab fa-facebook"></i></a>
                         </div>
                     </div>
                     
@@ -1396,13 +1400,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="flex-grow-1 ms-3">
                                 <h4 class="h6 mb-2">Social Media</h4>
                                 <div class="d-flex gap-3">
-                                    <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">
+                                    <a href="<?= htmlspecialchars($linkedin) ?>" class="btn btn-sm btn-outline-primary rounded-pill">
                                         <i class="fab fa-linkedin-in me-1"></i> LinkedIn
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-outline-info rounded-pill">
+                                    <a href="<?= htmlspecialchars($twitter) ?>" class="btn btn-sm btn-outline-info rounded-pill">
                                         <i class="fab fa-twitter me-1"></i> Twitter
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-outline-danger rounded-pill">
+                                    <a href="<?= htmlspecialchars($instagram) ?>" class="btn btn-sm btn-outline-danger rounded-pill">
                                         <i class="fab fa-instagram me-1"></i> Instagram
                                     </a>
                                 </div>
