@@ -269,7 +269,7 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                             </div>
                             <div>
                                 <h3 class="h4 mb-2"><?=($backgroundSection[0]['attribute_value']) ?></h3>
-                                <p class="mb-0"><?=$backgroundSection[1]['attribute_value'] ?></p>
+                                <p class="mb-0"><?= $backgroundSection[1]['attribute_value'] ?></p>
                                 <div class="mt-3">
                                     <?php
                                     $badges = explode(',', $backgroundSection[2]['attribute_value']);
