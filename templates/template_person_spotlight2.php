@@ -211,6 +211,8 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
        <!-- Section 3: Personal Background -->
 <?php
 $Personal_background = $content['attributes']['17'];
+print_r($Personal_background);
+
 $mainSection = $Personal_background['sections']['Main'];
 $backgroundSection = $Personal_background['sections']['background section'];
 
