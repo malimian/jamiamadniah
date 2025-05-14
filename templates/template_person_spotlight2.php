@@ -211,7 +211,6 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
 <!-- Section 3: Personal Background -->
 <?php
 $Personal_background = $content['attributes']['17'];
-print_r($Personal_background);
 
 $mainSection = $Personal_background['sections']['Main'];
 $backgroundSection = $Personal_background['sections']['background section'];
@@ -283,24 +282,16 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                 </div>
             </div>
 
-        <?php  
-        $CommunitySections = $Personal_background['sections']['Community Section'];
+      <?php
+        
+         $CommunitySections = $Personal_background['sections']['Community Section'];
 
-        foreach ($CommunitySections as $section) {
-            $title = '';
-            $description = '';
-            $image = '';
-            
-            // Extract values
-            if ($section['attribute_name'] == 'Title') {
-                $title = $section['attribute_value'];
-            } elseif ($section['attribute_name'] == 'Description') {
-                $description = $section['attribute_value'];
-            } elseif ($section['attribute_name'] == 'Image') {
-                $image = $section['attribute_value'];
-            }
+        // Group attributes in sets of 3 (Title, Description, Image)
+        for ($i = 0; $i < count($CommunitySections); $i += 3) {
+            $title = $CommunitySections[$i]['attribute_value'] ?? '';
+            $description = $CommunitySections[$i + 1]['attribute_value'] ?? '';
+            $image = $CommunitySections[$i + 2]['attribute_value'] ?? '';
         ?>
-            <!-- Full Width Bottom Card: Community Leadership -->
             <div class="col-12">
                 <div class="card shadow-sm border-0 rounded-4 hover-effect bg-light">
                     <div class="card-body p-4">
@@ -312,7 +303,6 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                                 <h3 class="h4 mb-2"><?= htmlspecialchars($title) ?></h3>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <!-- Strip unwanted tags but allow some formatting -->
                                         <?= strip_tags($description, '<p><ul><li><strong><em><br>') ?>
                                     </div>
                                     <div class="col-md-6">
@@ -327,6 +317,7 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                 </div>
             </div>
         <?php } ?>
+
 
             
 
