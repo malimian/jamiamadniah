@@ -215,8 +215,6 @@ $Personal_background = $content['attributes']['17'];
 $mainSection = $Personal_background['sections']['Main'];
 $backgroundSection = $Personal_background['sections']['background section'];
 
-print_r($backgroundSection);
-
 // Extract title and subtitle
 $title = $mainSection[0]['attribute_value'] ?? 'Personal Journey';
 $subtitle = $mainSection[1]['attribute_value'] ?? '';
