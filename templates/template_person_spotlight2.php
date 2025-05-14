@@ -205,16 +205,26 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
         <div class="section-divider"></div>
 
        <!-- Section 3: Personal Background -->
+<?php
+$Personal_background = $content['attributes']['17'];
+$mainSection = $Personal_background['sections']['Main'];
+$backgroundSection = $Personal_background['sections']['background section'];
+
+// Extract title and subtitle
+$title = $mainSection[0]['attribute_value'] ?? 'Personal Journey';
+$subtitle = $mainSection[1]['attribute_value'] ?? '';
+?>
+
 <section class="mb-5 py-4">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold text-gradient mb-3">Personal Journey</h2>
+            <h2 class="display-5 fw-bold text-gradient mb-3"><?= htmlspecialchars($title) ?></h2>
             <div class="section-divider mx-auto"></div>
-            <p class="lead text-muted">A life dedicated to faith, community, and service</p>
+            <p class="lead text-muted"><?= htmlspecialchars($subtitle) ?></p>
         </div>
 
         <div class="row g-4">
-            <!-- Left Column -->
+            <!-- Left Column: Static content -->
             <div class="col-lg-6">
                 <div class="card shadow-sm border-0 rounded-4 h-100 hover-effect">
                     <div class="card-body p-4">
@@ -242,7 +252,7 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
                 </div>
             </div>
 
-            <!-- Middle Column -->
+            <!-- Middle Column: Faith & Ministry -->
             <div class="col-lg-6">
                 <div class="card shadow-sm border-0 rounded-4 h-100 hover-effect">
                     <div class="card-body p-4">
@@ -251,12 +261,15 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
                                 <i class="bi bi-journal-bookmark fs-3"></i>
                             </div>
                             <div>
-                                <h3 class="h4 mb-2">Faith & Ministry</h3>
-                                <p class="mb-0">Ordained Pastor with over 15 years of spiritual leadership, guiding congregations through transformative teachings that blend faith with practical living.</p>
+                                <h3 class="h4 mb-2"><?= htmlspecialchars($backgroundSection[1]['attribute_value']) ?></h3>
+                                <p class="mb-0"><?= $backgroundSection[3]['attribute_value'] ?></p>
                                 <div class="mt-3">
-                                    <span class="badge bg-success bg-opacity-10 text-success me-2">Spiritual Guidance</span>
-                                    <span class="badge bg-success bg-opacity-10 text-success me-2">Transformative Teachings</span>
-                                    <span class="badge bg-success bg-opacity-10 text-success">Practical Christianity</span>
+                                    <?php
+                                    $badges = explode(',', $backgroundSection[5]['attribute_value']);
+                                    foreach ($badges as $badge) {
+                                        echo '<span class="badge bg-success bg-opacity-10 text-success me-2">' . trim($badge) . '</span>';
+                                    }
+                                    ?>
                                 </div>
                             </div>
                         </div>
@@ -264,7 +277,7 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
                 </div>
             </div>
 
-            <!-- Full Width Bottom Card -->
+            <!-- Full Width Bottom Card: Community Leadership -->
             <div class="col-12">
                 <div class="card shadow-sm border-0 rounded-4 hover-effect bg-light">
                     <div class="card-body p-4">
@@ -273,16 +286,19 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
                                 <i class="bi bi-people fs-3"></i>
                             </div>
                             <div>
-                                <h3 class="h4 mb-2">Community Leadership</h3>
+                                <h3 class="h4 mb-2"><?= htmlspecialchars($backgroundSection[0]['attribute_value']) ?></h3>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p class="mb-3">Champion for diaspora engagement and cultural preservation, serving as a bridge between the Efik community in the U.S. and their homeland.</p>
+                                        <p class="mb-3"><?= strip_tags($backgroundSection[2]['attribute_value'], '<p><br><strong><em>') ?></p>
                                     </div>
                                     <div class="col-md-6">
                                         <ul class="list-unstyled">
-                                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Cultural preservation advocate</li>
-                                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i> Diaspora community leader</li>
-                                            <li><i class="bi bi-check-circle-fill text-info me-2"></i> Cross-cultural bridge builder</li>
+                                            <?php
+                                            $points = explode(',', $backgroundSection[4]['attribute_value']);
+                                            foreach ($points as $point) {
+                                                echo '<li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i>' . trim($point) . '</li>';
+                                            }
+                                            ?>
                                         </ul>
                                     </div>
                                 </div>
@@ -296,9 +312,11 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </section>
+
 
 
         <div class="section-divider"></div>
