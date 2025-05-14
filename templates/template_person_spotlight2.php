@@ -1,8 +1,3 @@
-<?php 
-
-    print_r($content['attributes'][16]);
-
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -179,23 +174,22 @@
 
 <!-- Section 2: Profile Snapshot -->
 <?php
-$data = [ /* your array here */ ];
-$section = $content['attributes']['16']['sections']['profile section'];
+$profile_section = $content['attributes']['16']['sections']['profile section'];
 
 // Extract values safely
-$image = $section[0]['attribute_value'] ?? '';
-$name = $section[1]['attribute_value'] ?? '';
-$titles = explode(',', $section[2]['default_value'] ?? '');
-$location = $section[3]['attribute_value'] ?? '';
-$email = $section[4]['attribute_value'] ?? '';
-$phone = $section[5]['attribute_value'] ?? '';
+$image = $profile_section[0]['attribute_value'] ?? '';
+$name = $profile_section[1]['attribute_value'] ?? '';
+$titles = explode(',', $profile_section[2]['default_value'] ?? '');
+$location = $profile_section[3]['attribute_value'] ?? '';
+$email = $profile_section[4]['attribute_value'] ?? '';
+$phone = $profile_section[5]['attribute_value'] ?? '';
 ?>
 
 <section class="container my-5">
     <div class="row align-items-center">
         <!-- Left Column - Profile Image -->
         <div class="col-md-4 text-center mb-4 mb-md-0">
-            <img src="<?= htmlspecialchars($image) ?>" 
+            <img src="<?= ABSOLUTE_IMAGEPATH.htmlspecialchars($image) ?>" 
                  alt="Profile Image of <?= htmlspecialchars($name) ?>" 
                  class="img-fluid rounded-circle shadow"
                  style="width: 300px; height: 300px; object-fit: cover;">
