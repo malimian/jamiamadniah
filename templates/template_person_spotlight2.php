@@ -180,7 +180,7 @@
 <!-- Section 2: Profile Snapshot -->
 <?php
 $data = [ /* your array here */ ];
-$section = $data['sections']['profile section'];
+$section = $content['attributes']['16']['sections']['profile section'];
 
 // Extract values safely
 $image = $section[0]['attribute_value'] ?? '';
