@@ -272,7 +272,7 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                                 <p class="mb-0"><?= $backgroundSection[1]['attribute_value'] ?></p>
                                 <div class="mt-3">
                                     <?php
-                                    $badges = explode(',', $backgroundSection[5]['attribute_value']);
+                                    $badges = explode(',', $backgroundSection[2]['attribute_value']);
                                     foreach ($badges as $badge) {
                                         echo '<span class="badge bg-success bg-opacity-10 text-success me-2">' . trim($badge) . '</span>';
                                     }
