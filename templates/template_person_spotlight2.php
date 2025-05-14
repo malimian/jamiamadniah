@@ -1,5 +1,5 @@
 <?php 
- print_r($content['attributes']);
+ // print_r($content['attributes']);
 ?>
 
 <?php
