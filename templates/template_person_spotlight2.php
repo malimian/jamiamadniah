@@ -69,8 +69,8 @@ if(!function_exists("script_t")) {
                 <div class="carousel-item<?= $i === 0 ? ' active' : '' ?>">
                     <img src="<?= ABSOLUTE_IMAGEPATH.htmlspecialchars($images[$i]) ?>" class="d-block w-100" alt="Banner <?= $i + 1 ?>">
                     <div class="carousel-caption d-none d-md-block">
-                        <h1 class="display-3 fw-bold"><?= htmlspecialchars($captions[$i]) ?></h1>
-                        <p class="lead"><?= htmlspecialchars($leads[$i]) ?></p>
+                        <h1 class="display-3 fw-bold"><?=($captions[$i]) ?></h1>
+                        <p class="lead"><?=($leads[$i]) ?></p>
                     </div>
                 </div>
                 <?php
@@ -113,7 +113,7 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
         <!-- Left Column - Profile Image -->
         <div class="col-md-4 text-center mb-4 mb-md-0">
             <img src="<?= ABSOLUTE_IMAGEPATH.htmlspecialchars($image) ?>" 
-                 alt="Profile Image of <?= htmlspecialchars($name) ?>" 
+                 alt="Profile Image of <?=($name) ?>" 
                  class="img-fluid rounded-circle shadow"
                  style="width: 300px; height: 300px; object-fit: cover;">
         </div>
@@ -132,13 +132,13 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
                             </div>
                             <div>
                                 <h3 class="h5 mb-1">Name & Titles</h3>
-                                <p class="mb-0 fw-bold fs-5"><?= htmlspecialchars($name) ?></p>
+                                <p class="mb-0 fw-bold fs-5"><?=($name) ?></p>
                                 <?php foreach ($titles as $i => $title): ?>
                                     <?php
                                         $badgeClasses = ['primary', 'success', 'info', 'warning', 'danger'];
                                         $class = $badgeClasses[$i % count($badgeClasses)];
                                     ?>
-                                    <span class="badge bg-<?= $class ?> bg-opacity-10 text-<?= $class ?> mt-1"><?= htmlspecialchars(trim($title)) ?></span>
+                                    <span class="badge bg-<?= $class ?> bg-opacity-10 text-<?= $class ?> mt-1"><?=(trim($title)) ?></span>
                                 <?php endforeach; ?>
                             </div>
                         </div>
@@ -150,8 +150,8 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
                             <div>
                                 <h3 class="h5 mb-1">Location</h3>
                                 <p class="mb-0">
-                                    <span class="d-block"><?= htmlspecialchars($location) ?></span>
-                                    <small class="text-muted">Based in <?= htmlspecialchars(explode(',', $location)[0]) ?></small>
+                                    <span class="d-block"><?=($location) ?></span>
+                                    <small class="text-muted">Based in <?=(explode(',', $location)[0]) ?></small>
                                 </p>
                             </div>
                         </div>
@@ -166,13 +166,13 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
                             <div>
                                 <h3 class="h5 mb-1">Contact</h3>
                                 <p class="mb-1">
-                                    <a href="mailto:<?= htmlspecialchars($email) ?>" class="text-decoration-none">
-                                        <?= htmlspecialchars($email) ?>
+                                    <a href="mailto:<?=($email) ?>" class="text-decoration-none">
+                                        <?=($email) ?>
                                     </a>
                                 </p>
                                 <p class="mb-0">
                                     <a href="tel:<?= preg_replace('/[^+\d]/', '', $phone) ?>" class="text-decoration-none">
-                                        <?= htmlspecialchars($phone) ?>
+                                        <?=($phone) ?>
                                     </a>
                                 </p>
                             </div>
@@ -195,10 +195,10 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
                 <div class="mt-4 pt-3 border-top">
                     <h4 class="h6 text-uppercase text-muted mb-3">Connect With Me</h4>
                     <div class="d-flex gap-3">
-                       <a href="<?= htmlspecialchars($linkedin) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-linkedin"></i></a>
-                        <a href="<?= htmlspecialchars($twitter) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-twitter"></i></a>
-                        <a href="<?= htmlspecialchars($facebook) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-facebook"></i></a>
-                        <a href="<?= htmlspecialchars($instagram) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-instagram"></i></a>
+                       <a href="<?=($linkedin) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-linkedin"></i></a>
+                        <a href="<?=($twitter) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-twitter"></i></a>
+                        <a href="<?=($facebook) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-facebook"></i></a>
+                        <a href="<?=($instagram) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-instagram"></i></a>
                     </div>
                 </div>
             </div>
@@ -223,9 +223,9 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
 <section class="mb-5 py-4">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold text-gradient mb-3"><?= htmlspecialchars($title) ?></h2>
+            <h2 class="display-5 fw-bold text-gradient mb-3"><?=($title) ?></h2>
             <div class="section-divider mx-auto"></div>
-            <p class="lead text-muted"><?= htmlspecialchars($subtitle) ?></p>
+            <p class="lead text-muted"><?=($subtitle) ?></p>
         </div>
 
         <div class="row g-4">
@@ -244,10 +244,10 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                                         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&h=100&fit=facearea&facepad=3" 
                                              class="rounded-circle shadow-sm" 
                                              width="60" 
-                                             alt="<?= htmlspecialchars($name) ?>">
+                                             alt="<?=($name) ?>">
                                     </div>
                                     <div>
-                                        <h4 class="h5 mb-0"><?= htmlspecialchars($name) ?></h4>
+                                        <h4 class="h5 mb-0"><?=($name) ?></h4>
                                         <small class="text-muted"><?=$titles[0]?></small>
                                     </div>
                                 </div>
@@ -266,7 +266,7 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                                 <i class="bi bi-journal-bookmark fs-3"></i>
                             </div>
                             <div>
-                                <h3 class="h4 mb-2"><?= htmlspecialchars($backgroundSection[1]['attribute_value']) ?></h3>
+                                <h3 class="h4 mb-2"><?=($backgroundSection[1]['attribute_value']) ?></h3>
                                 <p class="mb-0"><?= $backgroundSection[3]['attribute_value'] ?></p>
                                 <div class="mt-3">
                                     <?php
@@ -300,14 +300,14 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                                 <i class="bi bi-people fs-3"></i>
                             </div>
                             <div>
-                                <h3 class="h4 mb-2"><?= htmlspecialchars($title) ?></h3>
+                                <h3 class="h4 mb-2"><?=($title) ?></h3>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <?= strip_tags($description, '<p><ul><li><strong><em><br>') ?>
                                     </div>
                                     <div class="col-md-6">
                                         <?php if (!empty($image)): ?>
-                                            <img src="<?= htmlspecialchars($image) ?>" alt="Community Image" class="img-fluid rounded">
+                                            <img src="<?=($image) ?>" alt="Community Image" class="img-fluid rounded">
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -1085,10 +1085,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="mb-4">
                         <h4 class="h5">Social Media</h4>
                         <div class="d-flex gap-3">
-                            <a href="<?= htmlspecialchars($linkedin) ?>" class="text-white fs-3"><i class="fab fa-linkedin"></i></a>
-                            <a href="<?= htmlspecialchars($twitter) ?>" class="text-white fs-3"><i class="fab fa-twitter"></i></a>
-                            <a href="<?= htmlspecialchars($instagram) ?>" class="text-white fs-3"><i class="fab fa-instagram"></i></a>
-                            <a href="<?= htmlspecialchars($facebook) ?>" class="text-white fs-3"><i class="fab fa-facebook"></i></a>
+                            <a href="<?=($linkedin) ?>" class="text-white fs-3"><i class="fab fa-linkedin"></i></a>
+                            <a href="<?=($twitter) ?>" class="text-white fs-3"><i class="fab fa-twitter"></i></a>
+                            <a href="<?=($instagram) ?>" class="text-white fs-3"><i class="fab fa-instagram"></i></a>
+                            <a href="<?=($facebook) ?>" class="text-white fs-3"><i class="fab fa-facebook"></i></a>
                         </div>
                     </div>
                     
@@ -1187,13 +1187,13 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="flex-grow-1 ms-3">
                                 <h4 class="h6 mb-2">Social Media</h4>
                                 <div class="d-flex gap-3">
-                                    <a href="<?= htmlspecialchars($linkedin) ?>" class="btn btn-sm btn-outline-primary rounded-pill">
+                                    <a href="<?=($linkedin) ?>" class="btn btn-sm btn-outline-primary rounded-pill">
                                         <i class="fab fa-linkedin-in me-1"></i> LinkedIn
                                     </a>
-                                    <a href="<?= htmlspecialchars($twitter) ?>" class="btn btn-sm btn-outline-info rounded-pill">
+                                    <a href="<?=($twitter) ?>" class="btn btn-sm btn-outline-info rounded-pill">
                                         <i class="fab fa-twitter me-1"></i> Twitter
                                     </a>
-                                    <a href="<?= htmlspecialchars($instagram) ?>" class="btn btn-sm btn-outline-danger rounded-pill">
+                                    <a href="<?=($instagram) ?>" class="btn btn-sm btn-outline-danger rounded-pill">
                                         <i class="fab fa-instagram me-1"></i> Instagram
                                     </a>
                                 </div>
