@@ -1,3 +1,6 @@
+<?php 
+$content['attributes'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
