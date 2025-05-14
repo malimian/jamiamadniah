@@ -6,7 +6,11 @@
 if(!function_exists("header_t")) {
     function header_t(){
         return '
-            <link href="css/templates/template_person_spotlight2.css" rel="stylesheet">';
+            <link href="css/templates/template_person_spotlight2.css" rel="stylesheet">
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+            ';
     }
 }
 ?>
@@ -322,7 +326,6 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
         <div class="section-divider"></div>
 
        <!-- Section 4: Education & Certifications -->
-       <!-- Section 4: Education & Certifications -->
 <section class="py-6 mb-6 bg-light position-relative overflow-hidden">
     <!-- Animated background elements -->
     <div class="position-absolute top-0 start-0 w-100 h-100">
@@ -488,70 +491,6 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
     </div>
 </section>
 
-<style>
-    /* Custom Styles */
-    .text-gradient {
-        background: linear-gradient(90deg, #0d6efd, #6610f2);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-    
-    .timeline-steps {
-        position: relative;
-        padding-left: 2rem;
-    }
-    
-    .timeline-step:not(:last-child) {
-        padding-bottom: 2rem;
-    }
-    
-    .timeline-step::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 2px;
-        height: 100%;
-        background: linear-gradient(to bottom, #0d6efd, #6610f2);
-    }
-    
-    .inner-circle {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        left: -25px;
-        top: 0;
-        font-size: 1.25rem;
-    }
-    
-    .timeline-content {
-        padding-left: 2.5rem;
-        position: relative;
-    }
-    
-    .certification-card {
-        transition: all 0.3s ease;
-    }
-    
-    .certification-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    
-    .py-6 {
-        padding-top: 5rem !important;
-        padding-bottom: 5rem !important;
-    }
-    
-    .mb-6 {
-        margin-bottom: 5rem !important;
-    }
-</style>
 
 <!-- AOS Animation Library -->
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -564,91 +503,6 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
     });
 </script>
 
-<style>
-    /* Custom Styles */
-    .text-gradient {
-        background: linear-gradient(90deg, #0d6efd, #6610f2);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-    
-    .section-divider {
-        width: 80px;
-        height: 4px;
-        background: linear-gradient(90deg, #0d6efd, #6610f2);
-        margin: 1rem auto;
-        border-radius: 2px;
-    }
-    
-    .icon-box {
-        width: 60px;
-        height: 60px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .hover-lift {
-        transition: all 0.3s ease;
-    }
-    
-    .hover-lift:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-    }
-    
-    .timeline-item {
-        position: relative;
-        padding-left: 1.5rem;
-    }
-    
-    .timeline-badge {
-        position: absolute;
-        left: -12px;
-        top: 0;
-        width: 24px;
-        height: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .certification-badge {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.75rem;
-        background: rgba(255,255,255,0.7);
-        border-radius: 0.5rem;
-        transition: all 0.3s ease;
-    }
-    
-    .certification-badge:hover {
-        background: white;
-        transform: scale(1.02);
-    }
-    
-    .honor-item {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        padding: 0.75rem;
-        background: rgba(255,255,255,0.7);
-        border-radius: 0.5rem;
-    }
-    
-    .honor-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-</style>
 
         <div class="section-divider"></div>
 
@@ -876,95 +730,6 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
         </div>
     </div>
 </section>
-
-<style>
-.value-proposition {
-    background-color: #f8f9fa;
-}
-
-.section-header h2 {
-    font-weight: 700;
-    color: #2c3e50;
-}
-
-.divider {
-    width: 80px;
-    height: 4px;
-    background: linear-gradient(90deg, #3498db, #9b59b6);
-    margin-bottom: 1.5rem;
-}
-
-.philosophy-card, .contact-card {
-    transition: transform 0.3s ease;
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.hover-effect:hover {
-    transform: translateY(-5px);
-}
-
-.icon-box {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #3498db, #9b59b6);
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.value-list {
-    list-style: none;
-    padding-left: 0;
-}
-
-.value-list li .badge {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: normal;
-    padding: 0;
-}
-
-.signature {
-    max-width: 150px;
-    opacity: 0.8;
-}
-
-.contact-info a {
-    color: #495057;
-    transition: color 0.2s;
-}
-
-.contact-info a:hover {
-    color: #3498db;
-}
-
-.form-control-lg {
-    padding: 0.75rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid #dee2e6;
-}
-
-.btn-lg {
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: 500;
-}
-
-@media (max-width: 992px) {
-    .philosophy-card, .contact-card {
-        margin-bottom: 2rem;
-    }
-}
-</style>
 
 <script>
 // Form validation
