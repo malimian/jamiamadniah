@@ -206,9 +206,9 @@ $instagram = $social_media[3]['attribute_value'] ?? '#';
     </div>
 </section>
 
-        <div class="section-divider"></div>
+<div class="section-divider"></div>
 
-       <!-- Section 3: Personal Background -->
+<!-- Section 3: Personal Background -->
 <?php
 $Personal_background = $content['attributes']['17'];
 print_r($Personal_background);
@@ -283,6 +283,23 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                 </div>
             </div>
 
+        <?php  
+        $CommunitySections = $Personal_background['sections']['Community Section'];
+
+        foreach ($CommunitySections as $section) {
+            $title = '';
+            $description = '';
+            $image = '';
+            
+            // Extract values
+            if ($section['attribute_name'] == 'Title') {
+                $title = $section['attribute_value'];
+            } elseif ($section['attribute_name'] == 'Description') {
+                $description = $section['attribute_value'];
+            } elseif ($section['attribute_name'] == 'Image') {
+                $image = $section['attribute_value'];
+            }
+        ?>
             <!-- Full Width Bottom Card: Community Leadership -->
             <div class="col-12">
                 <div class="card shadow-sm border-0 rounded-4 hover-effect bg-light">
@@ -292,32 +309,24 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                                 <i class="bi bi-people fs-3"></i>
                             </div>
                             <div>
-                                <h3 class="h4 mb-2"><?= htmlspecialchars($backgroundSection[0]['attribute_value']) ?></h3>
+                                <h3 class="h4 mb-2"><?= htmlspecialchars($title) ?></h3>
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <p class="mb-3"><?= strip_tags($backgroundSection[2]['attribute_value'], '<p><br><strong><em>') ?></p>
+                                        <!-- Strip unwanted tags but allow some formatting -->
+                                        <?= strip_tags($description, '<p><ul><li><strong><em><br>') ?>
                                     </div>
                                     <div class="col-md-6">
-                                        <ul class="list-unstyled">
-                                            <?php
-                                            $points = explode(',', $backgroundSection[4]['attribute_value']);
-                                            foreach ($points as $point) {
-                                                echo '<li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i>' . trim($point) . '</li>';
-                                            }
-                                            ?>
-                                        </ul>
+                                        <?php if (!empty($image)): ?>
+                                            <img src="<?= htmlspecialchars($image) ?>" alt="Community Image" class="img-fluid rounded">
+                                        <?php endif; ?>
                                     </div>
-                                </div>
-                                <div class="mt-3">
-                                    <a href="#community-work" class="btn btn-outline-info rounded-pill">
-                                        <i class="bi bi-arrow-right-circle me-2"></i> View Community Projects
-                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        <?php } ?>
 
             
 
