@@ -307,7 +307,7 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                                     </div>
                                     <div class="col-md-6">
                                         <?php if (!empty($image)): ?>
-                                            <img src="<?=($image) ?>" alt="Community Image" class="img-fluid rounded">
+                                            <img src="<?=ABSOLUTE_IMAGEPATH.$image?>" alt="Community Image" class="img-fluid rounded">
                                         <?php endif; ?>
                                     </div>
                                 </div>
