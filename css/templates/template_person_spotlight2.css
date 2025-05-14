@@ -1,0 +1,90 @@
+  /* Hero Carousel Styling */
+    #hero-carousel {
+        margin-bottom: 3rem;
+    }
+    #hero-carousel .carousel-item {
+        height: 70vh;
+        min-height: 400px;
+    }
+    #hero-carousel .carousel-item img {
+        object-fit: cover;
+        height: 100%;
+    }
+    #hero-carousel .carousel-caption {
+        bottom: 30%;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 2rem;
+        border-radius: 0.5rem;
+    }
+    
+    /* Profile Snapshot Styling */
+    .profile-snapshot {
+        border: none !important;
+    }
+    .profile-snapshot p {
+        margin-bottom: 1.2rem;
+    }
+    .profile-snapshot strong {
+        color: #0d6efd;
+    }
+
+/*   Right Section */
+.profile-card {
+    background: white;
+    border: 1px solid rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #0d6efd, #6610f2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    display: inline-block;
+}
+
+
+ /*  Personal Background */
+    .text-gradient {
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    
+    .section-divider {
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        margin: 1rem auto;
+        border-radius: 2px;
+    }
+    
+    .icon-box {
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .hover-effect {
+        transition: all 0.3s ease;
+    }
+    
+    .hover-effect:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .bg-light {
+        background-color: #f8f9fa !important;
+    }
+

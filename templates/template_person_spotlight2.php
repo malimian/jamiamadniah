@@ -1,111 +1,34 @@
 <?php 
  print_r($content['attributes']);
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jacob Oroks - Visionary Leader | IB Spotlight</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <style>
-    /* Hero Carousel Styling */
-    #hero-carousel {
-        margin-bottom: 3rem;
-    }
-    #hero-carousel .carousel-item {
-        height: 70vh;
-        min-height: 400px;
-    }
-    #hero-carousel .carousel-item img {
-        object-fit: cover;
-        height: 100%;
-    }
-    #hero-carousel .carousel-caption {
-        bottom: 30%;
-        background: rgba(0, 0, 0, 0.5);
-        padding: 2rem;
-        border-radius: 0.5rem;
-    }
-    
-    /* Profile Snapshot Styling */
-    .profile-snapshot {
-        border: none !important;
-    }
-    .profile-snapshot p {
-        margin-bottom: 1.2rem;
-    }
-    .profile-snapshot strong {
-        color: #0d6efd;
-    }
 
-/*   Right Section */
-.profile-card {
-    background: white;
-    border: 1px solid rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+<?php
+if(!function_exists("header_t")) {
+    function header_t(){
+        return '
+            <link href="css/templates/template_person_spotlight2.css" rel="stylesheet">';
+    }
 }
+?>
 
-.profile-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+<?php
+if(!function_exists("footer_t")) {
+    function footer_t(){
+        return '
+        ';
+    }
 }
+?>
 
-.text-gradient {
-    background: linear-gradient(90deg, #0d6efd, #6610f2);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    display: inline-block;
+<?php
+if(!function_exists("script_t")) {
+    function script_t(){
+        return '
+        ';
+    }
 }
-
-
- /*  Personal Background */
-    .text-gradient {
-        background: linear-gradient(90deg, #0d6efd, #6610f2);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-    
-    .section-divider {
-        width: 80px;
-        height: 4px;
-        background: linear-gradient(90deg, #0d6efd, #6610f2);
-        margin: 1rem auto;
-        border-radius: 2px;
-    }
-    
-    .icon-box {
-        width: 50px;
-        height: 50px;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-    
-    .hover-effect {
-        transition: all 0.3s ease;
-    }
-    
-    .hover-effect:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    
-    .bg-light {
-        background-color: #f8f9fa !important;
-    }
-
-
-
-</style>
-</head>
-<body>
-    <!-- Section 1: Hero Banner with Carousel -->
+?>
+<!-- Section 1: Hero Banner with Carousel -->
 <section id="hero-carousel" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"></button>
@@ -149,21 +72,6 @@
                 <?php
             }
         ?>
-
-        <div class="carousel-item active">
-            <img src="https://picsum.photos/1921/600?blackscale" class="d-block w-100" alt="Jacob Oroks Banner 2">
-            <div class="carousel-caption d-none d-md-block">
-                <h1 class="display-3 fw-bold">Innovative Thinker</h1>
-                <p class="lead">Bridging Technology and Spiritual Wisdom</p>
-            </div>
-        </div>
-        <div class="carousel-item">
-            <img src="https://picsum.photos/1920/600?whitescale" class="d-block w-100" alt="Jacob Oroks Banner 3">
-            <div class="carousel-caption d-none d-md-block">
-                <h1 class="display-3 fw-bold">Community Builder</h1>
-                <p class="lead">Championing Efik Heritage in the Diaspora</p>
-            </div>
-        </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
@@ -186,6 +94,10 @@ $titles = explode(',', $profile_section[2]['default_value'] ?? '');
 $location = $profile_section[3]['attribute_value'] ?? '';
 $email = $profile_section[4]['attribute_value'] ?? '';
 $phone = $profile_section[5]['attribute_value'] ?? '';
+
+$social_media = $content['attributes']['26']['sections']['SocialMedia'];
+
+print_r($social_media);
 ?>
 
 <section class="container my-5">
