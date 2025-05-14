@@ -239,11 +239,11 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                                         <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&h=100&fit=facearea&facepad=3" 
                                              class="rounded-circle shadow-sm" 
                                              width="60" 
-                                             alt="Jacob Oroks">
+                                             alt="<?= htmlspecialchars($name) ?>">
                                     </div>
                                     <div>
-                                        <h4 class="h5 mb-0">Jacob Etim Oroks</h4>
-                                        <small class="text-muted">Full Professional Name</small>
+                                        <h4 class="h5 mb-0"><?= htmlspecialchars($name) ?></h4>
+                                        <small class="text-muted"><?=$titles[0]?></small>
                                     </div>
                                 </div>
                             </div>
