@@ -1,6 +1,6 @@
 <?php 
 
-    print_r($content['attributes'][15]);
+    print_r($content['attributes'][16]);
 
 ?>
 <!DOCTYPE html>
@@ -115,18 +115,44 @@
         <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2"></button>
     </div>
     <div class="carousel-inner">
-        <?php 
-            foreach($content['attributes']['15']['sections']['carousel section'] as $carousel){
+       <?php
+            $items = $content['attributes']['15']['sections']['carousel section'];
+
+            $captions = [];
+            $images = [];
+            $leads = [];
+
+            // Separate items into arrays based on attribute_name
+            foreach ($items as $item) {
+                switch ($item['attribute_name']) {
+                    case 'carousel-caption':
+                        $captions[] = $item['attribute_value'];
+                        break;
+                    case 'carousel-image':
+                        $images[] = $item['attribute_value'];
+                        break;
+                    case 'carousel-lead':
+                        $leads[] = $item['attribute_value'];
+                        break;
+                }
+            }
+
+            // Map by index
+            $carouselCount = min(count($captions), count($images), count($leads)); // prevent index out of bounds
+            for ($i = 0; $i < $carouselCount; $i++) {
+                ?>
+                <div class="carousel-item<?= $i === 0 ? ' active' : '' ?>">
+                    <img src="<?= htmlspecialchars($images[$i]) ?>" class="d-block w-100" alt="Banner <?= $i + 1 ?>">
+                    <div class="carousel-caption d-none d-md-block">
+                        <h1 class="display-3 fw-bold"><?= htmlspecialchars($captions[$i]) ?></h1>
+                        <p class="lead"><?= htmlspecialchars($leads[$i]) ?></p>
+                    </div>
+                </div>
+                <?php
+            }
         ?>
-         <div class="carousel-item">
-            <img src="<?php if($carousel['attribute_name'] == "carousel-image") echo $carousel['attribute_value']?>" class="d-block w-100" alt="<?php if($carousel['attribute_name'] == "carousel-caption") echo $carousel['attribute_value']?>">
-            <div class="carousel-caption d-none d-md-block">
-                <h1 class="display-3 fw-bold"><?php if($carousel['attribute_name'] == "carousel-caption") echo $carousel['attribute_value']?></h1>
-                <p class="lead"><?php if($carousel['attribute_name'] == "carousel-lead") echo $carousel['attribute_value']?></p>
-            </div>
-        </div>
-        <?php } ?>
-<!--         <div class="carousel-item active">
+
+        <div class="carousel-item active">
             <img src="https://picsum.photos/1921/600?blackscale" class="d-block w-100" alt="Jacob Oroks Banner 2">
             <div class="carousel-caption d-none d-md-block">
                 <h1 class="display-3 fw-bold">Innovative Thinker</h1>
@@ -139,8 +165,7 @@
                 <h1 class="display-3 fw-bold">Community Builder</h1>
                 <p class="lead">Championing Efik Heritage in the Diaspora</p>
             </div>
-        </div> -->
-
+        </div>
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
@@ -153,106 +178,114 @@
     <div class="container mb-5">
 
 <!-- Section 2: Profile Snapshot -->
+<?php
+$data = [ /* your array here */ ];
+$section = $data['sections']['profile section'];
+
+// Extract values safely
+$image = $section[0]['attribute_value'] ?? '';
+$name = $section[1]['attribute_value'] ?? '';
+$titles = explode(',', $section[2]['default_value'] ?? '');
+$location = $section[3]['attribute_value'] ?? '';
+$email = $section[4]['attribute_value'] ?? '';
+$phone = $section[5]['attribute_value'] ?? '';
+?>
+
 <section class="container my-5">
     <div class="row align-items-center">
         <!-- Left Column - Profile Image -->
         <div class="col-md-4 text-center mb-4 mb-md-0">
-            <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&h=600&fit=facearea&facepad=3" 
-                 alt="Professional Headshot of Jacob Oroks" 
+            <img src="<?= htmlspecialchars($image) ?>" 
+                 alt="Profile Image of <?= htmlspecialchars($name) ?>" 
                  class="img-fluid rounded-circle shadow"
                  style="width: 300px; height: 300px; object-fit: cover;">
         </div>
         
         <!-- Right Column - Profile Details -->
-      <div class="col-md-8">
-    <div class="profile-card p-4 shadow-sm rounded-4">
-        <h2 class="mb-4 text-gradient">Profile Snapshot</h2>
-        
-        <div class="row g-4">
-            <!-- Left Column -->
-            <div class="col-md-6">
-                <div class="d-flex align-items-start mb-4">
-                    <div class="me-3 text-primary">
-                        <i class="bi bi-person-badge fs-3"></i>
+        <div class="col-md-8">
+            <div class="profile-card p-4 shadow-sm rounded-4">
+                <h2 class="mb-4 text-gradient">Profile Snapshot</h2>
+                
+                <div class="row g-4">
+                    <!-- Left Column -->
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="me-3 text-primary">
+                                <i class="bi bi-person-badge fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="h5 mb-1">Name & Titles</h3>
+                                <p class="mb-0 fw-bold fs-5"><?= htmlspecialchars($name) ?></p>
+                                <?php foreach ($titles as $i => $title): ?>
+                                    <?php
+                                        $badgeClasses = ['primary', 'success', 'info', 'warning', 'danger'];
+                                        $class = $badgeClasses[$i % count($badgeClasses)];
+                                    ?>
+                                    <span class="badge bg-<?= $class ?> bg-opacity-10 text-<?= $class ?> mt-1"><?= htmlspecialchars(trim($title)) ?></span>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex align-items-start">
+                            <div class="me-3 text-primary">
+                                <i class="bi bi-geo-alt fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="h5 mb-1">Location</h3>
+                                <p class="mb-0">
+                                    <span class="d-block"><?= htmlspecialchars($location) ?></span>
+                                    <small class="text-muted">Based in <?= htmlspecialchars(explode(',', $location)[0]) ?></small>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                    <div>
-                        <h3 class="h5 mb-1">Name & Titles</h3>
-                        <p class="mb-0 fw-bold fs-5">Jacob Etim Oroks</p>
-                        <span class="badge bg-primary bg-opacity-10 text-primary mt-1">CEO</span>
-                        <span class="badge bg-success bg-opacity-10 text-success mt-1">Pastor</span>
-                        <span class="badge bg-info bg-opacity-10 text-info mt-1">Community Leader</span>
+                    
+                    <!-- Right Column -->
+                    <div class="col-md-6">
+                        <div class="d-flex align-items-start mb-4">
+                            <div class="me-3 text-primary">
+                                <i class="bi bi-envelope-at fs-3"></i>
+                            </div>
+                            <div>
+                                <h3 class="h5 mb-1">Contact</h3>
+                                <p class="mb-1">
+                                    <a href="mailto:<?= htmlspecialchars($email) ?>" class="text-decoration-none">
+                                        <?= htmlspecialchars($email) ?>
+                                    </a>
+                                </p>
+                                <p class="mb-0">
+                                    <a href="tel:<?= preg_replace('/[^+\d]/', '', $phone) ?>" class="text-decoration-none">
+                                        <?= htmlspecialchars($phone) ?>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <a href="#contact" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
+                                <i class="bi bi-calendar-check me-2"></i> Book a Spotlight Session
+                            </a>
+                            <div class="d-flex justify-content-center mt-2">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock-history me-1"></i> Typically replies within 24 hours
+                                </small>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="d-flex align-items-start">
-                    <div class="me-3 text-primary">
-                        <i class="bi bi-geo-alt fs-3"></i>
-                    </div>
-                    <div>
-                        <h3 class="h5 mb-1">Location</h3>
-                        <p class="mb-0">
-                            <span class="d-block">United States</span>
-                            <small class="text-muted">Based in Maryland</small>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Right Column -->
-            <div class="col-md-6">
-                <div class="d-flex align-items-start mb-4">
-                    <div class="me-3 text-primary">
-                        <i class="bi bi-envelope-at fs-3"></i>
-                    </div>
-                    <div>
-                        <h3 class="h5 mb-1">Contact</h3>
-                        <p class="mb-1">
-                            <a href="mailto:contact@ibspotlight.com" class="text-decoration-none">
-                                contact@ibspotlight.com
-                            </a>
-                        </p>
-                        <p class="mb-0">
-                            <a href="tel:+11234567890" class="text-decoration-none">
-                                +1 (123) 456-7890
-                            </a>
-                        </p>
-                    </div>
-                </div>
-                
-                <div class="d-grid">
-                    <a href="#contact" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
-                        <i class="bi bi-calendar-check me-2"></i> Book a Spotlight Session
-                    </a>
-                    <div class="d-flex justify-content-center mt-2">
-                        <small class="text-muted">
-                            <i class="bi bi-clock-history me-1"></i> Typically replies within 24 hours
-                        </small>
+                <!-- Social Links -->
+                <div class="mt-4 pt-3 border-top">
+                    <h4 class="h6 text-uppercase text-muted mb-3">Connect With Me</h4>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="btn btn-outline-primary p-2"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" class="btn btn-outline-primary p-2"><i class="bi bi-twitter"></i></a>
+                        <a href="#" class="btn btn-outline-primary p-2"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-primary p-2"><i class="bi bi-instagram"></i></a>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Social Links -->
-            <div class="mt-4 pt-3 border-top">
-                <h4 class="h6 text-uppercase text-muted mb-3">Connect With Me</h4>
-                <div class="d-flex gap-3">
-                    <a href="#" class="btn btn-outline-primary p-2">
-                        <i class="bi bi-linkedin"></i>
-                    </a>
-                    <a href="#" class="btn btn-outline-primary p-2">
-                        <i class="bi bi-twitter"></i>
-                    </a>
-                    <a href="#" class="btn btn-outline-primary p-2">
-                        <i class="bi bi-facebook"></i>
-                    </a>
-                    <a href="#" class="btn btn-outline-primary p-2">
-                        <i class="bi bi-instagram"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     </div>
 </section>
 
