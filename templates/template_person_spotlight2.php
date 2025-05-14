@@ -116,7 +116,7 @@
     </div>
     <div class="carousel-inner">
         <?php 
-        foreach($content['attributes']['15']['sections']['carousel section'] as $carousel)
+            foreach($content['attributes']['15']['sections']['carousel section'] as $carousel){
         ?>
          <div class="carousel-item">
             <img src="<?php if($carousel['attribute_name'] == "carousel-image") echo $carousel['attribute_value']?>" class="d-block w-100" alt="<?php if($carousel['attribute_name'] == "carousel-caption") echo $carousel['attribute_value']?>">
@@ -125,7 +125,7 @@
                 <p class="lead"><?php if($carousel['attribute_name'] == "carousel-lead") echo $carousel['attribute_value']?></p>
             </div>
         </div>
-        <?php ?>
+        <?php } ?>
 <!--         <div class="carousel-item active">
             <img src="https://picsum.photos/1921/600?blackscale" class="d-block w-100" alt="Jacob Oroks Banner 2">
             <div class="carousel-caption d-none d-md-block">
@@ -140,7 +140,7 @@
                 <p class="lead">Championing Efik Heritage in the Diaspora</p>
             </div>
         </div> -->
-        
+
     </div>
     <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
