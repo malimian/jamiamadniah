@@ -42,7 +42,9 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
     exit('<script type="text/javascript">window.location = "' . ERROR_404 . '";</script>');
 }
 
-    $attribute_sql = "SELECT *
+    $attribute_sql = "SELECT * ,
+    pa.is_dynamic AS attribute_is_dynamic,
+    pa.is_required AS attribute_is_required
     FROM 
         page_attributes pa
     LEFT JOIN 
@@ -60,48 +62,50 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
         COALESCE(pa.section_name, 'General') ASC,
         pa.sort_order ASC,
         ao.sort_order ASC;
-
         ";
 
 $content['attributes'] = return_multiple_rows($attribute_sql);
+$organizedAttributes = organizeAttributes($content['attributes']);
 
-if(!empty($content['attributes'])){
+$content['attributes'] = $organizedAttributes;
 
-// Sort by tab_id and in tab_id sort by section_name
-// First, let's group the attributes by tab_id and then by section_name
-$sortedAttributes = [];
+// if(!empty($content['attributes'])){
 
-foreach ($content['attributes'] as $attribute) {
-    $tabId = $attribute['tab_id'];
-    $sectionName = $attribute['section_name'];
+// // Sort by tab_id and in tab_id sort by section_name
+// // First, let's group the attributes by tab_id and then by section_name
+// $sortedAttributes = [];
+
+// foreach ($content['attributes'] as $attribute) {
+//     $tabId = $attribute['tab_id'];
+//     $sectionName = $attribute['section_name'];
     
-    if (!isset($sortedAttributes[$tabId])) {
-        $sortedAttributes[$tabId] = [
-            'tab_name' => $attribute['tab_name'],
-            'tab_group' => $attribute['tab_group'],
-            'sections' => []
-        ];
-    }
+//     if (!isset($sortedAttributes[$tabId])) {
+//         $sortedAttributes[$tabId] = [
+//             'tab_name' => $attribute['tab_name'],
+//             'tab_group' => $attribute['tab_group'],
+//             'sections' => []
+//         ];
+//     }
     
-    if (!isset($sortedAttributes[$tabId]['sections'][$sectionName])) {
-        $sortedAttributes[$tabId]['sections'][$sectionName] = [];
-    }
+//     if (!isset($sortedAttributes[$tabId]['sections'][$sectionName])) {
+//         $sortedAttributes[$tabId]['sections'][$sectionName] = [];
+//     }
     
-    $sortedAttributes[$tabId]['sections'][$sectionName][] = $attribute;
-}
+//     $sortedAttributes[$tabId]['sections'][$sectionName][] = $attribute;
+// }
 
-// Sort by tab_id (keys are already tab_ids)
-ksort($sortedAttributes);
+// // Sort by tab_id (keys are already tab_ids)
+// ksort($sortedAttributes);
 
-// For each tab, sort sections alphabetically
-foreach ($sortedAttributes as &$tab) {
-    ksort($tab['sections']);
-}
-unset($tab); // Break the reference
+// // For each tab, sort sections alphabetically
+// foreach ($sortedAttributes as &$tab) {
+//     ksort($tab['sections']);
+// }
+// unset($tab); // Break the reference
 
-$content['attributes'] = $sortedAttributes;
+// $content['attributes'] = $sortedAttributes;
 
-}
+// }
 
 
 // Add content components if specified

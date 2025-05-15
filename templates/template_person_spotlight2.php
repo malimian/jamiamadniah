@@ -1,5 +1,6 @@
 <?php 
- // print_r($content['attributes']);
+// print_r($content['attributes']);
+$array = $content['attributes'];
 ?>
 
 <?php
@@ -32,532 +33,368 @@ if(!function_exists("script_t")) {
     }
 }
 ?>
-<!-- Section 1: Hero Banner with Carousel -->
-<section id="hero-carousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active"></button>
-        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1"></button>
-        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2"></button>
-    </div>
-    <div class="carousel-inner">
-       <?php
-            $items = $content['attributes']['15']['sections']['carousel section'];
-
-            $captions = [];
-            $images = [];
-            $leads = [];
-
-            // Separate items into arrays based on attribute_name
-            foreach ($items as $item) {
-                switch ($item['attribute_name']) {
-                    case 'carousel-caption':
-                        $captions[] = $item['attribute_value'];
-                        break;
-                    case 'carousel-image':
-                        $images[] = $item['attribute_value'];
-                        break;
-                    case 'carousel-lead':
-                        $leads[] = $item['attribute_value'];
-                        break;
-                }
-            }
-
-            // Map by index
-            $carouselCount = min(count($captions), count($images), count($leads)); // prevent index out of bounds
-            for ($i = 0; $i < $carouselCount; $i++) {
-                ?>
-                <div class="carousel-item<?= $i === 0 ? ' active' : '' ?>">
-                    <img src="<?= ABSOLUTE_IMAGEPATH.htmlspecialchars($images[$i]) ?>" class="d-block w-100" alt="Banner <?= $i + 1 ?>">
+    <!-- Section 1: Hero Banner with Carousel -->
+    <section id="hero-carousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <?php foreach ($array[0]['sections'][0]['sets'] as $index => $slide): ?>
+                <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="<?= $index ?>" class="<?= $index === 0 ? 'active' : '' ?>"></button>
+            <?php endforeach; ?>
+        </div>
+        <div class="carousel-inner">
+            <?php foreach ($array[0]['sections'][0]['sets'] as $index => $slide): ?>
+                <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
+                    <img src="<?= $slide[239]['value'] ?>" class="d-block w-100" alt="Jacob Oroks Banner <?= $index + 1 ?>">
                     <div class="carousel-caption d-none d-md-block">
-                        <h1 class="display-3 fw-bold"><?=($captions[$i]) ?></h1>
-                        <p class="lead"><?=($leads[$i]) ?></p>
+                        <h1 class="display-3 fw-bold"><?= $slide[238]['value'] ?></h1>
+                        <p class="lead"><?= $slide[240]['value'] ?></p>
                     </div>
                 </div>
-                <?php
-            }
-        ?>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon"></span>
-    </button>
-</section>
+            <?php endforeach; ?>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#hero-carousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#hero-carousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </section>
 
     <div class="container mb-5">
-
-<!-- Section 2: Profile Snapshot -->
-<?php
-$profile_section = $content['attributes']['16']['sections']['profile section'];
-
-// Extract values safely
-$image = $profile_section[0]['attribute_value'] ?? '';
-$name = $profile_section[1]['attribute_value'] ?? '';
-$titles = explode(',', $profile_section[2]['default_value'] ?? '');
-$location = $profile_section[3]['attribute_value'] ?? '';
-$email = $profile_section[4]['attribute_value'] ?? '';
-$phone = $profile_section[5]['attribute_value'] ?? '';
-
-$social_media = $content['attributes']['26']['sections']['SocialMedia'];
-
-$facebook = $social_media[0]['attribute_value'] ?? '#';
-$twitter  = $social_media[1]['attribute_value'] ?? '#';
-$linkedin = $social_media[2]['attribute_value'] ?? '#';
-$instagram = $social_media[3]['attribute_value'] ?? '#';
-
-?>
-
-<section class="container my-5">
-    <div class="row align-items-center">
-        <!-- Left Column - Profile Image -->
-        <div class="col-md-4 text-center mb-4 mb-md-0">
-            <img src="<?= ABSOLUTE_IMAGEPATH.htmlspecialchars($image) ?>" 
-                 alt="Profile Image of <?=($name) ?>" 
-                 class="img-fluid rounded-circle shadow"
-                 style="width: 300px; height: 300px; object-fit: cover;">
-        </div>
-        
-        <!-- Right Column - Profile Details -->
-        <div class="col-md-8">
-            <div class="profile-card p-4 shadow-sm rounded-4">
-                <h2 class="mb-4 text-gradient">Profile Snapshot</h2>
-                
-                <div class="row g-4">
-                    <!-- Left Column -->
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-start mb-4">
-                            <div class="me-3 text-primary">
-                                <i class="bi bi-person-badge fs-3"></i>
-                            </div>
-                            <div>
-                                <h3 class="h5 mb-1">Name & Titles</h3>
-                                <p class="mb-0 fw-bold fs-5"><?=($name) ?></p>
-                                <?php foreach ($titles as $i => $title): ?>
-                                    <?php
-                                        $badgeClasses = ['primary', 'success', 'info', 'warning', 'danger'];
-                                        $class = $badgeClasses[$i % count($badgeClasses)];
-                                    ?>
-                                    <span class="badge bg-<?= $class ?> bg-opacity-10 text-<?= $class ?> mt-1"><?=(trim($title)) ?></span>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                        
-                        <div class="d-flex align-items-start">
-                            <div class="me-3 text-primary">
-                                <i class="bi bi-geo-alt fs-3"></i>
-                            </div>
-                            <div>
-                                <h3 class="h5 mb-1">Location</h3>
-                                <p class="mb-0">
-                                    <span class="d-block"><?=($location) ?></span>
-                                    <small class="text-muted">Based in <?=(explode(',', $location)[0]) ?></small>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Right Column -->
-                    <div class="col-md-6">
-                        <div class="d-flex align-items-start mb-4">
-                            <div class="me-3 text-primary">
-                                <i class="bi bi-envelope-at fs-3"></i>
-                            </div>
-                            <div>
-                                <h3 class="h5 mb-1">Contact</h3>
-                                <p class="mb-1">
-                                    <a href="mailto:<?=($email) ?>" class="text-decoration-none">
-                                        <?=($email) ?>
-                                    </a>
-                                </p>
-                                <p class="mb-0">
-                                    <a href="tel:<?= preg_replace('/[^+\d]/', '', $phone) ?>" class="text-decoration-none">
-                                        <?=($phone) ?>
-                                    </a>
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="d-grid">
-                            <a href="#contact" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
-                                <i class="bi bi-calendar-check me-2"></i> Book a Spotlight Session
-                            </a>
-                            <div class="d-flex justify-content-center mt-2">
-                                <small class="text-muted">
-                                    <i class="bi bi-clock-history me-1"></i> Typically replies within 24 hours
-                                </small>
-                            </div>
-                        </div>
-                    </div>
+        <!-- Section 2: Profile Snapshot -->
+        <section class="container my-5">
+            <div class="row align-items-center">
+                <!-- Left Column - Profile Image -->
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                    <img src="<?= $array[1]['sections'][0]['attributes'][0]['current_value'] ?>" 
+                         alt="Professional Headshot of Jacob Oroks" 
+                         class="img-fluid rounded-circle shadow"
+                         style="width: 300px; height: 300px; object-fit: cover;">
                 </div>
                 
-                <!-- Social Links -->
-                <div class="mt-4 pt-3 border-top">
-                    <h4 class="h6 text-uppercase text-muted mb-3">Connect With Me</h4>
-                    <div class="d-flex gap-3">
-                       <a href="<?=($linkedin) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-linkedin"></i></a>
-                        <a href="<?=($twitter) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-twitter"></i></a>
-                        <a href="<?=($facebook) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-facebook"></i></a>
-                        <a href="<?=($instagram) ?>" target="_blank" class="btn btn-outline-primary p-2"><i class="bi bi-instagram"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<div class="section-divider"></div>
-
-<!-- Section 3: Personal Background -->
-<?php
-$Personal_background = $content['attributes']['17'];
-
-$mainSection = $Personal_background['sections']['Main'];
-$backgroundSection = $Personal_background['sections']['background section'];
-
-// Extract title and subtitle
-$title = $mainSection[0]['attribute_value'] ?? 'Personal Journey';
-$subtitle = $mainSection[1]['attribute_value'] ?? '';
-?>
-
-<section class="mb-5 py-4">
-    <div class="container">
-        <div class="text-center mb-5">
-            <h2 class="display-5 fw-bold text-gradient mb-3"><?=($title) ?></h2>
-            <div class="section-divider mx-auto"></div>
-            <p class="lead text-muted"><?=($subtitle) ?></p>
-        </div>
-
-        <div class="row g-4">
-            <!-- Left Column: Static content -->
-            <div class="col-lg-6">
-                <div class="card shadow-sm border-0 rounded-4 h-100 hover-effect">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start mb-3">
-                            <div class="icon-box bg-primary bg-opacity-10 text-primary me-3">
-                                <i class="bi bi-person-vcard fs-3"></i>
-                            </div>
-                            <div>
-                                <h3 class="h4 mb-2">Professional Identity</h3>
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="me-3">
-                                        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=100&h=100&fit=facearea&facepad=3" 
-                                             class="rounded-circle shadow-sm" 
-                                             width="60" 
-                                             alt="<?=($name) ?>">
+                <!-- Right Column - Profile Details -->
+                <div class="col-md-8">
+                    <div class="profile-card p-4 shadow-sm rounded-4">
+                        <h2 class="mb-4 text-gradient"><?= $array[1]['tab_name'] ?></h2>
+                        
+                        <div class="row g-4">
+                            <!-- Left Column -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start mb-4">
+                                    <div class="me-3 text-primary">
+                                        <i class="bi bi-person-badge fs-3"></i>
                                     </div>
                                     <div>
-                                        <h4 class="h5 mb-0"><?=($name) ?></h4>
-                                        <small class="text-muted"><?=$titles[0]?></small>
+                                        <h3 class="h5 mb-1">Name & Titles</h3>
+                                        <p class="mb-0 fw-bold fs-5"><?= $array[1]['sections'][0]['attributes'][1]['current_value'] ?></p>
+                                        <?php 
+                                        $titles = explode(',', $array[1]['sections'][0]['attributes'][2]['current_value']);
+                                        $badgeColors = ['primary', 'success', 'info'];
+                                        foreach ($titles as $i => $title): ?>
+                                            <span class="badge bg-<?= $badgeColors[$i] ?> bg-opacity-10 text-<?= $badgeColors[$i] ?> mt-1"><?= trim($title) ?></span>
+                                        <?php endforeach; ?>
                                     </div>
                                 </div>
+                                
+                                <div class="d-flex align-items-start">
+                                    <div class="me-3 text-primary">
+                                        <i class="bi bi-geo-alt fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="h5 mb-1">Location</h3>
+                                        <p class="mb-0">
+                                            <span class="d-block"><?= $array[1]['sections'][0]['attributes'][3]['current_value'] ?></span>
+                                            <small class="text-muted">Based in Maryland</small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Right Column -->
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start mb-4">
+                                    <div class="me-3 text-primary">
+                                        <i class="bi bi-envelope-at fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="h5 mb-1">Contact</h3>
+                                        <p class="mb-1">
+                                            <a href="mailto:<?= $array[1]['sections'][0]['attributes'][4]['current_value'] ?>" class="text-decoration-none">
+                                                <?= $array[1]['sections'][0]['attributes'][4]['current_value'] ?>
+                                            </a>
+                                        </p>
+                                        <p class="mb-0">
+                                            <a href="tel:<?= str_replace([' ', '(', ')', '-', '+'], '', $array[1]['sections'][0]['attributes'][5]['current_value']) ?>" class="text-decoration-none">
+                                                <?= $array[1]['sections'][0]['attributes'][5]['current_value'] ?>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-grid">
+                                    <a href="#contact" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
+                                        <i class="bi bi-calendar-check me-2"></i> Book a Spotlight Session
+                                    </a>
+                                    <div class="d-flex justify-content-center mt-2">
+                                        <small class="text-muted">
+                                            <i class="bi bi-clock-history me-1"></i> Typically replies within 24 hours
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Social Links -->
+                        <div class="mt-4 pt-3 border-top">
+                            <h4 class="h6 text-uppercase text-muted mb-3">Connect With Me</h4>
+                            <div class="d-flex gap-3">
+                                <a href="<?= $array[11]['sections'][1]['attributes'][0]['current_value'] ?>" class="btn btn-outline-primary p-2" target="_blank">
+                                    <i class="bi bi-linkedin"></i>
+                                </a>
+                                <a href="#" class="btn btn-outline-primary p-2">
+                                    <i class="bi bi-twitter"></i>
+                                </a>
+                                <a href="#" class="btn btn-outline-primary p-2">
+                                    <i class="bi bi-facebook"></i>
+                                </a>
+                                <a href="#" class="btn btn-outline-primary p-2">
+                                    <i class="bi bi-instagram"></i>
+                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Middle Column: Faith & Ministry -->
-            <div class="col-lg-6">
-                <div class="card shadow-sm border-0 rounded-4 h-100 hover-effect">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start mb-3">
-                            <div class="icon-box bg-success bg-opacity-10 text-success me-3">
-                                <i class="bi bi-journal-bookmark fs-3"></i>
-                            </div>
-                            <div>
-                                <h3 class="h4 mb-2"><?=($backgroundSection[0]['attribute_value']) ?></h3>
-                                <p class="mb-0"><?= $backgroundSection[1]['attribute_value'] ?></p>
-                                <div class="mt-3">
-                                    <?php
-                                    $badges = explode(',', $backgroundSection[2]['attribute_value']);
-                                    foreach ($badges as $badge) {
-                                        echo '<span class="badge bg-success bg-opacity-10 text-success me-2">' . trim($badge) . '</span>';
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-      <?php
-        
-         $CommunitySections = $Personal_background['sections']['Community Section'];
-
-         print_r($CommunitySections );
-         
-        // Group attributes in sets of 3 (Title, Description, Image)
-        for ($i = 0; $i < count($CommunitySections); $i += 3) {
-            $title = $CommunitySections[$i]['attribute_value'] ?? '';
-            $description = $CommunitySections[$i + 1]['attribute_value'] ?? '';
-            $image = $CommunitySections[$i + 2]['attribute_value'] ?? '';
-        ?>
-            <div class="col-12">
-                <div class="card shadow-sm border-0 rounded-4 hover-effect bg-light">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-start">
-                            <div class="icon-box bg-info bg-opacity-10 text-info me-3">
-                                <i class="bi bi-people fs-3"></i>
-                            </div>
-                            <div>
-                                <h3 class="h4 mb-2"><?=($title) ?></h3>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <?= strip_tags($description, '<p><ul><li><strong><em><br>') ?>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <?php if (!empty($image)): ?>
-                                            <img src="<?=ABSOLUTE_IMAGEPATH.$image?>" alt="Community Image" class="img-fluid rounded">
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        <?php } ?>
-
-
-            
-
-        </div>
-    </div>
-</section>
-
-
+        </section>
 
         <div class="section-divider"></div>
 
-       <!-- Section 4: Education & Certifications -->
-<section class="py-6 mb-6 bg-light position-relative overflow-hidden">
-    <!-- Animated background elements -->
-    <div class="position-absolute top-0 start-0 w-100 h-100">
-        <div class="position-absolute top-0 end-0 bg-primary bg-opacity-5 rounded-circle" style="width: 300px; height: 300px; transform: translate(50%, -50%);"></div>
-        <div class="position-absolute bottom-0 start-0 bg-success bg-opacity-5 rounded-circle" style="width: 400px; height: 400px; transform: translate(-50%, 50%);"></div>
-    </div>
+        <!-- Section 3: Personal Background -->
+        <section class="mb-5 py-4">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="display-5 fw-bold text-gradient mb-3"><?= $array[2]['tab_name'] ?></h2>
+                    <div class="section-divider mx-auto"></div>
+                    <p class="lead text-muted"><?= $array[2]['sections'][2]['attributes'][1]['current_value'] ?></p>
+                </div>
 
-    <div class="container position-relative">
-        <!-- Section Header -->
-        <div class="text-center mb-6" data-aos="fade-up">
-            <span class="badge bg-primary bg-opacity-10 text-primary mb-3 rounded-pill px-3 py-2">
-                <i class="bi bi-mortarboard me-2"></i> Academic Journey
-            </span>
-            <h2 class="display-4 fw-bold mb-3 text-gradient">Education & Certifications</h2>
-            <p class="lead text-muted mx-auto" style="max-width: 600px;">
-                Building expertise through formal education and continuous professional development
-            </p>
-        </div>
-
-        <div class="row g-4">
-            <!-- Education Timeline -->
-            <div class="col-lg-5" data-aos="fade-right">
-                <div class="card h-100 border-0 shadow-lg rounded-4 overflow-hidden">
-                    <div class="card-header bg-white py-4 border-0">
-                        <h3 class="h4 mb-0 d-flex align-items-center">
-                            <span class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 me-3">
-                                <i class="bi bi-mortarboard fs-2"></i>
-                            </span>
-                            <span>Academic Background</span>
-                        </h3>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="timeline-steps">
-                            <div class="timeline-step">
-                                <div class="timeline-content" data-aos="fade-up" data-aos-delay="100">
-                                    <div class="inner-circle bg-primary text-white">
-                                        <i class="bi bi-book"></i>
+                <div class="row g-4">
+                    <!-- Left Column -->
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm border-0 rounded-4 h-100 hover-effect">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="icon-box bg-primary bg-opacity-10 text-primary me-3">
+                                        <i class="bi bi-person-vcard fs-3"></i>
                                     </div>
-                                    <h4 class="h5 mb-1">Bachelor of Science</h4>
-                                    <p class="mb-1 text-primary fw-bold">Computer Science</p>
-                                    <p class="small text-muted mb-2">University of Maryland Global Campus</p>
-                                    <div class="d-flex gap-2">
-                                        <span class="badge bg-primary bg-opacity-10 text-primary">2015-2019</span>
-                                        <span class="badge bg-success bg-opacity-10 text-success">Summa Cum Laude</span>
+                                    <div>
+                                        <h3 class="h4 mb-2">Professional Identity</h3>
+                                        <div class="d-flex align-items-center mb-3">
+                                            <div class="me-3">
+                                                <img src="<?= $array[1]['sections'][0]['attributes'][0]['current_value'] ?>" 
+                                                     class="rounded-circle shadow-sm" 
+                                                     width="60" 
+                                                     alt="Jacob Oroks">
+                                            </div>
+                                            <div>
+                                                <h4 class="h5 mb-0"><?= $array[1]['sections'][0]['attributes'][1]['current_value'] ?></h4>
+                                                <small class="text-muted">Full Professional Name</small>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="timeline-step">
-                                <div class="timeline-content" data-aos="fade-up" data-aos-delay="200">
-                                    <div class="inner-circle bg-success text-white">
-                                        <i class="bi bi-award"></i>
+                        </div>
+                    </div>
+
+                    <!-- Middle Column -->
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm border-0 rounded-4 h-100 hover-effect">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="icon-box bg-success bg-opacity-10 text-success me-3">
+                                        <i class="bi bi-journal-bookmark fs-3"></i>
                                     </div>
-                                    <h4 class="h5 mb-1">Academic Honors</h4>
-                                    <ul class="list-unstyled small">
-                                        <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i> National Dean's List</li>
-                                        <li class="mb-1"><i class="bi bi-check-circle-fill text-success me-2"></i> Google Developer Scholarship</li>
-                                        <li><i class="bi bi-check-circle-fill text-success me-2"></i> President's Honor Roll</li>
-                                    </ul>
+                                    <div>
+                                        <h3 class="h4 mb-2"><?= $array[2]['sections'][0]['attributes'][0]['current_value'] ?></h3>
+                                        <p class="mb-0"><?= $array[2]['sections'][0]['attributes'][1]['current_value'] ?></p>
+                                        <div class="mt-3">
+                                            <?php 
+                                            $badges = explode(',', $array[2]['sections'][0]['attributes'][2]['current_value']);
+                                            foreach ($badges as $badge): ?>
+                                                <span class="badge bg-success bg-opacity-10 text-success me-2"><?= trim($badge) ?></span>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Full Width Bottom Card -->
+                    <div class="col-12">
+                        <div class="card shadow-sm border-0 rounded-4 hover-effect bg-light">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-start">
+                                    <div class="icon-box bg-info bg-opacity-10 text-info me-3">
+                                        <i class="bi bi-people fs-3"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="h4 mb-2"><?= $array[2]['sections'][1]['sets'][0][313]['value'] ?></h3>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="mb-3"><?= strip_tags($array[2]['sections'][1]['sets'][0][314]['value']) ?></p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <ul class="list-unstyled">
+                                                    <?php 
+                                                    $listItems = explode('</li>', $array[2]['sections'][1]['sets'][0][314]['value']);
+                                                    foreach ($listItems as $item):
+                                                        if (trim(strip_tags($item))): ?>
+                                                            <li class="mb-2"><i class="bi bi-check-circle-fill text-info me-2"></i><?= strip_tags($item) ?></li>
+                                                        <?php endif;
+                                                    endforeach; ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <a href="#community-work" class="btn btn-outline-info rounded-pill">
+                                                <i class="bi bi-arrow-right-circle me-2"></i> View Community Projects
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Certifications Showcase -->
-            <div class="col-lg-7" data-aos="fade-left">
-                <div class="card h-100 border-0 shadow-lg rounded-4 overflow-hidden">
-                    <div class="card-header bg-white py-4 border-0">
-                        <h3 class="h4 mb-0 d-flex align-items-center">
-                            <span class="bg-warning bg-opacity-10 text-warning p-3 rounded-3 me-3">
-                                <i class="bi bi-award fs-2"></i>
-                            </span>
-                            <span>Professional Certifications</span>
-                        </h3>
+        <div class="section-divider"></div>
+
+        <!-- Section 4: Education & Certifications -->
+        <section class="py-6 mb-6 bg-light position-relative overflow-hidden">
+            <div class="position-absolute top-0 start-0 w-100 h-100">
+                <div class="position-absolute top-0 end-0 bg-primary bg-opacity-5 rounded-circle" style="width: 300px; height: 300px; transform: translate(50%, -50%);"></div>
+                <div class="position-absolute bottom-0 start-0 bg-success bg-opacity-5 rounded-circle" style="width: 400px; height: 400px; transform: translate(-50%, 50%);"></div>
+            </div>
+
+            <div class="container position-relative">
+                <!-- Section Header -->
+                <div class="text-center mb-6">
+                    <span class="badge bg-primary bg-opacity-10 text-primary mb-3 rounded-pill px-3 py-2">
+                        <i class="bi bi-mortarboard me-2"></i> Academic Journey
+                    </span>
+                    <h2 class="display-4 fw-bold mb-3 text-gradient"><?= $array[3]['tab_name'] ?></h2>
+                    <p class="lead text-muted mx-auto" style="max-width: 600px;">
+                        <?= $array[3]['sections'][2]['attributes'][1]['current_value'] ?>
+                    </p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Education Timeline -->
+                    <div class="col-lg-5">
+                        <div class="card h-100 border-0 shadow-lg rounded-4 overflow-hidden">
+                            <div class="card-header bg-white py-4 border-0">
+                                <h3 class="h4 mb-0 d-flex align-items-center">
+                                    <span class="bg-primary bg-opacity-10 text-primary p-3 rounded-3 me-3">
+                                        <i class="bi bi-mortarboard fs-2"></i>
+                                    </span>
+                                    <span>Academic Background</span>
+                                </h3>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="timeline-steps">
+                                    <?php foreach ($array[3]['sections'][1]['sets'] as $index => $education): ?>
+                                        <div class="timeline-step">
+                                            <div class="timeline-content">
+                                                <div class="inner-circle bg-primary text-white">
+                                                    <i class="bi bi-book"></i>
+                                                </div>
+                                                <h4 class="h5 mb-1"><?= $education[280]['value'] ?></h4>
+                                                <p class="mb-1 text-primary fw-bold">Computer Science</p>
+                                                <p class="small text-muted mb-2"><?= $education[281]['value'] ?></p>
+                                                <div class="d-flex gap-2">
+                                                    <span class="badge bg-primary bg-opacity-10 text-primary"><?= $array[3]['sections'][1]['attributes'][2]['current_value'] ?></span>
+                                                    <span class="badge bg-success bg-opacity-10 text-success"><?= $education[284]['value'] ?></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body p-4">
-                        <div class="row g-4">
-                            <!-- CSM -->
-                            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="100">
-                                <div class="certification-card bg-white rounded-3 p-4 h-100 shadow-sm border-start border-4 border-primary">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <img src="https://badgecert.com/bc/html/img/badges/generated/badge-7227.png" 
-                                             alt="CSM" 
-                                             class="img-fluid rounded-3 me-3" 
-                                             width="60">
-                                        <div>
-                                            <h4 class="h6 mb-0">Certified Scrum Master</h4>
-                                            <small class="text-muted">Scrum Alliance</small>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="badge bg-primary bg-opacity-10 text-primary">2020</span>
-                                        <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">Verify</a>
-                                    </div>
-                                </div>
+
+                    <!-- Certifications Showcase -->
+                    <div class="col-lg-7">
+                        <div class="card h-100 border-0 shadow-lg rounded-4 overflow-hidden">
+                            <div class="card-header bg-white py-4 border-0">
+                                <h3 class="h4 mb-0 d-flex align-items-center">
+                                    <span class="bg-warning bg-opacity-10 text-warning p-3 rounded-3 me-3">
+                                        <i class="bi bi-award fs-2"></i>
+                                    </span>
+                                    <span>Professional Certifications</span>
+                                </h3>
                             </div>
-                            
-                            <!-- PMP -->
-                            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="200">
-                                <div class="certification-card bg-white rounded-3 p-4 h-100 shadow-sm border-start border-4 border-success">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <img src="https://www.ltcillinois.org/wp-content/uploads/2022/09/Untitled-design-13.png" 
-                                             alt="PMP" 
-                                             class="img-fluid rounded-3 me-3" 
-                                             width="60">
-                                        <div>
-                                            <h4 class="h6 mb-0">Project Management Professional</h4>
-                                            <small class="text-muted">PMI</small>
+                            <div class="card-body p-4">
+                                <div class="row g-4">
+                                    <?php foreach ($array[3]['sections'][0]['sets'] as $index => $cert): ?>
+                                        <div class="col-md-6">
+                                            <div class="certification-card bg-white rounded-3 p-4 h-100 shadow-sm border-start border-4 border-primary">
+                                                <div class="d-flex align-items-center mb-3">
+                                                    <img src="<?= $cert[299]['value'] ?>" 
+                                                         alt="<?= $cert[297]['value'] ?>" 
+                                                         class="img-fluid rounded-3 me-3" 
+                                                         width="60">
+                                                    <div>
+                                                        <h4 class="h6 mb-0"><?= $cert[297]['value'] ?></h4>
+                                                        <small class="text-muted"><?= $cert[298]['value'] ?></small>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <span class="badge bg-primary bg-opacity-10 text-primary"><?= $cert[300]['value'] ?></span>
+                                                    <a href="<?= $cert[301]['value'] ?>" class="btn btn-sm btn-outline-primary rounded-pill" target="_blank">Verify</a>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="badge bg-success bg-opacity-10 text-success">2019</span>
-                                        <a href="#" class="btn btn-sm btn-outline-success rounded-pill">Verify</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- AWS -->
-                            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="300">
-                                <div class="certification-card bg-white rounded-3 p-4 h-100 shadow-sm border-start border-4 border-warning">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg" 
-                                             alt="AWS" 
-                                             class="img-fluid rounded-3 me-3" 
-                                             width="60">
-                                        <div>
-                                            <h4 class="h6 mb-0">AWS Solutions Architect</h4>
-                                            <small class="text-muted">Amazon Web Services</small>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <span class="badge bg-warning bg-opacity-10 text-warning">2021</span>
-                                        <a href="#" class="btn btn-sm btn-outline-warning rounded-pill">Verify</a>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- More Certifications -->
-                            <div class="col-md-6" data-aos="zoom-in" data-aos-delay="400">
-                                <div class="certification-card bg-white rounded-3 p-4 h-100 shadow-sm border-start border-4 border-info">
-                                    <div class="d-flex align-items-center mb-3">
-                                        <div class="bg-info bg-opacity-10 text-info p-3 rounded-3 me-3">
-                                            <i class="bi bi-patch-check fs-4"></i>
-                                        </div>
-                                        <div>
-                                            <h4 class="h6 mb-0">Additional Certifications</h4>
-                                            <small class="text-muted">Ongoing Learning</small>
-                                        </div>
-                                    </div>
-                                    <ul class="list-unstyled small mb-0">
-                                        <li class="mb-1"><i class="bi bi-check-circle-fill text-info me-2"></i> Google Cloud Certified</li>
-                                        <li class="mb-1"><i class="bi bi-check-circle-fill text-info me-2"></i> Microsoft Certified</li>
-                                        <li><i class="bi bi-check-circle-fill text-info me-2"></i> ITIL Foundation</li>
-                                    </ul>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-
-
-<!-- AOS Animation Library -->
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script>
-    AOS.init({
-        duration: 800,
-        easing: 'ease-in-out',
-        once: true
-    });
-</script>
-
+        </section>
 
         <div class="section-divider"></div>
 
         <!-- Section 5: Faith Led Leadership -->
         <section class="py-5 bg-light">
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-md-8 text-center">
-                <h2 class="display-5 fw-bold text-primary mb-3">Faith-Inspired Leadership</h2>
-                <p class="lead text-muted">Guiding with conviction and serving with compassion, integrating spiritual values into professional endeavors.</p>
-            </div>
-        </div>
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6">
-                <div class="card shadow-sm h-100 border-0">
-                    <div class="card-body p-4 text-center">
-                        <div class="mb-3">
-                            <i class="fas fa-lightbulb fa-3x text-warning"></i>
-                        </div>
-                        <h3 class="h5 fw-semibold text-secondary mb-2">Professional Philosophy</h3>
-                        <p class="text-muted">"Technology should serve humanity, not replace it. My work at the intersection of faith and innovation seeks to create solutions that uplift communities while honoring our spiritual values."</p>
+            <div class="container">
+                <div class="row justify-content-center mb-5">
+                    <div class="col-md-8 text-center">
+                        <h2 class="display-5 fw-bold text-primary mb-3"><?= $array[4]['tab_name'] ?></h2>
+                        <p class="lead text-muted"><?= $array[4]['sections'][1]['attributes'][1]['current_value'] ?></p>
                     </div>
                 </div>
-            </div>
-             <div class="col-lg-4 col-md-6">
-                <div class="card shadow-sm h-100 border-0">
-                    <div class="card-body p-4 text-center">
-                        <div class="mb-3">
-                            <i class="fas fa-minus fa-3x text-info"></i>
+                <div class="row g-4">
+                    <?php foreach ($array[4]['sections'][0]['sets'] as $index => $leadership): ?>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card shadow-sm h-100 border-0">
+                                <div class="card-body p-4 text-center">
+                                    <div class="mb-3">
+                                        <i class="<?= $leadership[256]['value'] ?>"></i>
+                                    </div>
+                                    <h3 class="h5 fw-semibold text-secondary mb-2"><?= $leadership[255]['value'] ?></h3>
+                                    <p class="text-muted"><?= strip_tags($leadership[257]['value']) ?></p>
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="h5 fw-semibold text-secondary mb-2">Pastoral Ministry</h3>
-                        <p class="text-muted">Founding pastor of Iboto Empire Ministries, providing spiritual guidance to a growing congregation with a focus on practical Christianity in the digital age.</p>
-                    </div>
-                </div>
-            </div> 
-            <div class="col-lg-4 col-md-6">
-                <div class="card shadow-sm h-100 border-0">
-                    <div class="card-body p-4 text-center">
-                        <div class="mb-3">
-                            <i class="fas fa-hands-helping fa-3x text-success"></i>
-                        </div>
-                        <h3 class="h5 fw-semibold text-secondary mb-2">Servant Leadership</h3>
-                        <p class="text-muted">Committed to leadership that prioritizes the growth and well-being of team members and communities, demonstrated through mentorship programs and community initiatives.</p>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
         <div class="section-divider"></div>
 
@@ -566,8 +403,8 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
             <div class="container">
                 <div class="row justify-content-center mb-5">
                     <div class="col-md-8 text-center">
-                        <h2 class="display-5 fw-bold text-primary mb-3">Cultural Stewardship</h2>
-                        <p class="lead text-muted">Celebrating and preserving heritage through community engagement and education.</p>
+                        <h2 class="display-5 fw-bold text-primary mb-3"><?= $array[5]['tab_name'] ?></h2>
+                        <p class="lead text-muted"><?= $array[5]['sections'][1]['attributes'][1]['current_value'] ?></p>
                     </div>
                 </div>
                 <div class="row g-4">
@@ -575,13 +412,17 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                         <div class="card shadow-sm h-100 border-0">
                             <div class="card-body p-4">
                                 <div class="mb-3 text-center">
-                                    <i class="fas fa-users fa-3x text-info"></i>
+                                    <i class="<?= $array[5]['sections'][0]['sets'][0][258]['value'] ?>"></i>
                                 </div>
-                                <h3 class="h5 fw-semibold text-secondary mb-2">Community Impact</h3>
+                                <h3 class="h5 fw-semibold text-secondary mb-2"><?= $array[5]['sections'][0]['sets'][0][259]['value'] ?></h3>
                                 <ul class="list-unstyled text-muted">
-                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Founded the Efik Cultural Preservation Initiative, reaching over 5,000 diaspora members</li>
-                                    <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i>Organized annual cultural festivals that celebrate Efik heritage in the U.S.</li>
-                                    <li><i class="fas fa-check-circle text-success me-2"></i>Established scholarship programs for Efik youth pursuing higher education</li>
+                                    <?php 
+                                    $listItems = explode('</li>', $array[5]['sections'][0]['sets'][0][260]['value']);
+                                    foreach ($listItems as $item):
+                                        if (trim(strip_tags($item))): ?>
+                                            <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i><?= strip_tags($item) ?></li>
+                                        <?php endif;
+                                    endforeach; ?>
                                 </ul>
                             </div>
                         </div>
@@ -590,7 +431,7 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
                         <div class="card shadow-sm h-100 border-0">
                             <div class="card-body p-4">
                                 <div class="ratio ratio-16x9">
-                                    <iframe src="https://www.youtube.com/embed/example" title="Jacob Oroks Cultural Stewardship" allowfullscreen></iframe>
+                                    <iframe src="https://www.youtube.com/embed/<?= $array[5]['sections'][0]['sets'][0][307]['value'] ?>" title="Jacob Oroks Cultural Stewardship" allowfullscreen></iframe>
                                 </div>
                             </div>
                         </div>
@@ -604,340 +445,180 @@ $subtitle = $mainSection[1]['attribute_value'] ?? '';
         <!-- Section 7: Professional Journey & Achievements -->
         <section class="mb-5">
             <h2 class="mb-4">Professional Journey & Achievements</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <h3>2020-Present</h3>
-                    <h4>CEO, Iboto Empire USA</h4>
-                    <p>Leading a technology consulting firm that delivers innovative solutions to faith-based organizations and non-profits.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>2018-2020</h3>
-                    <h4>Senior Solutions Architect, TechFaith Inc.</h4>
-                    <p>Designed and implemented cloud solutions for Fortune 500 companies while maintaining ethical technology practices.</p>
-                </div>
-                <div class="timeline-item">
-                    <h3>2015-2018</h3>
-                    <h4>Founder, FaithTech Collective</h4>
-                    <p>Created a platform connecting technologists and faith leaders to collaborate on projects with social impact.</p>
-                </div>
+            <div class="timeline-steps">
+                <?php foreach ($array[6]['sections'][0]['sets'] as $index => $experience): ?>
+                    <div class="timeline-step">
+                        <div class="timeline-content">
+                            <div class="inner-circle bg-primary text-white">
+                                <i class="bi bi-briefcase"></i>
+                            </div>
+                            <h3><?= $experience[262]['value'] ?></h3>
+                            <h4><?= $experience[261]['value'] ?></h4>
+                            <p><?= strip_tags($experience[263]['value']) ?></p>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </section>
 
         <div class="section-divider"></div>
 
-
-<!-- Section 8: Unique Value Proposition & Leadership Philosophy -->
-<section class="py-5 value-proposition" id="contact">
-    <div class="container">
-        <div class="section-header text-center mb-5">
-            <h2 class="display-4 mb-3">My Unique Value Proposition</h2>
-            <div class="divider mx-auto"></div>
-            <p class="lead">Bridging technology and faith to create meaningful impact</p>
-        </div>
-
-        <div class="row g-4">
-            <!-- Leadership Philosophy Card -->
-            <div class="col-lg-6">
-                <div class="philosophy-card card h-100 border-0 shadow-lg hover-effect">
-                    <div class="card-body p-4 p-lg-5">
-                        <div class="icon-box mb-4">
-                            <i class="fas fa-hands-helping"></i>
-                        </div>
-                        <h3 class="h2 mb-4">Leadership Philosophy</h3>
-                        <blockquote class="blockquote mb-4">
-                            <p class="font-italic">"True leadership emerges at the intersection of competence and character. My approach combines technical expertise with spiritual wisdom, creating organizations that excel while maintaining their soul."</p>
-                        </blockquote>
-                        
-                        <h4 class="h5 mb-3 text-primary">Core Principles:</h4>
-                        <ul class="value-list">
-                            <li class="d-flex align-items-start mb-3">
-                                <span class="badge bg-primary me-3">1</span>
-                                <span>Ethical innovation that serves human dignity</span>
-                            </li>
-                            <li class="d-flex align-items-start mb-3">
-                                <span class="badge bg-primary me-3">2</span>
-                                <span>Cultural preservation through technological advancement</span>
-                            </li>
-                            <li class="d-flex align-items-start">
-                                <span class="badge bg-primary me-3">3</span>
-                                <span>Faith as the foundation for sustainable success</span>
-                            </li>
-                        </ul>
-                        
-                        <div class="signature mt-4">
-                            <img src="https://via.placeholder.com/150x50" alt="Jacob's Signature" class="img-fluid">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Contact Form Card -->
-            <div class="col-lg-6">
-                <div class="contact-card card h-100 border-0 shadow-lg">
-                    <div class="card-body p-4 p-lg-5">
-                        <div class="icon-box mb-4">
-                            <i class="fas fa-envelope-open-text"></i>
-                        </div>
-                        <h3 class="h2 mb-4">Connect With Jacob</h3>
-                        <p class="mb-4">Ready to discuss how we can collaborate? Schedule a Spotlight Session below.</p>
-                        
-                        <form class="needs-validation" novalidate>
-                            <div class="mb-4">
-                                <label for="name" class="form-label">Your Name</label>
-                                <input type="text" class="form-control form-control-lg" id="name" placeholder="John Doe" required>
-                                <div class="invalid-feedback">
-                                    Please provide your name.
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control form-control-lg" id="email" placeholder="john@example.com" required>
-                                <div class="invalid-feedback">
-                                    Please provide a valid email.
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="message" class="form-label">Your Message</label>
-                                <textarea class="form-control form-control-lg" id="message" rows="4" placeholder="Tell me about your project..." required></textarea>
-                                <div class="invalid-feedback">
-                                    Please include a message.
-                                </div>
-                            </div>
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="fas fa-calendar-check me-2"></i> Request Spotlight Session
-                                </button>
-                            </div>
-                        </form>
-                        
-                        <div class="contact-info mt-4 pt-3 border-top">
-                            <h5 class="h6 mb-3">Alternative Contact Methods:</h5>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">
-                                    <a href="mailto:jacob@ibotoempire.com" class="text-decoration-none">
-                                        <i class="fas fa-envelope me-2 text-primary"></i> jacob@ibotoempire.com
-                                    </a>
-                                </li>
-                                <li class="mb-2">
-                                    <a href="tel:+1234567890" class="text-decoration-none">
-                                        <i class="fas fa-phone me-2 text-primary"></i> (123) 456-7890
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#" class="text-decoration-none">
-                                        <i class="fas fa-video me-2 text-primary"></i> Schedule Video Call
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<script>
-// Form validation
-(function() {
-    'use strict';
-    window.addEventListener('load', function() {
-        var forms = document.getElementsByClassName('needs-validation');
-        var validation = Array.prototype.filter.call(forms, function(form) {
-            form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    }, false);
-})();
-
-// Animate cards on scroll
-document.addEventListener('DOMContentLoaded', function() {
-    const cards = document.querySelectorAll('.philosophy-card, .contact-card');
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = 1;
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, { threshold: 0.1 });
-    
-    cards.forEach((card, index) => {
-        card.style.opacity = 0;
-        card.style.transform = 'translateY(20px)';
-        card.style.transition = `all 0.5s ease ${index * 0.1}s`;
-        observer.observe(card);
-    });
-});
-</script>
-
-    </div>
-
-
- <!-- Section 8: Expertise & Unique Value Proposition -->
-    <section id="expertise" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="section-title">Expertise & Unique Value Proposition</h2>
-            
-            <div class="row g-4 mb-5">
-                <div class="col-md-4">
-                    <div class="card value-card shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="text-center mb-3">
-                                <i class="fas fa-chart-line fa-3x text-primary"></i>
-                            </div>
-                            <h3 class="h4 text-center">Data Driven Decision Making</h3>
-                            <p class="text-muted">Leveraging advanced analytics and business intelligence to drive strategic organizational decisions with measurable outcomes.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card value-card shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="text-center mb-3">
-                                <i class="fas fa-handshake fa-3x text-primary"></i>
-                            </div>
-                            <h3 class="h4 text-center">M&A Integration</h3>
-                            <p class="text-muted">Expertise in merging organizations with minimal disruption while maximizing synergies and cultural alignment.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card value-card shadow-sm h-100">
-                        <div class="card-body">
-                            <div class="text-center mb-3">
-                                <i class="fas fa-tasks fa-3x text-primary"></i>
-                            </div>
-                            <h3 class="h4 text-center">Agile Product Delivery</h3>
-                            <p class="text-muted">Implementing lean methodologies to accelerate product development cycles while maintaining quality standards.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-6">
-                    <h3 class="h4 mb-3">Distinct Methodologies</h3>
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-body">
-                            <h4 class="h5">The Oroks Transformation Framework</h4>
-                            <p>A proprietary 5-phase approach to organizational transformation that balances technological innovation with cultural preservation.</p>
-                            <ol>
-                                <li>Diagnostic Assessment</li>
-                                <li>Vision Alignment</li>
-                                <li>Capability Building</li>
-                                <li>Pilot Implementation</li>
-                                <li>Scale & Institutionalize</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <h3 class="h4 mb-3">Thought Leadership</h3>
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h4 class="h5">Speaking Topics</h4>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "Faith-Based Leadership in the Digital Age"</li>
-                                <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "Bridging Cultural Heritage with Technological Innovation"</li>
-                                <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "The Triple Bottom Line: Profit, People & Purpose"</li>
-                                <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "Diaspora Engagement Strategies for Community Development"</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section 9: Impact Stories & Case Studies -->
-    <section id="impact" class="py-5">
-        <div class="container">
-            <h2 class="section-title">Impact Stories & Case Studies</h2>
-            
-            <div class="row g-4">
-                <div class="col-lg-6">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h3 class="h4">Case Study - Efik Cultural Preservation Initiative</h3>
-                            <h4 class="h5 text-muted mt-3">Challenge</h4>
-                            <p>Declining engagement among younger generations with Efik cultural traditions and language in the diaspora community.</p>
-                            
-                            <h4 class="h5 text-muted mt-3">Approach</h4>
-                            <p>Developed a hybrid digital-physical engagement platform combining mobile apps for language learning with community events that modernized traditional practices.</p>
-                            
-                            <h4 class="h5 text-muted mt-3">Results</h4>
-                            <ul>
-                                <li>+300% increase in youth participation in cultural events</li>
-                                <li>15,000+ downloads of language learning app in first year</li>
-                                <li>Formation of 12 new community chapters across the US</li>
-                            </ul>
-                            
-                            <div class="testimonial-card bg-light p-3 mt-3">
-                                <p class="fst-italic mb-2">"Jacob's innovative approach saved our cultural heritage from being lost to assimilation. He made our traditions accessible and relevant to our digital-native youth."</p>
-                                <p class="fw-bold mb-0">— Chief Edet Okon, President, Efik Diaspora Council</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Section 8: Expertise & Unique Value Proposition -->
+        <section id="expertise" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="section-title"><?= $array[7]['tab_name'] ?></h2>
                 
-                <div class="col-lg-6">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h3 class="h4">Case Study - Faith-Based Tech Startup Accelerator</h3>
-                            <h4 class="h5 text-muted mt-3">Challenge</h4>
-                            <p>Lack of funding and mentorship for Christian entrepreneurs building technology solutions for ministry applications.</p>
-                            
-                            <h4 class="h5 text-muted mt-3">Approach</h4>
-                            <p>Created a 12-week accelerator program pairing Silicon Valley methodologies with biblical business principles, including:</p>
-                            <ul>
-                                <li>Faith-integrated lean startup curriculum</li>
-                                <li>Network of impact investors</li>
-                                <li>Ministry-market fit validation framework</li>
-                            </ul>
-                            
-                            <h4 class="h5 text-muted mt-3">Results</h4>
-                            <ul>
-                                <li>42 startups graduated in 3 cohorts</li>
-                                <li>$5.2M in total funding raised by participants</li>
-                                <li>85% of ventures still operational after 3 years (vs. industry avg. of 40%)</li>
-                            </ul>
-                            
-                            <div class="testimonial-card bg-light p-3 mt-3">
-                                <p class="fst-italic mb-2">"The accelerator gave us both the spiritual foundation and practical tools to build a sustainable business. Jacob's mentorship was transformative."</p>
-                                <p class="fw-bold mb-0">— Sarah Johnson, Founder, FaithfulMetrics</p>
+                <div class="row g-4 mb-5">
+                    <?php 
+                    $expertiseItems = [
+                        [
+                            'icon' => 'fas fa-chart-line',
+                            'title' => 'Data Driven Decision Making',
+                            'desc' => 'Leveraging advanced analytics and business intelligence to drive strategic organizational decisions with measurable outcomes.'
+                        ],
+                        [
+                            'icon' => 'fas fa-handshake',
+                            'title' => 'M&A Integration',
+                            'desc' => 'Expertise in merging organizations with minimal disruption while maximizing synergies and cultural alignment.'
+                        ],
+                        [
+                            'icon' => 'fas fa-tasks',
+                            'title' => 'Agile Product Delivery',
+                            'desc' => 'Implementing lean methodologies to accelerate product development cycles while maintaining quality standards.'
+                        ]
+                    ];
+                    foreach ($expertiseItems as $item): ?>
+                        <div class="col-md-4">
+                            <div class="card value-card shadow-sm h-100">
+                                <div class="card-body">
+                                    <div class="text-center mb-3">
+                                        <i class="<?= $item['icon'] ?> fa-3x text-primary"></i>
+                                    </div>
+                                    <h3 class="h4 text-center"><?= $item['title'] ?></h3>
+                                    <p class="text-muted"><?= $item['desc'] ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <h3 class="h4 mb-3">Distinct Methodologies</h3>
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body">
+                                <h4 class="h5">The Oroks Transformation Framework</h4>
+                                <p>A proprietary 5-phase approach to organizational transformation that balances technological innovation with cultural preservation.</p>
+                                <ol>
+                                    <li>Diagnostic Assessment</li>
+                                    <li>Vision Alignment</li>
+                                    <li>Capability Building</li>
+                                    <li>Pilot Implementation</li>
+                                    <li>Scale & Institutionalize</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <h3 class="h4 mb-3">Thought Leadership</h3>
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h4 class="h5">Speaking Topics</h4>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "Faith-Based Leadership in the Digital Age"</li>
+                                    <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "Bridging Cultural Heritage with Technological Innovation"</li>
+                                    <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "The Triple Bottom Line: Profit, People & Purpose"</li>
+                                    <li class="mb-2"><i class="fas fa-microphone text-primary me-2"></i> "Diaspora Engagement Strategies for Community Development"</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Section 10: Thought Leadership & Publications -->
-    <section id="thought-leadership" class="py-5 bg-light">
-        <div class="container">
-            <h2 class="section-title">Thought Leadership & Publications</h2>
-            
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card shadow-sm h-100">
-                        <div class="card-body">
-                            <h3 class="h4 mb-3"><i class="fas fa-newspaper text-primary me-2"></i> Articles & Whitepapers</h3>
-                            <ul class="list-unstyled">
-                                <li class="mb-2">"Digital Discipleship: Leveraging Technology for Spiritual Growth", <em>FaithTech Journal</em>, 2022</li>
-                                <li class="mb-2">"The Diaspora Dividend: Measuring the Economic Impact of Cultural Communities", <em>Harvard Business Review</em>, 2021</li>
-                                <li class="mb-2">"When Silicon Valley Meets Solomon: Ancient Wisdom for Modern Entrepreneurs", <em>Forbes</em>, 2020</li>
-                            </ul>
+        <!-- Section 9: Impact Stories & Case Studies -->
+        <section id="impact" class="py-5">
+            <div class="container">
+                <h2 class="section-title"><?= $array[8]['tab_name'] ?></h2>
+                
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h3 class="h4">Case Study - Efik Cultural Preservation Initiative</h3>
+                                <h4 class="h5 text-muted mt-3">Challenge</h4>
+                                <p>Declining engagement among younger generations with Efik cultural traditions and language in the diaspora community.</p>
+                                
+                                <h4 class="h5 text-muted mt-3">Approach</h4>
+                                <p>Developed a hybrid digital-physical engagement platform combining mobile apps for language learning with community events that modernized traditional practices.</p>
+                                
+                                <h4 class="h5 text-muted mt-3">Results</h4>
+                                <ul>
+                                    <li>+300% increase in youth participation in cultural events</li>
+                                    <li>15,000+ downloads of language learning app in first year</li>
+                                    <li>Formation of 12 new community chapters across the US</li>
+                                </ul>
+                                
+                                <div class="testimonial-card bg-light p-3 mt-3">
+                                    <p class="fst-italic mb-2">"Jacob's innovative approach saved our cultural heritage from being lost to assimilation. He made our traditions accessible and relevant to our digital-native youth."</p>
+                                    <p class="fw-bold mb-0">— Chief Edet Okon, President, Efik Diaspora Council</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h3 class="h4">Case Study - Faith-Based Tech Startup Accelerator</h3>
+                                <h4 class="h5 text-muted mt-3">Challenge</h4>
+                                <p>Lack of funding and mentorship for Christian entrepreneurs building technology solutions for ministry applications.</p>
+                                
+                                <h4 class="h5 text-muted mt-3">Approach</h4>
+                                <p>Created a 12-week accelerator program pairing Silicon Valley methodologies with biblical business principles, including:</p>
+                                <ul>
+                                    <li>Faith-integrated lean startup curriculum</li>
+                                    <li>Network of impact investors</li>
+                                    <li>Ministry-market fit validation framework</li>
+                                </ul>
+                                
+                                <h4 class="h5 text-muted mt-3">Results</h4>
+                                <ul>
+                                    <li>42 startups graduated in 3 cohorts</li>
+                                    <li>$5.2M in total funding raised by participants</li>
+                                    <li>85% of ventures still operational after 3 years (vs. industry avg. of 40%)</li>
+                                </ul>
+                                
+                                <div class="testimonial-card bg-light p-3 mt-3">
+                                    <p class="fst-italic mb-2">"The accelerator gave us both the spiritual foundation and practical tools to build a sustainable business. Jacob's mentorship was transformative."</p>
+                                    <p class="fw-bold mb-0">— Sarah Johnson, Founder, FaithfulMetrics</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Section 10: Thought Leadership & Publications -->
+        <section id="thought-leadership" class="py-5 bg-light">
+            <div class="container">
+                <h2 class="section-title"><?= $array[9]['tab_name'] ?></h2>
+                
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <h3 class="h4 mb-3"><i class="fas fa-newspaper text-primary me-2"></i> Articles & Whitepapers</h3>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">"Digital Discipleship: Leveraging Technology for Spiritual Growth", <em>FaithTech Journal</em>, 2022</li>
+                                    <li class="mb-2">"The Diaspora Dividend: Measuring the Economic Impact of Cultural Communities", <em>Harvard Business Review</em>, 2021</li>
+                                    <li class="mb-2">"When Silicon Valley Meets Solomon: Ancient Wisdom for Modern Entrepreneurs", <em>Forbes</em>, 2020</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 
                 <div class="col-md-4 mb-4">
                     <div class="card shadow-sm h-100">

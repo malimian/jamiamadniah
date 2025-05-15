@@ -862,3 +862,127 @@ function generate_social_meta($content, $type = 'website') {
 
     return $output;
 }
+
+
+
+function organizeAttributes($attributes) {
+    $organized = [];
+
+    // First pass: Group attributes by tab and section
+    foreach ($attributes as $attr) {
+        $tabId = $attr['tab_id'];
+        $sectionName = $attr['section_name'] ?: 'General';
+        $attributeId = $attr['attribute_id'];
+
+        // Initialize tab
+        if (!isset($organized[$tabId])) {
+            $organized[$tabId] = [
+                'tab_id' => $tabId,
+                'tab_name' => $attr['tab_name'],
+                'tab_group' => $attr['tab_group'],
+                'sections' => []
+            ];
+        }
+
+        // Initialize section
+        if (!isset($organized[$tabId]['sections'][$sectionName])) {
+            $organized[$tabId]['sections'][$sectionName] = [
+                'section_name' => $sectionName,
+                'is_dynamic' => false,
+                'attributes' => []
+            ];
+        }
+
+        // Check if section is dynamic
+        if (!empty($attr['attribute_is_dynamic'])) {
+            $organized[$tabId]['sections'][$sectionName]['is_dynamic'] = true;
+        }
+
+        // Initialize attribute
+        if (!isset($organized[$tabId]['sections'][$sectionName]['attributes'][$attributeId])) {
+            $organized[$tabId]['sections'][$sectionName]['attributes'][$attributeId] = [
+                'attribute_id'     => $attributeId,
+                'attribute_name'   => $attr['attribute_name'],
+                'attribute_label'  => $attr['attribute_label'],
+                'attribute_type'   => $attr['attribute_type'],
+                'is_required'      => isset($attr['attribute_is_required']) ? (int)$attr['attribute_is_required'] : 0,
+                'is_dynamic'       => isset($attr['attribute_is_dynamic']) ? (bool)$attr['attribute_is_dynamic'] : false,
+                'default_value'    => $attr['default_value'],
+                'icon_class'       => $attr['icon_class'],
+                'options'          => [],
+                'values'           => []
+            ];
+        }
+
+        // Add option
+        if (!empty($attr['option_value'])) {
+            $organized[$tabId]['sections'][$sectionName]['attributes'][$attributeId]['options'][] = [
+                'option_value' => $attr['option_value'],
+                'option_label' => $attr['option_label']
+            ];
+        }
+
+        // Add value
+        if (!empty($attr['attribute_value'])) {
+            $organized[$tabId]['sections'][$sectionName]['attributes'][$attributeId]['values'][] = [
+                'id'    => $attr['id'],
+                'value' => $attr['attribute_value']
+            ];
+        }
+    }
+
+    // Second pass: Build value sets for dynamic sections
+    foreach ($organized as &$tab) {
+        foreach ($tab['sections'] as &$section) {
+            if ($section['is_dynamic']) {
+                // Find max sets by count of values
+                $maxSets = 1;
+                foreach ($section['attributes'] as $attr) {
+                    if ($attr['is_dynamic']) {
+                        $maxSets = max($maxSets, count($attr['values']));
+                    }
+                }
+
+                $section['sets'] = [];
+                for ($i = 0; $i < $maxSets; $i++) {
+                    $set = [];
+                    foreach ($section['attributes'] as $attrId => $attr) {
+                        if ($attr['is_dynamic']) {
+                            $value = $attr['values'][$i]['value'] ?? $attr['default_value'];
+                            $set[$attrId] = [
+                                'attribute_label' => $attr['attribute_label'],
+                                'attribute_type'  => $attr['attribute_type'],
+                                'value'           => $value,
+                                'is_required'     => $attr['is_required']
+                            ];
+                        }
+                    }
+                    $section['sets'][] = $set;
+                }
+
+                // Handle non-dynamic attributes
+                foreach ($section['attributes'] as $attrId => $attr) {
+                    if (!$attr['is_dynamic']) {
+                        $value = $attr['values'][0]['value'] ?? $attr['default_value'];
+                        $section['attributes'][$attrId]['current_value'] = $value;
+                    }
+                }
+            } else {
+                // Handle non-dynamic section attributes
+                foreach ($section['attributes'] as $attrId => $attr) {
+                    $value = $attr['values'][0]['value'] ?? $attr['default_value'];
+                    $section['attributes'][$attrId]['current_value'] = $value;
+                }
+            }
+
+            // Convert attributes to indexed array
+            $section['attributes'] = array_values($section['attributes']);
+        }
+
+        // Convert sections to indexed array
+        $tab['sections'] = array_values($tab['sections']);
+    }
+
+    // Convert tabs to indexed array
+    return array_values($organized);
+}
