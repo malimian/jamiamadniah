@@ -20,10 +20,6 @@ $id = Insert($sql);
 
 if($id > 0){
     $oid = encrypt_($id);
-    $json = file_get_contents("https://cutt.ly/api/api.php?key=".API_URL_SHORTNER."&short=".BASE_URL."documets.php?document_id=".$oid);
-    $json = json_decode($json , TRUE);
-    $short_url = $json['url']['shortLink'];
-    Update("Update documents set d_shortlink = '$short_url' Where docu_id = ".$id);
     echo $id;
 }
 else echo "0";
