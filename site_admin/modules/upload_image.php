@@ -1,4 +1,4 @@
-  <style type="text/css">
+<style type="text/css">
     /* Main Modal Styling */
 .media-gallery-modal-custom {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -47,39 +47,68 @@
     transform: scale(1.1);
 }
 
-/* Tab Styling */
-.media-tabs-custom {
-    border-bottom: 2px solid #dee2e6;
-    margin-bottom: 1.5rem;
+/* Two Column Layout */
+.media-columns-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
 }
 
-.media-tabs-custom .nav-link {
-    color: #495057;
-    font-weight: 500;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    margin-right: 0.5rem;
-    border-radius: 5px 5px 0 0;
-    transition: all 0.3s;
+.media-gallery-column {
+    flex: 0 0 60%;
+    max-width: 60%;
 }
 
-.media-tabs-custom .nav-link:hover {
-    color: #2575fc;
-    background-color: rgba(37, 117, 252, 0.1);
+.media-upload-column {
+    flex: 0 0 calc(40% - 1.5rem);
+    max-width: calc(40% - 1.5rem);
 }
 
-.media-tabs-custom .nav-link.active {
-    color: #2575fc;
-    background-color: transparent;
-    border-bottom: 3px solid #2575fc;
+/* Gallery Section */
+.media-gallery-grid-custom {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
+    padding: 10px;
+    width: 100%;
+}
+
+/* Gallery Item Styling */
+.media-gallery-item-custom {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.media-gallery-item-custom:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Image Container */
+.media-gallery-item-custom .imgContainer {
+    padding: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Search Box */
+.media-search-box {
+    margin-bottom: 1rem;
 }
 
 /* Upload Section Styling */
 .media-upload-container-custom {
     background: white;
     border-radius: 10px;
-    padding: 2rem;
+    padding: 1.5rem;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    height: 100%;
 }
 
 .media-upload-input-custom {
@@ -120,10 +149,11 @@
 /* Image Preview Area */
 .media-image-preview-custom {
     border: 2px dashed #dee2e6;
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: 10px;
     background-color: #f8f9fa;
     transition: all 0.3s;
+    margin-top: 1rem;
 }
 
 .media-image-preview-custom:hover {
@@ -131,7 +161,7 @@
 }
 
 .media-image-result-custom {
-    max-height: 300px;
+    max-height: 200px;
     object-fit: contain;
     transition: transform 0.3s;
 }
@@ -140,43 +170,10 @@
     transform: scale(1.02);
 }
 
-/* Gallery Section */
-/*.media-gallery-grid-custom {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1.5rem;
-}*/
-
-.media-gallery-item-custom {
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s;
-    position: relative;
-}
-
-.media-gallery-item-custom:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-}
-
-/* Table Section */
-.media-gallery-table-custom {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-}
-
-.media-gallery-table-custom th {
-    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-    color: white;
-    font-weight: 500;
-}
-
-.media-gallery-table-custom tr:nth-child(even) {
-    background-color: #f8f9fa;
+/* Load More Button */
+.media-load-more {
+    margin-top: 1rem;
+    text-align: center;
 }
 
 /* Footer Styling */
@@ -194,93 +191,180 @@
 }
 
 /* Responsive Adjustments */
+@media (max-width: 992px) {
+    .media-gallery-column,
+    .media-upload-column {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .media-gallery-grid-custom {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+}
+
 @media (max-width: 768px) {
     .MediaGalleryModal-dialog {
         max-width: 95%;
         margin: 1rem auto;
     }
-    
-    .media-tabs-custom .nav-link {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
-    }
-    
+}
+
+/* Image Actions */
+.img-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    justify-content: center;
+}
+
+.img-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+.media-gallery-item-custom {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s;
+    position: relative;
+    background: white;
+    padding: 0.5rem;
+}
+
+/* Image Styling */
+.media-gallery-item-custom img {
+    width: 100%;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background: #f5f5f5;
+}
+
+
+/* Input and Actions */
+.media-gallery-item-custom input {
+    width: 100%;
+    padding: 5px;
+    font-size: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
     .media-gallery-grid-custom {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
     }
 }
 
-  </style>
-  <div class="modal media-gallery-modal-custom" id="MediaGalleryModal" role="dialog" tabindex="-1">
+@media (max-width: 576px) {
+    .media-gallery-grid-custom {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    }
+    
+    .media-gallery-item-custom img {
+        height: 100px;
+    }
+}
+
+/* Search box styling */
+.media-search-box {
+    margin-bottom: 1rem;
+}
+
+.media-search-box .input-group {
+    width: 100%;
+}
+
+</style>
+
+<div class="modal media-gallery-modal-custom" id="MediaGalleryModal" role="dialog" tabindex="-1">
     <div class="modal-dialog modal-xl MediaGalleryModal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header media-modal-header-custom">
-          <h5 class="modal-title">Media</h5><button aria-label="Close" class="close" data-dismiss="modal" type="button"><span aria-hidden="true">&times;</span></button>
+          <h5 class="modal-title">Media Gallery</h5>
+          <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body MediaGalleryModal-body">
           <input type="hidden" id="textcopied">
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs media-tabs-custom">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#upload_image">Upload Image</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#menu1_gallery">Galley</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#menu2_gallery">Images List</a>
-            </li>
-          </ul><!-- Tab panes -->
-          <div class="tab-content">
-            <div class="container tab-pane active media-upload-container-custom" id="upload_image">
-              <div id="error_id_upload_module"></div>
-              <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm media-upload-input-custom">
-                <input accept="image/*" class="form-control border-0" id="files" onchange="readURL(this);" type="file"> 
-                <label class="font-weight-light text-muted media-upload-label-custom" for="files" id="upload-label">Choose file</label>
-                <div class="input-group-append">
-                  <label class="btn btn-light m-0 rounded-pill px-4 media-upload-btn-custom" for="files">
-                    <i class="fa fa-cloud-upload mr-2 text-muted"></i>
-                    <small class="text-uppercase font-weight-bold text-muted">Choose file</small>
-                  </label>
+          <input type="hidden" id="mediaGalleryPath">
+          
+          <div class="media-columns-container">
+            <!-- Gallery Column (60%) -->
+            <div class="media-gallery-column">
+                <div class="media-search-box">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="gallery_search" placeholder="Search images...">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" onclick="filterGallery()">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div class="form-inline input-group image_url_group" style="display: none">
-              </div>
-              <div class="image-area mt-4 media-image-preview-custom"><img alt="" class="img-fluid rounded shadow-sm mx-auto d-block media-image-result-custom" id="imageResult" src="#"></div>
-              <div class="input-group  justify-content-end">
-                <button class="btn btn-primary m-0 rounded-pill px-4 upload_image_module_btn media-upload-btn-custom" type="button">Upload</button>
-              </div>
-            </div>
-            <input type="hidden" id="mediaGalleryPath">
-            <div class="container tab-pane fade" id="menu1_gallery">
-              <div class="mt-2 mb-5">
-              <div class="input-group form-group"> 
-                <button type="button" class="btn btn-primary module_loadimg_btn media-upload-btn-custom" onclick="load_images();">Load Images</button>
-              </div>
-              <div class="row text-center text-lg-left">
-                  <div class="row media-gallery-grid-custom" id="get_images">
-                  </div>  
-              </div>
-            </div>
-          </div>
-
-            <div class="container tab-pane fade" id="menu2_gallery">
-              <br>
-              <div class="container-fluid">
-                <div class="input-group form-group"> 
-                    <span class="input-group-text">Search Images</span>
-                    <input id="filter_list_images" type="text" class="form-control" placeholder="Type here...">
+                
+                <div class="media-gallery-container">
+                    <div class="media-gallery-grid-custom" id="get_images">
+                        <!-- Gallery images will be loaded here -->
+                    </div>
+                    
+                    <div class="media-load-more">
+                        <button type="button" class="btn btn-primary module_loadimg_btn media-upload-btn-custom" onclick="load_images();">
+                            Load More Images
+                        </button>
+                    </div>
                 </div>
-                <table id="datatable_list_gallery_plugin" class="table table-striped searchable_table media-gallery-table-custom">
-                </table>
-              </div>
+            </div>
+            
+            <!-- Upload Column (40%) -->
+            <div class="media-upload-column">
+                <div class="media-upload-container-custom">
+                    <h5>Upload Image</h5>
+                    <div id="error_id_upload_module"></div>
+                    
+                    <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm media-upload-input-custom">
+                        <input accept="image/*" class="form-control border-0" id="files" onchange="readURL(this);" type="file"> 
+                        <label class="font-weight-light text-muted media-upload-label-custom" for="files" id="upload-label">Choose file</label>
+                        <div class="input-group-append">
+                            <label class="btn btn-light m-0 rounded-pill px-4 media-upload-btn-custom" for="files">
+                                <i class="fa fa-cloud-upload mr-2 text-muted"></i>
+                                <small class="text-uppercase font-weight-bold text-muted">Choose file</small>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-inline input-group image_url_group" style="display: none">
+                        <!-- Will be populated after upload -->
+                    </div>
+                    
+                    <div class="image-area mt-4 media-image-preview-custom">
+                        <img alt="" class="img-fluid rounded shadow-sm mx-auto d-block media-image-result-custom" id="imageResult" src="#">
+                    </div>
+                    
+                    <div class="input-group justify-content-end mt-3">
+                        <button class="btn btn-primary m-0 rounded-pill px-4 upload_image_module_btn media-upload-btn-custom" type="button">
+                            Upload Image
+                        </button>
+                    </div>
+                </div>
             </div>
           </div>
         </div>
+        
         <div class="modal-footer media-modal-footer-custom">
           <button class="btn btn-secondary media-modal-footer-btn-custom" data-dismiss="modal" type="button">Close</button>
         </div>
       </div>
     </div>
-  </div>
-      <script src="js/modules/upload_image.js"></script>
+</div>
+
+<script src="js/modules/upload_image.js"></script>
