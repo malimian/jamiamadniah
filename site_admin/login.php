@@ -27,7 +27,7 @@
           <div class="form-group">
             <div class="checkbox">
               <label>
-                <input type="checkbox" value="remember-me">
+                <input type="checkbox" id="isRemember" value="remember-me">
                 Remember Password
               </label>
             </div>

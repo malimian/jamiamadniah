@@ -2,11 +2,13 @@
 
               var inputEmail = $('#inputEmail').val();
               var inputPassword = $('#inputPassword').val();
+              var isRemember = $('#isRemember').is(':checked') ? 1 : 0;
 
               senddata('post/login/login.php',
                   "POST",
                   {username:inputEmail,
                    password:inputPassword,
+                   isRemember:isRemember,
                    login:true
                  },
                   function(result_sucess) {

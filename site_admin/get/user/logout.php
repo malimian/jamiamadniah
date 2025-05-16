@@ -39,6 +39,10 @@ if (isset($_GET['logout'])) {
     
     session_destroy();
     
+
+      setcookie('remember_me', '', time() - 3600, '/', '', true, true);
+
+      
     // Redirect to login page
     exit("<script>location.href='".ADMIN_URL."login.php'</script>");
 }

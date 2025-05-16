@@ -737,6 +737,101 @@ function timeAgo($datetime) {
     return "Just now";
 }
 
+/**
+ * Set remember me cookie (using your existing database functions)
+ */
+function setRememberMeCookie($userId, $username) {
+    // Generate secure tokens
+    $selector = bin2hex(random_bytes(12));
+    $validator = bin2hex(random_bytes(32));
+    $hashedValidator = password_hash($validator, PASSWORD_DEFAULT);
+    
+    // Set expiration (30 days)
+    $expires = time() + (30 * 24 * 60 * 60);
+    $expiresDate = date('Y-m-d H:i:s', $expires);
+    
+    // Store in database using your Update/Insert functions
+    // First delete any existing tokens for this user
+    Delete("DELETE FROM remember_tokens WHERE user_id = $userId");
+    
+    // Insert new token
+    $inserted = Insert("
+        INSERT INTO remember_tokens 
+        (user_id, selector, hashed_validator, expires_at) 
+        VALUES (
+            $userId, 
+            '$selector', 
+            '$hashedValidator', 
+            '$expiresDate'
+        )
+    ");
+    
+    if (!$inserted) {
+        return false;
+    }
+    
+    // Set secure HTTP-only cookie
+    $cookieValue = $selector . ':' . $validator;
+    
+    return setcookie(
+        'remember_me',
+        $cookieValue,
+        $expires,
+        '/',
+        '', // Domain - set this properly for your site
+        true, // Secure - only over HTTPS
+        true  // HttpOnly - not accessible via JavaScript
+    );
+}
+
+
+function checkRememberMe() {
+    if (isset($_SESSION['user_id'])) {
+        return true; // Already logged in
+    }
+    
+    if (!isset($_COOKIE['remember_me'])) {
+        return false;
+    }
+    
+    list($selector, $validator) = explode(':', $_COOKIE['remember_me']);
+  
+    $selector = clean($selector);
+    $validator = clean($validator);
+    
+    if (empty($selector) || empty($validator)) {
+        return false;
+    }
+    
+    // Get token from database
+    $token = return_single_row("
+        SELECT rt.user_id, rt.hashed_validator, u.username, u.email 
+        FROM remember_tokens rt
+        JOIN loginuser u ON rt.user_id = u.id
+        WHERE rt.selector = '$selector' 
+        AND rt.expires_at >= NOW()
+        AND u.isactive = 1
+    ");
+    
+    if (!$token || !password_verify($validator, $token['hashed_validator'])) {
+        return false;
+    }
+    
+    // Token is valid - log the user in
+    $_SESSION['user_id'] = $token['user_id'];
+    $_SESSION['username'] = $token['username'];
+    $_SESSION['email'] = $token['email'];
+    $_SESSION['logged_in'] = true;
+    
+    // Generate new token for next time (token rotation)
+    setRememberMeCookie($token['user_id'], $token['username']);
+    
+    // Delete old token
+    Delete("DELETE FROM remember_tokens WHERE selector = '$selector'");
+    
+    return true;
+}
+
 
 // Permission functions
 function canEdit($isSystemOperated) {

@@ -280,7 +280,7 @@ AdminHeader(
     "Overview of system statistics", 
     $extra_libs,
     null,
-    '<script src="js/dashboard/custom.js"></script>
+    '<script src="js/custom.js"></script>
      <script src="vendor/datatables/jquery.dataTables.min.js"></script>
      <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>'
 );

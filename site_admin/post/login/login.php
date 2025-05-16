@@ -7,11 +7,15 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once ('../../../connect.php');
 
 
+
+checkRememberMe();
+
+
 if (isset($_POST['login'])) {
 
 $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_EMAIL);
 $password =  $_POST['password'];
-
+$isRemember = isset($_POST['isRemember']) ? $_POST['isRemember'] : 0;
   
 if (!empty($username) && !empty($password)) {
 
@@ -68,6 +72,12 @@ if (!empty($username) && !empty($password)) {
 
         $ip = escape( $_SERVER['REMOTE_ADDR']);
         
+
+          if ((int)$isRemember === 1) {
+              setRememberMeCookie($uid, $username);
+          }
+
+
         // Update last access
         Update("UPDATE loginuser SET lastaccessip = '$ip', lastaccess = NOW() WHERE id = $uid ");
 
@@ -78,6 +88,7 @@ if (!empty($username) && !empty($password)) {
                           ($uid, 'login', 'user', '$ip', 'User logged in')";
 
         Insert( $activity_query);
+
 
 
        echo $dashboard;
