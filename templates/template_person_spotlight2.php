@@ -43,7 +43,7 @@ if(!function_exists("script_t")) {
         <div class="carousel-inner">
             <?php foreach ($array[0]['sections'][0]['sets'] as $index => $slide): ?>
                 <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                    <img src="<?= $slide[239]['value'] ?>" class="d-block w-100" alt="Jacob Oroks Banner <?= $index + 1 ?>">
+                    <img src="<?=ABSOLUTE_IMAGEPATH.$slide[239]['value'] ?>" class="d-block w-100" alt="Jacob Oroks Banner <?= $index + 1 ?>">
                     <div class="carousel-caption d-none d-md-block">
                         <h1 class="display-3 fw-bold"><?= $slide[238]['value'] ?></h1>
                         <p class="lead"><?= $slide[240]['value'] ?></p>
@@ -65,7 +65,7 @@ if(!function_exists("script_t")) {
             <div class="row align-items-center">
                 <!-- Left Column - Profile Image -->
                 <div class="col-md-4 text-center mb-4 mb-md-0">
-                    <img src="<?= $array[1]['sections'][0]['attributes'][0]['current_value'] ?>" 
+                    <img src="<?= ABSOLUTE_IMAGEPATH.$array[1]['sections'][0]['attributes'][0]['current_value'] ?>" 
                          alt="Professional Headshot of Jacob Oroks" 
                          class="img-fluid rounded-circle shadow"
                          style="width: 300px; height: 300px; object-fit: cover;">
@@ -190,7 +190,7 @@ if(!function_exists("script_t")) {
                                         <h3 class="h4 mb-2">Professional Identity</h3>
                                         <div class="d-flex align-items-center mb-3">
                                             <div class="me-3">
-                                                <img src="<?= $array[1]['sections'][0]['attributes'][0]['current_value'] ?>" 
+                                                <img src="<?= ABSOLUTE_IMAGEPATH.$array[1]['sections'][0]['attributes'][0]['current_value'] ?>" 
                                                      class="rounded-circle shadow-sm" 
                                                      width="60" 
                                                      alt="Jacob Oroks">
@@ -343,7 +343,7 @@ if(!function_exists("script_t")) {
                                         <div class="col-md-6">
                                             <div class="certification-card bg-white rounded-3 p-4 h-100 shadow-sm border-start border-4 border-primary">
                                                 <div class="d-flex align-items-center mb-3">
-                                                    <img src="<?= $cert[299]['value'] ?>" 
+                                                    <img src="<?= ABSOLUTE_IMAGEPATH.$cert[299]['value'] ?>" 
                                                          alt="<?= $cert[297]['value'] ?>" 
                                                          class="img-fluid rounded-3 me-3" 
                                                          width="60">
