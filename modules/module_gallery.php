@@ -1,5 +1,5 @@
 <?php
-$basePath = ABSOLUTE_IMAGEPATH."/footer-gallery";
+$basePath = ABSOLUTE_IMAGEPATH."footer-gallery";
 
 $images = array_diff(scandir($basePath), array('.', '..'));
 
