@@ -17,7 +17,7 @@ $images = array_slice($images, 0, 6);
 <?php foreach ($images as $img): ?>
   <div class="col-4 mb-3">
     <div class="rounded overflow-hidden">
-      <img src="<?= $basePath . $img ?>" class="img-zoomin img-fluid rounded w-100" alt="">
+      <img src="<?= $basePath ."/". $img ?>" class="img-zoomin img-fluid rounded w-100" alt="">
     </div>
   </div>
 <?php endforeach; ?>
