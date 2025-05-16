@@ -303,7 +303,7 @@
             <div class="media-gallery-column">
                 <div class="media-search-box">
                     <div class="input-group">
-                        <input type="text" class="form-control" id="gallery_search" placeholder="Search images...">
+                        <input type="text" class="form-control" id="gallery_search" placeholder="Search images..." onkeypress="filterGallery()">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="button" onclick="filterGallery()">
                                 <i class="fa fa-search"></i>
