@@ -280,7 +280,6 @@ function password_recovery($to , $from_email , $verification_code){
 </body>
 </html>';
 
-      if(ENV ==  1)
-        mail($to, $subject, $message, $headers);
+      mail($to, $subject, $message, $headers);
 
 }

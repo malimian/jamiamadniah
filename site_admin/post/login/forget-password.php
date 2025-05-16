@@ -8,6 +8,7 @@ $user = return_single_row(softdelete_check("SELECT id , emailaddress , emailaddr
 
 	if(!empty($user)) {
 		$new_confirmation_code = md5_(microtime());
+		
 		echo Update("Update loginuser SET confirmation_code = '$new_confirmation_code' Where id = ".$user['id']);
 
 		password_recovery($user['emailaddress'] , EMAIL , $new_confirmation_code);
