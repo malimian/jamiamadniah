@@ -1,5 +1,5 @@
 <?php 
-// print_r($content['attributes']);
+// print_r($content['attributes']);die;
 $array = $content['attributes'];
 ?>
 
@@ -750,6 +750,7 @@ if(!function_exists("script_t")) {
             </div>
         </div>
     </section>
+    </div>
 
     <!-- Section 12: Digital Presence & Call to Action -->
     <section id="contact" class="py-5 bg-dark text-white">
