@@ -32,6 +32,7 @@ AdminHeader(
                </div>
             </div>
             <!-- /.Content From Here -fluid -->
+            <?php echo include_module('modules/shortcode/short_code.php', array( 'css' => '.shortcode-panel {top:0px;}' )); ?>
             <!-- Page Content -->
             <div id="error_id"></div>
             <div id="page-content-wrapper">
