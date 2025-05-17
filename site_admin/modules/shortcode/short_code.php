@@ -261,6 +261,15 @@ function initializeShortcodePanel() {
             return;
         }
         
+        // Check if this textarea is a CKEditor instance
+        if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances[targetId]) {
+            var editor = CKEDITOR.instances[targetId];
+            editor.insertHtml(text);
+            editor.focus();
+            return;
+        }
+        
+        // Regular textarea handling
         // IE support
         if (document.selection) {
             textarea.focus();

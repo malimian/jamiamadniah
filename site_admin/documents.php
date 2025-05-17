@@ -215,7 +215,7 @@ $documents = return_multiple_rows($query);
                                                         </button>
                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                             <!-- View Action -->
-                                                            <a class="dropdown-item" href="<?=BASE_URL?>documets.php?document_id=<?=encrypt_($document['docu_id'])?>" target="_blank">
+                                                            <a class="dropdown-item" href="view_document.php?document_id=<?=encrypt_($document['docu_id'])?>" target="_blank">
                                                                 <i class="fas fa-eye fa-fw"></i> View
                                                             </a>
                                                             

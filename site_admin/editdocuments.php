@@ -20,6 +20,7 @@ AdminHeader(
    <?php
          $documents = return_single_row("Select * from documents Where docu_id  = ".$_GET['id']." $and_gc ");
    ?>
+
    <div id="wrapper">
    <?php include 'includes/sidebar.php'; ?>
    <div id="content-wrapper">
@@ -33,6 +34,7 @@ AdminHeader(
                   </h3>
                </div>
             </div>
+            <?php echo include_module('modules/shortcode/short_code.php', array( 'css' => '.shortcode-panel {top:0px;}' )); ?>
             <!-- /.Content From Here -fluid -->
             <!-- Page Content -->
             <div id="error_id"></div>
@@ -95,7 +97,6 @@ AdminHeader(
                         </script>
                         
                         <script type="text/javascript" src="js/documents/editdocuments.js"></script>
-                       
                      </div>
                   </div>
                </div>
