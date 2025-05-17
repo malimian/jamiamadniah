@@ -18,13 +18,24 @@ if (!is_dir($fullPath) || !is_readable($fullPath)) {
     die('Directory not found or inaccessible');
 }
 
+// Get parameters with defaults
+$limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 0; // 0 means no limit
+$initial_load = isset($_GET['initial_load']) ? (bool)$_GET['initial_load'] : false;
+$exclude = isset($_GET['exclude']) ? (array)$_GET['exclude'] : [];
+
 try {
     $handle = opendir($fullPath);
     if ($handle === false) {
         throw new Exception('Could not open directory');
     }
 
+    $count = 0;
     while (($file = readdir($handle)) !== false) {
+        // Stop if we've reached the limit (if limit is set)
+        if ($limit > 0 && $count >= $limit) {
+            break;
+        }
+
         if ($file === '.' || $file === '..') {
             continue;
         }
@@ -46,6 +57,12 @@ try {
             continue;
         }
 
+        // Skip excluded files
+        $relativePath = ($subPath ? $subPath . '/' : '') . $file;
+        if (in_array($relativePath, $exclude) || in_array($file, $exclude)) {
+            continue;
+        }
+
         // Build file data
         $fileData = [
             'file_name' => $file,
@@ -55,6 +72,7 @@ try {
         ];
 
         $file_arr[] = $fileData;
+        $count++;
     }
     closedir($handle);
 

@@ -5,6 +5,7 @@ var html_gallery_ = "";
 var currentMediaPath = null; // Global variable to store the path
 var loadedImages = []; // Track loaded images
 var initialLoadComplete = false; // Track if initial load is done
+var intital_images_limit = 2;
 
 /* ==========================================
     MEDIA GALLERY FUNCTIONS
@@ -27,17 +28,17 @@ function OpenMediaGallery(textbox_id, path) {
     $('#MediaGalleryModal').modal('toggle');
     
     // Load initial set of images (20)
-    loadInitialImages();
+    loadInitialImages(intital_images_limit);
 }
 
-function loadInitialImages() {
+function loadInitialImages(limit_image) {
     // Use the global path variable
     var sendData = currentMediaPath ? {
         path: currentMediaPath,
-        limit: 20,
+        limit: limit_image,
         initial_load: true
     } : {
-        limit: 20,
+        limit: limit_image,
         initial_load: true
     };
 
@@ -69,7 +70,7 @@ function loadInitialImages() {
                 initialLoadComplete = true;
                 
                 // Show load more button if there might be more images
-                if (response.length >= 20) {
+                if (response.length >= limit_image) {
                     $('.module_loadimg_btn').show();
                 } else {
                     $('.module_loadimg_btn').hide();
