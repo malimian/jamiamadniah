@@ -194,8 +194,47 @@ if (!empty($navbar_content)) {
         .indicator.active {
             background: #333;
             transform: scale(1.3);
+        } 
+
+
+        @media (max-width: 1024px) {
+          .slide {
+            flex: 0 0 33.33%;
+          }
         }
 
+        @media (max-width: 768px) {
+          .slider-container {
+            padding: 0 20px;
+          }
+
+          .slide {
+            flex: 0 0 50%;
+            padding: 0 10px;
+          }
+
+          .portrait-frame {
+            height: 300px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .slide {
+            flex: 0 0 100%;
+            padding: 0 10px;
+          }
+
+          .portrait-frame {
+            height: 250px;
+          }
+
+          .slider-nav button {
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+          }
+        }
+        /*  Slider ends       */
 
          .hero-section {
             background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3');
@@ -366,20 +405,32 @@ if (!empty($navbar_content)) {
             });
             
             function updateSlider() {
-                // Update active slide
-                slides.forEach((slide, index) => {
-                    slide.classList.toggle('active', index === currentIndex);
-                });
-                
-                // Update indicators
-                indicators.forEach((indicator, index) => {
-                    indicator.classList.toggle('active', index === currentIndex);
-                });
-                
-                // Calculate transform value
-                const offset = -currentIndex * 25;
-                track.style.transform = `translateX(${offset}%)`;
+            const slidesPerView = getSlidesPerView();
+            const slideWidthPercent = 100 / slidesPerView;
+            const offset = -currentIndex * slideWidthPercent;
+
+            // Update active slide
+            slides.forEach((slide, index) => {
+                slide.classList.toggle('active', index === currentIndex);
+            });
+
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                indicator.classList.toggle('active', index === currentIndex);
+            });
+
+            // Translate the track
+            track.style.transform = `translateX(${offset}%)`;
+        }
+
+            function getSlidesPerView() {
+                const width = window.innerWidth;
+                if (width <= 480) return 1;
+                if (width <= 768) return 2;
+                if (width <= 1024) return 3;
+                return 4; // default for desktop
             }
+
         });
     </script>
   
