@@ -14,7 +14,11 @@ echo front_header(
     $content['page_meta_title'],
     $content['page_meta_keywords'],
     $content['page_meta_desc'],
-    '<link href="css/checkout.css" rel="stylesheet">',
+    '
+    <link href="css/checkout.css" rel="stylesheet">
+    <link href="css/spotlight.css" rel="stylesheet">
+
+    ',
     $template_id,
     $content
 );
@@ -27,244 +31,6 @@ if (!empty($navbar_content)) {
 
 ?>
 
-
-    <style>
-        .people-slider {
-            padding: 60px 0;
-            position: relative;
-        }
-        
-        .slider-container {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 60px;
-        }
-        
-        .slider-track {
-            display: flex;
-            transition: transform 0.5s ease;
-            padding: 40px 0;
-        }
-        
-        .slide {
-            flex: 0 0 25%;
-            padding: 0 15px;
-            transition: all 0.5s ease;
-            position: relative;
-        }
-        
-        .slide.active {
-            transform: scale(1.2);
-            z-index: 10;
-        }
-        
-        .portrait-frame {
-            position: relative;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.5s ease;
-            height: 350px;
-            display: flex;
-            align-items: center;
-            background: #f8f9fa;
-        }
-        
-        .slide.active .portrait-frame {
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-            border: 8px solid #fff;
-        }
-        
-        .portrait-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.5s ease;
-        }
-        
-        .slide.active .portrait-frame img {
-            transform: scale(1.05);
-        }
-        
-      .spotlight {
-		    position: absolute;
-		    top: -50px;
-		    left: 50%;
-		    transform: translateX(-50%);
-		    width: 200px;
-		    height: 200px;
-		    background: radial-gradient(circle, rgba(255, 235, 59, 0.8) 0%, rgba(255, 235, 59, 0) 70%);
-		    opacity: 0;
-		    transition: opacity 0.5s ease;
-		    z-index: 5;
-		    pointer-events: none;
-		}
-        
-        .slide.active .spotlight {
-            opacity: 1;
-        }
-        
-        .light-bulb {
-            position: absolute;
-            top: -70px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 40px;
-            color: #ffeb3b;
-            text-shadow: 0 0 20px #ffeb3b;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            z-index: 15;
-        }
-        
-        .slide.active .light-bulb {
-            opacity: 1;
-            animation: bulb-flicker 2s infinite alternate;
-        }
-        
-        @keyframes bulb-flicker {
-            0% { opacity: 0.8; text-shadow: 0 0 15px #ffeb3b; }
-            100% { opacity: 1; text-shadow: 0 0 25px #ffeb3b; }
-        }
-        
-        .slide-info {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 15px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
-            text-align: center;
-        }
-        
-        .slide.active .slide-info {
-            transform: translateY(0);
-        }
-        
-        .slider-nav {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            transform: translateY(-50%);
-            z-index: 20;
-        }
-        
-        .slider-nav button {
-            background: rgba(255, 255, 255, 0.7);
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            color: #333;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-        
-        .slider-nav button:hover {
-            background: white;
-            transform: scale(1.1);
-        }
-        
-        .slide-indicators {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-        }
-        
-        .indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: #ddd;
-            margin: 0 5px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .indicator.active {
-            background: #333;
-            transform: scale(1.3);
-        } 
-
-
-        @media (max-width: 1024px) {
-          .slide {
-            flex: 0 0 33.33%;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .slider-container {
-            padding: 0 20px;
-          }
-
-          .slide {
-            flex: 0 0 50%;
-            padding: 0 10px;
-          }
-
-          .portrait-frame {
-            height: 300px;
-          }
-        }
-
-        @media (max-width: 480px) {
-          .slide {
-            flex: 0 0 100%;
-            padding: 0 10px;
-          }
-
-          .portrait-frame {
-            height: 250px;
-          }
-
-          .slider-nav button {
-            width: 40px;
-            height: 40px;
-            font-size: 16px;
-          }
-        }
-        /*  Slider ends       */
-
-         .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 100px 0;
-        }
-        
-        .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            color: #0d6efd;
-        }
-        
-        .testimonial-card {
-            transition: transform 0.3s;
-        }
-        
-        .testimonial-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .interview-showcase {
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            padding: 30px;
-        }
-
-    </style>
 </head>
 <body>
 
@@ -284,18 +50,23 @@ if (!empty($navbar_content)) {
     <section id="people-slider" class="people-slider">
         <div class="slider-container">
             <div class="slider-track" id="sliderTrack">
+               
+               <?php 
+               $sliders = return_multiple_rows("Select * from pages Where isactive = 1 and soft_delete = 0 and template_id = 14 ");
+               foreach($sliders as $slider){
+               ?>
                 <!-- Slide 1 -->
                 <div class="slide active">
                     <div class="portrait-frame">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Person 1">
+                        <img src="<?php echo ABSOLUTE_IMAGEPATH.$slider['featured_image']?>" alt="Person 1">
                         <div class="spotlight"></div>
                         <i class="fas fa-lightbulb light-bulb"></i>
                         <div class="slide-info">
-                            <h5>John Doe</h5>
-                            <p>CEO & Founder</p>
+                            <h5><?php echo $slider['page_title']?></h5>
                         </div>
                     </div>
                 </div>
+                <?php }?>
                 
                 <!-- Slide 2 -->
                 <div class="slide">
