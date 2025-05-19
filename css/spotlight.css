@@ -203,6 +203,36 @@
             font-size: 16px;
           }
         }
+
+        /* Add these styles to your existing CSS */
+        .portrait-frame {
+            position: relative; /* This should already be in your CSS */
+        }
+
+        .slide-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 8; /* Between the image and spotlight elements */
+            display: block;
+        }
+
+        .slide-info {
+            z-index: 10; /* Ensure info appears above the link */
+        }
+
+        /* Ensure pointer events work correctly for interactive elements */
+        .spotlight, .light-bulb {
+            pointer-events: none;
+        }
+
+        .slide-info h5 {
+            position: relative;
+            z-index: 11;
+        }
+
         /*  Slider ends       */
 
          .hero-section {
