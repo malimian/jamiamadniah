@@ -58,7 +58,7 @@ if (!empty($navbar_content)) {
             ?>
             <!-- Slide -->
             <div class="slide <?php echo $activeClass; ?>">
-                <a href="<?php echo $slider['page_slug'] ?? '#'; ?>" class="slide-anchor">
+                <a href="<?php echo $slider['page_url'] ?? '#'; ?>" class="slide-anchor">
                     <div class="portrait-frame">
                         <img src="<?php echo ABSOLUTE_IMAGEPATH.$slider['featured_image']?>" alt="<?php echo $slider['page_title']?>">
                         <div class="spotlight"></div>
