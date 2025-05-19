@@ -2,6 +2,7 @@
 if(!function_exists("header_t")) {
     function header_t(){
         return '
+        <style> .wp-post-image{display:none} </style>
         ';
     }
 }
