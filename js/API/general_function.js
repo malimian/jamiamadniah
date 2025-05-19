@@ -144,3 +144,12 @@ function myalert(message , id){
   if(id == 3 || id == "w") {$.notify(message, "warn"); return;}
   if(id == 4 || id == "e") {$.notify(message, "error"); return;}
 }
+
+
+function loader(show = true) {
+    if (show) {
+        $('#spinner-loader').removeClass('d-none');
+    } else {
+        $('#spinner-loader').addClass('d-none');
+    }
+}

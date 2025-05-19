@@ -121,6 +121,7 @@ $template_page = return_single_ans("
 
 // Include the template page if it exists
 if (!empty($template_page)) {
+   
     $template_ = include_module('templates/' . $template_page, [
         'content' => $content,
         'PAGE_LOADER' => PAGE_LOADER,
@@ -171,19 +172,28 @@ echo replace_sysvari($main_menu , getcwd() . "/" );
 echo "\n<!-- MENU SECTION END -->\n\n";
 
 // Output template content
-echo "<!-- MAIN CONTENT SECTION START -->\n";
-echo replace_sysvari($template_, getcwd() . "/");
-echo "\n<!-- MAIN CONTENT SECTION END -->\n\n";
-
-// Include loading modal if enabled
 if (PAGE_LOADER == 1) {
-    echo "<!-- PAGE LOADER MODAL START -->\n";
+  
+    echo "<div id='template-content-container' style='display:none;'></div>\n\n";
+
+    // Prepare data for JSON output
+    $template_data = [
+        'content' => replace_sysvari($template_, getcwd() . "/"),
+        'page_id' => (int)$content['pid'],
+        'page_url' => $url
+    ];
+    
+    echo "<!-- MAIN CONTENT DATA (JSON PAGE LOADER) -->\n";
+    echo '<script type="text/javascript">';
+    echo 'var templateData = ' . json_encode($template_data) . ';';
+    echo '</script>';
+    echo "\n<!-- MAIN CONTENT DATA (JSON PAGE LOADER) END -->\n\n";
+
+    echo '</div>';
+
     require_once 'modals/loading.php';
-    echo "\n<!-- PAGE LOADER MODAL END -->\n\n";
-}
 
-// Add page-specific JavaScript if enabled
-if (PAGE_LOADER == 1) {
+    // Add page-specific JavaScript if enabled
     echo "<!-- PAGE LOADER SCRIPT START -->\n";
     ?>
     <script type="text/javascript">
@@ -192,7 +202,18 @@ if (PAGE_LOADER == 1) {
     <script type="text/javascript" src="js/info.js"></script>
     <?php
     echo "\n<!-- PAGE LOADER SCRIPT END -->\n\n";
+
+
+
+}else{
+
+    echo "<!-- MAIN CONTENT SECTION START -->\n";
+    echo replace_sysvari($template_, getcwd() . "/");
+    echo "\n<!-- MAIN CONTENT SECTION END -->\n\n";
+
 }
+
+
 
 // Track page views
 if (!in_array($url, $_SESSION['pages_views'])) {

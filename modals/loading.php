@@ -5,14 +5,3 @@
     </div>
 </div>
 <!-- Spinner End -->
-
-<script type="text/javascript">
-   function loader(show = true) {
-    if (show) {
-        $('#spinner-loader').removeClass('d-none');
-    } else {
-        $('#spinner-loader').addClass('d-none');
-    }
-}
-
-</script>

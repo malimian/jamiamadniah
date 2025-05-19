@@ -58,7 +58,6 @@ var userphoneno_dh = $('#userphoneno_dh_'+modalid).val();
 
       if(username_dh =="" || useremail_dh =="" || userphoneno_dh ==""){
          $('.sucsses_msg').empty().html('<div class="alert alert-warning"> Fill all required fields </div>');
-          loader();
          return;
       }
 
