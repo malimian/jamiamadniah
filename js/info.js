@@ -71,6 +71,8 @@
                     document.body.insertAdjacentHTML('beforeend', templateData.content);
                 }
             }
+
+            initDynamicComponents();
         }
 
         // Initialize loader with multiple fallbacks
@@ -92,3 +94,52 @@
         
         // Start the loader
         initLoader();
+
+
+function initDynamicComponents() {
+    // Event delegation for load more button
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'load-more-btn') {
+            handleLoadMore(e.target);
+        }
+    });
+}
+
+
+
+function handleLoadMore(loadMoreBtn) {
+    const analysisContainer = document.getElementById('analysis-container');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    
+    if (!analysisContainer || !loadingSpinner) {
+        console.error('Required elements not found');
+        return;
+    }
+    
+    const offset = parseInt(loadMoreBtn.getAttribute('data-offset'));
+    const catid = loadMoreBtn.getAttribute('data-catid');
+    
+    // Show loading spinner
+    loadMoreBtn.classList.add('d-none');
+    loadingSpinner.classList.remove('d-none');
+    
+    fetch(`post/load_more_analysis.php?offset=${offset}&catid=${catid}`)
+        .then(response => response.text())
+        .then(data => {
+            if (data.trim() !== '') {
+                analysisContainer.insertAdjacentHTML('beforeend', data);
+                loadMoreBtn.setAttribute('data-offset', offset + 5);
+                loadMoreBtn.classList.remove('d-none');
+            } else {
+                loadMoreBtn.textContent = 'No more analysis to load';
+                loadMoreBtn.classList.add('disabled');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            loadMoreBtn.textContent = 'Error loading content';
+        })
+        .finally(() => {
+            loadingSpinner.classList.add('d-none');
+        });
+}
