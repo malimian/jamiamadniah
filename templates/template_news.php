@@ -32,12 +32,11 @@ if(!function_exists("script_t")) {
         ';
     }
 }
+
 ?>
 
 <?php 
 $user = return_single_row("Select username , fullname , profile_pic , details from loginuser Where soft_delete = 0 and isactive = 1  and id = ".$content['createdby']);
-
-
 
 $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".$content['catid']);
 
@@ -78,11 +77,9 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                     <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> 1.5k Share</a>
                 </div>
                 <p class="my-4">
-                    <?php if ($PAGE_LOADER == 1) { ?>
-                        <div id="div_content"></div>
-                    <?php } else {
+                    <?php
                         echo replace_sysvari($content['page_desc'], getcwd() . "/");
-                    } ?>
+                     ?>
                 </p>
 
                 <div class="tab-class">
@@ -97,11 +94,22 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                     </div>
                     <div class="row g-4 align-items-center">
                         <div class="col-9">
-                            <h3><i class="fas fa-user"></i> Author <?php echo $content['article_author']; ?></h3>
+                            <h3><i class="fas fa-user"></i> Author <?php
+                            if($content['createdby'] == 0)
+                                echo $content['article_author'];
+                            else
+                                echo $user['fullname'];
+                        ?></h3>
                         </div>
+                        <?php 
+                        if($content['createdby'] == 0){
+                        ?>
                          <div class="col-lg-12">
-                            <a href="<?php echo $content['article_url']; ?>" target="_blank" class="link-hover btn border border-primary rounded-pill text-dark w-100 py-3 mb-4">Read Full Article</a>
+                            <a href="<?php
+                                 echo $content['article_url'];
+                            ?>" target="_blank" class="link-hover btn border border-primary rounded-pill text-dark w-100 py-3 mb-4">Read Full Article</a>
                          </div>
+                     <?php }?>
                     </div>
                 </div>
 
