@@ -51,23 +51,21 @@ if (!empty($navbar_content)) {
         <div class="slider-container">
             <div class="slider-track" id="sliderTrack">
                
-               <?php 
+            <?php 
             $sliders = return_multiple_rows("Select * from pages Where isactive = 1 and soft_delete = 0 and template_id = 14 ");
             foreach($sliders as $index => $slider){
-                // Add 'active' class only to the first slide
                 $activeClass = ($index === 0) ? 'active' : '';
             ?>
             <!-- Slide -->
             <div class="slide <?php echo $activeClass; ?>">
                 <div class="portrait-frame">
-                    <a href="<?php echo $slider['page_url'] ?? '#'; ?>"> <!-- Added href link -->
-                        <img src="<?php echo ABSOLUTE_IMAGEPATH.$slider['featured_image']?>" alt="<?php echo $slider['page_title']?>">
-                        <div class="spotlight"></div>
-                        <i class="fas fa-lightbulb light-bulb"></i>
-                        <div class="slide-info">
-                            <h5><?php echo $slider['page_title']?></h5>
-                        </div>
-                    </a>
+                    <img src="<?php echo ABSOLUTE_IMAGEPATH.$slider['featured_image']?>" alt="<?php echo $slider['page_title']?>">
+                    <a href="<?php echo $slider['page_slug'] ?? '#'; ?>" class="slide-link"></a>
+                    <div class="spotlight"></div>
+                    <i class="fas fa-lightbulb light-bulb"></i>
+                    <div class="slide-info">
+                        <h5><?php echo $slider['page_title']?></h5>
+                    </div>
                 </div>
             </div>
             <?php } ?>
