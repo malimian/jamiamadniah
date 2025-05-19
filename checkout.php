@@ -38,11 +38,9 @@ $template_id = !empty($content['site_template_id']) ? (int)$content['site_templa
   );
   
 
-    $order_id = decrypt_($_GET['order_id']); 
+      if(empty($_GET['order_id'])) exit( '<script type="text/javascript"> window.location = "'.BASE_URL.'" </script>');
 
-  
-  if(empty($order_id)) exit( '<script type="text/javascript"> window.location = "'.BASE_URL.'" </script>');
-  
+    $order_id = decrypt_($_GET['order_id']);   
 
     $order_detail = return_single_row("Select * from order_dh where order_id = ".$order_id);
 
