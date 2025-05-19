@@ -58,7 +58,7 @@ if (!empty($navbar_content)) {
                 <!-- Slide 1 -->
                 <div class="slide active">
                     <div class="portrait-frame">
-                        <img src="<?php echo ABSOLUTE_IMAGEPATH.$slider['featured_image']?>" alt="Person 1">
+                        <img src="<?php echo ABSOLUTE_IMAGEPATH.$slider['featured_image']?>" alt="<?php echo $slider['page_title']?>">
                         <div class="spotlight"></div>
                         <i class="fas fa-lightbulb light-bulb"></i>
                         <div class="slide-info">
@@ -67,45 +67,7 @@ if (!empty($navbar_content)) {
                     </div>
                 </div>
                 <?php }?>
-                
-                <!-- Slide 2 -->
-                <div class="slide">
-                    <div class="portrait-frame">
-                        <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Person 2">
-                        <div class="spotlight"></div>
-                        <i class="fas fa-lightbulb light-bulb"></i>
-                        <div class="slide-info">
-                            <h5>Jane Smith</h5>
-                            <p>Marketing Director</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 3 -->
-                <div class="slide">
-                    <div class="portrait-frame">
-                        <img src="https://t3.ftcdn.net/jpg/02/99/04/20/360_F_299042079_vGBD7wIlSeNl7vOevWHiL93G4koMM967.jpg" alt="Person 3">
-                        <div class="spotlight"></div>
-                        <i class="fas fa-lightbulb light-bulb"></i>
-                        <div class="slide-info">
-                            <h5>Michael Johnson</h5>
-                            <p>Lead Developer</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Slide 4 -->
-                <div class="slide">
-                    <div class="portrait-frame">
-                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80" alt="Person 4">
-                        <div class="spotlight"></div>
-                        <i class="fas fa-lightbulb light-bulb"></i>
-                        <div class="slide-info">
-                            <h5>Sarah Williams</h5>
-                            <p>UX Designer</p>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             
             <div class="slider-nav">
