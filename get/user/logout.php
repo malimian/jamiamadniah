@@ -1,7 +1,12 @@
 <?php
-session_start();
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 include '../../connect.php';
-if (isset($_GET['logout'])) {
+
+if (isset($_GET['logout'])) { 
 	
 	session_destroy();
 	

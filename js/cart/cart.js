@@ -37,8 +37,6 @@ function delete_row(id){
 
 $('#checkout').on('click' , function(){
 
-    loader();
-
     var grand_total =  $('#grand_total').html();
 
     if(parseFloat(grand_total) > 0)

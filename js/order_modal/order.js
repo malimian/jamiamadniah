@@ -1,8 +1,6 @@
 
 $('#btn-order').on('click' , function(){
 
-loader();
-
 var order_summary = "";
 var total_amount = parseInt($('#TotalPrice').text());
 var hosting_years = $('#hosting_years'). children("option:selected"). val();
@@ -20,8 +18,6 @@ var domain_name = $('#domain_name').val();
   if(username_dh =="" || useremail_dh =="" || userphoneno_dh ==""){
      $('#sucsses_msg').empty().html('<div class="alert alert-warning"> Fill all required fields </div>');
     
-      loader();
-
     return;
   }
 

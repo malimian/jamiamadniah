@@ -156,14 +156,15 @@ $(document).ready(function() {
     }).trigger('change'); // Initialize state
 });
 
-var initialTemplateValues;
+var initialValues;
 
 $(document).ready(function() { 
 
     // Store initial template values when page loads
-      initialTemplateValues = {
+      initialValues = {
         template_page: parseInt($('#template_page').val()),
-        site_template: parseInt($('#site_template').val())
+        site_template: parseInt($('#site_template').val()),
+        page_url: $('#page_url').val()
     };
 
 });
@@ -207,8 +208,12 @@ var currentValues = {
 
     // Check if templates have changed
     var templatesChanged = 
-        (currentValues.template_page !== initialTemplateValues.template_page) || 
-        (currentValues.site_template !== initialTemplateValues.site_template);
+        (currentValues.template_page !== initialValues.template_page) || 
+        (currentValues.site_template !== initialValues.site_template);
+
+        // Check if page_url have changed
+    var page_url_Changed = 
+        (currentValues.page_url !== initialValues.page_url);
 
     // Get editor content
     var editorContent = currentValues.useCKEditor ? 
@@ -294,17 +299,18 @@ var currentValues = {
                     '<span aria-hidden="true">&times;</span></button></div>'
                 ).fadeIn(300).delay(1500);
                 
-                // Reload only if templates changed
-                if (templatesChanged) {
-                    console.log('Templates changed - reloading page');
+                // Reload only if templates or page url changed
+                if (templatesChanged || page_url_Changed) {
+                    console.log('Templates changed or page_url - reloading page');
                     setTimeout(function() {
                         location.reload(true); // Force reload from server
                     }, 1000);
                 } else {
                     // Update initial values if not reloading
-                    initialTemplateValues = {
+                    initialValues = {
                         template_page: currentValues.template_page,
-                        site_template: currentValues.site_template
+                        site_template: currentValues.site_template,
+                        page_url: currentValues.page_url
                     };
                 }
             } else {
@@ -338,7 +344,7 @@ var currentValues = {
 
 // Optional: Update initial values when templates change (without submitting)
 $('#template_page, #site_template').change(function() {
-    initialTemplateValues[this.id] = $(this).val();
+    initialValues[this.id] = $(this).val();
 });
 
 

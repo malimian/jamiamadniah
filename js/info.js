@@ -1,6 +1,4 @@
- 
- loader();
-       
+        
          senddata('get/desc/info.php',
                   "POST",
                   {
@@ -10,7 +8,6 @@
                   },
                   function(result_sucess) {
                   
-  loader();
        
                    // console.log(result_sucess);
 

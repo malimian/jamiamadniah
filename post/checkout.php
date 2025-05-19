@@ -37,9 +37,13 @@ if(isset($_POST['submit_order'])){
 
 		$message = "Dear $username_dh ,\nCheck Payment updates on Order No# ".$order_id. "\nKindly Check Invoice Receipt ".BASE_URL."/invoice.php?order_id=".encrypt_($_POST['order_id'])."\n".Company;
 
-	   
-	   mail($useremail_dh,$sub,$message);
+	   if(!($_SERVER['REMOTE_ADDR'] == "::1" || $_SERVER['REMOTE_ADDR'] == "127.0.0.1")){
 
+	   		mail($useremail_dh,$sub,$message);
+		
+		}else{
+			echo "1";
+		}
 }
 
 

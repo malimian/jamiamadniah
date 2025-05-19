@@ -41,9 +41,6 @@ var order_summary = "";
 
 
 $('.btn-order').on('click' , function(){
-
-loader();
-
     
  
 var modalid = $(this).data('modalid');

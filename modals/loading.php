@@ -1,10 +1,18 @@
-<!-- Loading Modal Start -->
-<div  id="loadingModal" class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content" style="width: 48px">
-            <span class="fa fa-spinner fa-spin fa-3x" style="color:#337ab7 ;font-size:55px"></span>
-        </div>
+<!-- Spinner Start -->
+<div id="spinner-loader" class="d-none w-100 vh-100 position-fixed top-0 start-0 d-flex align-items-center justify-content-center" style="z-index: 1055;">
+    <div class="spinner-grow text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
     </div>
 </div>
+<!-- Spinner End -->
 
-<!-- Loading Modal End -->
+<script type="text/javascript">
+   function loader(show = true) {
+    if (show) {
+        $('#spinner-loader').removeClass('d-none');
+    } else {
+        $('#spinner-loader').addClass('d-none');
+    }
+}
+
+</script>

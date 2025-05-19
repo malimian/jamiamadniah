@@ -1,16 +1,19 @@
-var senddata = function (url, method, parameters, callback , failback) {
+var senddata = function (url, method, parameters, callback, failback) {
+    loader(true); // Show loader before starting AJAX
 
-      $.ajax({
+    $.ajax({
         url: url,
         type: method,
         data: parameters
-
-    }).done(function (result) {
-        callback(result);
-    }).fail(function (result) {
-        failback(result);
     })
-
+    .done(function (result) {
+        loader(false); // Hide loader on success
+        callback(result);
+    })
+    .fail(function (result) {
+        loader(false); // Hide loader on failure
+        failback(result);
+    });
 }
 
 
