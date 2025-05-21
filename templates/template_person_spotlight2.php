@@ -319,7 +319,7 @@ if(!function_exists("script_t")) {
                                             <p class="mb-1 text-primary fw-bold"><?= $education[319]['value'] ?></p>
                                             <p class="small text-muted mb-2"><?= $education[281]['value'] ?></p>
                                             <div class="d-flex gap-2">
-                                                <span class="badge bg-success bg-opacity-10 text-success"><?= $education[284]['value'] ?></span>
+                                                <span class="badge bg-success bg-opacity-10 text-success"><?= $education[282]['value'] ?></span>
                                             </div>
                                         </div>
                                     </div>
