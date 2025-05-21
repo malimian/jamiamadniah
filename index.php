@@ -591,7 +591,7 @@ foreach ($news_categories as $new_category) {
                                             foreach ($trending_tags as $tag) {
                                             ?>
                                                 <li class="nav-item mb-3">
-                                                    <a class="d-flex py-2 bg-light rounded-pill me-2" href="#">
+                                                    <a class="d-flex py-2 bg-light rounded-pill me-2" href="search.php?q=<?php echo $tag; ?>">
                                                         <span class="text-dark link-hover" style="width: 90px;"><?php echo $tag; ?></span>
                                                     </a>
                                                 </li>

@@ -122,7 +122,8 @@ if (isset($_GET['template_id'])) {
                                                     <h5 class="mb-0"><?php echo htmlspecialchars($tab_name); ?></h5>
                                                 </div>
                                                 <div class="card-body">
-                                                    <?php foreach ($sections as $section_name => $section_attributes) : ?>
+                                                    <?php foreach ($sections as $section_name => $section_attributes) :
+                                                     ?>
                                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                                             <?php if (count($sections) > 1) : ?>
                                                                 <h6 class="text-muted mb-0"><?php echo htmlspecialchars($section_name); ?></h6>
@@ -203,6 +204,11 @@ if (isset($_GET['template_id'])) {
                                                                                 <div>Section: <?php echo htmlspecialchars($section_name); ?></div>
                                                                             <?php endif; ?>
                                                                             <div>Order: <?php echo $attribute['sort_order']; ?></div>
+                                                                            <div>Code : <?php
+                                                                            $code = '$attribute['.($section_attributes[0]['tab_id'] ?? 0).'][\'sections\'][\''.$section_name.'\'][\'attributes\'][\''.$attribute['id'].'\']';
+                                                                            echo $code ;
+                                                                            ?>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>

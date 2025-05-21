@@ -44,7 +44,8 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
 
     $attribute_sql = "SELECT * ,
     pa.is_dynamic AS attribute_is_dynamic,
-    pa.is_required AS attribute_is_required
+    pa.is_required AS attribute_is_required,
+    pa.id as pa_attribute_id
     FROM 
         page_attributes pa
     LEFT JOIN 
@@ -54,7 +55,7 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
     LEFT JOIN 
         page_attribute_values pav ON pav.attribute_id = pa.id AND pav.page_id = ".$content['pid']."
     WHERE 
-        pa.isactive = 1
+        pa.isactive = 1 and pa.soft_delete = 0
         AND (pa.template_id IS NULL OR pa.template_id = ".$content['template_id']." )
         AND (t.id IS NULL OR (t.isactive = 1 AND t.soft_delete = 0))
     ORDER BY 

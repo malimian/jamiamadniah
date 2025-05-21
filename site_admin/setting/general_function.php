@@ -958,24 +958,24 @@ function generate_social_meta($content, $type = 'website') {
     return $output;
 }
 
-
-
 function organizeAttributes($attributes) {
     $organized = [];
 
-    // First pass: Group attributes by tab and section
     foreach ($attributes as $attr) {
-        $tabId = $attr['tab_id'];
-        $sectionName = $attr['section_name'] ?: 'General';
-        $attributeId = $attr['attribute_id'];
+        $tabId         = $attr['tab_id'];
+        $sectionName   = $attr['section_name'] ?: 'General';
+        $paId          = $attr['pa_attribute_id'];
+        $isDynamic     = !empty($attr['attribute_is_dynamic']); // Use this, not is_dynamic
+        $tabName       = $attr['tab_name'];
+        $tabGroup      = $attr['tab_group'];
 
         // Initialize tab
         if (!isset($organized[$tabId])) {
             $organized[$tabId] = [
-                'tab_id' => $tabId,
-                'tab_name' => $attr['tab_name'],
-                'tab_group' => $attr['tab_group'],
-                'sections' => []
+                'tab_id'    => $tabId,
+                'tab_name'  => $tabName,
+                'tab_group' => $tabGroup,
+                'sections'  => []
             ];
         }
 
@@ -983,55 +983,64 @@ function organizeAttributes($attributes) {
         if (!isset($organized[$tabId]['sections'][$sectionName])) {
             $organized[$tabId]['sections'][$sectionName] = [
                 'section_name' => $sectionName,
-                'is_dynamic' => false,
-                'attributes' => []
+                'is_dynamic'   => false,
+                'attributes'   => []
             ];
         }
 
-        // Check if section is dynamic
-        if (!empty($attr['attribute_is_dynamic'])) {
-            $organized[$tabId]['sections'][$sectionName]['is_dynamic'] = true;
+        $section = &$organized[$tabId]['sections'][$sectionName];
+
+        // Flag section as dynamic if any attribute is dynamic
+        if ($isDynamic) {
+            $section['is_dynamic'] = true;
         }
 
-        // Initialize attribute
-        if (!isset($organized[$tabId]['sections'][$sectionName]['attributes'][$attributeId])) {
-            $organized[$tabId]['sections'][$sectionName]['attributes'][$attributeId] = [
-                'attribute_id'     => $attributeId,
-                'attribute_name'   => $attr['attribute_name'],
-                'attribute_label'  => $attr['attribute_label'],
-                'attribute_type'   => $attr['attribute_type'],
-                'is_required'      => isset($attr['attribute_is_required']) ? (int)$attr['attribute_is_required'] : 0,
-                'is_dynamic'       => isset($attr['attribute_is_dynamic']) ? (bool)$attr['attribute_is_dynamic'] : false,
-                'default_value'    => $attr['default_value'],
-                'icon_class'       => $attr['icon_class'],
-                'options'          => [],
-                'values'           => []
+        // Initialize attribute keyed by pa_attribute_id
+        if (!isset($section['attributes'][$paId])) {
+            $section['attributes'][$paId] = [
+                'attribute_id'    => $paId,
+                'attribute_label' => $attr['attribute_label'],
+                'attribute_type'  => $attr['attribute_type'],
+                'is_required'     => (int)$attr['attribute_is_required'],
+                'is_dynamic'      => $isDynamic,
+                'default_value'   => $attr['default_value'],
+                'icon_class'      => $attr['icon_class'],
+                'options'         => [],
+                'values'          => []
             ];
         }
 
-        // Add option
-        if (!empty($attr['option_value'])) {
-            $organized[$tabId]['sections'][$sectionName]['attributes'][$attributeId]['options'][] = [
-                'option_value' => $attr['option_value'],
-                'option_label' => $attr['option_label']
-            ];
-        }
-
-        // Add value
+        // Add attribute_value if exists
         if (!empty($attr['attribute_value'])) {
-            $organized[$tabId]['sections'][$sectionName]['attributes'][$attributeId]['values'][] = [
+            $section['attributes'][$paId]['values'][] = [
                 'id'    => $attr['id'],
                 'value' => $attr['attribute_value']
             ];
         }
+
+        // Add option if exists
+        if (!empty($attr['option_value'])) {
+            $option = [
+                'option_value' => $attr['option_value'],
+                'option_label' => $attr['option_label']
+            ];
+            if (!in_array($option, $section['attributes'][$paId]['options'], true)) {
+                $section['attributes'][$paId]['options'][] = $option;
+            }
+        }
     }
 
-    // Second pass: Build value sets for dynamic sections
+    // Add current_value and dynamic sets
     foreach ($organized as &$tab) {
         foreach ($tab['sections'] as &$section) {
+            // Add current_value for each attribute
+            foreach ($section['attributes'] as &$attr) {
+                $attr['current_value'] = $attr['values'][0]['value'] ?? $attr['default_value'];
+            }
+
+            // If section is dynamic, create sets
             if ($section['is_dynamic']) {
-                // Find max sets by count of values
-                $maxSets = 1;
+                $maxSets = 0;
                 foreach ($section['attributes'] as $attr) {
                     if ($attr['is_dynamic']) {
                         $maxSets = max($maxSets, count($attr['values']));
@@ -1054,30 +1063,9 @@ function organizeAttributes($attributes) {
                     }
                     $section['sets'][] = $set;
                 }
-
-                // Handle non-dynamic attributes
-                foreach ($section['attributes'] as $attrId => $attr) {
-                    if (!$attr['is_dynamic']) {
-                        $value = $attr['values'][0]['value'] ?? $attr['default_value'];
-                        $section['attributes'][$attrId]['current_value'] = $value;
-                    }
-                }
-            } else {
-                // Handle non-dynamic section attributes
-                foreach ($section['attributes'] as $attrId => $attr) {
-                    $value = $attr['values'][0]['value'] ?? $attr['default_value'];
-                    $section['attributes'][$attrId]['current_value'] = $value;
-                }
             }
-
-            // Convert attributes to indexed array
-            $section['attributes'] = array_values($section['attributes']);
         }
-
-        // Convert sections to indexed array
-        $tab['sections'] = array_values($tab['sections']);
     }
 
-    // Convert tabs to indexed array
-    return array_values($organized);
+    return $organized;
 }
