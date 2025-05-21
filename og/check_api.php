@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         foreach ($apiKeys as $apiKey) {
             $url = "https://newsapi.org/v2/top-headlines?category=Business&apiKey=$apiKey";
+            $isalread_added = return_single_ans("Select api_key from api_keys Where api_key = '$apiKey' ");
 
             // Initialize cURL
             $ch = curl_init();
@@ -62,9 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($httpCode == 200 && isset($data["articles"])) {
                 $workingKeys[] = [$apiKey, "Working"];
                 echo "<p style='color: green;'>✔️ $apiKey is working</p>";
-               
-               $isalread_added = return_single_ans("Select api_key from api_keys Where api_key = '$apiKey' ");
-                
+                               
                 if(empty($isalread_added)){
                 
                     echo Insert("INSERT INTO api_keys (api_id, api_key, api_username, api_password, api_package, isProcessed, isactive, createdon, createdby, updatedon, soft_delete) VALUES (NULL, '$apiKey', NULL, NULL, '1', '0', '1', current_timestamp(), NULL, current_timestamp(), '0')");
@@ -77,7 +76,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             } else {
                 $nonWorkingKeys[] = [$apiKey, "Not Working"];
+               
                 echo "<p style='color: red;'>❌ $apiKey is not working</p>";
+
+                  if(empty($isalread_added)){
+                    
+                    echo Delete("DELETE from api_keys Where api_key = '$apiKey' ");
+                }
+
             }
 
             flush(); // Immediately send output to the browser
