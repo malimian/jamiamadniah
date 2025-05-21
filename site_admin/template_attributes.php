@@ -183,18 +183,20 @@ if (isset($_GET['template_id'])) {
                                                                                     <i class="fas fa-cog"></i>
                                                                                 </button>
 
-                                                                                <?php if ($attribute['usage_count'] == 0) : ?>
-                                                                                    <button type="button" class="btn btn-outline-danger delete-attribute"
-                                                                                            data-id="<?php echo $attribute['id']; ?>"
-                                                                                            title="Delete Attribute">
-                                                                                        <i class="fas fa-trash-alt"></i>
-                                                                                    </button>
-                                                                                <?php else : ?>
-                                                                                    <button type="button" class="btn btn-outline-secondary"
-                                                                                            title="Cannot delete - in use" disabled>
-                                                                                        <i class="fas fa-trash-alt"></i>
-                                                                                    </button>
-                                                                                <?php endif; ?>
+                                                                             <?php if ($attribute['usage_count'] == 0) : ?>
+                                                                                <button type="button" class="btn btn-outline-danger delete-attribute"
+                                                                                        data-id="<?php echo $attribute['id']; ?>"
+                                                                                        title="Delete Attribute">
+                                                                                    <i class="fas fa-trash-alt"></i>
+                                                                                </button>
+                                                                            <?php else : ?>
+                                                                                <button type="button" class="btn btn-outline-danger delete-attribute-in-use"
+                                                                                        data-id="<?php echo $attribute['id']; ?>"
+                                                                                        title="Delete Attribute"
+                                                                                        data-usage-count="<?php echo $attribute['usage_count']; ?>">
+                                                                                    <i class="fas fa-trash-alt"></i>
+                                                                                </button>
+                                                                            <?php endif; ?>
                                                                             </div>
                                                                         </div>
 

@@ -295,3 +295,65 @@ $(document).ready(function() {
             });
         }
     }
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+    // Handle delete buttons for attributes NOT in use
+    document.querySelectorAll('.delete-attribute').forEach(button => {
+        button.addEventListener('click', function() {
+            const attributeId = this.getAttribute('data-id');
+            deleteAttribute(attributeId);
+        });
+    });
+    
+    // Handle delete buttons for attributes IN USE
+    document.querySelectorAll('.delete-attribute-in-use').forEach(button => {
+        button.addEventListener('click', function() {
+            const attributeId = this.getAttribute('data-id');
+            const usageCount = this.getAttribute('data-usage-count');
+            
+            const confirmDelete = confirm(`This attribute is being used in ${usageCount} page(s). Deleting it will remove the data and values for all pages that are using this attribute. Are you sure you want to delete it?`);
+            
+            if (confirmDelete) {
+                deleteAttribute(attributeId);
+            }
+        });
+    });
+    
+   function deleteAttribute(attributeId) {
+    const url = 'post/template_attributes/delete_attribute.php';
+    const parameters = { id: attributeId };
+
+    senddata(
+        url,
+        'POST',
+        parameters,
+        function(response) {
+            try {
+                var result = response;
+
+                console.log(result);
+                console.log(typeof response, response);
+
+
+                if (result.success) {
+                    showAlert(result.message, "success");
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showAlert(result.message, "warning");
+                }
+            } catch (e) {
+                showAlert('Invalid response from server', "danger");
+                console.error(e);
+            }
+        },
+        function(error) {
+            showAlert('Failed to delete attribute', "danger");
+            console.error(error);
+        }
+    );
+}
+
+
+
+});
