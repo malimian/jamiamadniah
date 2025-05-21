@@ -1,3 +1,7 @@
+<?php
+require_once '../connect.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,6 +62,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($httpCode == 200 && isset($data["articles"])) {
                 $workingKeys[] = [$apiKey, "Working"];
                 echo "<p style='color: green;'>✔️ $apiKey is working</p>";
+               
+               $isalread_added = return_single_ans("Select api_key from api_keys Where api_key = '$apiKey' ");
+                
+                if(empty($isalread_added)){
+                
+                    echo Insert("INSERT INTO api_keys (api_id, api_key, api_username, api_password, api_package, isProcessed, isactive, createdon, createdby, updatedon, soft_delete) VALUES (NULL, '$apiKey', NULL, NULL, '1', '0', '1', current_timestamp(), NULL, current_timestamp(), '0')");
+
+
+                }else{
+                    echo "</br> Already Added";
+                }
+                
+
             } else {
                 $nonWorkingKeys[] = [$apiKey, "Not Working"];
                 echo "<p style='color: red;'>❌ $apiKey is not working</p>";
@@ -70,6 +87,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // ✅ Save API keys status to CSV
         if (!empty($workingKeys) || !empty($nonWorkingKeys)) {
+            echo "<p>Total Working Keys: " . count($workingKeys) . "</p>";
+            echo "<p>Total Non-Working Keys: " . count($nonWorkingKeys) . "</p>";
+            echo "<script>alert('Check complete! Working: " . count($workingKeys) . ", Failed: " . count($nonWorkingKeys) . "');</script>";
+
             $apiStatusFile = "api_keys_status.csv";
             $file = fopen($apiStatusFile, "w");
             fputcsv($file, ["API Key", "Status"]);
