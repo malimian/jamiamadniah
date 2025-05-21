@@ -94,7 +94,7 @@ function generate_organization_schema($page_meta = []) {
         "sameAs" => $sameAs,
         "potentialAction" => [
             "@type" => "SearchAction",
-            "target" => $base_url . "/search?q={search_term_string}",
+            "target" => $base_url . "/search.php?q={search_term_string}",
             "query-input" => "required name=search_term_string"
         ]
     ];
