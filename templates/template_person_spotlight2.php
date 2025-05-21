@@ -107,7 +107,7 @@ if(!function_exists("script_t")) {
                                     <h3 class="h5 mb-1">Location</h3>
                                     <p class="mb-0">
                                         <span class="d-block"><?= $attribute[16]['sections']['profile section']['attributes'][244]['current_value'] ?></span>
-                                        <small class="text-muted">Based in Maryland</small>
+                                        <small class="text-muted"><?= $attribute[16]['sections']['profile section']['attributes'][318]['current_value'] ?></small>
                                     </p>
                                 </div>
                             </div>
@@ -178,7 +178,7 @@ if(!function_exists("script_t")) {
             <div class="text-center mb-5">
                 <h2 class="display-5 fw-bold text-gradient mb-3"><?= strip_tags($attribute[17]['sections']['Main']['attributes'][293]['current_value']) ?></h2>
                 <div class="section-divider mx-auto"></div>
-                <p class="lead text-muted">sssss<?= strip_tags($attribute[17]['sections']['Main']['attributes'][294]['current_value']) ?></p>
+                <p class="lead text-muted"><?= strip_tags($attribute[17]['sections']['Main']['attributes'][294]['current_value']) ?></p>
             </div>
 
             <div class="row g-4">
