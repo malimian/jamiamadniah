@@ -348,6 +348,397 @@ AdminHeader(
                     <?php endforeach; ?>
                 </div>
 
+
+<!-- Add this section to your dashboard where appropriate (e.g., in the Content Management area) -->
+<div class="row">
+    <div class="col-lg-12 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Page Views Analytics</h6>
+                <div>
+                    <button class="btn btn-sm btn-info" id="refreshViewsBtn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Date Range Selector -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="viewsDateRange">Date Range</label>
+                            <select class="form-control" id="viewsDateRange">
+                                <option value="7">Last 7 Days</option>
+                                <option value="30" selected>Last 30 Days</option>
+                                <option value="90">Last 90 Days</option>
+                                <option value="365">Last Year</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-primary shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                            Total Page Views
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="totalViewsCount">
+                                            <?php 
+                                            $total_views = return_single_ans("SELECT SUM(views) FROM pages");
+                                            echo number_format($total_views);
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-eye fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-success shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            Avg. Views Per Page
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="avgViewsCount">
+                                            <?php 
+                                            $avg_views = return_single_ans("SELECT AVG(views) FROM pages");
+                                            echo number_format($avg_views, 1);
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                            Most Viewed Page
+                                        </div>
+                                        <div class="h6 mb-0 font-weight-bold text-gray-800" id="topPageTitle">
+                                            <?php 
+                                            $top_page = return_single_row("SELECT page_title, views FROM pages ORDER BY views DESC LIMIT 1");
+                                            echo htmlspecialchars($top_page['page_title'] ?? 'N/A');
+                                            ?>
+                                        </div>
+                                        <div class="text-xs text-gray-500" id="topPageViews">
+                                            <?= number_format($top_page['views'] ?? 0) ?> views
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-star fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-warning shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                            New Pages (30 days)
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="newPagesCount">
+                                            <?php 
+                                            $new_pages = return_single_ans("SELECT COUNT(pid) FROM pages WHERE createdon >= '".date('Y-m-d', strtotime('-30 days'))."'");
+                                            echo number_format($new_pages);
+                                            ?>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-file-alt fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Charts Row -->
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Page Views Distribution</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-pie pt-4 pb-2">
+                                    <canvas id="viewsPieChart"></canvas>
+                                </div>
+                                <div class="mt-4 text-center small">
+                                    <?php
+                                    $top_pages = return_multiple_rows("SELECT page_title, views FROM pages ORDER BY views DESC LIMIT 5");
+                                    foreach ($top_pages as $page) {
+                                        echo '<span class="mr-2"><i class="fas fa-circle" style="color: #4e73df;"></i> '.htmlspecialchars($page['page_title']).'</span>';
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-6">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Views by Creation Period</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="chart-pie pt-4 pb-2">
+                                    <canvas id="creationPeriodPieChart"></canvas>
+                                </div>
+                                <div class="mt-4 text-center small">
+                                    <span class="mr-2"><i class="fas fa-circle" style="color: #1cc88a;"></i> Last 30 Days</span>
+                                    <span class="mr-2"><i class="fas fa-circle" style="color: #36b9cc;"></i> 1-3 Months</span>
+                                    <span class="mr-2"><i class="fas fa-circle" style="color: #f6c23e;"></i> 3-6 Months</span>
+                                    <span class="mr-2"><i class="fas fa-circle" style="color: #e74a3b;"></i> 6+ Months</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+$(document).ready(function() {
+    
+    // Date range selector change handler
+    $('#viewsDateRange').change(function() {
+        loadPageViewData($(this).val());
+    });
+    
+ 
+    
+    // Refresh button handler
+    $('#refreshViewsBtn').click(function() {
+        const range = $('#viewsDateRange').val();
+        loadPageViewData(range);
+    });
+    
+    
+    // View page button handler
+    $(document).on('click', '.view-page-btn', function(e) {
+        e.preventDefault();
+        const pid = $(this).data('pid');
+        window.open('view_page.php?pid=' + pid, '_blank');
+    });
+    
+    // Initialize pie charts
+    initPieCharts();
+    
+    // Function to initialize pie charts
+    function initPieCharts() {
+        // Views Distribution Pie Chart
+        const viewsPieCtx = document.getElementById('viewsPieChart');
+        const viewsPieChart = new Chart(viewsPieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    <?php
+                    $top_pages = return_multiple_rows("SELECT page_title FROM pages ORDER BY views DESC LIMIT 5");
+                    foreach ($top_pages as $page) {
+                        echo "'".addslashes($page['page_title'])."',";
+                    }
+                    ?>
+                    'Other Pages'
+                ],
+                datasets: [{
+                    data: [
+                        <?php
+                        $top_views = return_multiple_rows("SELECT views FROM pages ORDER BY views DESC LIMIT 5");
+                        $top_views_total = 0;
+                        foreach ($top_views as $views) {
+                            echo $views['views'].",";
+                            $top_views_total += $views['views'];
+                        }
+                        $other_views = return_single_ans("SELECT SUM(views) FROM pages") - $top_views_total;
+                        echo $other_views;
+                        ?>
+                    ],
+                    backgroundColor: [
+                        '#4e73df',
+                        '#1cc88a',
+                        '#36b9cc',
+                        '#f6c23e',
+                        '#e74a3b',
+                        '#858796'
+                    ],
+                    hoverBackgroundColor: [
+                        '#2e59d9',
+                        '#17a673',
+                        '#2c9faf',
+                        '#dda20a',
+                        '#be2617',
+                        '#6c757d'
+                    ],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            const dataset = data.datasets[tooltipItem.datasetIndex];
+                            const total = dataset.data.reduce((previousValue, currentValue) => previousValue + currentValue);
+                            const currentValue = dataset.data[tooltipItem.index];
+                            const percentage = Math.round((currentValue/total) * 100);
+                            return data.labels[tooltipItem.index] + ': ' + currentValue.toLocaleString() + ' (' + percentage + '%)';
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+        
+        // Creation Period Pie Chart
+        const creationPieCtx = document.getElementById('creationPeriodPieChart');
+        const creationPieChart = new Chart(creationPieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Last 30 Days', '1-3 Months', '3-6 Months', '6+ Months'],
+                datasets: [{
+                    data: [
+                        <?php
+                        $views_30_days = return_single_ans("SELECT SUM(views) FROM pages WHERE createdon >= '".date('Y-m-d', strtotime('-30 days'))."'");
+                        $views_1_3_months = return_single_ans("SELECT SUM(views) FROM pages WHERE createdon BETWEEN '".date('Y-m-d', strtotime('-3 months'))."' AND '".date('Y-m-d', strtotime('-30 days'))."'");
+                        $views_3_6_months = return_single_ans("SELECT SUM(views) FROM pages WHERE createdon BETWEEN '".date('Y-m-d', strtotime('-6 months'))."' AND '".date('Y-m-d', strtotime('-3 months'))."'");
+                        $views_6_plus_months = return_single_ans("SELECT SUM(views) FROM pages WHERE createdon < '".date('Y-m-d', strtotime('-6 months'))."'");
+                        
+                        echo $views_30_days.",".$views_1_3_months.",".$views_3_6_months.",".$views_6_plus_months;
+                        ?>
+                    ],
+                    backgroundColor: [
+                        '#1cc88a',
+                        '#36b9cc',
+                        '#f6c23e',
+                        '#e74a3b'
+                    ],
+                    hoverBackgroundColor: [
+                        '#17a673',
+                        '#2c9faf',
+                        '#dda20a',
+                        '#be2617'
+                    ],
+                    hoverBorderColor: "rgba(234, 236, 244, 1)",
+                }],
+            },
+            options: {
+                maintainAspectRatio: false,
+                tooltips: {
+                    backgroundColor: "rgb(255,255,255)",
+                    bodyFontColor: "#858796",
+                    borderColor: '#dddfeb',
+                    borderWidth: 1,
+                    xPadding: 15,
+                    yPadding: 15,
+                    displayColors: false,
+                    caretPadding: 10,
+                    callbacks: {
+                        label: function(tooltipItem, data) {
+                            const dataset = data.datasets[tooltipItem.datasetIndex];
+                            const total = dataset.data.reduce((previousValue, currentValue) => previousValue + currentValue);
+                            const currentValue = dataset.data[tooltipItem.index];
+                            const percentage = Math.round((currentValue/total) * 100);
+                            return data.labels[tooltipItem.index] + ': ' + currentValue.toLocaleString() + ' (' + percentage + '%)';
+                        }
+                    }
+                },
+                legend: {
+                    display: false
+                },
+                cutoutPercentage: 80,
+            },
+        });
+    }
+    
+    // Function to load page view data based on range
+    function loadPageViewData(range) {
+        // Show loading state
+        $('#totalViewsCount, #avgViewsCount, #topPageTitle, #topPageViews, #newPagesCount').html('<i class="fas fa-spinner fa-spin"></i>');
+        
+        // AJAX call to get updated data
+        $.ajax({
+            url: 'get/dashboard/get_page_views.php',
+            type: 'GET',
+            data: { range: range },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Update summary cards
+                    $('#totalViewsCount').text(response.total_views.toLocaleString());
+                    $('#avgViewsCount').text(response.avg_views);
+                    $('#topPageTitle').text(response.top_page.page_title);
+                    $('#topPageViews').text(response.top_page.views.toLocaleString() + ' views');
+                    $('#newPagesCount').text(response.new_pages.toLocaleString());
+                    
+                    // Update pie charts
+                    updatePieCharts(response);
+                    
+                } else {
+                    alert('Error: ' + response.message);
+                }
+            },
+            error: function() {
+                alert('Error loading page view data');
+            }
+        });
+    }
+    
+    
+    // Function to update pie charts with new data
+    function updatePieCharts(data) {
+        // Update views distribution pie chart
+        const viewsPieChart = Chart.getChart('viewsPieChart');
+        viewsPieChart.data.labels = data.views_distribution.labels;
+        viewsPieChart.data.datasets[0].data = data.views_distribution.data;
+        viewsPieChart.update();
+        
+        // Update creation period pie chart
+        const creationPieChart = Chart.getChart('creationPeriodPieChart');
+        creationPieChart.data.datasets[0].data = data.creation_period.data;
+        creationPieChart.update();
+    }
+    
+});
+</script>
                 <!-- Reports Section -->
                 <div class="row">
                     <!-- User Activity Report -->

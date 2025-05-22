@@ -47,7 +47,7 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
     pa.is_required AS attribute_is_required,
     pa.id as pa_attribute_id
     FROM 
-        page_attributes pa
+        page_attributes pa 
     LEFT JOIN 
         tab t ON pa.tab_id = t.id AND t.isactive = 1 AND t.soft_delete = 0
     LEFT JOIN 
