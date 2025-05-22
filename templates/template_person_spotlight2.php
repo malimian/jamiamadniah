@@ -47,7 +47,7 @@ if(!function_exists("script_t")) {
     <div class="carousel-inner">
         <?php
         
-        print_r($attribute[15]['sections']['carousel section']);
+        // print_r($attribute[15]['sections']['carousel section']);
 
          foreach ($attribute[15]['sections']['carousel section']['sets'] as $index => $slide): ?>
             <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
