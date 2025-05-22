@@ -1,7 +1,7 @@
 <?php 
 $attribute = $content['attributes'];
 
-// print_r($attribute);die;
+print_r($attribute);die;
 
 ?>
 
@@ -51,9 +51,9 @@ if(!function_exists("script_t")) {
 
          foreach ($attribute[15]['sections']['carousel section']['sets'] as $index => $slide): ?>
             <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                <img src="<?= ABSOLUTE_IMAGEPATH.$slide[321]['value'] ?>" class="d-block w-100" alt="<?= $slide[322]['value'] ?> <?= $index + 1 ?>">
+                <img src="<?= ABSOLUTE_IMAGEPATH.$slide[321]['value'] ?>" class="d-block w-100" alt="<?= $slide[320]['value'] ?> <?= $index + 1 ?>">
                 <div class="carousel-caption d-none d-md-block">
-                    <h1 class="display-3 fw-bold"><?= $slide[322]['value'] ?></h1>
+                    <h1 class="display-3 fw-bold"><?= $slide[320]['value'] ?></h1>
                     <p class="lead"><?= $slide[320]['value'] ?></p>
                 </div>
             </div>
