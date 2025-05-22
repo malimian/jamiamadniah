@@ -10,7 +10,7 @@ $isrich_textarea = false;
 $attributes = return_multiple_rows("
     SELECT pa.* 
     FROM page_attributes pa
-    WHERE pa.isactive = 1 
+    WHERE pa.isactive = 1 and pa.soft_delete = 0
     AND (pa.template_id IS NULL OR pa.template_id = $template_id)
     ORDER BY pa.sort_order
 ");
@@ -65,6 +65,7 @@ if ($page_id > 0) {
         SELECT id, attribute_id, attribute_value 
         FROM page_attribute_values 
         WHERE page_id = $page_id
+        AND soft_delete = 0 and isactive = 1
         ORDER BY attribute_id, id
     ");
     

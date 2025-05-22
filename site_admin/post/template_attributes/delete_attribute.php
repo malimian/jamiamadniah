@@ -13,11 +13,11 @@ try {
     $attribute_id = intval(clean($_POST['id']));
 
     // Soft delete the attribute
-    $sql = "UPDATE page_attributes SET soft_delete = 1 WHERE id = $attribute_id";
-    $affected1 = Update($sql);
+    $sql = "DELETE from page_attributes WHERE id = $attribute_id";
+    $affected1 = Delete($sql);
 
-    $sql = "UPDATE page_attribute_values SET soft_delete = 1 WHERE attribute_id = $attribute_id";
-    $affected = Update($sql);
+    $sql = "DELETE from page_attribute_values WHERE attribute_id = $attribute_id";
+    $affected = Delete($sql);
 
     Delete("DELETE from attribute_options Where attribute_id = $attribute_id ");
 
