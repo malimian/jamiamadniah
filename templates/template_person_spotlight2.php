@@ -47,11 +47,11 @@ if(!function_exists("script_t")) {
     <div class="carousel-inner">
         <?php
         
-        // print_r($attribute[15]['sections']['carousel section']);
+        print_r($attribute[15]['sections']['carousel section']);
 
          foreach ($attribute[15]['sections']['carousel section']['sets'] as $index => $slide): ?>
             <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                <img src="<?= ABSOLUTE_IMAGEPATH.$slide[321]['value'] ?>" class="d-block w-100" alt="<?= $slide[238]['value'] ?> <?= $index + 1 ?>">
+                <img src="<?= ABSOLUTE_IMAGEPATH.$slide[321]['value'] ?>" class="d-block w-100" alt="<?= $slide[322]['value'] ?> <?= $index + 1 ?>">
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="display-3 fw-bold"><?= $slide[322]['value'] ?></h1>
                     <p class="lead"><?= $slide[320]['value'] ?></p>
