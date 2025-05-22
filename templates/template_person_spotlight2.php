@@ -51,7 +51,7 @@ if(!function_exists("script_t")) {
                 <img src="<?= ABSOLUTE_IMAGEPATH.$slide[239]['value'] ?>" class="d-block w-100" alt="Jacob Oroks Banner <?= $index + 1 ?>">
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="display-3 fw-bold"><?= $slide[238]['value'] ?></h1>
-                    <p class="lead"><?= $slide[240]['value'] ?></p>
+                    <p class="lead"><?= $slide[320]['value'] ?></p>
                 </div>
             </div>
         <?php endforeach; ?>
