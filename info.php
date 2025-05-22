@@ -58,11 +58,11 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
         pa.isactive = 1 and pa.soft_delete = 0
         AND (pa.template_id IS NULL OR pa.template_id = ".$content['template_id']." )
         AND (t.id IS NULL OR (t.isactive = 1 AND t.soft_delete = 0))
-    ORDER BY 
-        COALESCE(t.sort_order, 99999) ASC,
-        COALESCE(pa.section_name, 'General') ASC,
-        pa.sort_order ASC,
-        ao.sort_order ASC;
+     ORDER BY
+        t.tab_name ASC,
+        pa.section_name ASC,
+        pa.sort_order ASC
+        ;
         ";
 
 $organizedAttributes = return_multiple_rows($attribute_sql);

@@ -1,7 +1,7 @@
 <?php 
 $attribute = $content['attributes'];
 
-print_r($attribute);die;
+// print_r($attribute);die;
 
 ?>
 
