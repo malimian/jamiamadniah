@@ -48,7 +48,7 @@ if(!function_exists("script_t")) {
         <?php
          foreach ($attribute[15]['sections']['carousel section']['sets'] as $index => $slide): ?>
             <div class="carousel-item <?= $index === 0 ? 'active' : '' ?>">
-                <img src="<?= ABSOLUTE_IMAGEPATH.$slide[239]['value'] ?>" class="d-block w-100" alt="Jacob Oroks Banner <?= $index + 1 ?>">
+                <img src="<?= ABSOLUTE_IMAGEPATH.$slide[321]['value'] ?>" class="d-block w-100" alt="<?= $slide[238]['value'] ?> <?= $index + 1 ?>">
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="display-3 fw-bold"><?= $slide[238]['value'] ?></h1>
                     <p class="lead"><?= $slide[320]['value'] ?></p>
