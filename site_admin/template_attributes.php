@@ -107,6 +107,59 @@ if (isset($_GET['template_id'])) {
                     <?php unset($_SESSION['error_message']); ?>
                 <?php endif; ?>
 
+                <!-- Tab Management Section -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Tab Management</h6>
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#tabModal">
+                            <i class="fas fa-plus"></i> Add New Tab
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="tabsTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>Tab Name</th>
+                                        <th>Attributes Count</th>
+                                        <th>Sort Order</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    // Get all tabs for this template
+                                    $tabs_sql = "SELECT t.*, 
+                                                (SELECT COUNT(*) FROM page_attributes WHERE tab_id = t.id AND template_id = $template_id) as attribute_count
+                                                FROM tab t WHERE t.template_id = $template_id ORDER BY t.sort_order";
+                                    $tabs = return_multiple_rows($tabs_sql);
+                                    
+                                    if ($tabs && count($tabs) > 0) {
+                                        foreach ($tabs as $tab) {
+                                            echo '<tr data-tab-id="' . $tab['id'] . '">';
+                                            echo '<td>' . htmlspecialchars($tab['tab_name']) . '</td>';
+                                            echo '<td>' . $tab['attribute_count'] . '</td>';
+                                            echo '<td>' . $tab['sort_order'] . '</td>';
+                                            echo '<td>';
+                                            echo '<button class="btn btn-sm btn-primary edit-tab" data-id="' . $tab['id'] . '" data-name="' . htmlspecialchars($tab['tab_name']) . '" data-order="' . $tab['sort_order'] . '"><i class="fas fa-edit"></i></button> ';
+                                            if ($tab['attribute_count'] == 0) {
+                                                echo '<button class="btn btn-sm btn-danger delete-tab" data-id="' . $tab['id'] . '"><i class="fas fa-trash"></i></button>';
+                                            } else {
+                                                echo '<button class="btn btn-sm btn-danger delete-tab" data-id="' . $tab['id'] . '" disabled title="Cannot delete tab with attributes"><i class="fas fa-trash"></i></button>';
+                                            }
+                                            echo '</td>';
+                                            echo '</tr>';
+                                        }
+                                    } else {
+                                        echo '<tr><td colspan="4" class="text-center">No tabs found</td></tr>';
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Main Content -->
                 <div class="card shadow mb-4">
                     <div class="card-body">
@@ -114,16 +167,14 @@ if (isset($_GET['template_id'])) {
                             <div id="attribute-list">
                                 <!-- Attributes -->
                                 <div class="template-attributes-container">
-                                    <?php
-                                     if (!empty($attributes)) : ?>
+                                    <?php if (!empty($attributes)) : ?>
                                         <?php foreach ($attributes as $tab_name => $sections) : ?>
                                             <div class="card mb-4">
                                                 <div class="card-header bg-light">
                                                     <h5 class="mb-0"><?php echo htmlspecialchars($tab_name); ?></h5>
                                                 </div>
                                                 <div class="card-body">
-                                                    <?php foreach ($sections as $section_name => $section_attributes) :
-                                                     ?>
+                                                    <?php foreach ($sections as $section_name => $section_attributes) : ?>
                                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                                             <?php if (count($sections) > 1) : ?>
                                                                 <h6 class="text-muted mb-0"><?php echo htmlspecialchars($section_name); ?></h6>
@@ -207,7 +258,7 @@ if (isset($_GET['template_id'])) {
                                                                             <?php endif; ?>
                                                                             <div>Order: <?php echo $attribute['sort_order']; ?></div>
                                                                             <div>Code : <?php
-                                                                            $code = '$attribute['.($section_attributes[0]['tab_id'] ?? 0).'][\'sections\'][\''.$section_name.'\'][\'attributes\'][\''.$attribute['id'].'\']';
+                                                                            $code = '$attribute['.($section_attributes[0]['tab_id'] ?? 0).'][\'sections\'][\''.$section_name.'\'][\'attributes\']['.$attribute['id'].']';
                                                                             echo $code ;
                                                                             ?>
                                                                             </div>
@@ -247,6 +298,38 @@ if (isset($_GET['template_id'])) {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab Management Modal -->
+            <div class="modal fade" id="tabModal" tabindex="-1" role="dialog" aria-labelledby="tabModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="tabModalLabel">Add New Tab</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form id="tabForm" action="post/template_attributes/save_tab.php" method="post">
+                            <input type="hidden" name="template_id" value="<?php echo $template_id; ?>">
+                            <input type="hidden" name="tab_id" id="edit_tab_id" value="">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="tab_name">Tab Name</label>
+                                    <input type="text" class="form-control" id="tab_name_input" name="tab_name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tab_sort_order">Sort Order</label>
+                                    <input type="number" class="form-control" id="tab_sort_order" name="sort_order" value="0" min="0">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save Tab</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -452,7 +535,10 @@ if (isset($_GET['template_id'])) {
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
-    
+    <script type="text/javascript">
+        var template_id = <?php echo $template_id; ?>;
+    </script>
+    <script type="text/javascript" src="js/template_attributes/template_tabs.js"></script>
     <script type="text/javascript" src="js/template_attributes/template_attributes.js"></script>
 
 </body>

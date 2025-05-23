@@ -471,139 +471,145 @@ foreach ($news_categories as $new_category) {
                         } ?>
                     </div>
                 <!-- Editor Choice End -->
-             
-
                 </div>
+                <style type="text/css">
+                    /* Latest News Sidebar Styles */
+                    .latest-news-sidebar .news-item {
+                    transition: all 0.3s ease;
+                    padding-left: 5px;
+                    }
+
+                    .latest-news-sidebar .news-item:hover {
+                    background-color: #f8f9fa;
+                    border-radius: 5px;
+                    }
+
+                    .latest-news-sidebar h6 {
+                    font-size: 0.95rem;
+                    font-weight: 600;
+                    line-height: 1.4;
+                    transition: color 0.3s ease;
+                    margin-left: 18px;
+                    }
+
+                    .latest-news-sidebar h6:hover {
+                    color: #dc3545;
+                    cursor: pointer;
+                    }
+
+                    /* Blinking dot for latest news */
+                    .blinking-dot {
+                    display: inline-block;
+                    width: 8px;
+                    height: 8px;
+                    background-color: #dc3545;
+                    border-radius: 50%;
+                    animation: blink 1.5s infinite;
+                    }
+
+                    @keyframes blink {
+                    0% { opacity: 1; }
+                    50% { opacity: 0.3; }
+                    100% { opacity: 1; }
+                    }
+
+                    /* Red timestamp */
+                    .text-danger.fw-bold {
+                    font-weight: 700 !important;
+                    }
+                </style>
+               <!-- Sidebar Section Latest News Section -->
                 <div class="col-lg-4 col-xl-3">
-                    <!-- Sidebar Content -->
-                    <div class="row g-4">
-                        <div class="col-12">
-                            <div class="p-3 rounded border">
-                                <h4 class="mb-4">Stay Connected</h4>
-                                <div class="row g-4">
-                                    <div class="col-12">
-                                        <a href="#" class="w-100 rounded btn btn-primary d-flex align-items-center p-3 mb-2">
-                                            <i class="fab fa-facebook-f btn btn-light btn-square rounded-circle me-3"></i>
-                                            <span class="text-white">13,977 Fans</span>
-                                        </a>
-                                        <a href="#" class="w-100 rounded btn btn-danger d-flex align-items-center p-3 mb-2">
-                                            <i class="fab fa-twitter btn btn-light btn-square rounded-circle me-3"></i>
-                                            <span class="text-white">21,798 Follower</span>
-                                        </a>
-                                        <a href="#" class="w-100 rounded btn btn-warning d-flex align-items-center p-3 mb-2">
-                                            <i class="fab fa-youtube btn btn-light btn-square rounded-circle me-3"></i>
-                                            <span class="text-white">7,999 Subscriber</span>
-                                        </a>
-                                        <a href="#" class="w-100 rounded btn btn-dark d-flex align-items-center p-3 mb-2">
-                                            <i class="fab fa-instagram btn btn-light btn-square rounded-circle me-3"></i>
-                                            <span class="text-white">19,764 Follower</span>
-                                        </a>
-                                        <a href="#" class="w-100 rounded btn btn-secondary d-flex align-items-center p-3 mb-2">
-                                            <i class="bi-cloud btn btn-light btn-square rounded-circle me-3"></i>
-                                            <span class="text-white">31,999 Subscriber</span>
-                                        </a>
-                                        <a href="#" class="w-100 rounded btn btn-warning d-flex align-items-center p-3 mb-4">
-                                            <i class="fab fa-dribbble btn btn-light btn-square rounded-circle me-3"></i>
-                                            <span class="text-white">37,999 Subscriber</span>
-                                        </a>
-                                    </div>
-                                </div>
-                              <?php
-                                // Fetch popular news items
-                                $popular_news = return_multiple_rows("
-                                    SELECT p.*, c.catname AS catname 
-                                    FROM (
-                                        SELECT p.*, 
-                                               ROW_NUMBER() OVER (PARTITION BY p.catid ORDER BY RAND()) AS rn 
-                                        FROM pages p
-                                        WHERE p.template_id = 7 
-                                          AND p.isactive = 1 
-                                          AND p.soft_delete = 0
-                                          AND p.pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                                    ) AS p
-                                    LEFT JOIN category c ON p.catid = c.catid
-                                    WHERE p.rn = 1 
-                                    ORDER BY p.views DESC 
-                                    LIMIT 5
-                                ");
+                    <div class="bg-light rounded p-4 pt-0">
+                        <!-- Latest News Section -->
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-2">
+                                <h4 class="mb-0 text-uppercase fw-bold">Latest News</h4>
+                                <span class="badge bg-danger">Live</span>
+                            </div>
+                            
+                            <!-- Latest News Items -->
+                            <div class="latest-news-sidebar">
+                                <?php
+                                $latest_sidebar_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0
+                                    AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
+                                    ORDER BY createdon DESC LIMIT 6");
 
-                                // Fetch trending tags from page_meta_keywords
-                                $tags = [];
-                                $all_keywords = return_multiple_rows("
-                                    SELECT page_meta_keywords 
-                                    FROM pages 
-                                    WHERE page_meta_keywords IS NOT NULL 
-                                      AND page_meta_keywords != ''
-                                ");
-                                foreach ($all_keywords as $keyword_row) {
-                                    $keywords = explode(",", $keyword_row['page_meta_keywords']);
-                                    foreach ($keywords as $keyword) {
-                                        $keyword = trim($keyword); // Remove extra spaces
-                                        if (!empty($keyword)) {
-                                            if (isset($tags[$keyword])) {
-                                                $tags[$keyword]++;
-                                            } else {
-                                                $tags[$keyword] = 1;
-                                            }
-                                        }
-                                    }
-                                }
-                                // Sort tags by frequency in descending order
-                                arsort($tags);
-                                $trending_tags = array_slice(array_keys($tags), 0, 10); // Get top 10 tags
+                                foreach ($latest_sidebar_news as $index => $news) {
+                                    $time = date("h:i a", strtotime($news['createdon']));
+                                    $is_latest = $index === 0; // First item is the latest
+                                    $not_show_more_then_once[] = $news['pid'];
                                 ?>
-
-                                <h4 class="my-4">Popular News</h4>
-                                <div class="row g-4">
-                                    <?php
-                                    foreach ($popular_news as $news) {
-                                        $not_show_more_then_once[] = $news['pid'];
-                                    ?>
-                                        <div class="col-12">
-                                            <div class="row g-4 align-items-center features-item">
-                                                <div class="col-4">
-                                                    <div class="rounded-circle position-relative">
-                                                        <div class="overflow-hidden rounded-circle">
-                                                            <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded-circle w-100 circle-clss" alt="<?php echo $news['page_title']; ?>">
-                                                        </div>
-                                                        <span class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute" style="top: 10%; right: -10px;"><?php echo $news['views']; ?></span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-8">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2"><?php echo $news['catname']; ?></p>
-                                                        <a href="<?php echo $news['page_url']; ?>" class="h6"><?php echo mb_strimwidth($news['page_title'], 0, 45, "..."); ?></a>
-                                                        <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($news['createdon']); ?></small>
-                                                    </div>
-                                                </div>
+                                <div class="col-12 mb-3">
+                                    <div class="row g-4 align-items-center">
+                                        <div class="col-5">
+                                            <div class="overflow-hidden rounded">
+                                                <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo htmlspecialchars($news['page_title']); ?>">
                                             </div>
                                         </div>
-                                    <?php } ?>
-                                    <div class="col-lg-12">
-                                        <a href="#" class="link-hover btn border border-primary rounded-pill text-dark w-100 py-3 mb-4">View More</a>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <div class="border-bottom my-3 pb-3">
-                                            <h4 class="mb-0">Trending Tags</h4>
+                                        <div class="col-7">
+                                            <div class="features-content d-flex flex-column">
+                                                <div class="d-flex align-items-center mb-1">
+                                                        <span class="blinking-dot me-2"></span>
+                                                    <small class="text-danger fw-bold"><?php echo $time; ?></small>
+                                                </div>
+                                                <a href="<?php echo $news['page_url']; ?>" class="h6">
+                                                    <?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?>
+                                                </a>
+                                                <small><i class="fa fa-eye"></i> <?php echo $news['views']; ?> Views</small>
+                                            </div>
                                         </div>
-                                        <ul class="nav nav-pills d-inline-flex text-center mb-4">
-                                            <?php
-                                            foreach ($trending_tags as $tag) {
-                                            ?>
-                                                <li class="nav-item mb-3">
-                                                    <a class="d-flex py-2 bg-light rounded-pill me-2" href="search.php?q=<?php echo $tag; ?>">
-                                                        <span class="text-dark link-hover" style="width: 90px;"><?php echo $tag; ?></span>
-                                                    </a>
-                                                </li>
-                                            <?php } ?>
-                                        </ul>
                                     </div>
                                 </div>
-                                <!-- Popular News End -->
+                                <?php } ?>
                             </div>
+                        </div>
+
+
+                        <!-- Existing Sidebar Content -->
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <div class="rounded overflow-hidden">
+                                    <img src="img/news-3.jpg" class="img-fluid rounded img-zoomin w-100" alt="">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex flex-column">
+                                    <a href="#" class="h4 mb-2">Get the best speak market, news.</a>
+                                    <p class="fs-5 mb-0"><i class="fa fa-clock"> 06 minute read</i> </p>
+                                    <p class="fs-5 mb-0"><i class="fa fa-eye"> 3.5k Views</i></p>
+                                </div>
+                            </div>
+
+                            <?php
+                            $sidebar_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0
+                             AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
+                             ORDER BY createdon DESC LIMIT 5 OFFSET 3"); // Skip first 3 we already showed
+                            foreach ($sidebar_news as $news) {
+                            ?>
+                                <div class="col-12">
+                                    <div class="row g-4 align-items-center">
+                                        <div class="col-5">
+                                            <div class="overflow-hidden rounded">
+                                                <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $news['page_title']; ?>">
+                                            </div>
+                                        </div>
+                                        <div class="col-7">
+                                            <div class="features-content d-flex flex-column">
+                                                <a href="<?php echo $news['page_url']; ?>" class="h6"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
+                                                <small><i class="fa fa-clock"></i> <?php echo $news['article_read']; ?></small>
+                                                <small><i class="fa fa-eye"></i> <?php echo $news['views']; ?> Views</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php 
+                                $not_show_more_then_once[] = $news['pid'];
+                            } ?>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

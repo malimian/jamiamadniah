@@ -42,38 +42,14 @@ if (($content['page_visibility'] == 0 || $content['page_active'] == 0) && !isset
     exit('<script type="text/javascript">window.location = "' . ERROR_404 . '";</script>');
 }
 
-    $attribute_sql = "SELECT * ,
-    pa.is_dynamic AS attribute_is_dynamic,
-    pa.is_required AS attribute_is_required,
-    pa.id as pa_attribute_id
-    FROM 
-        page_attributes pa 
-    LEFT JOIN 
-        tab t ON pa.tab_id = t.id AND t.isactive = 1 AND t.soft_delete = 0
-    LEFT JOIN 
-        attribute_options ao ON ao.attribute_id = pa.id
-    LEFT JOIN 
-        page_attribute_values pav ON pav.attribute_id = pa.id AND pav.page_id = ".$content['pid']."
-    WHERE 
-        pa.isactive = 1 and pa.soft_delete = 0
-        AND (pa.template_id IS NULL OR pa.template_id = ".$content['template_id']." )
-        AND (t.id IS NULL OR (t.isactive = 1 AND t.soft_delete = 0))
-     ORDER BY
-        t.tab_name ASC,
-        pa.section_name ASC,
-        pa.sort_order ASC
-        ;
-        ";
 
-$organizedAttributes = return_multiple_rows($attribute_sql);
 
-if(!empty($organizedAttributes)){
-    
-    $organizedAttributes = organizeAttributes($organizedAttributes);
 
-    if(!empty($organizedAttributes))
-        $content['attributes'] = $organizedAttributes;
-}
+$organizedAttributes = organizeAttributes($content['template_id'], $content['pid']);
+
+
+if(!empty($organizedAttributes))
+    $content['attributes'] = $organizedAttributes;
 
 
 // Add content components if specified
