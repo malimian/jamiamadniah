@@ -56,6 +56,23 @@ if(!function_exists("header_t")) {
     }
 </style>
 
+
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+                    {
+                        "symbols": [
+                            { "proName": "NASDAQ:AAPL", "title": "Apple" },
+                            { "proName": "NASDAQ:GOOGL", "title": "Google" },
+                            { "proName": "NASDAQ:TSLA", "title": "Tesla" },
+                            { "proName": "NYSE:MSFT", "title": "Microsoft" },
+                            { "proName": "NASDAQ:AMZN", "title": "Amazon" }
+                        ],
+                        "colorTheme": "light",
+                        "isTransparent": false,
+                        "displayMode": "adaptive",
+                        "locale": "en"
+                    }
+</script>
+
         ';
     }
 }
@@ -117,21 +134,6 @@ $catname = $content['catname'];
                 <!-- TradingView Widget BEGIN -->
                 <div class="tradingview-widget-container">
                     <div class="tradingview-widget-container__widget"></div>
-                    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-                    {
-                        "symbols": [
-                            { "proName": "NASDAQ:AAPL", "title": "Apple" },
-                            { "proName": "NASDAQ:GOOGL", "title": "Google" },
-                            { "proName": "NASDAQ:TSLA", "title": "Tesla" },
-                            { "proName": "NYSE:MSFT", "title": "Microsoft" },
-                            { "proName": "NASDAQ:AMZN", "title": "Amazon" }
-                        ],
-                        "colorTheme": "light",
-                        "isTransparent": false,
-                        "displayMode": "adaptive",
-                        "locale": "en"
-                    }
-                    </script>
                 </div>
                 <!-- TradingView Widget END -->
             </div>
