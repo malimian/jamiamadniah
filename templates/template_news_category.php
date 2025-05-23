@@ -2,33 +2,6 @@
 if(!function_exists("header_t")) {
     function header_t(){
         return '
-        ';
-    }
-}
-?>
-
-<?php
-if(!function_exists("footer_t")) {
-    function footer_t(){
-        return '
-        ';
-    }
-}
-?>
-
-<?php
-if(!function_exists("script_t")) {
-    function script_t(){
-        return '
-        ';
-    }
-}
-
-// print_r($content);
-
-$catid = $content['catid'];
-$catname = $content['catname'];
-?>
 
 <style>
     .owl-carousel img {
@@ -82,6 +55,36 @@ $catname = $content['catname'];
         margin-top: auto;
     }
 </style>
+
+        ';
+    }
+}
+?>
+
+<?php
+if(!function_exists("footer_t")) {
+    function footer_t(){
+        return '
+        ';
+    }
+}
+?>
+
+<?php
+if(!function_exists("script_t")) {
+    function script_t(){
+        return '
+        ';
+    }
+}
+
+// print_r($content);
+
+$catid = $content['catid'];
+$catname = $content['catname'];
+?>
+
+
 
 <!-- Category Highlights Section -->
 <div class="container-fluid py-5">
