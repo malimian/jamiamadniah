@@ -21,7 +21,7 @@ define('SITE_TELNO', $settings[16]['settings_value'] , '');
 
 
 ##########################PROJECT
-define('Company', 'HAT INC' , '');
+define('Company', 'Ibotoempire' , '');
 
 ##########################Email
 define('EMAIL', $settings[4]['settings_value'] , '');
