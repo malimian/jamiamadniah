@@ -57,7 +57,7 @@ if(!function_exists("header_t")) {
 </style>
 
 
-<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js">
                     {
                         "symbols": [
                             { "proName": "NASDAQ:AAPL", "title": "Apple" },
