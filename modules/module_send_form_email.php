@@ -17,11 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $response['data'][$key] = htmlspecialchars(strip_tags(trim($value)));
     }
 
-    // Validate required fields (example - customize as needed)
-    if (empty($response['data']['email'])) {
-        $response['errors']['email'] = 'Email is required';
-    }
-
     // Only proceed if no errors
     if (empty($response['errors'])) {
         // Set the recipient email address
