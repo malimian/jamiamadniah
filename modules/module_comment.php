@@ -13,7 +13,7 @@
  	 
  	   s.setAttribute("type", "text/javascript");
  	  
- 	  var kn = "https://www.htmlcommentbox.com/jread?page=" + encodeURIComponent(l).replace("+", "%2B") + "&mod=" + COMMENT_API + "&opts=16862&num=10&ts=1615119073229";
+ 	  var kn = "https://www.htmlcommentbox.com/jread?page=" + encodeURIComponent(l).replace("+", "%2B") + "&mod=" + <?php echo COMMENT_API;?> + "&opts=16862&num=10&ts=1615119073229";
  	  
  	  console.log(kn);
 
