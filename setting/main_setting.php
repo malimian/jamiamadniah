@@ -78,7 +78,7 @@ define('COMMENT_API', '%241%24wq1rdBcg%24cC9mlw%2FSWcQWnSvdj5vpc1' , '');
 
 define('CURRENCY', '$' , '');
 
-define('COMMENTS_API', '%241%24wq1rdBcg%24cC9mlw%2FSWcQWnSvdj5vpc1' , '');
+define('COMMENTS_API', '%241%24wq1rdBcg%248zHXZtKoEIW1v91GvA%2FwO.' , '');
 
 
 ########################## URl SHORTNER https://cutt.ly/
