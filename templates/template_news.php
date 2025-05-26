@@ -294,6 +294,6 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
     </div>
 </div>
 <!-- Single Product End -->
-
+</div>
 
         
