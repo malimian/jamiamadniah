@@ -359,7 +359,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                 (filter_var($page['featured_image'], FILTER_VALIDATE_URL) ? 
                                                     $page['featured_image'] : 
                                                     BASE_URL.ABSOLUTE_IMAGEPATH.$page['featured_image']) : 
-                                                BASE_URL.'assets/img/no-image-available.jpg';
+                                                ADMIN_URL.'assets/img/no-image-available.jpg';
 
                                             ?>
                                             <tr id="tr_<?=$page['pid']?>" class="<?=$featured_class?>">
