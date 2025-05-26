@@ -136,7 +136,8 @@ if (!empty($content)) {
                         `featured_image`, 
                         `article_url`, 
                         `article_author`, 
-                        `article_read`
+                        `article_read`,
+                        `country`                        
                     ) VALUES (
                         '$cat_id', 
                         '$site_template_id', 
@@ -152,7 +153,8 @@ if (!empty($content)) {
                         '$featured_image', 
                         '$article_url', 
                         '$article_author', 
-                        '$article_read_time'
+                        '$article_read_time',
+                        'ng'
                     )");
                 }
             }
