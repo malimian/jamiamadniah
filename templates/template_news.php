@@ -275,7 +275,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                                                     foreach ($trending_tags as $tag) {
                                                         echo '
                                                         <li class="nav-item mb-3">
-                                                            <a class="d-flex py-2 bg-light rounded-pill me-2" href="' . BASE_URL . 'tags/' . urlencode($tag) . '">
+                                                            <a class="d-flex py-2 bg-light rounded-pill me-2" href="' . BASE_URL . 'search.php?q=' . urlencode($tag) . '">
                                                                 <span class="text-dark link-hover" style="width: 90px;">' . htmlspecialchars($tag) . '</span>
                                                             </a>
                                                         </li>';
