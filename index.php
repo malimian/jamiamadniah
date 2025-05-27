@@ -761,6 +761,8 @@ $(document).ready(function(){
 });
 </script>
 
+<!-- Category News Carousels Ends -->
+
 <?php
 echo replace_sysvari(front_footer(null, $template_id), getcwd() . "/");
 ?>
