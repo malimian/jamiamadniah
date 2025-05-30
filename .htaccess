@@ -27,3 +27,6 @@ ErrorDocument 404 /error404.html
 <IfModule pagespeed_module>
     ModPagespeed off
 </IfModule>
+
+# Block direct access to includes/, modules/, and templates/ folders
+RewriteRule ^(includes|modules|templates)/ - [F,L]
