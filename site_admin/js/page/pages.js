@@ -172,3 +172,17 @@ function changeSequence(id, direction) {
             // Just reload the page to get the original state
             location.reload();
         });
+
+
+// Hooverable edit , view icons
+$(document).ready(function() {
+    // Pre-cache all action links to prevent lag
+    const actionLinks = $('.action-links');
+    
+    // Show instantly on row hover
+    $('tbody tr').on('mouseenter', function() {
+        $(this).find('.action-links').css('opacity', '1');
+    }).on('mouseleave', function() {
+        $(this).find('.action-links').css('opacity', '0');
+    });
+});

@@ -98,7 +98,6 @@ $Pages = return_multiple_rows($query);
 
 $site_templates = return_multiple_rows("Select * from og_template Where isactive = 1 and soft_delete = 0 ");
 ?>
-
 <body id="page-top">
   <?php include 'includes/notification.php';?>
 
@@ -421,6 +420,34 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                             <strong><?=$page['page_title']?></strong>
                                                             <a target="_blank" href="<?=BASE_URL.$page['page_url']?>" class="text-muted small">/<?=$page['page_url']?></a>
                                                         </div>
+                                                           <!-- Action links that appear on hover in title column -->
+                                                       <div class="action-links">
+                                                        <!-- View -->
+                                                        <a class="action-link view" target="_blank" href="<?=BASE_URL.$page['page_url']?>" title="View">
+                                                            <i class="fas fa-eye"></i>
+                                                        </a>
+                                                        
+                                                        <!-- Edit -->
+                                                        <?php if($has_edit && canEdit($page['page_isSystemOperated'])): ?>
+                                                        <a class="action-link edit" href="editpage.php?id=<?=$page['pid']?>" title="Edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </a>
+                                                        <?php endif; ?>
+                                                        
+                                                        <!-- Status -->
+                                                        <?php if($has_status && canActivate($page['page_isSystemOperated'])): ?>
+                                                        <a class="action-link status" href="#" onclick="toggleStatus(<?=$page['pid']?>, <?=$page['pages_isactive']?>)" title="<?=$page['pages_isactive'] ? 'Deactivate' : 'Activate'?>">
+                                                            <i class="fas fa-power-off"></i>
+                                                        </a>
+                                                        <?php endif; ?>
+                                                        
+                                                        <!-- Delete -->
+                                                        <?php if($has_delete && canDelete($page['page_isSystemOperated'])): ?>
+                                                        <a class="action-link delete" onclick="delete_(<?=$page['pid']?>)" title="Delete">
+                                                            <i class="fas fa-trash"></i>
+                                                        </a>
+                                                        <?php endif; ?>
+                                                    </div>
                                                         
                                                         <?php
                                                         // Get counts for each content type (optimized - fetch these in your initial query)
@@ -514,7 +541,7 @@ $site_templates = return_multiple_rows("Select * from og_template Where isactive
                                                     </div>
                                                 </td>
                                                 <td>
-                                                    <small class="text-muted"><?=$last_modified?></small>
+                                                    <small claAss="text-muted"><?=$last_modified?></small>
                                                 </td>
                                                 <td>
                                                 <div class="dropdown">
