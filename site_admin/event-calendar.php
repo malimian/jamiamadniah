@@ -186,7 +186,7 @@ $events = return_multiple_rows("
                 description: '<?php echo addslashes($event['description']); ?>',
                 featured_image: '<?php echo (!empty($event['featured_image'])) ? BASE_URL.ABSOLUTE_IMAGEPATH.addslashes($event['featured_image']) : ""; ?>',
                 user_id: '<?php echo $event['user_id']; ?>',
-                user_name: '<?php echo addslashes($event['fullname']); ?>',
+                user_name: '<?php echo addslashes($event['username']); ?>',
                 user_email: '<?php echo addslashes($event['emailaddress']); ?>',
                 user_phone: '<?php echo addslashes($event['phonenumber']); ?>',
                 user_photo: '<?php echo (!empty($event['profile_pic'])) ? BASE_URL.ABSOLUTE_IMAGEPATH.addslashes($event['profile_pic']) : "" ; ?>'
