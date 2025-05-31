@@ -22,7 +22,7 @@ AdminHeader(
 
 // Fetch all events with user information
 $events = return_multiple_rows("
-    SELECT e.*, u.fullname, u.emailaddress, u.phonenumber, u.profile_pic 
+    SELECT e.*, u.username, u.emailaddress, u.phonenumber, u.profile_pic 
     FROM events e
     LEFT JOIN loginuser u ON e.user_id = u.id
     ORDER BY e.start_date ASC
