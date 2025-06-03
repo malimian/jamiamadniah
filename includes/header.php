@@ -361,6 +361,7 @@ HTML
     {$header}
     {$libs_output}
 </head>
+
 HTML;
 }
 
