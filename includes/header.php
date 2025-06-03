@@ -80,8 +80,11 @@ function generate_organization_schema($page_meta = []) {
         }
     }
 
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $protocol = "https://";
+    else $protocol = "http://";
+
     // Base URL with proper formatting
-    $base_url = rtrim($settings_array['SITE_BASE_URL'] ?? '', '/');
+    $base_url = $protocol.rtrim($settings_array['SITE_BASE_URL'] ?? '', '/');
 
     // Build the schema structure with page-specific overrides
     $schema = [
@@ -206,6 +209,8 @@ function front_header($title = null, $keywords = null, $description = null, $lib
     $keywords = htmlspecialchars($keywords ?? '', ENT_QUOTES, 'UTF-8');
     $description = htmlspecialchars($description ?? '', ENT_QUOTES, 'UTF-8');
     $template_id = filter_var($template_id, FILTER_VALIDATE_INT);
+    $language = SITE_LANGUAGE;
+    $logo = SITE_LOGO;
 
     // Fetch header from template if ID is valid
     $header = '';
@@ -246,7 +251,7 @@ function front_header($title = null, $keywords = null, $description = null, $lib
 
 return <<<HTML
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{$language}">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -256,9 +261,10 @@ return <<<HTML
     <meta name="title" content="{$title}">
     <meta name="description" content="{$description}">
     <meta name="keywords" content="{$keywords}">
-    <meta name="language" content="English">
+    <meta name="language" content="{$language}">
 
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{$logo}" type="image/png">
+    <link rel="apple-touch-icon" href="{$logo}">
 
     <!-- Organization Schema -->
     {$organization_schema}
