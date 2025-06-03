@@ -763,10 +763,11 @@ $(document).ready(function(){
 
 <!-- Category News Carousels Ends -->
 
+<?php 
+echo replace_sysvari(front_script(null, $template_id), getcwd() . "/");
+?>
+
 <?php
 echo replace_sysvari(front_footer(null, $template_id), getcwd() . "/");
 ?>
 
-<?php 
-echo replace_sysvari(front_script(null, $template_id), getcwd() . "/");
-?>
