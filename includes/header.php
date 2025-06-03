@@ -205,7 +205,7 @@ function front_header($title = null, $keywords = null, $description = null, $lib
     global $and_gc;
 
     // Sanitize inputs
-    $title = htmlspecialchars($title ?? '', ENT_QUOTES, 'UTF-8');
+    $title = htmlspecialchars(html_entity_decode($title ?? ''), ENT_QUOTES, 'UTF-8');
     $keywords = htmlspecialchars($keywords ?? '', ENT_QUOTES, 'UTF-8');
     $description = htmlspecialchars($description ?? '', ENT_QUOTES, 'UTF-8');
     $template_id = filter_var($template_id, FILTER_VALIDATE_INT);
