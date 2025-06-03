@@ -26,6 +26,8 @@ define('Company', 'Ibotoempire' , '');
 ##########################Email
 define('EMAIL', $settings[4]['settings_value'] , '');
 
+##########################SITE_LANGUAGE
+define('SITE_LANGUAGE', 'en');
 
 ##########################KEY PASS
 define('KEY', $settings[5]['settings_value'] , '');

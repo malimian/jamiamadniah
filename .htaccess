@@ -9,7 +9,9 @@ RewriteEngine On
 
 
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
-RewriteRule ^js_settings\.js$ js_settings.php [L]
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+RewriteRule ^news-sitemap\.xml$ news-sitemap.php [L,QSA]
+
 RewriteRule ^robots\.txt$ robots.php [L]
 
 #RewriteRule ^([^/]*)\.html$ /info.php?url=$1 [L]
