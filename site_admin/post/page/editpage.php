@@ -26,11 +26,11 @@ if(isset($_POST['submit'])) {
 
     // New fields from SEO settings
     $canonical_url = escape($_POST['canonical_url']);
-    $meta_index = isset($_POST['meta_index']) ? 1 : 0;
-    $meta_follow = isset($_POST['meta_follow']) ? 1 : 0;
-    $meta_archive = isset($_POST['meta_archive']) ? 1 : 0;
-    $meta_imageindex = isset($_POST['meta_imageindex']) ? 1 : 0;
-    $include_in_sitemap = isset($_POST['include_in_sitemap']) ? 1 : 0;
+    $meta_index = ($_POST['meta_index'] ?? '0') === '1' ? 1 : 0;
+    $meta_follow = ($_POST['meta_follow'] ?? '0') === '1' ? 1 : 0;
+    $meta_archive = ($_POST['meta_archive'] ?? '0') === '1' ? 1 : 0;
+    $meta_imageindex = ($_POST['meta_imageindex'] ?? '0') === '1' ? 1 : 0;
+    $include_in_sitemap = ($_POST['include_in_sitemap'] ?? '0') === '1' ? 1 : 0;
     $sitemap_priority = $_POST['sitemap_priority'];
     $sitemap_changefreq = $_POST['sitemap_changefreq'];
     $social_image = escape($_POST['social_image']);
