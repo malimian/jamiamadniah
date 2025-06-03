@@ -1,7 +1,12 @@
 <?php
-if(!function_exists("header_t")) {
-    function header_t(){
-        return '
+$catid = $content['catid'];
+$catname = $content['catname'];
+
+if (!function_exists("header_t")) {
+    function header_t() {
+        global $catid;
+
+        $style = '
 
 <style>
     .owl-carousel img {
@@ -20,46 +25,49 @@ if(!function_exists("header_t")) {
         padding: 15px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         margin-bottom: 20px;
-    }
-    <?php if ($catid == 119) { /* Business-specific styles */ ?>
+    ';
+
+        // Conditionally append business-specific styles
+        if ($catid == 119) {
+            $style .= '
     .stock-ticker {
         background-color: #343a40;
         color: white;
         padding: 10px 0;
         overflow: hidden;
-    }
-    <?php } ?>
+    }';
+        }
 
-      /* Custom CSS */
+        $style .= '
+    /* Custom CSS */
     .row.g-0 .col-md-4 {
         position: relative;
         overflow: hidden;
     }
-    
+
     .row.g-0 .col-md-4 img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         object-position: center;
     }
-    
-    /* Optional: Ensure the card body takes full height */
+
     .row.g-0 .col-md-8 .card-body {
         height: 100%;
         display: flex;
         flex-direction: column;
     }
-    
-    /* Push the button to the bottom */
+
     .row.g-0 .col-md-8 .card-body a {
         margin-top: auto;
     }
-</style>
+</style>';
 
-        ';
+        return $style;
     }
 }
 ?>
+
 
 <?php
 if(!function_exists("footer_t")) {
@@ -80,8 +88,6 @@ if(!function_exists("script_t")) {
 
 // print_r($content);
 
-$catid = $content['catid'];
-$catname = $content['catname'];
 ?>
 
 
@@ -201,13 +207,18 @@ $catname = $content['catname'];
                     </div>
                     
                     <div class="text-center mt-4">
-                        <button id="load-more-btn" class="btn btn-outline-primary" data-offset="5" data-catid="<?php echo $catid; ?>">
+                        <button class="btn btn-outline-primary" id="load-more-btn"
+                            data-offset="5"
+                            data-catid="<?php echo $catid; ?>"
+                            onclick="handleLoadMore(this)">
                             Load More Analysis
                         </button>
+
                         <div id="loading-spinner" class="spinner-border text-primary d-none" role="status">
                             <span class="visually-hidden">Loading...</span>
                         </div>
                     </div>
+
                 </div>
             </div>
             
@@ -224,136 +235,144 @@ $catname = $content['catname'];
                         
                         foreach ($trending_news as $news) {
                             $not_show_more_then_once[] = $news['pid'];
+                            // Extract keywords from title and content
+                            $keywords = extractKeywords($news['page_title'] . ' ' . $news['page_desc'], 3);
                         ?>
                         <div class="mb-3 pb-3 border-bottom">
                             <h6><a href="<?php echo $news['page_url']; ?>"><?php echo mb_strimwidth($news['page_title'], 0, 70, "..."); ?></a></h6>
                             <small class="text-muted"><?php echo timeAgo($news['createdon']); ?> | <?php echo $news['views']; ?> views</small>
+                            <div class="mt-2">
+                                <?php foreach ($keywords as $keyword) { ?>
+                                    <a href="https://ibspotlight.com/search.php?q=<?php echo urlencode($keyword); ?>" class="badge bg-secondary text-decoration-none me-1"><?php echo htmlspecialchars($keyword); ?></a>
+                                <?php } ?>
+                            </div>
                         </div>
                         <?php } ?>
                     </div>
                 </div>
                 
-                <?php if ($catid == 119) { /* Business-specific sidebar items */ ?>
-                <!-- Business Events Calendar -->
+                <!-- News from ibspotlight.com -->
                 <div class="card mb-4">
                     <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Upcoming Business Events</h5>
+                        <h5 class="mb-0">Related News from IB Spotlight</h5>
                     </div>
                     <div class="card-body">
+                        <?php
+                        // Fetch related news from ibspotlight.com API or RSS feed
+                        $ibspotlight_news = fetchIbSpotlightNews($catname, 5);
+                        
+                        if (!empty($ibspotlight_news)) {
+                            foreach ($ibspotlight_news as $news) {
+                        ?>
                         <div class="mb-3 pb-3 border-bottom">
-                            <h6>Federal Reserve Meeting</h6>
-                            <small class="text-muted">June 14, 2023 | Interest Rate Decision</small>
+                            <?php if (!empty($news['image'])) { ?>
+                                <img src="<?php echo htmlspecialchars($news['image']); ?>" class="img-fluid mb-2" alt="<?php echo htmlspecialchars($news['title']); ?>">
+                            <?php } ?>
+                            <h6><a href="<?php echo htmlspecialchars($news['url']); ?>" target="_blank"><?php echo mb_strimwidth(htmlspecialchars($news['title']), 0, 70, "..."); ?></a></h6>
+                            <small class="text-muted"><?php echo htmlspecialchars($news['date']); ?></small>
+                            <?php if (!empty($news['keywords'])) { ?>
+                                <div class="mt-2">
+                                    <?php foreach ($news['keywords'] as $keyword) { ?>
+                                        <a href="https://ibspotlight.com/search.php?q=<?php echo urlencode($keyword); ?>" class="badge bg-secondary text-decoration-none me-1"><?php echo htmlspecialchars($keyword); ?></a>
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
                         </div>
-                        <div class="mb-3 pb-3 border-bottom">
-                            <h6>Apple Product Launch</h6>
-                            <small class="text-muted">June 20, 2023 | WWDC Conference</small>
-                        </div>
-                        <div class="mb-3">
-                            <h6>Earnings Report: Amazon</h6>
-                            <small class="text-muted">July 27, 2023 | Q2 Results</small>
-                        </div>
+                        <?php
+                            }
+                        } else {
+                            echo '<p>No related news found.</p>';
+                        }
+                        ?>
                     </div>
                 </div>
-                
-                <!-- Business Leaders -->
-                <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Business Leaders</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-4 text-center mb-3">
-                                <img src="https://via.placeholder.com/80" class="rounded-circle mb-2" alt="CEO">
-                                <h6 class="mb-0">Elon Musk</h6>
-                                <small>Tesla</small>
-                            </div>
-                            <div class="col-4 text-center mb-3">
-                                <img src="https://via.placeholder.com/80" class="rounded-circle mb-2" alt="CEO">
-                                <h6 class="mb-0">Tim Cook</h6>
-                                <small>Apple</small>
-                            </div>
-                            <div class="col-4 text-center mb-3">
-                                <img src="https://via.placeholder.com/80" class="rounded-circle mb-2" alt="CEO">
-                                <h6 class="mb-0">Satya Nadella</h6>
-                                <small>Microsoft</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <?php } elseif ($catid == 120) { /* Health-specific sidebar items */ ?>
-                <!-- Health Resources -->
-                <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Health Resources</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action">Health Tips</a>
-                            <a href="#" class="list-group-item list-group-item-action">Doctor Finder</a>
-                            <a href="#" class="list-group-item list-group-item-action">Symptom Checker</a>
-                            <a href="#" class="list-group-item list-group-item-action">Nutrition Guide</a>
-                        </div>
-                    </div>
-                </div>
-                <?php } elseif ($catid == 121) { /* Sports-specific sidebar items */ ?>
-                <!-- Sports Scores -->
-                <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Live Scores</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3 pb-3 border-bottom">
-                            <h6>NBA: Lakers vs. Warriors</h6>
-                            <small class="text-muted">Q3: 89-85 (Lakers lead)</small>
-                        </div>
-                        <div class="mb-3 pb-3 border-bottom">
-                            <h6>NFL: Patriots vs. Dolphins</h6>
-                            <small class="text-muted">3rd Quarter: 21-14</small>
-                        </div>
-                        <div class="mb-3">
-                            <h6>Soccer: Premier League</h6>
-                            <small class="text-muted">Man Utd 2 - 1 Chelsea (FT)</small>
-                        </div>
-                    </div>
-                </div>
-                <?php } elseif ($catid == 122) { /* Technology-specific sidebar items */ ?>
-                <!-- Tech Updates -->
-                <div class="card mb-4">
-                    <div class="card-header bg-primary text-white">
-                        <h5 class="mb-0">Tech Updates</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3 pb-3 border-bottom">
-                            <h6>New iPhone Release</h6>
-                            <small class="text-muted">Coming September 2023</small>
-                        </div>
-                        <div class="mb-3 pb-3 border-bottom">
-                            <h6>Windows 12 Preview</h6>
-                            <small class="text-muted">Available for developers</small>
-                        </div>
-                        <div class="mb-3">
-                            <h6>AI Breakthrough</h6>
-                            <small class="text-muted">New model beats human performance</small>
-                        </div>
-                    </div>
-                </div>
-                <?php } ?>
-                
-                <!-- Category Resources -->
+
+                <!-- Category Resources with keyword links -->
                 <div class="card">
                     <div class="card-header bg-primary text-white">
                         <h5 class="mb-0"><?php echo $catname; ?> Resources</h5>
                     </div>
                     <div class="card-body">
+                        <?php
+                        $popular_keywords = getPopularKeywords($catid, 8);
+                        if (!empty($popular_keywords)) {
+                            echo '<div class="mb-3">';
+                            echo '<h6>Popular Keywords</h6>';
+                            foreach (array_chunk($popular_keywords, 4) as $keyword_group) {
+                                echo '<div class="d-flex flex-wrap mb-2">';
+                                foreach ($keyword_group as $keyword) {
+                                    echo '<a href="https://ibspotlight.com/search.php?q=' . urlencode($keyword['keyword']) . '" class="badge bg-light text-dark text-decoration-none me-1 mb-1">' . htmlspecialchars($keyword['keyword']) . '</a>';
+                                }
+                                echo '</div>';
+                            }
+                            echo '</div>';
+                        }
+                        ?>
                         <div class="list-group">
-                            <a href="#" class="list-group-item list-group-item-action"><?php echo $catname; ?> Guides</a>
-                            <a href="#" class="list-group-item list-group-item-action">Latest Research</a>
-                            <a href="#" class="list-group-item list-group-item-action">Trending Topics</a>
-                            <a href="#" class="list-group-item list-group-item-action">Expert Interviews</a>
+                            <a href="https://ibspotlight.com/search.php?q=<?php echo urlencode($catname . ' guides'); ?>" class="list-group-item list-group-item-action"><?php echo $catname; ?> Guides</a>
+                            <a href="https://ibspotlight.com/search.php?q=<?php echo urlencode($catname . ' research'); ?>" class="list-group-item list-group-item-action">Latest Research</a>
+                            <a href="https://ibspotlight.com/search.php?q=<?php echo urlencode($catname . ' trends'); ?>" class="list-group-item list-group-item-action">Trending Topics</a>
+                            <a href="https://ibspotlight.com/search.php?q=<?php echo urlencode($catname . ' experts'); ?>" class="list-group-item list-group-item-action">Expert Interviews</a>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <?php
+            // Helper function to extract keywords from text
+            function extractKeywords($text, $count = 3) {
+                // Remove stop words and extract meaningful keywords
+                $stopWords = ['the', 'and', 'for', 'with', 'that', 'this', 'are', 'was', 'were', 'has', 'have'];
+                $words = str_word_count(strtolower($text), 1);
+                $words = array_diff($words, $stopWords);
+                $wordCounts = array_count_values($words);
+                arsort($wordCounts);
+                return array_slice(array_keys($wordCounts), 0, $count);
+            }
+
+            // Helper function to fetch news from IB Spotlight (mock implementation)
+            function fetchIbSpotlightNews($category, $limit = 5) {
+                // In a real implementation, you would call IB Spotlight's API or parse their RSS feed
+                // Here's a mock implementation for demonstration
+                
+                $mockNews = [
+                    [
+                        'title' => 'Latest developments in ' . $category,
+                        'url' => 'https://ibspotlight.com/article/123',
+                        'image' => 'https://ibspotlight.com/images/news1.jpg',
+                        'date' => '2 days ago',
+                        'keywords' => [$category, 'trends', 'update']
+                    ],
+                    [
+                        'title' => 'Expert analysis on ' . $category . ' market',
+                        'url' => 'https://ibspotlight.com/article/124',
+                        'image' => 'https://ibspotlight.com/images/news2.jpg',
+                        'date' => '3 days ago',
+                        'keywords' => [$category, 'analysis', 'market']
+                    ],
+                    // Add more mock news items as needed
+                ];
+                
+                return array_slice($mockNews, 0, $limit);
+            }
+
+            // Helper function to get popular keywords for a category
+            function getPopularKeywords($catid, $limit = 5) {
+                // In a real implementation, query your database for popular keywords
+                // Here's a mock implementation
+                
+                $commonKeywords = [
+                    ['keyword' => 'trends', 'count' => 42],
+                    ['keyword' => 'analysis', 'count' => 35],
+                    ['keyword' => 'market', 'count' => 28],
+                    ['keyword' => 'report', 'count' => 25],
+                    ['keyword' => 'update', 'count' => 22],
+                ];
+                
+                return array_slice($commonKeywords, 0, $limit);
+            }
+            ?>
+            <!-- Sidebar -->
         </div>
     </div>
 </div>
