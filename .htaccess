@@ -27,7 +27,7 @@ ErrorDocument 404 /error404.html
 #ModPagespeed off
 
 <IfModule pagespeed_module>
-    ModPagespeed off
+    ModPagespeed on
 </IfModule>
 
 # Block and redirect access to protected folders
