@@ -107,14 +107,14 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                     <div class="row g-4 align-items-center">
                         <div class="col-9">
                             <h3><i class="fas fa-user"></i> Author <?php
-                            if($content['createdby'] == 0)
+                            if($content['pages_createdby'] == 0)
                                 echo $content['article_author'];
                             else
                                 echo $user['fullname'];
                         ?></h3>
                         </div>
                         <?php 
-                        if($content['createdby'] == 0){
+                        if($content['pages_createdby'] == 0){
                         ?>
                          <div class="col-lg-12">
                             <a href="<?php
