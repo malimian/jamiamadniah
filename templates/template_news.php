@@ -114,7 +114,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
         </a>
 
         <!-- Instagram (link to profile, no sharing support) -->
-        <a href="https://www.instagram.com/yourprofile"
+        <a href="{INSTAGRAM}"
            target="_blank"
            class="btn btn-square rounded-circle border-primary text-dark me-2 mb-2">
             <i class="fab fa-instagram link-hover"></i>
