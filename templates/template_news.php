@@ -96,13 +96,66 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
 
                 <div class="tab-class">
                     <div class="d-flex justify-content-between border-bottom mb-4">
-                        <div class="d-flex align-items-center">
-                            <h5 class="mb-0 me-3">Share:</h5>
-                            <i class="fab fa-facebook-f link-hover btn btn-square rounded-circle border-primary text-dark me-2"></i>
-                            <i class="btn fab bi-twitter link-hover btn btn-square rounded-circle border-primary text-dark me-2"></i>
-                            <i class="btn fab fa-instagram link-hover btn btn-square rounded-circle border-primary text-dark me-2"></i>
-                            <i class="btn fab fa-linkedin-in link-hover btn btn-square rounded-circle border-primary text-dark"></i>
-                        </div>
+                       <div class="d-flex align-items-center flex-wrap">
+        <h5 class="mb-0 me-3">Share:</h5>
+
+        <!-- Facebook -->
+        <a href="https://www.facebook.com/sharer/sharer.php?u=<?=BASE_URL?><?php echo $content['page_url']?>"
+           target="_blank"
+           class="btn btn-square rounded-circle border-primary text-dark me-2 mb-2">
+            <i class="fab fa-facebook-f link-hover"></i>
+        </a>
+
+        <!-- Twitter -->
+        <a href="https://twitter.com/intent/tweet?url=<?=BASE_URL?><?php echo $content['page_url']?>&text=Check+this+out!"
+           target="_blank"
+           class="btn btn-square rounded-circle border-primary text-dark me-2 mb-2">
+            <i class="fab fa-twitter link-hover"></i>
+        </a>
+
+        <!-- Instagram (link to profile, no sharing support) -->
+        <a href="https://www.instagram.com/yourprofile"
+           target="_blank"
+           class="btn btn-square rounded-circle border-primary text-dark me-2 mb-2">
+            <i class="fab fa-instagram link-hover"></i>
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?=BASE_URL?><?php echo $content['page_url']?>"
+           target="_blank"
+           class="btn btn-square rounded-circle border-primary text-dark me-2 mb-2">
+            <i class="fab fa-linkedin-in link-hover"></i>
+        </a>
+
+        <!-- WhatsApp -->
+        <a href="https://api.whatsapp.com/send?text=<?=BASE_URL?><?php echo $content['page_url']?>"
+           target="_blank"
+           class="btn btn-square rounded-circle border-primary text-dark me-2 mb-2">
+            <i class="fab fa-whatsapp link-hover"></i>
+        </a>
+
+        <!-- Telegram -->
+        <a href="https://t.me/share/url?url=<?=BASE_URL?><?php echo $content['page_url']?>&text=Check+this+out!"
+           target="_blank"
+           class="btn btn-square rounded-circle border-primary text-dark me-2 mb-2">
+            <i class="fab fa-telegram-plane link-hover"></i>
+        </a>
+
+        <!-- Pinterest -->
+        <a href="https://pinterest.com/pin/create/button/?url=<?=BASE_URL?><?php echo $content['page_url']?>"
+           target="_blank"
+           class="btn btn-square rounded-circle border-primary text-dark me-2 mb-2">
+            <i class="fab fa-pinterest-p link-hover"></i>
+        </a>
+
+        <!-- Reddit -->
+        <a href="https://www.reddit.com/submit?url=<?=BASE_URL?><?php echo $content['page_url']?>&title=Check+this+out!"
+           target="_blank"
+           class="btn btn-square rounded-circle border-primary text-dark mb-2">
+            <i class="fab fa-reddit-alien link-hover"></i>
+        </a>
+    </div>
+
                     </div>
                     <div class="row g-4 align-items-center">
                         <div class="col-9">
