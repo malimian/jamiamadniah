@@ -176,28 +176,49 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                                                 <i class="fab fa-facebook-f btn btn-light btn-square rounded-circle me-3"></i>
                                                 <span class="text-white">13,977 Fans</span>
                                             </a>
-                                            <a href="#" class="w-100 rounded btn btn-danger d-flex align-items-center p-3 mb-2">
+                                            <a href="{TWITTER}" class="w-100 rounded btn btn-danger d-flex align-items-center p-3 mb-2">
                                                 <i class="fab fa-twitter btn btn-light btn-square rounded-circle me-3"></i>
-                                                <span class="text-white">21,798 Follower</span>
+                                                <span class="text-white">21,798 Followers</span>
                                             </a>
-                                            <a href="#" class="w-100 rounded btn btn-warning d-flex align-items-center p-3 mb-2">
+                                            <a href="{YOUTUBE}" class="w-100 rounded btn btn-warning d-flex align-items-center p-3 mb-2">
                                                 <i class="fab fa-youtube btn btn-light btn-square rounded-circle me-3"></i>
-                                                <span class="text-white">7,999 Subscriber</span>
+                                                <span class="text-white">7,999 Subscribers</span>
                                             </a>
-                                            <a href="#" class="w-100 rounded btn btn-dark d-flex align-items-center p-3 mb-2">
+                                            <a href="{INSTAGRAM}" class="w-100 rounded btn btn-dark d-flex align-items-center p-3 mb-2">
                                                 <i class="fab fa-instagram btn btn-light btn-square rounded-circle me-3"></i>
-                                                <span class="text-white">19,764 Follower</span>
+                                                <span class="text-white">19,764 Followers</span>
                                             </a>
-                                            <a href="#" class="w-100 rounded btn btn-secondary d-flex align-items-center p-3 mb-2">
-                                                <i class="bi-cloud btn btn-light btn-square rounded-circle me-3"></i>
-                                                <span class="text-white">31,999 Subscriber</span>
+                                            <a href="{LINKEDIN}" class="w-100 rounded btn btn-secondary d-flex align-items-center p-3 mb-2">
+                                                <i class="fab fa-linkedin-in btn btn-light btn-square rounded-circle me-3"></i>
+                                                <span class="text-white">31,999 Connections</span>
                                             </a>
-                                            <a href="#" class="w-100 rounded btn btn-warning d-flex align-items-center p-3 mb-4">
-                                                <i class="fab fa-dribbble btn btn-light btn-square rounded-circle me-3"></i>
-                                                <span class="text-white">37,999 Subscriber</span>
+                                            <a href="{PINTEREST}" class="w-100 rounded btn btn-danger d-flex align-items-center p-3 mb-2">
+                                                <i class="fab fa-pinterest-p btn btn-light btn-square rounded-circle me-3"></i>
+                                                <span class="text-white">5,000 Followers</span>
+                                            </a>
+                                            <a href="{SNAPCHAT}" class="w-100 rounded btn btn-warning d-flex align-items-center p-3 mb-2">
+                                                <i class="fab fa-snapchat-ghost btn btn-light btn-square rounded-circle me-3"></i>
+                                                <span class="text-white">9,000 Subscribers</span>
+                                            </a>
+                                            <a href="{TIKTOK}" class="w-100 rounded btn btn-dark d-flex align-items-center p-3 mb-2">
+                                                <i class="fab fa-tiktok btn btn-light btn-square rounded-circle me-3"></i>
+                                                <span class="text-white">18,000 Followers</span>
+                                            </a>
+                                            <a href="{REDDIT}" class="w-100 rounded btn btn-secondary d-flex align-items-center p-3 mb-2">
+                                                <i class="fab fa-reddit-alien btn btn-light btn-square rounded-circle me-3"></i>
+                                                <span class="text-white">2,500 Karma</span>
+                                            </a>
+                                            <a href="{WHATSAPP}" class="w-100 rounded btn btn-success d-flex align-items-center p-3 mb-2">
+                                                <i class="fab fa-whatsapp btn btn-light btn-square rounded-circle me-3"></i>
+                                                <span class="text-white">Join Chat</span>
+                                            </a>
+                                            <a href="{TELEGRAM}" class="w-100 rounded btn btn-info d-flex align-items-center p-3 mb-4">
+                                                <i class="fab fa-telegram-plane btn btn-light btn-square rounded-circle me-3"></i>
+                                                <span class="text-white">Join Channel</span>
                                             </a>
                                         </div>
                                     </div>
+
                                 <!-- Popular News Start -->
                                 <h4 class="my-4">Popular News</h4>
                                 <div class="row g-4">
