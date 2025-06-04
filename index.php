@@ -126,7 +126,7 @@ if (!empty($navbar_content)) {
                 <!-- Top Story Section -->
                 <div class="bg-light p-4 rounded">
                     <div class="news-2">
-                        <h3 class="mb-4">Trending Stories</h3>
+                        <h3 class="mb-4">Top Stories</h3>
                     </div>
                     <?php
                     $top_story = return_single_row("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
@@ -384,7 +384,7 @@ foreach ($news_categories as $new_category) {
             <!-- Life Style Section -->
             <div class="mt-5 lifestyle">
                 <div class="border-bottom mb-4">
-                    <h1 class="mb-4">Top Stories</h1>
+                    <h1 class="mb-4">Trending Stories</h1>
                 </div>
                 <div class="row g-4">
                     <?php
