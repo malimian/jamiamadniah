@@ -7,7 +7,7 @@ $not_show_more_then_once = [];
 // Fetch page data using proper URL sanitization
 $safe_url = addslashes($url); // Basic sanitization for SQL
 $content = return_single_row(
-    "SELECT page_meta_title, site_template_id, page_meta_keywords, page_meta_desc, 
+    "SELECT page_meta_title, site_template_id, page_meta_keywords, page_meta_desc, page_desc 
     page_title, featured_image, pages.createdon, pid, catname, cat_url, page_url 
     FROM pages 
     LEFT JOIN category ON pages.catid = category.catid 
