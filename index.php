@@ -207,31 +207,9 @@ if (!empty($navbar_content)) {
 $islive_streaming = return_single_ans("SELECT isactive FROM category WHERE catid = 124");
 if ($islive_streaming == 1) {
     $islive_streaming_page = return_single_row("SELECT * FROM pages WHERE catid = 124 AND isactive = 1 AND soft_delete = 0 ORDER BY createdon ASC");
-?>
-    <div class="container-fluid py-5 my-5 live-streaming-section" style="background: linear-gradient(rgba(202, 203, 185, 1), rgba(202, 203, 185, 1));">
-        <div class="container">
-            <div class="row g-4 align-items-center">
-                <!-- Left Column: Live Stream Info -->
-                <div class="col-lg-7">
-                    <span class="live-badge">LIVE</span>
-                    <h1 class="mb-4 text-primary">Breaking News Live</h1>
-                    <h2 class="mb-4 text-dark">Watch Latest Updates in Real-Time</h2>
-                    <p class="text-dark mb-4 pb-2">Stay connected with 24/7 live news coverage. Get real-time updates on breaking news, trending topics, and exclusive reports.</p>
-                    <a href="https://www.youtube.com/c/YourNewsChannel" class="btn btn-watch mt-3" target="_blank">
-                        <i class="bi bi-play-circle"></i> Watch on YouTube
-                    </a>
-                </div>
 
-                <!-- Right Column: Live Stream Video -->
-                <div class="col-lg-5">
-                    <div class="live-video rounded overflow-hidden">
-                        <iframe class="w-100" height="300" src="https://www.youtube.com/embed/YDfiTGGPYCk?si=Z1M0lOmqFtiDQ9G3&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-<?php } ?>
+        echo $content['page_desc'];
+ } ?>
 <!-- Breaking News Live Section End -->
 
 <?php
