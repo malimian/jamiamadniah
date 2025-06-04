@@ -455,7 +455,17 @@ foreach ($news_categories as $new_category) {
                             <div class="latest-news-item">
                                 <div class="bg-light rounded">
                                     <div class="rounded-top overflow-hidden">
-                                        <img src="<?php echo ABSOLUTE_IMAGEPATH.$news['featured_image']; ?>" class="img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
+                                        <?php
+                                        $featuredImage = $news['featured_image'];
+                                        $imageUrl = (filter_var($featuredImage, FILTER_VALIDATE_URL)) 
+                                            ? $featuredImage 
+                                            : ABSOLUTE_IMAGEPATH . $featuredImage;
+                                        ?>
+
+                                        <img src="<?php echo $imageUrl; ?>" 
+                                             class="img-fluid rounded-top w-100" 
+                                             alt="<?php echo htmlspecialchars($news['page_title']); ?>">
+
                                     </div>
                                     <div class="d-flex flex-column p-4">
                                         <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
