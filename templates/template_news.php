@@ -41,8 +41,6 @@ $user = return_single_row("Select username , fullname , profile_pic , details fr
 
 $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".$content['catid']);
 
-print_r($user);
-
 ?>
 
 <style type="text/css">

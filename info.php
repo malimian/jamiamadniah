@@ -25,7 +25,7 @@ $page = [];
 
 // Fetch page content
 $content = return_single_row("SELECT 
-    pages.*,
+    pages.*, pages.createdby as pages_createdby ,
     category.*, pages.isactive as page_active, pages.visibility as page_visibility
 FROM pages
 INNER JOIN category ON pages.catid = category.catid
