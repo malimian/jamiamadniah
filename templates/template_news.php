@@ -66,7 +66,18 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                     <a href="#" class="h1 display-5"><?php echo replace_sysvari($content['page_title']); ?></a>
                 </div>
                 <div class="position-relative rounded overflow-hidden mb-3">
-                    <img src="<?php echo $content['featured_image']; ?>" title="<?php echo $content['page_title']; ?>" alt="<?php echo $content['page_title']; ?>" class="img-zoomin img-fluid rounded w-100" alt="">
+                        <?php
+                        $featuredImage = $content['featured_image'];
+                        $imageUrl = (filter_var($featuredImage, FILTER_VALIDATE_URL)) 
+                            ? $featuredImage 
+                            : ABSOLUTE_IMAGEPATH . $featuredImage;
+                        ?>
+
+                        <img src="<?php echo $imageUrl; ?>" 
+                             title="<?php echo htmlspecialchars($content['page_title']); ?>" 
+                             alt="<?php echo htmlspecialchars($content['page_title']); ?>" 
+                             class="img-zoomin img-fluid rounded w-100">
+
                     <div class="position-absolute text-white px-4 py-2 bg-primary rounded" style="top: 20px; right: 20px;">
                         <?php echo $news_categories[0]['catname']; ?> <!-- Dynamic Category Name -->
                     </div>
