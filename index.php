@@ -445,7 +445,7 @@ foreach ($news_categories as $new_category) {
                     <div class="whats-carousel owl-carousel most-views-news">
                     <?php
                         // Fetch most viewed news articles
-                        $editor_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 6 AND isactive = 1 AND soft_delete = 0 
+                        $editor_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 AND createdby != 0
                             ORDER BY views DESC LIMIT 5");
 
                         foreach ($editor_news as $news) {
