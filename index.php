@@ -418,7 +418,7 @@ foreach ($news_categories as $new_category) {
 
                 <!-- Editor Choice Start -->
                     <div class="border-bottom mb-4">
-                        <h2 class="my-4">Editors Choice</h2>
+                        <h2 class="my-4">Editors Top News</h2>
                     </div>
                     <div class="whats-carousel owl-carousel most-views-news">
                     <?php
