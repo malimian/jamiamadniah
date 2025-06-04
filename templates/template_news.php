@@ -107,7 +107,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
         </a>
 
         <!-- Twitter -->
-        <a href="https://twitter.com/intent/tweet?url=<?=BASE_URL?><?php echo $content['page_url']?>&text=Check+this+out!"
+        <a href="https://twitter.com/intent/tweet?url=<?=BASE_URL?><?php echo $content['page_url']?>&text=<?php echo urlencode($content['page_title']); ?>"
            target="_blank"
            class="btn btn-square rounded-circle border-primary text-dark me-2 mb-2">
             <i class="fab fa-twitter link-hover"></i>
@@ -135,7 +135,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
         </a>
 
         <!-- Telegram -->
-        <a href="https://t.me/share/url?url=<?=BASE_URL?><?php echo $content['page_url']?>&text=Check+this+out!"
+        <a href="https://t.me/share/url?url=<?=BASE_URL?><?php echo $content['page_url']?>&text=<?php echo urlencode($content['page_title']); ?>"
            target="_blank"
            class="btn btn-square rounded-circle border-primary text-dark me-2 mb-2">
             <i class="fab fa-telegram-plane link-hover"></i>
@@ -149,7 +149,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
         </a>
 
         <!-- Reddit -->
-        <a href="https://www.reddit.com/submit?url=<?=BASE_URL?><?php echo $content['page_url']?>&title=Check+this+out!"
+        <a href="https://www.reddit.com/submit?url=<?=BASE_URL?><?php echo $content['page_url']?>&title=<?php echo urlencode($content['page_title']); ?>"
            target="_blank"
            class="btn btn-square rounded-circle border-primary text-dark mb-2">
             <i class="fab fa-reddit-alien link-hover"></i>
