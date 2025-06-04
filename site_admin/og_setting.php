@@ -44,12 +44,20 @@ AdminHeader(
                 grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
             }
         }
+        .gallery-select-btn {
+            cursor: pointer;
+        }
+        .seo-message {
+            background-color: #f8f9fa;
+            border-left: 4px solid #17a2b8;
+            padding: 10px;
+            margin-bottom: 15px;
+        }
     </style>
     '
 );
 
 ?>
-
 
 <body id="page-top">
 
@@ -100,6 +108,11 @@ AdminHeader(
                                 <i class="fa fa-share-alt"></i> Social Media
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="seo-tab" data-toggle="tab" href="#seo" role="tab" aria-controls="seo" aria-selected="false">
+                                <i class="fa fa-search"></i> SEO
+                            </a>
+                        </li>
                     </ul>
                     
                     <!-- Tabs Content -->
@@ -144,6 +157,11 @@ AdminHeader(
                                             <span class="input-group-text"><i class="fa fa-image"></i></span>
                                         </div>
                                         <input type="text" class="form-control" placeholder="Enter Logo" id="logo" value="<?php echo $setting[8]['settings_value']?>">
+                                        <div class="input-group-append">
+                                            <button id="logo" class="btn btn-outline-secondary gallery-select-btn" type="button" onclick="OpenMediaGallery('logo' , null)">
+                                                <i class="fa fa-folder-open"></i> Gallery
+                                            </button>
+                                        </div>
                                     </div>
                                     <small class="form-text text-muted">Use Short Code <?php echo $setting[8]['short_code']?></small>
                                 </div>
@@ -211,56 +229,85 @@ AdminHeader(
                                     <small class="form-text text-muted">Use Short Code <?php echo $setting[10]['short_code']?></small>
                                 </div>
                                 
-                    <div class="form-group col-sm-6">
-                        <label for="shop_location" class="col-form-label">
-                            <i class="fa fa-map-marker"></i> Shop Location
-                        </label>
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
-                            </div>
-                            <textarea class="form-control" placeholder="Enter Shop Location" id="shop_location" name="shop_location" rows="2"><?php echo isset($setting[17]['settings_value']) ? htmlspecialchars($setting[17]['settings_value']) : '' ?></textarea>
-                        </div>
-                        <small class="form-text text-muted">Use Short Code {SHOP_LOCATION}</small>
-                        
-                        <!-- Help Box for Address Format -->
-                        <div class="alert alert-info mt-2" id="addressFormatHelp">
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h6><i class="fa fa-info-circle"></i> Address Format Guide</h6>
-                            <p>For proper parsing in organization schema, please use this format:</p>
-                            <div class="bg-light p-2 mb-2">
-                                <code>[Street Address] [City] [State/Province] [Postal Code] [Country]</code>
-                            </div>
-                            <p class="mb-1"><strong>Example:</strong></p>
-                            <ul class="list-unstyled">
-                                <li><code>6101 Cherry Avenue Suite 102A - 206 Fontana CA 92336 US</code></li>
-                                <li><code>NO. 342 - London Oxford Street London UK 012 United Kingdom</code></li>
-                            </ul>
-                            <p class="mb-0"><small>Note: Country code can be either full name (United States) or 2-letter code (US)</small></p>
-                        </div>
-                    </div>
+                                <div class="form-group col-sm-6">
+                                    <label for="default_language" class="col-form-label">
+                                        <i class="fa fa-language"></i> Default Language
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-language"></i></span>
+                                        </div>
+                                        <select id="default_language" class="form-control">
+                                            <?php
+                                            $languages = [
+                                                'en' => 'English',
+                                                'es' => 'Spanish',
+                                                'fr' => 'French',
+                                                'de' => 'German',
+                                                'it' => 'Italian',
+                                                'pt' => 'Portuguese',
+                                                'ru' => 'Russian',
+                                                'zh' => 'Chinese',
+                                                'ja' => 'Japanese',
+                                                'ar' => 'Arabic',
+                                                'ur' => 'Urdu',
+                                                'tr' => 'Turkish',
+                                                'ko' => 'Korean',
+                                                'hi' => 'Hindi',
+                                                'fa' => 'Persian (Farsi)',
+                                                'ms' => 'Malay',
+                                                'id' => 'Indonesian',
+                                                'nl' => 'Dutch',
+                                                'sv' => 'Swedish',
+                                                'pl' => 'Polish',
+                                                'th' => 'Thai',
+                                            ];
 
-                    <!-- Optional JavaScript to toggle help visibility -->
-                    <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                        // Toggle help box when clicking on the help icon
-                        const helpIcon = document.createElement('a');
-                        helpIcon.href = '#';
-                        helpIcon.className = 'text-info ml-2';
-                        helpIcon.innerHTML = '<i class="fa fa-question-circle"></i>';
-                        helpIcon.onclick = function(e) {
-                            e.preventDefault();
-                            document.getElementById('addressFormatHelp').classList.toggle('d-none');
-                        };
-                        document.querySelector('label[for="shop_location"]').appendChild(helpIcon);
-                        
-                        // Initialize help as visible
-                        document.getElementById('addressFormatHelp').classList.remove('d-none');
-                    });
-                    </script>
+                                            $selectedLang = isset($setting[18]['settings_value']) ? $setting[18]['settings_value'] : 'en';
 
+                                            foreach ($languages as $code => $name) {
+                                                $selected = ($selectedLang == $code) ? 'selected' : '';
+                                                echo "<option value=\"$code\" $selected>$name ($code)</option>";
+                                            }
+                                            ?>
+                                        </select>
+
+                                    </div>
+                                    <small class="form-text text-muted">Default language for the website (2-letter code)</small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group col-sm-12">
+                                    <label for="shop_location" class="col-form-label">
+                                        <i class="fa fa-map-marker"></i> Shop Location
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-map-marker"></i></span>
+                                        </div>
+                                        <textarea class="form-control" placeholder="Enter Shop Location" id="shop_location" name="shop_location" rows="2"><?php echo isset($setting[17]['settings_value']) ? htmlspecialchars($setting[17]['settings_value']) : '' ?></textarea>
+                                    </div>
+                                    <small class="form-text text-muted">Use Short Code {SHOP_LOCATION}</small>
+                                    
+                                    <!-- Help Box for Address Format -->
+                                    <div class="alert alert-info mt-2" id="addressFormatHelp">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h6><i class="fa fa-info-circle"></i> Address Format Guide</h6>
+                                        <p>For proper parsing in organization schema, please use this format:</p>
+                                        <div class="bg-light p-2 mb-2">
+                                            <code>[Street Address] [City] [State/Province] [Postal Code] [Country]</code>
+                                        </div>
+                                        <p class="mb-1"><strong>Example:</strong></p>
+                                        <ul class="list-unstyled">
+                                            <li><code>6101 Cherry Avenue Suite 102A - 206 Fontana CA 92336 US</code></li>
+                                            <li><code>NO. 342 - London Oxford Street London UK 012 United Kingdom</code></li>
+                                        </ul>
+                                        <p class="mb-0"><small>Note: Country code can be either full name (United States) or 2-letter code (US)</small></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
@@ -370,9 +417,24 @@ AdminHeader(
                                     <small class="form-text text-muted">Use Short Code <?php echo $setting[11]['short_code']?></small>
                                 </div>
                             </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group col-sm-6">
+                                    <label for="colFormLabel" class="col-form-label">
+                                        <i class="fa fa-video-camera"></i> Video-Path
+                                    </label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fa fa-video-camera"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" placeholder="Enter Video Path" id="video_path" value="<?php echo isset($setting[19]['settings_value']) ? $setting[19]['settings_value'] : '' ?>">
+                                    </div>
+                                    <small class="form-text text-muted">Path where video files are stored</small>
+                                </div>
+                            </div>
                         </div>
                         
-                        <!-- Social Media Tab -->
+                        <!-- Social Media Tab - Original Code -->
                         <div class="tab-pane fade" id="social" role="tabpanel" aria-labelledby="social-tab">
                             <div class="social-media-grid">
                                 <?php 
@@ -416,6 +478,52 @@ AdminHeader(
                                 ?>
                             </div>
                         </div>
+                        
+                        <!-- SEO Tab -->
+                        <div class="tab-pane fade" id="seo" role="tabpanel" aria-labelledby="seo-tab">
+                            <div class="seo-message">
+                                <i class="fa fa-info-circle"></i> These meta tags will be used as defaults when individual pages don't have their own meta tags defined.
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="meta_title" class="col-form-label">
+                                    <i class="fa fa-header"></i> Meta Title
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-tag"></i></span>
+                                    </div>
+                                    <input type="text" class="form-control" placeholder="Enter Meta Title" id="meta_title" name="meta_title" value="<?php echo isset($setting[30]['settings_value']) ? htmlspecialchars($setting[30]['settings_value']) : '' ?>">
+                                </div>
+                                <small class="form-text text-muted">Recommended length: 50-60 characters</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="meta_description" class="col-form-label">
+                                    <i class="fa fa-align-left"></i> Meta Description
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-align-left"></i></span>
+                                    </div>
+                                    <textarea class="form-control" placeholder="Enter Meta Description" id="meta_description" name="meta_description" rows="3"><?php echo isset($setting[31]['settings_value']) ? htmlspecialchars($setting[31]['settings_value']) : '' ?></textarea>
+                                </div>
+                                <small class="form-text text-muted">Recommended length: 150-160 characters</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="meta_keywords" class="col-form-label">
+                                    <i class="fa fa-key"></i> Meta Keywords
+                                </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text"><i class="fa fa-key"></i></span>
+                                    </div>
+                                    <textarea class="form-control" placeholder="Enter Meta Keywords (comma separated)" id="meta_keywords" name="meta_keywords" rows="2"><?php echo isset($setting[32]['settings_value']) ? htmlspecialchars($setting[32]['settings_value']) : '' ?></textarea>
+                                </div>
+                                <small class="form-text text-muted">Separate keywords with commas (e.g., keyword1, keyword2, keyword3)</small>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Save Button -->
@@ -431,10 +539,33 @@ AdminHeader(
         </div>
         <!-- /.content-wrapper -->
 
+        <!-- Gallery Modal -->
+        <div class="modal fade" id="galleryModal" tabindex="-1" role="dialog" aria-labelledby="galleryModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="galleryModalLabel">Select Image</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" id="galleryImages">
+                            <!-- Images will be loaded here via AJAX -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="selectGalleryImage">Select Image</button>
+                    </div>
+                </div>
+            </div>
+        </div>
                         
         <script type="text/javascript" src="js/og_setting/og_setting.js"></script>
 
     </div>
     <!-- /#wrapper -->
+    <?php echo include_module('modules/upload_image.php', null); ?>
 
     <?php include 'includes/footer.php'; ?>

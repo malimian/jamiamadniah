@@ -504,7 +504,7 @@ AdminHeader(
                             <label for="postStatus">Status:</label>
                             <select id="is_active" name="is_active" class="form-control">
                                 <option value="0" <?php echo ($page['isactive'] == 0) ? 'selected' : ''; ?>>Draft</option>
-                                <option value="1" <?php echo ($page['isactive'] == 1) ? 'selected' : ''; ?>>Published</option>
+                                <option value="1" <?php echo ($page['isactive'] == 1) ? 'selected' : ''; ?>>Publish</option>
                             </select>
                         </div>
                         <div class="form-group">
