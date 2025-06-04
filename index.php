@@ -126,7 +126,7 @@ if (!empty($navbar_content)) {
                 <!-- Top Story Section -->
                 <div class="bg-light p-4 rounded">
                     <div class="news-2">
-                        <h3 class="mb-4">Top Story</h3>
+                        <h3 class="mb-4">Trending Stories</h3>
                     </div>
                     <?php
                     $top_story = return_single_row("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
