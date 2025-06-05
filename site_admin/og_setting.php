@@ -263,7 +263,7 @@ AdminHeader(
                                                 'th' => 'Thai',
                                             ];
 
-                                            $selectedLang = isset($setting[18]['settings_value']) ? $setting[18]['settings_value'] : 'en';
+                                            $selectedLang = isset($setting[30]['settings_value']) ? $setting[30]['settings_value'] : 'en';
 
                                             foreach ($languages as $code => $name) {
                                                 $selected = ($selectedLang == $code) ? 'selected' : '';
@@ -275,7 +275,7 @@ AdminHeader(
                                     </div>
                                     <small class="form-text text-muted">Default language for the website (2-letter code)</small>
                                 </div>
-                            </div>
+                            </div> 
                             
                             <div class="form-row">
                                 <div class="form-group col-sm-12">
@@ -427,7 +427,7 @@ AdminHeader(
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fa fa-video-camera"></i></span>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="Enter Video Path" id="video_path" value="<?php echo isset($setting[19]['settings_value']) ? $setting[19]['settings_value'] : '' ?>">
+                                        <input type="text" class="form-control" placeholder="Enter Video Path" id="video_path" value="<?php echo isset($setting[29]['settings_value']) ? $setting[29]['settings_value'] : '' ?>">
                                     </div>
                                     <small class="form-text text-muted">Path where video files are stored</small>
                                 </div>
