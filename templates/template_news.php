@@ -188,7 +188,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
         <div class="row align-items-center">
             <?php if(!empty($user['profile_pic'])): ?>
             <div class="col-md-3 col-4 mb-3 mb-md-0">
-                <img src="<?= htmlspecialchars($user['profile_pic']) ?>" 
+                <img src="<?= ABSOLUTE_IMAGEPATH.htmlspecialchars($user['profile_pic']) ?>" 
                      class="img-fluid rounded-circle author-avatar shadow"
                      alt="<?= htmlspecialchars($user['fullname'] ?? 'Author') ?>">
             </div>
@@ -214,7 +214,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                 
                 <?php if(!empty($user['details'])): ?>
                 <div class="author-bio mb-3">
-                    <?= nl2br(htmlspecialchars($user['details'])) ?>
+                    <?= nl2br(($user['details'])) ?>
                 </div>
                 <?php endif; ?>
                 
