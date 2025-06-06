@@ -62,8 +62,8 @@ if(!function_exists("script_t")) {
 
 ?>
 
-<?php 
-$user = return_single_row("Select username , fullname , profile_pic , details from loginuser Where soft_delete = 0 and isactive = 1  and id = ".$content['pages_createdby']);
+<?php
+$user = return_single_row("SELECT username, fullname, profile_pic, details, emailaddress, website, company, company_title, country, city, state, address, phonenumber, mobile_phone FROM loginuser WHERE soft_delete = 0 AND isactive = 1 AND id = ".$content['pages_createdby'] );
 
 $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".$content['catid']);
 
