@@ -308,7 +308,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
               AND p.pid != " . $content['pid'] . "
             HAVING relevance_score > 0
             ORDER BY relevance_score DESC, p.createdon DESC
-            LIMIT 4
+            LIMIT 8
         ");
         
         if (!empty($similar_articles)) {
@@ -349,7 +349,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                   AND p.soft_delete = 0
                   AND p.pid != " . $content['pid'] . "
                 ORDER BY p.views DESC
-                LIMIT 4
+                LIMIT 8
             ");
             
             foreach ($popular_articles as $article) {
