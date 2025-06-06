@@ -348,8 +348,8 @@ HTML
     <script type="text/javascript">
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
-            pageLanguage: 'en',
-            includedLanguages: 'ar,ur,en',
+            pageLanguage: '{$language}',
+            includedLanguages: 'ar,ur,{$language}',
             layout: google.translate.TranslateElement.InlineLayout.SIMPLE
         }, 'google_translate_element');
     }

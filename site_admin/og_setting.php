@@ -477,7 +477,7 @@ AdminHeader(
                                 }
                                 ?>
                             </div>
-                        </div>
+                        </div> 
                         
                         <!-- SEO Tab -->
                         <div class="tab-pane fade" id="seo" role="tabpanel" aria-labelledby="seo-tab">
