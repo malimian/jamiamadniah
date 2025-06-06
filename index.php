@@ -172,7 +172,7 @@ if (!empty($navbar_content)) {
                         <?php
                         $sidebar_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0
                          AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                         ORDER BY createdon DESC LIMIT 4");
+                         ORDER BY createdon DESC LIMIT 5");
                         foreach ($sidebar_news as $news) {
                         ?>
                             <div class="col-12">
