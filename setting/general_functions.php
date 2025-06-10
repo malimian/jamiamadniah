@@ -2,7 +2,7 @@
 
 // List of NSFW terms to block (can be expanded)
 $nsfw_terms = [
-    'profanity', 'obscenity', 'explicit', 'porn', 'xxx', 'adult', 'nsfw',
+    'profanity', 'obscenity', 'explicit', 'porn', 'xxx', 'adult',
     'fuck', 'shit', 'asshole', 'bitch', 'cunt', 'dick', 'pussy', 'cock',
     'slut', 'whore', 'faggot', 'nigger', 'retard', 'rape', 'molest',
     'kill', 'murder', 'suicide', 'terrorist', 'bomb', 'drugs', 'heroin',
