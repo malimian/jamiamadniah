@@ -384,12 +384,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
 </div>
 <!-- You may also like -->
 
-                <div class="bg-light rounded p-4">
-                    <h4 class="mb-4">Comments</h4>
-                    <div class="p-4 bg-white rounded mb-4">
-                        {comments}
-                    </div>
-                </div>
+                {comments}
             </div>
 
             <div class="col-lg-4">

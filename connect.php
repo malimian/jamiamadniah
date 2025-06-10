@@ -8,6 +8,7 @@ require_once ('db/db_helper.php');
 
 require_once ('setting/main_setting.php');
 require_once ('setting/other_setting.php');
+require_once ('setting/general_functions.php');
 
 require_once ('email/index.php');
 
