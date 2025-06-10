@@ -189,7 +189,7 @@ $comments = return_multiple_rows($query);
                                                 $comment['guest_name'];
                                             
                                             $author_avatar = $comment['user_id'] ? 
-                                                (ABSOLUTE_IMAGEPATH . $comment['profile_pic']) : 
+                                                (BASE_URL.ABSOLUTE_IMAGEPATH . $comment['profile_pic']) : 
                                                 'https://www.gravatar.com/avatar/'.md5(strtolower(trim($comment['guest_email']))).'?d=mp';
                                             
                                             $comment_date = date('M j, Y g:i a', strtotime($comment['created_at']));
