@@ -201,7 +201,7 @@ $comments = return_multiple_rows($query);
                                                 <td><?=$comment['comment_id']?></td>
                                                 <td>
                                                     <div class="comment-text">
-                                                        <?=nl2br(htmlspecialchars($comment['comment_text']))?>
+                                                        <?=nl2br(stripslashes(htmlspecialchars($comment['comment_text'])))?>
                                                         <?php if($comment['is_nsfw']): ?>
                                                             <span class="badge badge-danger ml-2">NSFW</span>
                                                         <?php endif; ?>
