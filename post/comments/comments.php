@@ -10,8 +10,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'submit_comment') {
         $page_id = (int)$_POST['page_id'];
         $user_id = isset($_SESSION['user_id']) ? (int)$_SESSION['user_id'] : 0;
-        $name = $user_id ? '' : clean($_POST['name']);
-        $email = $user_id ? '' : clean($_POST['email']);
+        $name = isset($_POST['name']) ? clean($_POST['name']) : '';
+        $email = isset($_POST['email']) ? clean($_POST['email']) : '';
         $comment = clean($_POST['comment']);
         
         if (!empty($comment)) {
