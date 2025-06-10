@@ -120,7 +120,7 @@ function render_comment($comment, $is_admin = false) {
     return '<div class="mb-4 p-3 border rounded'.($comment['is_nsfw'] ? ' bg-light' : '').'">
         '.$user_info.'
         '.($flags ? '<div class="mb-2">'.$flags.'</div>' : '').'
-        <div class="comment-text">'.nl2br(htmlspecialchars($comment['comment_text'])).'</div>
+        <div class="comment-text">'.nl2br(($comment['comment_text'])).'</div>
         '.$mod_actions.'
     </div>';
 }
