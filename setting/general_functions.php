@@ -156,8 +156,19 @@ function generate_article_meta_tags($article) {
     // Required fields with defaults
     $title = !empty($article['page_title']) ? htmlspecialchars($article['page_title'], ENT_QUOTES, 'UTF-8') : '';
     $description = !empty($article['page_meta_desc']) ? htmlspecialchars($article['page_meta_desc'], ENT_QUOTES, 'UTF-8') : '';
-    $url = !empty($article['page_canonical_url']) ? htmlspecialchars($article['page_canonical_url'], ENT_QUOTES, 'UTF-8') : '';
-    $image = !empty($article['featured_image']) ? htmlspecialchars($article['featured_image'], ENT_QUOTES, 'UTF-8') : '';
+    $url = !empty($article['page_canonical_url'])
+    ? htmlspecialchars($article['page_canonical_url'], ENT_QUOTES, 'UTF-8')
+    : BASE_URL . $article['page_url'];
+
+        $image = '';
+        if (!empty($article['featured_image'])) {
+            $image_url = htmlspecialchars($article['featured_image'], ENT_QUOTES, 'UTF-8');
+            if (filter_var($image_url, FILTER_VALIDATE_URL)) {
+                $image = $image_url;
+            } else {
+                $image = BASE_URL.ABSOLUTE_IMAGEPATH . $image_url;
+            }
+        }
 
     // Article specific fields
     $published_time = !empty($article['createdon']) ? date('c', strtotime($article['createdon'])) : '';
