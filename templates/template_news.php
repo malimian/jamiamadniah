@@ -93,10 +93,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                 </div>
                 <div class="position-relative rounded overflow-hidden mb-3">
                         <?php
-                        $featuredImage = $content['featured_image'];
-                        $imageUrl = (filter_var($featuredImage, FILTER_VALIDATE_URL)) 
-                            ? $featuredImage 
-                            : ABSOLUTE_IMAGEPATH . $featuredImage;
+                        $imageUrl = getFullImageUrl($content['featured_image']);
                         ?>
 
                         <img src="<?php echo $imageUrl; ?>" 
@@ -485,7 +482,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                                                 <div class="col-4">
                                                     <div class="rounded-circle position-relative">
                                                         <div class="overflow-hidden rounded-circle">
-                                                            <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded-circle w-100 circle-clss" alt="<?php echo $news['page_title']; ?>">
+                                                            <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded-circle w-100 circle-clss" alt="<?php echo $news['page_title']; ?>">
                                                         </div>
                                                         <span class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute" style="top: 10%; right: -10px;"><?php echo $news['views']; ?></span>
                                                     </div>

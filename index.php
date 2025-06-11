@@ -67,7 +67,7 @@ if (!empty($navbar_content)) {
                         <div class="col-4">
                             <div class="rounded-circle position-relative">
                                 <div class="overflow-hidden rounded-circle overflow-hidden">
-                                    <img src="<?php echo $latest_news['featured_image']; ?>" class="img-zoomin img-fluid rounded-circle w-100 circle-clss" alt="<?php echo $latest_news['page_title']; ?>">
+                                    <img src="<?php echo getFullImageUrl($latest_news['featured_image']); ?>" class="img-zoomin img-fluid rounded-circle w-100 circle-clss" alt="<?php echo $latest_news['page_title']; ?>">
                                 </div>
                                 <span class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute" style="top: 10%; right: -10px;"><?php echo return_single_ans("SELECT COUNT(pid) FROM pages WHERE views = 0 AND catid = " . $new_category['catid'] . " AND DATE(createdon) = CURDATE();"); ?></span>
                             </div>
@@ -111,7 +111,7 @@ if (!empty($navbar_content)) {
                     $not_show_more_then_once[] = $main_news['pid'];
                 ?>
                 <div class="position-relative overflow-hidden rounded">
-                    <img src="<?php echo $main_news['featured_image']; ?>" class="img-fluid rounded img-zoomin w-100" alt="<?php echo $main_news['page_title']; ?>">
+                    <img src="<?php echo getFullImageUrl($main_news['featured_image']); ?>" class="img-fluid rounded img-zoomin w-100" alt="<?php echo $main_news['page_title']; ?>">
                     <div class="d-flex justify-content-center px-4 position-absolute flex-wrap" style="bottom: 10px; left: 0;">
                         <a href="#" class="text-white me-3 link-hover"><i class="fa fa-clock"></i> <?php echo $main_news['article_read']; ?></a>
                         <a href="#" class="text-white me-3 link-hover"><i class="fa fa-eye"></i> <?php echo $main_news['views']; ?> Views</a>
@@ -139,7 +139,7 @@ if (!empty($navbar_content)) {
                     <div class="row g-4 align-items-center">
                         <div class="col-md-6">
                             <div class="rounded overflow-hidden">
-                                <img src="<?php echo $top_story['featured_image']; ?>" class="img-fluid rounded img-zoomin w-100" alt="<?php echo $top_story['page_title']; ?>">
+                                <img src="<?php echo getFullImageUrl($top_story['featured_image']); ?>" class="img-fluid rounded img-zoomin w-100" alt="<?php echo $top_story['page_title']; ?>">
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -180,7 +180,7 @@ if (!empty($navbar_content)) {
                                 <div class="row g-4 align-items-center">
                                     <div class="col-5">
                                         <div class="overflow-hidden rounded">
-                                            <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $news['page_title']; ?>">
+                                            <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $news['page_title']; ?>">
                                         </div>
                                     </div>
                                     <div class="col-7">
@@ -249,7 +249,7 @@ foreach ($news_categories as $new_category) {
                 <div class="latest-news-item">
                     <div class="bg-light rounded">
                         <div class="rounded-top overflow-hidden">
-                            <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
+                            <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
                         </div>
                         <div class="d-flex flex-column p-4">
                             <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 45, "..."); ?></a>
@@ -305,7 +305,7 @@ foreach ($news_categories as $new_category) {
                                         $not_show_more_then_once[] = $main_category_news['pid'];
                                         ?>
                                         <div class="position-relative rounded overflow-hidden">
-                                            <img src="<?php echo $main_category_news['featured_image']; ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $main_category_news['page_title']; ?>">
+                                            <img src="<?php echo getFullImageUrl($main_category_news['featured_image']); ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $main_category_news['page_title']; ?>">
                                             <div class="position-absolute text-white px-4 py-2 bg-primary rounded" style="top: 20px; right: 20px;">
                                                 <?php echo $category['catname']; ?>
                                             </div>
@@ -329,7 +329,7 @@ foreach ($news_categories as $new_category) {
                                             <div class="row g-4 align-items-center">
                                                 <div class="col-5">
                                                     <div class="overflow-hidden rounded">
-                                                        <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $news['page_title']; ?>">
+                                                        <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $news['page_title']; ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-7">
@@ -366,7 +366,7 @@ foreach ($news_categories as $new_category) {
                     <div class="latest-news-item">
                         <div class="bg-light rounded">
                             <div class="rounded-top overflow-hidden">
-                                <img src="<?php echo $news['featured_image']; ?>" class="img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
+                                <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
                             </div>
                             <div class="d-flex flex-column p-4">
                                 <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
@@ -398,7 +398,7 @@ foreach ($news_categories as $new_category) {
                     ?>
                         <div class="col-lg-6">
                             <div class="lifestyle-item rounded">
-                                <img src="<?php echo $news['featured_image']; ?>" class="img-fluid w-100 rounded" alt="<?php echo $news['page_title']; ?>">
+                                <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-fluid w-100 rounded" alt="<?php echo $news['page_title']; ?>">
                                 <div class="lifestyle-content">
                                     <div class="mt-auto">
                                         <a href="<?php echo $news['page_url']; ?>" class="h4 text-white link-hover"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
@@ -435,10 +435,7 @@ foreach ($news_categories as $new_category) {
                                 <div class="bg-light rounded">
                                     <div class="rounded-top overflow-hidden">
                                         <?php
-                                        $featuredImage = $news['featured_image'];
-                                        $imageUrl = (filter_var($featuredImage, FILTER_VALIDATE_URL)) 
-                                            ? $featuredImage 
-                                            : ABSOLUTE_IMAGEPATH . $featuredImage;
+                                        $imageUrl = getFullImageUrl($news['featured_image']);
                                         ?>
 
                                         <img src="<?php echo $imageUrl; ?>" 
@@ -533,7 +530,7 @@ foreach ($news_categories as $new_category) {
                                     <div class="row g-4 align-items-center">
                                         <div class="col-5">
                                             <div class="overflow-hidden rounded">
-                                                <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo htmlspecialchars($news['page_title']); ?>">
+                                                <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo htmlspecialchars($news['page_title']); ?>">
                                             </div>
                                         </div>
                                         <div class="col-7">
@@ -580,7 +577,7 @@ foreach ($news_categories as $new_category) {
                                     <div class="row g-4 align-items-center">
                                         <div class="col-5">
                                             <div class="overflow-hidden rounded">
-                                                <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $news['page_title']; ?>">
+                                                <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $news['page_title']; ?>">
                                             </div>
                                         </div>
                                         <div class="col-7">
@@ -624,7 +621,7 @@ foreach ($news_categories as $new_category) {
                 <div class="latest-news-item">
                     <div class="bg-white rounded">
                         <div class="rounded-top overflow-hidden">
-                            <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
+                            <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
                         </div>
                         <div class="d-flex flex-column p-4">
                             <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 45, "..."); ?></a>
@@ -654,7 +651,7 @@ foreach ($news_categories as $new_category) {
                 <div class="latest-news-item">
                     <div class="bg-white rounded">
                         <div class="rounded-top overflow-hidden">
-                            <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
+                            <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
                         </div>
                         <div class="d-flex flex-column p-4">
                             <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 45, "..."); ?></a>
@@ -684,7 +681,7 @@ foreach ($news_categories as $new_category) {
                 <div class="latest-news-item">
                     <div class="bg-white rounded">
                         <div class="rounded-top overflow-hidden">
-                            <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
+                            <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
                         </div>
                         <div class="d-flex flex-column p-4">
                             <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 45, "..."); ?></a>
@@ -713,7 +710,7 @@ foreach ($news_categories as $new_category) {
                 <div class="latest-news-item">
                     <div class="bg-white rounded">
                         <div class="rounded-top overflow-hidden">
-                            <img src="<?php echo $news['featured_image']; ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
+                            <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
                         </div>
                         <div class="d-flex flex-column p-4">
                             <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 45, "..."); ?></a>

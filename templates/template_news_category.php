@@ -163,7 +163,7 @@ if(!function_exists("script_t")) {
                         ?>
                         <div class="col-md-4 mb-4 img-zoomin">
                             <div class="card h-100">
-                                <img src="<?php echo $news['featured_image']; ?>" class="card-img-top" alt="<?php echo $news['page_title']; ?>">
+                                <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="card-img-top" alt="<?php echo $news['page_title']; ?>">
                                 <div class="card-body">
                                     <h5 class="card-title"><?php echo mb_strimwidth($news['page_title'], 0, 60, "..."); ?></h5>
                                     <p class="card-text"><?php echo mb_strimwidth(cleanContent($news['page_desc']), 0, 100, "..."); ?></p>
@@ -191,7 +191,7 @@ if(!function_exists("script_t")) {
                         <div class="card mb-3 analysis-item">
                             <div class="row g-0">
                                 <div class="col-md-4">
-                                    <img src="<?php echo $news['featured_image']; ?>" class="img-fluid rounded-start img-zoomin" alt="<?php echo $news['page_title']; ?>">
+                                    <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-fluid rounded-start img-zoomin" alt="<?php echo $news['page_title']; ?>">
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body">
