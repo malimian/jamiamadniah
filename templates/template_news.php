@@ -60,6 +60,16 @@ if(!function_exists("header_t")) {
                     object-fit: cover;
                     overflow: hidden;
                 }
+
+                iframe[src*="youtube.com"] {
+                  width: 100% !important;
+                  height: auto !important;
+                  aspect-ratio: 16 / 9;
+                  border: 0;
+                  max-width: 100%;
+                  border-radius: 0.5rem; /* optional */
+                  display: block;
+                }
         </style>
         ';
     }
