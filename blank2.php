@@ -25,7 +25,7 @@ $additional_libs = [
 
 // Output the header with all meta information
 echo front_header(
-    htmlspecialchars($content['page_meta_title'] ?? 'Default Page Title'),
+    htmlspecialchars($content['page_meta_title'] ?? 'Page'),
     htmlspecialchars($content['page_meta_keywords'] ?? ''),
     htmlspecialchars($content['page_meta_desc'] ?? ''),
     $additional_libs,

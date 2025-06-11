@@ -26,8 +26,6 @@ function generate_article_meta_tags($article) {
     // Generate meta tags
     $meta_tags = <<<HTML
 <!-- Primary Article Meta Tags -->
-<meta name="title" content="{$title}">
-<meta name="description" content="{$description}">
 <meta name="news_keywords" content="{$tags}">
 <meta name="author" content="{$author}">
 
