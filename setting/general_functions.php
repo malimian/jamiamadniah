@@ -1,4 +1,5 @@
 <?php
+// Comments Functions
 
 // List of NSFW terms to block (can be expanded)
 $nsfw_terms = [
@@ -141,4 +142,257 @@ function display_comments($pid, $is_admin = false) {
     }
     
     return $output;
+}
+// Header Functions
+/**
+ * Generate article-specific meta tags for news website
+ * 
+ * @param array $article Article data array
+ * @return string Generated meta tags
+ */
+function generate_article_meta_tags($article) {
+    global $and_gc;
+    
+    // Required fields with defaults
+    $title = !empty($article['page_title']) ? htmlspecialchars($article['page_title'], ENT_QUOTES, 'UTF-8') : '';
+    $description = !empty($article['page_meta_desc']) ? htmlspecialchars($article['page_meta_desc'], ENT_QUOTES, 'UTF-8') : '';
+    $url = !empty($article['page_canonical_url']) ? htmlspecialchars($article['page_canonical_url'], ENT_QUOTES, 'UTF-8') : '';
+    $image = !empty($article['featured_image']) ? htmlspecialchars($article['featured_image'], ENT_QUOTES, 'UTF-8') : '';
+
+    // Article specific fields
+    $published_time = !empty($article['createdon']) ? date('c', strtotime($article['createdon'])) : '';
+    $modified_time = !empty($article['updatedon']) ? date('c', strtotime($article['updatedon'])) : $published_time;
+    $author = !empty($article['article_author']) ? htmlspecialchars($article['article_author'], ENT_QUOTES, 'UTF-8') : '';
+    $section = !empty($article['catid']) ? (int)$article['catid'] : 0; // assuming this maps to a category ID, not name
+    $tags = !empty($article['page_meta_keywords']) ? htmlspecialchars($article['page_meta_keywords'], ENT_QUOTES, 'UTF-8') : '';
+
+    // Publisher info from settings
+    $publisher_name = defined('SITE_TITLE') ? SITE_TITLE : '';
+    $publisher_logo = defined('SITE_LOGO') ? SITE_LOGO : '';
+    
+    // Generate meta tags
+    $meta_tags = <<<HTML
+<!-- Primary Article Meta Tags -->
+<meta name="news_keywords" content="{$tags}">
+<meta name="author" content="{$author}">
+<meta name="section" content="{$section}">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="{$title}">
+<meta property="og:description" content="{$description}">
+<meta property="og:url" content="{$url}">
+<meta property="og:image" content="{$image}">
+<meta property="og:site_name" content="{$publisher_name}">
+<meta property="article:published_time" content="{$published_time}">
+<meta property="article:modified_time" content="{$modified_time}">
+<meta property="article:author" content="{$author}">
+<meta property="article:section" content="{$section}">
+<meta property="article:tag" content="{$tags}">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{$title}">
+<meta name="twitter:description" content="{$description}">
+<meta name="twitter:url" content="{$url}">
+<meta name="twitter:image" content="{$image}">
+<meta name="twitter:label1" content="Written by">
+<meta name="twitter:data1" content="{$author}">
+<meta name="twitter:label2" content="Filed under">
+<meta name="twitter:data2" content="{$section}">
+
+HTML;
+
+    return $meta_tags;
+}
+/**
+ * Generate JavaScript global variables from og_settings
+ */
+function generate_js_globals() {
+    global $and_gc;
+    
+    // Fetch all settings where call_on is 0 (all) or 1 (frontend only) and are active
+    $query = "SELECT settings_name, settings_value 
+              FROM og_settings 
+              WHERE (call_on = 0 OR call_on = 1) 
+              AND isactive = 1 
+              AND soft_delete = 0";
+    
+    $settings = return_multiple_rows($query);
+
+    $js_output = "<script>\n";
+    $js_output .= "// Auto-generated global JS variables from og_settings\n";
+    
+    if (!empty($settings)) {
+        foreach ($settings as $setting) {
+            $var_name = $setting['settings_name'];
+            $var_value = $setting['settings_value'];
+            
+            // Sanitize the variable name for JavaScript
+            $js_var_name = preg_replace('/[^a-zA-Z0-9_]/', '_', $var_name);
+            
+            // Convert numeric/boolean values and JSON strings
+            if (is_numeric($var_value)) {
+                $js_value = $var_value;
+            } elseif ($var_value === 'true' || $var_value === 'false') {
+                $js_value = $var_value;
+            } elseif (json_decode($var_value) !== null) {
+                $js_value = json_decode($var_value);
+            } else {
+                $js_value = '"' . addslashes($var_value) . '"';
+            }
+            
+            $js_output .= "var {$js_var_name} = {$js_value};\n";
+        }
+    }
+    
+    $js_output .= "</script>\n";
+    return $js_output;
+}
+
+
+/**
+ * Generate Organization Schema.org JSON-LD markup with integrated SEO settings
+ * Includes all recommended and optional fields per Google's guidelines
+ */
+function generate_organization_schema($page_meta = []) {
+    global $and_gc;
+    
+    // Fetch all settings where call_on is 0 (all) or 1 (frontend only) and are active
+    $query = "SELECT settings_name, settings_value 
+              FROM og_settings 
+              WHERE (call_on = 0 OR call_on = 1) 
+              AND isactive = 1 
+              AND soft_delete = 0";
+    
+    $settings = return_multiple_rows($query);
+    
+    // Convert settings to associative array for easy access
+    $settings_array = [];
+    foreach ($settings as $setting) {
+        $settings_array[$setting['settings_name']] = $setting['settings_value'];
+    }
+
+    // Build sameAs array from social media URLs
+    $social_fields = [
+        'FACEBOOK', 'TWITTER', 'INSTAGRAM', 'LINKEDIN', 'YOUTUBE',
+        'PINTEREST', 'SNAPCHAT', 'TIKTOK', 'REDDIT', 'WHATSAPP', 'TELEGRAM'
+    ];
+    
+    $sameAs = [];
+    foreach ($social_fields as $field) {
+        if (!empty($settings_array[$field])) {
+            $sameAs[] = $settings_array[$field];
+        }
+    }
+
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $protocol = "https://";
+    else $protocol = "http://";
+
+    // Base URL with proper formatting
+    $base_url = $protocol.rtrim($settings_array['SITE_BASE_URL'] ?? '', '/');
+
+    // Build the schema structure with page-specific overrides
+    $schema = [
+        "@context" => "https://schema.org",
+        "@type" => "Organization",
+        "name" => $settings_array['SITE_TITLE'] ?? 'Default Organization',
+        "url" => $page_meta['page_canonical_url'] ?? $base_url ?? '',
+        "logo" => $page_meta['social_image'] ?? $settings_array['SITE_LOGO'] ?? '',
+        "image" => $page_meta['social_image'] ?? $settings_array['SITE_LOGO'] ?? '',
+        "sameAs" => $sameAs,
+        "potentialAction" => [
+            "@type" => "SearchAction",
+            "target" => $base_url . "/search.php?q={search_term_string}",
+            "query-input" => "required name=search_term_string"
+        ]
+    ];
+
+    // Parse address if SHOP_LOCATION exists
+    $address = [];
+    if (!empty($settings_array['SHOP_LOCATION'])) {
+        // Sample format: "6101 Cherry Avenue Suite 102A - 206 Fontana CA 92336"
+        $location = $settings_array['SHOP_LOCATION'];
+        
+        // Extract ZIP code (last 5-digit group)
+        preg_match('/\b(\d{5})\b/', $location, $zip_matches);
+        $postalCode = $zip_matches[1] ?? '';
+        $location = trim(str_replace($postalCode, '', $location));
+        
+        // Extract state (2-letter code before ZIP)
+        preg_match('/\b([A-Z]{2})\b/', $location, $state_matches);
+        $addressRegion = $state_matches[1] ?? '';
+        $location = trim(str_replace($addressRegion, '', $location));
+        
+        // Extract city (last remaining word before state)
+        $parts = explode(' ', $location);
+        $addressLocality = array_pop($parts);
+        $location = trim(implode(' ', $parts));
+        
+        // The rest is street address
+        $streetAddress = str_replace([' ,', ', '], ', ', $location); // Normalize commas
+        
+        $address = [
+            "@type" => "PostalAddress",
+            "streetAddress" => $streetAddress,
+            "addressLocality" => $addressLocality,
+            "addressRegion" => $addressRegion,
+            "postalCode" => $postalCode,
+            "addressCountry" => "US" // Default to US, can be made configurable
+        ];
+    }
+
+
+    // Add contact information
+    $optional_fields = [
+        'telephone' => ['SITE_TELNO', 'page_telno'],
+        'email' => ['SITE_EMAIL', 'page_email'],
+        'description' => ['SITE_TAGLINE', 'page_meta_desc'],
+        'foundingDate' => ['COMPANY_FOUNDING_DATE'],
+        'founder' => ['COMPANY_FOUNDER']
+    ];
+    
+    foreach ($optional_fields as $schema_field => $field_options) {
+        if (is_array($field_options)) {
+            foreach ($field_options as $field) {
+                if (!empty($page_meta[$field])) {
+                    $schema[$schema_field] = $page_meta[$field];
+                    break;
+                } elseif (!empty($settings_array[$field])) {
+                    $schema[$schema_field] = $settings_array[$field];
+                    break;
+                }
+            }
+        } elseif (!empty($settings_array[$field_options])) {
+            $schema[$schema_field] = $settings_array[$field_options];
+        }
+    }
+
+    // Add indexing information if available
+    if (isset($page_meta['page_meta_index'])) {
+        $schema['mainEntityOfPage'] = [
+            "@type" => "WebPage",
+            "@id" => $page_meta['page_canonical_url'] ?? $base_url ?? '',
+            "isIndexed" => (bool)$page_meta['page_meta_index']
+        ];
+    }
+
+      // Add address if successfully parsed
+    if (!empty($address)) {
+        $schema["address"] = $address;
+    }
+    
+    // Clean up empty values
+    $schema = array_filter($schema, function($value) {
+        if (is_array($value)) {
+            return !empty(array_filter($value));
+        }
+        return !empty($value);
+    });
+
+    // Format the JSON-LD output
+    $json_ld = json_encode($schema, 
+        JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+    
+    return "<script type=\"application/ld+json\">\n{$json_ld}\n</script>";
 }
