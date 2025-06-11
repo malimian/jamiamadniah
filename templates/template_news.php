@@ -5,11 +5,29 @@ if(!function_exists("header_t")) {
         <style> .wp-post-image{display:none} 
 
                 .author-avatar {
-                    width: 120px;
-                    height: 120px;
+                    width: 100%;
+                    max-width: 100px;
+                    height: auto;
                     object-fit: cover;
-                    border: 3px solid #fff;
                 }
+                    @media (max-width: 576px) {
+                        .author-card .card-body {
+                            padding: 1rem !important;
+                        }
+
+                        .author-card h2 {
+                            font-size: 1.25rem;
+                        }
+
+                        .author-meta {
+                            flex-direction: column;
+                            gap: 0.5rem !important;
+                        }
+
+                        .author-meta div {
+                            width: 100%;
+                        }
+                    }
                 .author-bio {
                     font-size: 0.95rem;
                     line-height: 1.7;
@@ -186,83 +204,85 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
 
                     </div>
                     <div class="author-card card border-0 shadow-sm mb-4">
-    <div class="card-body p-4">
-        <div class="row align-items-center">
-            <?php if(!empty($user['profile_pic'])): ?>
-            <div class="col-md-3 col-4 mb-3 mb-md-0">
-                <img src="<?= ABSOLUTE_IMAGEPATH.htmlspecialchars($user['profile_pic']) ?>" 
-                     class="img-fluid rounded-circle author-avatar shadow"
-                     alt="<?= htmlspecialchars($user['fullname'] ?? 'Author') ?>">
-            </div>
-            <?php endif; ?>
-            
-            <div class="<?= !empty($user['profile_pic']) ? 'col-md-9 col-8' : 'col-12' ?>">
-                <div class="d-flex align-items-center gap-2 mb-2">
-                    <i class="fas fa-user-circle text-primary fs-4"></i>
-                    <h2 class="h4 mb-0 fw-bold">
-                        <?= htmlspecialchars($user['fullname'] ?? $content['article_author'] ?? 'Author') ?>
-                    </h2>
-                </div>
-                
-                <?php if(!empty($user['company_title']) || !empty($user['company'])): ?>
-                <p class="text-muted mb-2">
-                    <i class="fas fa-briefcase me-1"></i>
-                    <?= htmlspecialchars($user['company_title'] ?? '') ?>
-                    <?php if(!empty($user['company'])): ?>
-                        at <?= htmlspecialchars($user['company']) ?>
-                    <?php endif; ?>
-                </p>
-                <?php endif; ?>
-                
-                <?php if(!empty($user['details'])): ?>
-                <div class="author-bio mb-1">
-                    <?= nl2br(($user['details'])) ?>
-                </div>
-                <?php endif; ?>
-                
-                <div class="author-meta d-flex flex-wrap gap-3">
-                    <?php if(!empty($user['emailaddress'])): ?>
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-envelope me-2 text-muted"></i>
-                        <a href="mailto:<?= htmlspecialchars($user['emailaddress']) ?>" class="text-decoration-none">
-                            <?= htmlspecialchars($user['emailaddress']) ?>
-                        </a>
+                        <div class="card-body p-4">
+                            <div class="row align-items-center">
+                                <?php if(!empty($user['profile_pic'])): ?>
+                                <div class="col-md-3 col-4 mb-3 mb-md-0">
+                                    <img src="<?= ABSOLUTE_IMAGEPATH.htmlspecialchars($user['profile_pic']) ?>" 
+                                         class="img-fluid rounded-circle author-avatar shadow"
+                                         alt="<?= htmlspecialchars($user['fullname'] ?? 'Author') ?>">
+                                </div>
+                                <?php endif; ?>
+                                
+                                <div class="<?= !empty($user['profile_pic']) ? 'col-md-9 col-8' : 'col-12' ?>">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <i class="fas fa-user-circle text-primary fs-4"></i>
+                                        <h2 class="h4 mb-0 fw-bold">
+                                            <?= htmlspecialchars($user['fullname'] ?? $content['article_author'] ?? 'Author') ?>
+                                        </h2>
+                                    </div>
+                                    
+                                    <?php if(!empty($user['company_title']) || !empty($user['company'])): ?>
+                                    <p class="text-muted mb-2">
+                                        <i class="fas fa-briefcase me-1"></i>
+                                        <?= htmlspecialchars($user['company_title'] ?? '') ?>
+                                        <?php if(!empty($user['company'])): ?>
+                                            at <?= htmlspecialchars($user['company']) ?>
+                                        <?php endif; ?>
+                                    </p>
+                                    <?php endif; ?>
+                                    
+                                    <?php if(!empty($user['details'])): ?>
+                                    <div class="author-bio mb-1">
+                                        <?= nl2br(($user['details'])) ?>
+                                    </div>
+                                    <?php endif; ?>
+                                    
+                                    <div class="author-meta d-flex flex-wrap gap-3">
+                                        <?php if(!empty($user['emailaddress'])): ?>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-envelope me-2 text-muted"></i>
+                                            <a href="mailto:<?= htmlspecialchars($user['emailaddress']) ?>" class="text-decoration-none">
+                                                <?= htmlspecialchars($user['emailaddress']) ?>
+                                            </a>
+                                        </div>
+                                        <?php endif; ?>
+                                        
+                                        <?php if(!empty($user['website'])): ?>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-globe me-2 text-muted"></i>
+                                            <a href="<?= htmlspecialchars($user['website']) ?>" target="_blank" class="text-decoration-none">
+                                                Website
+                                            </a>
+                                        </div>
+                                        <?php endif; ?>
+                                        
+                                        <?php if(!empty($user['country']) || !empty($user['city'])): ?>
+                                        <div class="d-flex align-items-center">
+                                            <i class="fas fa-map-marker-alt me-2 text-muted"></i>
+                                            <span>
+                                                <?= !empty($user['city']) ? htmlspecialchars($user['city']) . ', ' : '' ?>
+                                                <?= htmlspecialchars($user['country'] ?? '') ?>
+                                            </span>
+                                        </div>
+                                        <?php endif; ?>
+                                    </div>
+                                    
+                                    <?php if($content['pages_createdby'] == 0 && !empty($content['article_url'])): ?>
+                                    <div class="mt-3">
+                                        <a href="<?= htmlspecialchars($content['article_url']) ?>" 
+                                           target="_blank" 
+                                           class="btn btn-primary rounded-pill px-4">
+                                           <i class="fas fa-external-link-alt me-2"></i>Read Full Article
+                                        </a>
+                                    </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <?php endif; ?>
+                    <!-- Author card ends -->
                     
-                    <?php if(!empty($user['website'])): ?>
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-globe me-2 text-muted"></i>
-                        <a href="<?= htmlspecialchars($user['website']) ?>" target="_blank" class="text-decoration-none">
-                            Website
-                        </a>
-                    </div>
-                    <?php endif; ?>
-                    
-                    <?php if(!empty($user['country']) || !empty($user['city'])): ?>
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-map-marker-alt me-2 text-muted"></i>
-                        <span>
-                            <?= !empty($user['city']) ? htmlspecialchars($user['city']) . ', ' : '' ?>
-                            <?= htmlspecialchars($user['country'] ?? '') ?>
-                        </span>
-                    </div>
-                    <?php endif; ?>
-                </div>
-                
-                <?php if($content['pages_createdby'] == 0 && !empty($content['article_url'])): ?>
-                <div class="mt-3">
-                    <a href="<?= htmlspecialchars($content['article_url']) ?>" 
-                       target="_blank" 
-                       class="btn btn-primary rounded-pill px-4">
-                       <i class="fas fa-external-link-alt me-2"></i>Read Full Article
-                    </a>
-                </div>
-                <?php endif; ?>
-            </div>
-        </div>
-    </div>
-</div>
                 </div>
 
                 <!-- You May Also Like Section -->
