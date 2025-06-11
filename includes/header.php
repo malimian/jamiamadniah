@@ -9,8 +9,6 @@ function generate_article_meta_tags($article) {
     global $and_gc;
     
     // Required fields with defaults
-    $title = !empty($article['page_title']) ? htmlspecialchars($article['page_title'], ENT_QUOTES, 'UTF-8') : '';
-    $description = !empty($article['page_meta_desc']) ? htmlspecialchars($article['page_meta_desc'], ENT_QUOTES, 'UTF-8') : '';
     $url = !empty($article['page_canonical_url']) ? htmlspecialchars($article['page_canonical_url'], ENT_QUOTES, 'UTF-8') : '';
     $image = !empty($article['featured_image']) ? htmlspecialchars($article['featured_image'], ENT_QUOTES, 'UTF-8') : '';
 
@@ -32,7 +30,6 @@ function generate_article_meta_tags($article) {
 <meta name="description" content="{$description}">
 <meta name="news_keywords" content="{$tags}">
 <meta name="author" content="{$author}">
-<meta name="section" content="{$section}">
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="article">
@@ -44,7 +41,6 @@ function generate_article_meta_tags($article) {
 <meta property="article:published_time" content="{$published_time}">
 <meta property="article:modified_time" content="{$modified_time}">
 <meta property="article:author" content="{$author}">
-<meta property="article:section" content="{$section}">
 <meta property="article:tag" content="{$tags}">
 
 <!-- Twitter -->
