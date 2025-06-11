@@ -51,6 +51,15 @@ if(!function_exists("header_t")) {
                   height: auto;
                   display: block;
                 }
+
+                .avatar-circle {
+                    width: 100%;
+                    max-width: 100px;
+                    aspect-ratio: 1 / 1;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    overflow: hidden;
+                }
         </style>
         ';
     }
@@ -209,7 +218,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                                 <?php if(!empty($user['profile_pic'])): ?>
                                 <div class="col-md-3 col-4 mb-3 mb-md-0">
                                     <img src="<?= ABSOLUTE_IMAGEPATH.htmlspecialchars($user['profile_pic']) ?>" 
-                                         class="img-fluid rounded-circle author-avatar shadow"
+                                         class="img-fluid avatar-circle author-avatar shadow"
                                          alt="<?= htmlspecialchars($user['fullname'] ?? 'Author') ?>">
                                 </div>
                                 <?php endif; ?>
@@ -282,7 +291,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                         </div>
                     </div>
                     <!-- Author card ends -->
-                    
+
                 </div>
 
                 <!-- You May Also Like Section -->
