@@ -120,7 +120,6 @@ if (!empty($template_page)) {
     }
 }
 
-   $header[] = "<!-- Social Meta -->\n".generate_social_meta( $content , $type = 'website');
 
 // Build the main components
 $main_header = front_header(
