@@ -220,7 +220,21 @@ function front_header($title = null, $keywords = null, $description = null, $lib
         $description = isset($content['page_meta_desc']) ? $content['page_meta_desc'] : ($description !== null ? $description : '');
 
         // Additional SEO elements
-        $canonical_url = isset($content['page_canonical_url']) ? $content['page_canonical_url'] : '';
+
+        // Determine the canonical URL
+        if (isset($content['page_canonical_url']) && !empty($content['page_canonical_url'])) {
+            
+            $canonical_url = $content['page_canonical_url'];
+      
+        } elseif (isset($content['page_url'])) {
+            
+            $canonical_url =  BASE_URL . $content['page_url'];
+        } else {
+           
+            $canonical_url = '';
+        }
+
+
         $robots_index = isset($content['page_meta_index']) ? ($content['page_meta_index'] ? 'index' : 'noindex') : 'index';
         $robots_follow = isset($content['page_meta_follow']) ? ($content['page_meta_follow'] ? 'follow' : 'nofollow') : 'follow';
         $robots_archive = isset($content['page_meta_archive']) ? ($content['page_meta_archive'] ? 'archive' : 'noarchive') : 'archive';
@@ -317,8 +331,7 @@ function front_header($title = null, $keywords = null, $description = null, $lib
     <meta name="language" content="{$language}">
 
     <!-- Canonical URL -->
-HTML
-    . ($canonical_url ? '<link rel="canonical" href="' . $canonical_url . '">' : '') . <<<HTML
+    <link rel="canonical" href="{$canonical_url}">
 
     <!-- Favicon -->
     <link rel="icon" href="{$logo}" type="image/png">
