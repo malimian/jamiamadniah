@@ -32,7 +32,8 @@ echo front_header(
     htmlspecialchars($content['page_meta_keywords'] ?? ''),
     htmlspecialchars($content['page_meta_desc'] ?? ''),
     $additional_libs,
-    $template_id
+    $template_id,
+    $content
 );
 
 // Output the navbar with path replacement
