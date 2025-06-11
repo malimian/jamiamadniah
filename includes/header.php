@@ -1,5 +1,68 @@
 <?php
 /**
+ * Generate article-specific meta tags for news website
+ * 
+ * @param array $article Article data array
+ * @return string Generated meta tags
+ */
+function generate_article_meta_tags($article) {
+    global $and_gc;
+    
+    // Required fields with defaults
+    $title = !empty($article['page_title']) ? htmlspecialchars($article['page_title'], ENT_QUOTES, 'UTF-8') : '';
+    $description = !empty($article['page_meta_desc']) ? htmlspecialchars($article['page_meta_desc'], ENT_QUOTES, 'UTF-8') : '';
+    $url = !empty($article['page_canonical_url']) ? htmlspecialchars($article['page_canonical_url'], ENT_QUOTES, 'UTF-8') : '';
+    $image = !empty($article['featured_image']) ? htmlspecialchars($article['featured_image'], ENT_QUOTES, 'UTF-8') : '';
+
+    // Article specific fields
+    $published_time = !empty($article['createdon']) ? date('c', strtotime($article['createdon'])) : '';
+    $modified_time = !empty($article['updatedon']) ? date('c', strtotime($article['updatedon'])) : $published_time;
+    $author = !empty($article['article_author']) ? htmlspecialchars($article['article_author'], ENT_QUOTES, 'UTF-8') : '';
+    $section = !empty($article['catid']) ? (int)$article['catid'] : 0; // assuming this maps to a category ID, not name
+    $tags = !empty($article['page_meta_keywords']) ? htmlspecialchars($article['page_meta_keywords'], ENT_QUOTES, 'UTF-8') : '';
+
+    // Publisher info from settings
+    $publisher_name = defined('SITE_TITLE') ? SITE_TITLE : '';
+    $publisher_logo = defined('SITE_LOGO') ? SITE_LOGO : '';
+    
+    // Generate meta tags
+    $meta_tags = <<<HTML
+<!-- Primary Article Meta Tags -->
+<meta name="title" content="{$title}">
+<meta name="description" content="{$description}">
+<meta name="news_keywords" content="{$tags}">
+<meta name="author" content="{$author}">
+<meta name="section" content="{$section}">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="{$title}">
+<meta property="og:description" content="{$description}">
+<meta property="og:url" content="{$url}">
+<meta property="og:image" content="{$image}">
+<meta property="og:site_name" content="{$publisher_name}">
+<meta property="article:published_time" content="{$published_time}">
+<meta property="article:modified_time" content="{$modified_time}">
+<meta property="article:author" content="{$author}">
+<meta property="article:section" content="{$section}">
+<meta property="article:tag" content="{$tags}">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{$title}">
+<meta name="twitter:description" content="{$description}">
+<meta name="twitter:url" content="{$url}">
+<meta name="twitter:image" content="{$image}">
+<meta name="twitter:label1" content="Written by">
+<meta name="twitter:data1" content="{$author}">
+<meta name="twitter:label2" content="Filed under">
+<meta name="twitter:data2" content="{$section}">
+
+HTML;
+
+    return $meta_tags;
+}
+/**
  * Generate JavaScript global variables from og_settings
  */
 function generate_js_globals() {
@@ -314,6 +377,11 @@ function front_header($title = null, $keywords = null, $description = null, $lib
     $og_image = $social_image ?: $logo;
     $twitter_image = $social_image ?: $logo;
 
+      $article_meta = '';
+    if (isset($content['template_id']) && $content['template_id'] == 7) {
+        $article_meta = generate_article_meta_tags($content);
+    }
+
     return <<<HTML
 <!DOCTYPE html>
 <html lang="{$language}" dir="ltr">
@@ -337,19 +405,8 @@ function front_header($title = null, $keywords = null, $description = null, $lib
     <link rel="icon" href="{$logo}" type="image/png">
     <link rel="apple-touch-icon" href="{$logo}">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="{$og_url}">
-    <meta property="og:title" content="{$title}">
-    <meta property="og:description" content="{$description}">
-    <meta property="og:image" content="{$og_image}">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="{$twitter_url}">
-    <meta property="twitter:title" content="{$title}">
-    <meta property="twitter:description" content="{$description}">
-    <meta property="twitter:image" content="{$twitter_image}">
+    <!-- Article-Specific Meta Tags -->
+    {$article_meta}
 
     <!-- Organization Schema -->
     {$organization_schema}
