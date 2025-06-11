@@ -28,6 +28,11 @@ if(!function_exists("header_t")) {
                     .author-meta a:hover {
                     color: #0d6efd;
                 }
+                .news-article img {
+                  max-width: 100%;
+                  height: auto;
+                  display: block;
+                }
         </style>
         ';
     }
@@ -111,11 +116,11 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                     <a href="#" class="text-dark link-hover me-3"><i class="fa fa-comment-dots"></i> 05 Comment</a>
                     <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> 1.5k Share</a>
                 </div>
-                <p class="my-4">
+                <div class="my-4 news-article">
                     <?php
                         echo replace_sysvari($content['page_desc'], getcwd() . "/");
                      ?>
-                </p>
+                </div>
 
                 <div class="tab-class">
                     <div class="d-flex justify-content-between border-bottom mb-4">
