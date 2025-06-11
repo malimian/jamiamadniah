@@ -1,4 +1,22 @@
 <?php
+function getFullImageUrl($path) {
+    if (empty($path)) return '';
+
+    $path = htmlspecialchars($path, ENT_QUOTES, 'UTF-8');
+
+    // Check if it's a valid absolute URL
+    if (filter_var($path, FILTER_VALIDATE_URL)) {
+        return $path;
+    }
+
+    // Ensure no double slashes
+    $base = rtrim(BASE_URL . ABSOLUTE_IMAGEPATH, '/');
+    $path = ltrim($path, '/');
+
+    return $base . '/' . $path;
+}
+
+
 // Comments Functions
 
 // List of NSFW terms to block (can be expanded)
@@ -160,15 +178,7 @@ function generate_article_meta_tags($article) {
     ? htmlspecialchars($article['page_canonical_url'], ENT_QUOTES, 'UTF-8')
     : BASE_URL . $article['page_url'];
 
-        $image = '';
-        if (!empty($article['featured_image'])) {
-            $image_url = htmlspecialchars($article['featured_image'], ENT_QUOTES, 'UTF-8');
-            if (filter_var($image_url, FILTER_VALIDATE_URL)) {
-                $image = $image_url;
-            } else {
-                $image = BASE_URL.ABSOLUTE_IMAGEPATH . $image_url;
-            }
-        }
+    $image = getFullImageUrl($article['featured_image'] ?? '');
 
     // Article specific fields
     $published_time = !empty($article['createdon']) ? date('c', strtotime($article['createdon'])) : '';
