@@ -19,8 +19,9 @@ function getFullImageUrl($path) {
     $path = ltrim($path, '/');
     $fullPath = $base . '/' . $path;
 
-    return $fallback;
+    return $fullPath;
 }
+
 
 
 
