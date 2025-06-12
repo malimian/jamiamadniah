@@ -815,7 +815,7 @@ foreach ($news_categories as $new_category) {
                                      class="card-img-top img-fluid" 
                                      alt="<?php echo htmlspecialchars($post['page_title']); ?>">
                                 <div class="card-img-overlay d-flex align-items-start justify-content-end">
-                                    <span class="badge bg-primary bg-opacity-10 text-primary">
+                                    <span class="badge bg-opacity-10 text-primary">
                                         <small>Blog</small>
                                     </span>
                                 </div>
