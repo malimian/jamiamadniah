@@ -2,7 +2,7 @@
 if(!function_exists("header_t")) {
     function header_t(){
         return '
-        <style> .wp-post-image{display:none} 
+        <style>
 
                 .author-avatar {
                     width: 100%;
@@ -70,6 +70,9 @@ if(!function_exists("header_t")) {
                   border-radius: 0.5rem; /* optional */
                   display: block;
                 }
+                .wp-post-image{
+                    display:none !important;
+                } 
         </style>
         ';
     }
@@ -110,13 +113,6 @@ $user = return_single_row("SELECT username, fullname, profile_pic, details, emai
 $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".$content['catid']);
 
 ?>
-
-<style type="text/css">
-    .wp-post-image {
-    display: none;
-}
-</style>
-
 
 <!-- Single Product Start -->
 <div class="container-fluid py-5">
