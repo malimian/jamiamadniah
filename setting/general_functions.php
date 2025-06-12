@@ -23,11 +23,6 @@ function getFullImageUrl($path) {
     $path = ltrim($path, '/');
     $fullPath = $base . '/' . $path;
 
-    // Check if file exists locally (adjust path if needed)
-    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . ABSOLUTE_IMAGEPATH . '/' . $path)) {
-        return $fullPath;
-    }
-
     return $fallback;
 }
 
