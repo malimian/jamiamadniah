@@ -397,29 +397,16 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
             <div class="col-lg-4">
                 <!-- Search Widget -->
                 <div class="widget">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="Search...">
-                        <button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button>
-                    </div>
+                    <form action="search.php" method="get">
+                        <div class="input-group mb-3">
+                            <input type="text" name="q" class="form-control" placeholder="Search..." required>
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                
-                <!-- Categories Widget -->
-                <div class="widget">
-                    <div class="widget-title">
-                        <h3>Categories</h3>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <?php 
-                        $categories = return_multiple_rows("SELECT * FROM category WHERE isactive = 1 AND soft_delete = 0 ORDER BY catname");
-                        foreach ($categories as $category): 
-                        ?>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <a href="<?php echo BASE_URL.$category['cat_url']; ?>" class="text-decoration-none"><?php echo $category['catname']; ?></a>
-                            <span class="badge bg-primary rounded-pill"><?php echo $category['post_count'] ?? 0; ?></span>
-                        </li>
-                        <?php endforeach; ?>
-                    </ul>
-                </div>
+
                 
                 <!-- Latest Posts Widget -->
                 <div class="widget">
