@@ -776,20 +776,26 @@ foreach ($news_categories as $new_category) {
                                 <p class="card-text flex-grow-1">
                                     <?php echo mb_strimwidth(strip_tags($featured_post['page_desc']), 0, 200, "..."); ?>
                                 </p>
-                                <div class="d-flex align-items-center mt-4">
+                               <?php
+                                $user = return_single_row("SELECT username, fullname, profile_pic FROM loginuser WHERE soft_delete = 0 AND isactive = 1 AND id = " . intval($featured_post['createdby']));
+                                ?>
+
+                                <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
-                                        <i class="fas fa-user-circle text-primary fs-4"></i>
+                                        <img src="<?php echo getFullImageUrl($user['profile_pic']); ?>" 
+                                             alt="<?php echo htmlspecialchars($user['fullname']); ?>" 
+                                             class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover;">
                                     </div>
-                                    <div class="flex-grow-1 ms-3">
-                                        <small class="d-block text-muted">Written by</small>
-                                        <span class="fw-semibold"><?php echo $featured_post['article_author']; ?></span>
+                                    <div class="flex-grow-1 ms-2">
+                                        <small class="text-muted">By <?php echo htmlspecialchars($user['fullname']); ?></small>
                                     </div>
                                     <div class="flex-shrink-0">
-                                        <a href="<?php echo $featured_post['page_url']; ?>" class="btn btn-sm btn-outline-primary">
-                                            Read More <i class="fas fa-arrow-right ms-1"></i>
+                                        <a href="<?php echo $post['page_url']; ?>" class="text-primary small">
+                                            Read <i class="fas fa-arrow-right ms-1"></i>
                                         </a>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -830,12 +836,18 @@ foreach ($news_categories as $new_category) {
                                 </p>
                             </div>
                             <div class="card-footer bg-transparent border-top-0 pt-0">
+                                <?php
+                                $user = return_single_row("SELECT username, fullname, profile_pic FROM loginuser WHERE soft_delete = 0 AND isactive = 1 AND id = " . intval($post['createdby']));
+                                ?>
+
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0">
-                                        <i class="fas fa-user-circle text-muted"></i>
+                                        <img src="<?php echo getFullImageUrl($user['profile_pic']); ?>" 
+                                             alt="<?php echo htmlspecialchars($user['fullname']); ?>" 
+                                             class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover;">
                                     </div>
                                     <div class="flex-grow-1 ms-2">
-                                        <small class="text-muted">By <?php echo $post['article_author']; ?></small>
+                                        <small class="text-muted">By <?php echo htmlspecialchars($user['fullname']); ?></small>
                                     </div>
                                     <div class="flex-shrink-0">
                                         <a href="<?php echo $post['page_url']; ?>" class="text-primary small">
@@ -843,6 +855,7 @@ foreach ($news_categories as $new_category) {
                                         </a>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
