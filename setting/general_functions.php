@@ -9,13 +9,9 @@ function getFullImageUrl($path) {
 
     $path = htmlspecialchars($path, ENT_QUOTES, 'UTF-8');
 
-    // If it's a valid absolute URL, check if it works
+    // Return full URL if path is already a valid URL
     if (filter_var($path, FILTER_VALIDATE_URL)) {
-        if (@getimagesize($path)) {
-            return $path;
-        } else {
-            return $fallback;
-        }
+        return $path;
     }
 
     // For relative/local path
