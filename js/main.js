@@ -105,3 +105,16 @@
 
 
 })(jQuery);
+
+// Skeleton loader
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll("img").forEach(function (img) {
+        img.addEventListener("error", function () {
+            const skeleton = document.createElement("div");
+            skeleton.className = "skeleton-placeholder";
+            skeleton.style.width = img.width + "px";
+            skeleton.style.height = img.height + "px";
+            img.replaceWith(skeleton);
+        });
+    });
+});
