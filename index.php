@@ -761,7 +761,7 @@ foreach ($news_categories as $new_category) {
                         <div class="col-md-6">
                             <div class="card-body d-flex flex-column h-100 p-4 p-lg-5">
                                 <div class="mb-3">
-                                    <span class="badge bg-primary bg-opacity-10 text-primary me-2">Blog</span>
+                                    <span class="badge bg-opacity-10 text-primary me-2">Blog</span>
                                     <small class="text-muted">
                                         <i class="far fa-clock me-1"></i>
                                         <?php echo timeAgo($featured_post['createdon']); ?>
