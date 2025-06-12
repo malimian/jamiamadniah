@@ -1,20 +1,36 @@
 <?php
 function getFullImageUrl($path) {
-    if (empty($path)) return '';
+    // Fallback image path
+    $fallback = 'assets/img/post-loading.gif';
+
+    if (empty($path)) {
+        return $fallback;
+    }
 
     $path = htmlspecialchars($path, ENT_QUOTES, 'UTF-8');
 
-    // Check if it's a valid absolute URL
+    // If it's a valid absolute URL, check if it works
     if (filter_var($path, FILTER_VALIDATE_URL)) {
-        return $path;
+        if (@getimagesize($path)) {
+            return $path;
+        } else {
+            return $fallback;
+        }
     }
 
-    // Ensure no double slashes
+    // For relative/local path
     $base = rtrim(BASE_URL . ABSOLUTE_IMAGEPATH, '/');
     $path = ltrim($path, '/');
+    $fullPath = $base . '/' . $path;
 
-    return $base . '/' . $path;
+    // Check if file exists locally (adjust path if needed)
+    if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/' . ABSOLUTE_IMAGEPATH . '/' . $path)) {
+        return $fullPath;
+    }
+
+    return $fallback;
 }
+
 
 
 // Comments Functions
