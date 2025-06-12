@@ -22,6 +22,37 @@ function getFullImageUrl($path) {
     return $fullPath;
 }
 
+function generateFaviconLinks($logoPath) {
+   
+    $faviconSizes = ['16x16', '32x32', '96x96', '192x192', '512x512'];
+    $appleTouchSizes = ['57x57', '60x60', '72x72', '76x76', '114x114', '120x120', '144x144', '152x152', '180x180'];
+
+    $pathInfo = pathinfo($logoPath);
+    $baseName = $pathInfo['filename'];
+    $extension = $pathInfo['extension'];
+    $dir = $pathInfo['dirname'];
+
+    $html = '';
+
+    foreach ($faviconSizes as $size) {
+        $url = "{$dir}/{$baseName}-{$size}.{$extension}";
+        $html .= "<link rel=\"icon\" type=\"image/{$extension}\" sizes=\"{$size}\" href=\"{$url}\">" . PHP_EOL;
+    }
+
+    foreach ($appleTouchSizes as $size) {
+        $url = "{$dir}/{$baseName}-{$size}.{$extension}";
+        $html .= "<link rel=\"apple-touch-icon\" sizes=\"{$size}\" href=\"{$url}\">" . PHP_EOL;
+    }
+
+    $fallback = "{$dir}/{$baseName}-1500x1500.{$extension}";
+    $html .= "<link rel=\"icon\" href=\"{$fallback}\" type=\"image/{$extension}\">" . PHP_EOL;
+    $html .= "<link rel=\"apple-touch-icon\" href=\"{$fallback}\">" . PHP_EOL;
+
+    return $html;
+}
+
+
+
 
 
 

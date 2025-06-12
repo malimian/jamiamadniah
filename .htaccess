@@ -1,34 +1,35 @@
 RewriteEngine On
 
-#RewriteCond %{HTTPS} off
-#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# Force HTTPS only in production
+RewriteCond %{HTTP_HOST} !^localhost
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# RewriteCond %{HTTP_HOST} !=localhost
-# RewriteCond %{HTTPS} off
-# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-
-RewriteRule ^sitemap\.xml$ sitemap.php [L]
+# Allow sitemaps, robots.txt
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
 RewriteRule ^news-sitemap\.xml$ news-sitemap.php [L,QSA]
-
 RewriteRule ^robots\.txt$ robots.php [L]
 
-#RewriteRule ^([^/]*)\.html$ /info.php?url=$1 [L]
-
+# Clean URLs for info pages
 RewriteRule ^([^/]*)\.html$ info.php?url=$1 [L,QSA]
 
-
+# Error and defaults
 DirectoryIndex index.php
-
 ErrorDocument 404 /error404.html
 
+# Block protected folders
+RewriteRule ^(includes|modules|templates)/.*$ /error404.html [L,R=302]
 
-#ModPagespeed off
-
+# Optional: Google mod_pagespeed toggle
 <IfModule pagespeed_module>
     ModPagespeed on
 </IfModule>
 
-# Block and redirect access to protected folders
-RewriteRule ^(includes|modules|templates)/.*$ /error404.html [L,R=302]
+# Image resize handler for:
+# image-300x200.jpg
+# image-300x.jpg
+# image-x200.jpg
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+)-([0-9]*)x([0-9]*)\.(jpg|jpeg|png|webp)$ plugins/image_resize/image_resize.php?path=$1&width=$2&height=$3&ext=$4 [L,QSA]

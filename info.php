@@ -52,6 +52,8 @@ if(!empty($organizedAttributes))
     $content['attributes'] = $organizedAttributes;
 
 
+$header[] = generateFaviconLinks(defined('SITE_LOGO') ? SITE_LOGO : '/favicon.png');
+
 // Add content components if specified
 if (!empty($content['header'])) {
     $header[] = $content['header'];

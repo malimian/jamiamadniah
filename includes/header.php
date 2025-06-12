@@ -146,10 +146,6 @@ function front_header($title = null, $keywords = null, $description = null, $lib
     <!-- Canonical URL -->
     <link rel="canonical" href="{$canonical_url}">
 
-    <!-- Favicon -->
-    <link rel="icon" href="{$logo}" type="image/png">
-    <link rel="apple-touch-icon" href="{$logo}">
-
     <!-- Article-Specific Meta Tags -->
     {$article_meta}
 
