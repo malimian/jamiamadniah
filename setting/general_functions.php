@@ -432,8 +432,7 @@ function generate_organization_schema($page_meta = []) {
     if (isset($page_meta['page_meta_index'])) {
         $schema['mainEntityOfPage'] = [
             "@type" => "WebPage",
-            "@id" => $page_meta['page_canonical_url'] ?? $base_url ?? '',
-            "isIndexed" => (bool)$page_meta['page_meta_index']
+            "@id" => $page_meta['page_canonical_url'] ?? $base_url ?? ''
         ];
     }
 
