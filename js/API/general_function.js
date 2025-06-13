@@ -191,3 +191,54 @@ function handleLoadMore(loadMoreBtn) {
             loadingSpinner.classList.add('d-none');
         });
 }
+
+
+/**
+ * Loads a PHP module asynchronously and inserts its output into the page
+ * @param {string} modulePath - Path to the PHP module (e.g., 'modules/shortcode/short_code.php')
+ * @param {Object} [variables={}] - Variables to pass to the PHP module
+ * @param {string|HTMLElement} [targetElement=null] - Where to insert the output (selector or element)
+ * @param {boolean} [returnOutput=false] - Whether to return the output instead of inserting it
+ * @return {Promise} - Resolves with the module output when loaded
+ */
+async function loadModule(modulePath, variables = {}, targetElement = null, returnOutput = false) {
+    try {
+        // Create form data to send the variables
+        const formData = new FormData();
+        formData.append('modulePath', modulePath);
+        formData.append('print', targetElement === null && !returnOutput);
+        
+        // Add variables to form data
+        for (const [key, value] of Object.entries(variables)) {
+            formData.append(`variables[${key}]`, value);
+        }
+        
+        // Make the fetch request
+        const response = await fetch('post/plugins/include_module_handler.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const output = await response.text();
+        
+        // Insert into DOM if target specified
+        if (targetElement && !returnOutput) {
+            const target = typeof targetElement === 'string' 
+                ? document.querySelector(targetElement) 
+                : targetElement;
+            
+            if (target) {
+                target.innerHTML = output;
+            }
+        }
+        
+        return output;
+    } catch (error) {
+        console.error('Error loading module:', error);
+        throw error;
+    }
+}
