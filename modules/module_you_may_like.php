@@ -12,9 +12,9 @@ function getArticleImage($article) {
 }
 
 // Get current page data from POST
-$current_title = $_POST['page_title'] ?? '';
-$current_catid = $_POST['catid'] ?? 0;
-$current_pid = $_POST['pid'] ?? 0;
+$current_title =  $_POST['variables']['page_title'] ?? '';
+$current_catid = (int) ($_POST['variables']['catid'] ?? 0);
+$current_pid = (int) ($_POST['variables']['pid'] ?? 0);
 
 // Get similar articles
 $keywords = array_unique(array_filter(explode(' ', preg_replace('/[^a-zA-Z0-9\s]/', '', $current_title))));
