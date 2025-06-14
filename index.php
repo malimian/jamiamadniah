@@ -604,31 +604,36 @@ foreach ($news_categories as $new_category) {
 
     <div id="module-news-carousel"></div>
 
-        <script type="text/javascript">
-
-        loadModule('modules/index/module_news_carousel.php', {}, '#module-news-carousel')
-        .then(() => {
-            $('.business-carousel, .health-carousel, .sports-carousel, .tech-carousel').owlCarousel({
-                loop: true,
-                margin: 20,
-                nav: true,
-                dots: false,
-                navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
-                responsive: {
-                    0: { items: 1 },
-                    576: { items: 2 },
-                    768: { items: 3 },
-                    992: { items: 4 }
-                }
-            });
-        })
-        .catch((error) => {
-            console.error('Failed to load module:', error);
-            document.querySelector('#module-news-carousel').innerHTML = 'Module failed to load';
+       <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            loadModule('modules/index/module_news_carousel.php', {}, '#module-news-carousel')
+                .then(() => {
+                    if (typeof $ === 'function' && typeof $.fn.owlCarousel === 'function') {
+                        $('.business-carousel, .health-carousel, .sports-carousel, .tech-carousel').owlCarousel({
+                            loop: true,
+                            margin: 20,
+                            nav: true,
+                            dots: false,
+                            navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+                            responsive: {
+                                0: { items: 1 },
+                                576: { items: 2 },
+                                768: { items: 3 },
+                                992: { items: 4 }
+                            }
+                        });
+                    } else {
+                        console.warn('jQuery or Owl Carousel is not available.');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Failed to load module:', error);
+                    const el = document.querySelector('#module-news-carousel');
+                    if (el) el.innerHTML = 'Module failed to load';
+                });
         });
+</script>
 
-
-    </script>
 
     <div id="blog_section"></div>
    <script type="text/javascript">
