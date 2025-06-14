@@ -631,19 +631,20 @@ foreach ($news_categories as $new_category) {
     </script>
 
     <div id="blog_section"></div>
-    <script type="text/javascript">
+   <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
         try {
-        
-             loadModule('modules/index/module_blog_section.php', {}, '#blog_section');
-        
+            loadModule('modules/index/module_blog_section.php', {}, '#blog_section');
         } catch (error) {
-        
             console.error('Failed to load module:', error);
-        
-            document.querySelector('#blog_section').innerHTML = 'Module failed to load';
-        
+            const blogSection = document.querySelector('#blog_section');
+            if (blogSection) {
+                blogSection.innerHTML = 'Module failed to load';
+            }
         }
-    </script>
+    });
+</script>
+
 
 
     </div>
