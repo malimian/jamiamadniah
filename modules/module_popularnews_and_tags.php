@@ -58,6 +58,8 @@
                                                     FROM pages 
                                                     WHERE page_meta_keywords IS NOT NULL 
                                                       AND page_meta_keywords != ''
+                                                      AND isactive = 1
+                                                      AND soft_delete = 0
                                                 ");
 
                                                 // Process keywords and count their frequency
@@ -79,7 +81,7 @@
                                                 arsort($tags);
 
                                                 // Get top 10 tags
-                                                $trending_tags = array_slice(array_keys($tags), 0, 24);
+                                                $trending_tags = array_slice(array_keys($tags), 0, 30);
 
                                                 // Loop through the trending tags and display them
                                                 if (!empty($trending_tags)) {
