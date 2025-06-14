@@ -404,19 +404,18 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
 
                                 <!-- Tags and Popular_news -->
                                 <div id="popular_news_and_tags"></div>
-                                <script type="text/javascript">
+                              <script type="text/javascript">
+                                document.addEventListener('DOMContentLoaded', function () {
                                     try {
-                                    
-                                         loadModule('modules/module_popularnews_and_tags.php', {}, '#popular_news_and_tags');
-                                    
+                                        loadModule('modules/module_popularnews_and_tags.php', {}, '#popular_news_and_tags');
                                     } catch (error) {
-                                    
                                         console.error('Failed to load module:', error);
-                                    
-                                        document.querySelector('#popular_news_and_tags').innerHTML = 'Module failed to load';
-                                    
+                                        const el = document.querySelector('#popular_news_and_tags');
+                                        if (el) el.innerHTML = 'Module failed to load';
                                     }
-                              </script>
+                                });
+                            </script>
+
                     </div>
                 </div>
             </div>
