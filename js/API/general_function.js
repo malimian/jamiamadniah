@@ -203,6 +203,51 @@ function handleLoadMore(loadMoreBtn) {
  */
 async function loadModule(modulePath, variables = {}, targetElement = null, returnOutput = false) {
     try {
+        // Create loader element
+        const loader = document.createElement('div');
+        loader.className = 'module-loader';
+        loader.innerHTML = '<div class="loader-module-spinner"></div>';
+        
+        // Add loader styles if they don't exist
+        if (!document.querySelector('style.module-loader-styles')) {
+            const style = document.createElement('style');
+            style.className = 'module-loader-styles';
+            style.textContent = `
+                .module-loader {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 20px;
+                }
+                .loader-module-spinner {
+                    border: 3px solid #f3f3f3;
+                    border-top: 3px solid #3498db;
+                    border-radius: 50%;
+                    width: 20px;
+                    height: 20px;
+                    animation: spin 1s linear infinite;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        // Insert loader if target specified and not returning output
+        let target = null;
+        if (targetElement && !returnOutput) {
+            target = typeof targetElement === 'string' 
+                ? document.querySelector(targetElement) 
+                : targetElement;
+            
+            if (target) {
+                target.innerHTML = '';
+                target.appendChild(loader);
+            }
+        }
+
         // Create form data to send the variables
         const formData = new FormData();
         formData.append('modulePath', modulePath);
@@ -226,19 +271,17 @@ async function loadModule(modulePath, variables = {}, targetElement = null, retu
         const output = await response.text();
         
         // Insert into DOM if target specified
-        if (targetElement && !returnOutput) {
-            const target = typeof targetElement === 'string' 
-                ? document.querySelector(targetElement) 
-                : targetElement;
-            
-            if (target) {
-                target.innerHTML = output;
-            }
+        if (target && !returnOutput) {
+            target.innerHTML = output;
         }
         
         return output;
     } catch (error) {
         console.error('Error loading module:', error);
+        // Remove loader if there's an error
+        if (target && !returnOutput) {
+            target.innerHTML = '<div class="module-error">Error loading module</div>';
+        }
         throw error;
     }
 }
