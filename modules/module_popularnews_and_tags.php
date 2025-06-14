@@ -81,7 +81,7 @@
                                                 arsort($tags);
 
                                                 // Get top 10 tags
-                                                $trending_tags = array_slice(array_keys($tags), 0, 30);
+                                                $trending_tags = array_slice(array_keys($tags), 0, 24);
 
                                                 // Loop through the trending tags and display them
                                                 if (!empty($trending_tags)) {
