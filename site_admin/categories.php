@@ -5,7 +5,7 @@ include 'admin_connect.php';
 $extra_libs = [];
 
 AdminHeader(
-    "Menue", 
+    "Menu Managment", 
     "", 
     $extra_libs,
     null,
