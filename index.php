@@ -652,6 +652,22 @@ foreach ($news_categories as $new_category) {
 
 
 
+    <div id="shop_section"></div>
+   <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        try {
+            loadModule('modules/shop/module_shop.php', {}, '#shop_section');
+        } catch (error) {
+            console.error('Failed to load module:', error);
+            const blogSection = document.querySelector('#shop_section');
+            if (blogSection) {
+                blogSection.innerHTML = 'Module failed to load';
+            }
+        }
+    });
+</script>
+
+
     </div>
 </div>
 
