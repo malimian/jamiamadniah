@@ -9,7 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['modulePath'])) {
     // Sanitize inputs if needed
     // ...
     
-     echo include_module("../../".$modulePath, $variables, $print);
+
+     $data = include_module("../../".$modulePath, $variables, $print); 
+     
+     echo replace_sysvari($data, getcwd() . "../");
+
     exit;
 }
 
