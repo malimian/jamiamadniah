@@ -20,7 +20,7 @@
 
                 $price = $main_featured['attr']['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
                 $discountPrice = $main_featured['attr']['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
-                $inStock = $main_featured['attr']['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
+                $inStock = (bool) ($main_featured['attr']['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0);
             ?>
             <!-- Featured Product -->
             <div class="col-lg-12 mb-4">
