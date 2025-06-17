@@ -5,7 +5,7 @@ if(!function_exists("header_t")) {
     function header_t(){
         return '
             <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-            <link href="css/templates/template_product.css" rel="stylesheet">
+            <link href="css/templates/shop/template_product.css" rel="stylesheet">
             ';
     }
 }
