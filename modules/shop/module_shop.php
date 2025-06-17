@@ -9,18 +9,19 @@
         </div>
         
         <div class="row g-4">
-            <?php
+           <?php
             $featured_products = return_multiple_rows("SELECT * FROM pages WHERE isactive = 1 AND soft_delete = 0 
                 AND catid = 131 and template_id = 4 ORDER BY createdon DESC LIMIT 5");
-            
+
             if (!empty($featured_products)) {
-
                 $main_featured = array_shift($featured_products);
-                $main_featured['attr'] = organizeAttributes($main_featured['template_id'] , $main_featured['pid']);
+                $main_featured['attr'] = organizeAttributes($main_featured['template_id'], $main_featured['pid']);
 
-                $price = $main_featured['attr']['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
-                $discountPrice = $main_featured['attr']['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
-                $inStock = (bool) ($main_featured['attr']['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0);
+                // Corrected attribute access based on the array structure
+                $price = $main_featured['attr'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
+                $discountPrice = $main_featured['attr'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
+                $inStock = (bool) ($main_featured['attr'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0);
+                $sku = $main_featured['attr'][1]['sections']['SKU']['attributes'][3]['current_value'] ?? 'N/A';
             ?>
             <!-- Featured Product -->
             <div class="col-lg-12 mb-4">
@@ -47,7 +48,7 @@
                                     <span class="badge bg-opacity-10 text-primary me-2">Bestseller</span>
                                     <small class="text-muted">
                                         <i class="fas fa-barcode me-1"></i>
-                                        <?php echo $main_featured['attributes'][1]['sections']['SKU']['attributes'][3]['current_value'] ?? 'N/A'; ?>
+                                        <?php echo $sku; ?>
                                     </small>
                                 </div>
                                 <h2 class="card-title mb-3">
@@ -99,11 +100,12 @@
             <div class="col-lg-6">
                 <div class="row g-4">
                     <?php foreach ($product_group as $product): 
-                        $product['attr'] = organizeAttributes($product['template_id'] , $product['pid']);
-                        $price = $product['attr']['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
-                        $discountPrice = $product['attr']['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
-                        $inStock = (bool) $product['attr']['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
-                        $isNew = $product['attr']['attributes'][4]['sections']['New Arrival']['attributes'][20]['current_value'] ?? 0;
+                        $product['attr'] = organizeAttributes($product['template_id'], $product['pid']);
+                        // Accessing the values correctly based on the array structure
+                        $price = $product['attr'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
+                        $discountPrice = $product['attr'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
+                        $inStock = $product['attr'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
+                        $isNew = $product['attr'][4]['sections']['New Arrival']['attributes'][20]['current_value'] ?? 0;
                     ?>
                     <div class="col-md-6">
                         <div class="product-card card border-0 shadow-sm h-100">
@@ -166,6 +168,7 @@
                     </div>
                     <?php endforeach; ?>
                 </div>
+                <!-- Product -->
             </div>
             <?php endforeach; ?>
         </div>
