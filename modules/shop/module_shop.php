@@ -2,7 +2,7 @@
 <div class="shop-section py-5 bg-light">
     <div class="container">
         <div class="shop-section-header d-flex justify-content-between align-items-center mb-5">
-            <h2 class="display-5 fw-bold text-dark mb-0">Shop</h2>
+            <h2 class="display-5 fw-bold text-dark mb-0">{SITE_TITLE} Gift Shop</h2>
             <a href="<?php echo BASE_URL; ?>products.html" class="btn btn-primary rounded-pill px-4">
                 View All <i class="fas fa-arrow-right ms-2"></i>
             </a>
@@ -102,7 +102,7 @@
                         $product['attr'] = organizeAttributes($product['template_id'] , $product['pid']);
                         $price = $product['attr']['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
                         $discountPrice = $product['attr']['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
-                        $inStock = $product['attr']['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
+                        $inStock = (bool) $product['attr']['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
                         $isNew = $product['attr']['attributes'][4]['sections']['New Arrival']['attributes'][20]['current_value'] ?? 0;
                     ?>
                     <div class="col-md-6">

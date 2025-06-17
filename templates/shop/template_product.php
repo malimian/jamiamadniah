@@ -485,37 +485,65 @@ if(!function_exists("footer_t")) {
                     <div class="card-body">
                         <h5 class="card-title mb-4">Similar Products</h5>
                         
-                        <?php 
-                        $latest_posts = return_multiple_rows("Select * from pages Where soft_delete = 0 and isactive = 1 and catid = ".$content['catid']." Order by createdon DESC LIMIT 0 , 5 ");
+                       <?php 
+                        $latest_posts = return_multiple_rows("
+                            SELECT * FROM pages 
+                            WHERE soft_delete = 0 
+                              AND isactive = 1 
+                              AND catid = {$content['catid']} 
+                              AND template_id = 4 
+                            ORDER BY createdon DESC 
+                            LIMIT 5
+                        ");
+
                         foreach ($latest_posts as $latest_post) {
-                            if($latest_post['pid'] == $content['pid']) continue; // Skip current product
-                        ?>
-                        <div class="card similar-product-card mb-3">
-                            <div class="row g-0">
-                                <div class="col-md-4">
-                                    <img src="<?php echo ABSOLUTE_IMAGEPATH.$latest_post['featured_image']; ?>" class="img-fluid rounded-start similar-product-img" alt="<?php echo $latest_post['page_title']; ?>">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h6 class="card-title mb-1">
-                                            <a href="<?php echo $latest_post['page_url']; ?>" class="text-decoration-none text-dark"><?php echo $latest_post['page_title']; ?></a>
-                                        </h6>
-                                        <div class="text-warning mb-2 small">
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star"></i>
-                                            <i class="fas fa-star-half-alt"></i>
-                                        </div>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <strong class="text-primary"><?php echo CURRENCY; ?> <?php //echo $latest_post['plistprice']; ?></strong>
-                                            <button class="btn btn-sm btn-outline-primary">Add</button>
+                            if ($latest_post['pid'] == $content['pid']) continue; // Skip current item
+
+                            $latest_post['attr'] = organizeAttributes($latest_post['template_id'], $latest_post['pid']);
+
+                            $price = $latest_post['attr']['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
+                            $discountPrice = $latest_post['attr']['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
+                            $inStock = (bool) ($latest_post['attr']['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0);
+                            ?>
+
+                            <div class="card similar-product-card mb-3">
+                                <div class="row g-0">
+                                    <div class="col-md-4">
+                                        <img src="<?php echo ABSOLUTE_IMAGEPATH . $latest_post['featured_image']; ?>" 
+                                             class="img-fluid rounded-start similar-product-img" 
+                                             alt="<?php echo htmlspecialchars($latest_post['page_title']); ?>">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h6 class="card-title mb-1">
+                                                <a href="<?php echo $latest_post['page_url']; ?>" 
+                                                   class="text-decoration-none text-dark">
+                                                    <?php echo htmlspecialchars($latest_post['page_title']); ?>
+                                                </a>
+                                            </h6>
+                                            <div class="text-warning mb-2 small">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star-half-alt"></i>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <strong class="text-primary">
+                                                    <?php echo CURRENCY; ?> 
+                                                    <?php echo $discountPrice > 0 ? number_format($discountPrice) : number_format($price); ?>
+                                                </strong>
+                                                <button class="btn btn-sm btn-outline-primary" <?php if (!$inStock) echo 'disabled'; ?>>
+                                                    <?php echo $inStock ? 'Add' : 'Out of Stock'; ?>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+
                         <?php } ?>
+
                         
                         <a href="<?php echo BASE_URL.'/'.$content['cat_url']; ?>" class="btn btn-outline-primary w-100 mt-3">View All Products</a>
                     </div>
