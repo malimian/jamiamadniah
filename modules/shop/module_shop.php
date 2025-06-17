@@ -14,10 +14,13 @@
                 AND catid = 131 and template_id = 4 ORDER BY createdon DESC LIMIT 5");
             
             if (!empty($featured_products)) {
+
                 $main_featured = array_shift($featured_products);
-                $price = $main_featured['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
-                $discountPrice = $main_featured['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
-                $inStock = $main_featured['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
+                $main_featured['attr'] = organizeAttributes($main_featured['template_id'] , $main_featured['pid']);
+
+                $price = $main_featured['attr']['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
+                $discountPrice = $main_featured['attr']['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
+                $inStock = $main_featured['attr']['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
             ?>
             <!-- Featured Product -->
             <div class="col-lg-12 mb-4">
@@ -96,10 +99,11 @@
             <div class="col-lg-6">
                 <div class="row g-4">
                     <?php foreach ($product_group as $product): 
-                        $price = $product['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
-                        $discountPrice = $product['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
-                        $inStock = $product['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
-                        $isNew = $product['attributes'][4]['sections']['New Arrival']['attributes'][20]['current_value'] ?? 0;
+                        $product['attr'] = organizeAttributes($product['template_id'] , $product['pid']);
+                        $price = $product['attr']['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
+                        $discountPrice = $product['attr']['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
+                        $inStock = $product['attr']['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
+                        $isNew = $product['attr']['attributes'][4]['sections']['New Arrival']['attributes'][20]['current_value'] ?? 0;
                     ?>
                     <div class="col-md-6">
                         <div class="product-card card border-0 shadow-sm h-100">
