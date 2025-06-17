@@ -7,7 +7,7 @@ $extra_libs = [
 ];
 
 AdminHeader(
-    "dashboard Admin", 
+    "Admin - Edit Page", 
     "", 
     $extra_libs,
     null,
