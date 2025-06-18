@@ -40,6 +40,24 @@ if(!function_exists("script_t")) {
                 <hr class="mt-3">
             </div>
         </div>
+
+         <!-- Search Bar -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <form method="get" action="" class="search-form">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search products..." 
+                               value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                        <?php if(isset($_GET['search'])): ?>
+                            <a href="?" class="btn btn-outline-secondary">Clear</a>
+                        <?php endif; ?>
+                    </div>
+                </form>
+            </div>
+        </div>
         
         <div class="row">
             <!-- Filters Sidebar -->
@@ -55,8 +73,8 @@ if(!function_exists("script_t")) {
                             <div class="price-range-slider">
                                 <input type="range" class="form-range" min="0" max="1000" step="10" id="priceRange">
                                 <div class="d-flex justify-content-between mt-2">
-                                    <span id="minPrice">$0</span>
-                                    <span id="maxPrice">$1000</span>
+                                    <span id="minPrice"><?php echo CURRENCY?>0</span>
+                                    <span id="maxPrice"><?php echo CURRENCY?>1000</span>
                                 </div>
                             </div>
                         </div>
@@ -207,7 +225,35 @@ if(!function_exists("script_t")) {
             <div class="col-lg-9">
                 <div class="product-grid">
                     <?php 
-                    $products = return_multiple_rows("SELECT * FROM pages WHERE soft_delete = 0 AND isactive = 1 AND catid = ".$content['catid']." and template_id = 4 ORDER BY createdon DESC");
+                     // Pagination setup
+                    $itemsPerPage = 12;
+                    $currentPage = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
+                    $offset = ($currentPage - 1) * $itemsPerPage;
+
+                    // Base query conditions
+                    $conditions = " soft_delete = 0 AND isactive = 1 AND catid = ".intval($content['catid'])." AND template_id = 4";
+
+                    // Search term
+                    $searchTerm = '';
+                    if (isset($_GET['search']) && !empty(trim($_GET['search']))) {
+                        $searchTerm = trim($_GET['search']);
+                        $escapedSearch = escape($searchTerm); // ensure this function escapes safely for SQL
+                        $conditions .= " AND (page_title LIKE '%$escapedSearch%' OR page_meta_desc LIKE '%$escapedSearch%')";
+                    }
+
+                    // Get total count
+                    $countSql = "SELECT COUNT(*) as total FROM pages WHERE $conditions";
+                    $totalProducts = return_single_ans($countSql);
+                    $totalPages = ceil($totalProducts / $itemsPerPage);
+
+                    // Final paginated SQL
+                    $sql = "SELECT * FROM pages WHERE $conditions ORDER BY createdon DESC LIMIT $offset, $itemsPerPage";
+                    $products = return_multiple_rows($sql);
+
+            
+                    // Get products
+                    $products = return_multiple_rows($sql);
+
                     foreach ($products as $product):
 
                         $product['attr'] = organizeAttributes($product['template_id'], $product['pid']); 
