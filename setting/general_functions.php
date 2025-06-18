@@ -1,4 +1,14 @@
 <?php
+
+function get_resized_image_path($image, $size = '500x500') {
+    $extension = pathinfo($image, PATHINFO_EXTENSION);
+    $filename = basename($image, '.' . $extension);
+    $dirname = dirname($image);
+
+    return $dirname . '/' . $filename . '-' . $size . '.' . $extension;
+}
+
+
 function getFullImageUrl($path) {
     // Fallback image path
     $fallback = 'assets/img/post-loading.gif';

@@ -4,16 +4,16 @@ $GLOBALS['content'] = $content;
 if(!function_exists("header_t")) {
     function header_t(){
         return '
-            <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-            <link href="css/templates/shop/template_product.css" rel="stylesheet">
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+                <link href="css/templates/shop/template_product.css" rel="stylesheet">
             ';
     }
 }
 ?>
 
 <?php
-if(!function_exists("footer_t")) {
-    function footer_t(){
+if(!function_exists("script_t")) {
+    function script_t(){
         return '
         <script src="https://cdn.jsdelivr.net/npm/fslightbox@3.3.1/index.min.js"></script>
         <script>
@@ -36,12 +36,22 @@ if(!function_exists("footer_t")) {
 }
 ?>
 
+<?php
+if(!function_exists("footer_t")) {
+    function footer_t(){
+        return '
+
+        ';
+    }
+}
+?>
+
 <header class="product-header py-3">
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="<?php echo BASE_URL; ?>">Home</a></li>
-                <li class="breadcrumb-item"><a href="<?php echo BASE_URL.'/'.$content['cat_url']; ?>"><?php echo $content['catname']; ?></a></li>
+                <li class="breadcrumb-item"><a href="<?php echo BASE_URL.$content['cat_url']; ?>"><?php echo $content['catname']; ?></a></li>
                 <li class="breadcrumb-item active" aria-current="page"><?php echo replace_sysvari($content['page_title']); ?></li>
             </ol>
         </nav>

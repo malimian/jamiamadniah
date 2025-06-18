@@ -12,68 +12,10 @@ if(!function_exists("header_t")) {
 ?>
 
 <?php
-if(!function_exists("footer_t")) {
-    function footer_t(){
+if(!function_exists("script_t")) {
+    function script_t(){
         return '
-        <script src="https://cdn.jsdelivr.net/npm/fslightbox@3.3.1/index.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/isotope-layout@3.0.6/dist/isotope.pkgd.min.js"></script>
-        <script>
-            // Quick view modal functionality
-            function openQuickView(pid) {
-                fetch(`'.BASE_URL.'quick-view.php?pid=${pid}`)
-                    .then(response => response.text())
-                    .then(html => {
-                        document.getElementById("quickViewContent").innerHTML = html;
-                        new bootstrap.Modal(document.getElementById("quickViewModal")).show();
-                        refreshFsLightbox();
-                    });
-            }
-            
-            // Initialize Isotope for filtering
-            document.addEventListener("DOMContentLoaded", function() {
-                const grid = document.querySelector(".product-grid");
-                if(grid) {
-                    const iso = new Isotope(grid, {
-                        itemSelector: ".product-card",
-                        layoutMode: "fitRows"
-                    });
-                    
-                    // Filter on button click
-                    document.querySelectorAll(".filter-button").forEach(button => {
-                        button.addEventListener("click", function() {
-                            const filterValue = this.getAttribute("data-filter");
-                            iso.arrange({ filter: filterValue });
-                            
-                            // Update active class
-                            document.querySelectorAll(".filter-button").forEach(btn => 
-                                btn.classList.remove("active"));
-                            this.classList.add("active");
-                        });
-                    });
-                }
-            });
-            
-            // Sort functionality
-            function sortProducts(sortBy) {
-                const container = document.querySelector(".product-grid");
-                const products = Array.from(document.querySelectorAll(".product-card"));
-                
-                products.sort((a, b) => {
-                    if(sortBy === "price-asc") {
-                        return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
-                    } else if(sortBy === "price-desc") {
-                        return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
-                    } else if(sortBy === "date") {
-                        return new Date(b.dataset.date) - new Date(a.dataset.date);
-                    } else if(sortBy === "popularity") {
-                        return parseInt(b.dataset.views) - parseInt(a.dataset.views);
-                    }
-                    return 0;
-                });
-                
-                products.forEach(product => container.appendChild(product));
-            }
-        </script>
         ';
     }
 }
@@ -86,8 +28,8 @@ if(!function_exists("footer_t")) {
                 <div class="d-flex justify-content-between align-items-center">
                     <h1 class="page-title mb-0"><?php echo $content['catname']; ?></h1>
                     <div class="sort-options">
-                        <select class="form-select" onchange="sortProducts(this.value)">
-                            <option value="">Sort By</option>
+                        <select class="form-select" id="sortSelect">
+                            <option value="original">Sort By</option>
                             <option value="price-asc">Price: Low to High</option>
                             <option value="price-desc">Price: High to Low</option>
                             <option value="date">Newest First</option>
@@ -209,7 +151,7 @@ if(!function_exists("footer_t")) {
                             </div>
                         </div>
                         
-                        <button class="btn btn-outline-primary w-100 mt-4" onclick="resetFilters()">
+                        <button class="btn btn-outline-primary w-100 mt-4" id="resetFilters">
                             <i class="fas fa-sync-alt me-2"></i>Reset Filters
                         </button>
                     </div>
@@ -223,11 +165,15 @@ if(!function_exists("footer_t")) {
                     <div class="card-body">
                         <?php 
                         $featured_products = return_multiple_rows("SELECT * FROM pages WHERE soft_delete = 0 AND isactive = 1 AND catid = ".$content['catid']." and template_id = 4 ORDER BY RAND() LIMIT 3");
-                        foreach ($featured_products as $product): ?>
+                        foreach ($featured_products as $product):
+
+                        $product['attr'] = organizeAttributes($product['template_id'], $product['pid']);
+
+                        ?>
                         <div class="featured-product-item mb-3">
                             <div class="row g-2">
                                 <div class="col-4">
-                                    <img src="<?php echo ABSOLUTE_IMAGEPATH.$product['featured_image']; ?>" 
+                                    <img src="<?php echo ABSOLUTE_IMAGEPATH.get_resized_image_path($product['featured_image']); ?>" 
                                          class="img-fluid rounded" alt="<?php echo $product['page_title']; ?>">
                                 </div>
                                 <div class="col-8">
@@ -238,8 +184,9 @@ if(!function_exists("footer_t")) {
                                     </h6>
                                     <div class="price">
                                         <?php 
-                                        $price = $product['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
-                                        $discountPrice = $product['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
+                                        $price = $product['attr'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;  
+                                        
+                                        $discountPrice = $product['attr'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
                                         
                                         if($discountPrice > 0 && $discountPrice < $price): ?>
                                             <span class="current-price"><?php echo CURRENCY.number_format($discountPrice, 2); ?></span>
@@ -261,16 +208,18 @@ if(!function_exists("footer_t")) {
                 <div class="product-grid">
                     <?php 
                     $products = return_multiple_rows("SELECT * FROM pages WHERE soft_delete = 0 AND isactive = 1 AND catid = ".$content['catid']." and template_id = 4 ORDER BY createdon DESC");
-                    foreach ($products as $product): 
+                    foreach ($products as $product):
+
+                        $product['attr'] = organizeAttributes($product['template_id'], $product['pid']); 
                         // Get product attributes
-                        $price = $product['attributes'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
-                        $discountPrice = $product['attributes'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
-                        $colors = explode(',', $product['attributes'][2]['sections']['Color']['attributes'][1]['current_value'] ?? '');
-                        $sizes = explode(',', $product['attributes'][1]['sections']['Size']['attributes'][2]['current_value'] ?? '');
-                        $brands = explode(',', $product['attributes'][2]['sections']['Brand/Manufacturer']['attributes'][7]['current_value'] ?? '');
-                        $inStock = $product['attributes'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
-                        $isNew = $product['attributes'][4]['sections']['New Arrival']['attributes'][20]['current_value'] ?? 0;
-                        $isOnSale = $product['attributes'][4]['sections']['On Sale']['attributes'][22]['current_value'] ?? 0;
+                        $price = $product['attr'][2]['sections']['Price']['attributes'][8]['current_value'] ?? 0;
+                        $discountPrice = $product['attr'][2]['sections']['Discount Price']['attributes'][9]['current_value'] ?? 0;
+                        $colors = explode(',', $product['attr'][2]['sections']['Color']['attributes'][1]['current_value'] ?? '');
+                        $sizes = explode(',', $product['attr'][1]['sections']['Size']['attributes'][2]['current_value'] ?? '');
+                        $brands = explode(',', $product['attr'][2]['sections']['Brand/Manufacturer']['attributes'][7]['current_value'] ?? '');
+                        $inStock = $product['attr'][4]['sections']['Stock Status']['attributes'][323]['current_value'] ?? 0;
+                        $isNew = $product['attr'][4]['sections']['New Arrival']['attributes'][20]['current_value'] ?? 0;
+                        $isOnSale = $product['attr'][4]['sections']['On Sale']['attributes'][22]['current_value'] ?? 0;
                         
                         // Build filter classes
                         $filterClasses = [];
@@ -307,7 +256,7 @@ if(!function_exists("footer_t")) {
                             <!-- Product Image -->
                             <div class="product-image-container">
                                 <a href="<?php echo BASE_URL.$product['page_url']; ?>">
-                                    <img src="<?php echo ABSOLUTE_IMAGEPATH.$product['featured_image']; ?>" 
+                                    <img src="<?php echo ABSOLUTE_IMAGEPATH . get_resized_image_path($product['featured_image']); ?>" 
                                          class="card-img-top" alt="<?php echo $product['page_title']; ?>">
                                 </a>
                                 <div class="quick-view-btn" onclick="openQuickView(<?php echo $product['pid']; ?>)">
@@ -365,7 +314,7 @@ if(!function_exists("footer_t")) {
                                 
                                 <div class="product-meta">
                                     <div class="d-flex justify-content-between small text-muted">
-                                        <span><i class="fas fa-barcode me-1"></i> <?php echo $product['attributes'][1]['sections']['SKU']['attributes'][3]['current_value'] ?? 'N/A'; ?></span>
+                                        <span><i class="fas fa-barcode me-1"></i> <?php echo $product[1]['sections']['SKU'][3]['current_value'] ?? 'N/A'; ?></span>
                                         <span class="<?php echo $inStock ? 'text-success' : 'text-danger'; ?>">
                                             <i class="fas fa-<?php echo $inStock ? 'check' : 'times'; ?>-circle me-1"></i>
                                             <?php echo $inStock ? 'In Stock' : 'Out of Stock'; ?>
@@ -380,16 +329,8 @@ if(!function_exists("footer_t")) {
                 
                 <!-- Pagination -->
                 <nav aria-label="Product pagination" class="mt-5">
-                    <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                        </li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
+                    <ul class="pagination justify-content-center" id="pagination">
+                        <!-- Pagination will be added by JavaScript -->
                     </ul>
                 </nav>
             </div>
@@ -415,3 +356,189 @@ if(!function_exists("footer_t")) {
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/fslightbox@3.3.1/index.min.js"></script>
+<script>
+    // Initialize Isotope and pagination when DOM is loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initialize Isotope
+        const grid = document.querySelector(".product-grid");
+        let iso = new Isotope(grid, {
+            itemSelector: ".product-card",
+            layoutMode: "fitRows",
+            getSortData: {
+                price: function(itemElem) {
+                    return parseFloat(itemElem.getAttribute('data-price'));
+                },
+                date: function(itemElem) {
+                    return new Date(itemElem.getAttribute('data-date'));
+                },
+                views: function(itemElem) {
+                    return parseInt(itemElem.getAttribute('data-views'));
+                }
+            }
+        });
+
+        // Filter functionality
+        document.querySelectorAll(".filter-button").forEach(button => {
+            button.addEventListener("click", function() {
+                const filters = [];
+                document.querySelectorAll(".filter-button:checked").forEach(checked => {
+                    filters.push(checked.getAttribute("data-filter"));
+                });
+                
+                const filterValue = filters.length > 0 ? filters.join(', ') : '*';
+                iso.arrange({ filter: filterValue });
+                updatePagination();
+            });
+        });
+
+        // Sort functionality
+        document.getElementById("sortSelect").addEventListener("change", function() {
+            const sortValue = this.value;
+            let sortOptions;
+            
+            switch(sortValue) {
+                case "price-asc":
+                    sortOptions = { sortBy: 'price', sortAscending: true };
+                    break;
+                case "price-desc":
+                    sortOptions = { sortBy: 'price', sortAscending: false };
+                    break;
+                case "date":
+                    sortOptions = { sortBy: 'date', sortAscending: false };
+                    break;
+                case "popularity":
+                    sortOptions = { sortBy: 'views', sortAscending: false };
+                    break;
+                default:
+                    sortOptions = { sortBy: 'original-order' };
+            }
+            
+            iso.arrange(sortOptions);
+            updatePagination();
+        });
+
+        // Reset filters
+        document.getElementById("resetFilters").addEventListener("click", function() {
+            document.querySelectorAll(".filter-button").forEach(button => {
+                button.checked = false;
+            });
+            iso.arrange({ filter: '*' });
+            document.getElementById("sortSelect").value = "original";
+            iso.arrange({ sortBy: 'original-order' });
+            updatePagination();
+        });
+
+        // Pagination functionality
+        const itemsPerPage = 12;
+        let currentPage = 1;
+        
+        function updatePagination() {
+            const visibleItems = document.querySelectorAll('.product-grid .product-card:not(.isotope-hidden)');
+            const totalPages = Math.ceil(visibleItems.length / itemsPerPage);
+            
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            // Previous button
+            const prevLi = document.createElement('li');
+            prevLi.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');
+            prevLi.innerHTML = `<a class="page-link" href="#" tabindex="-1">Previous</a>`;
+            prevLi.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage > 1) {
+                    currentPage--;
+                    showPage(currentPage);
+                }
+            });
+            pagination.appendChild(prevLi);
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const li = document.createElement('li');
+                li.className = 'page-item' + (i === currentPage ? ' active' : '');
+                li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                li.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentPage = i;
+                    showPage(currentPage);
+                });
+                pagination.appendChild(li);
+            }
+            
+            // Next button
+            const nextLi = document.createElement('li');
+            nextLi.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '');
+            nextLi.innerHTML = `<a class="page-link" href="#">Next</a>`;
+            nextLi.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    showPage(currentPage);
+                }
+            });
+            pagination.appendChild(nextLi);
+            
+            showPage(currentPage);
+        }
+        
+        function showPage(page) {
+            const visibleItems = document.querySelectorAll('.product-grid .product-card:not(.isotope-hidden)');
+            const startIndex = (page - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            
+            visibleItems.forEach((item, index) => {
+                if (index >= startIndex && index < endIndex) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Update active page in pagination
+            const paginationItems = document.querySelectorAll('#pagination .page-item');
+            paginationItems.forEach((item, index) => {
+                if (index === 0) return; // Skip previous button
+                if (index === paginationItems.length - 1) return; // Skip next button
+                
+                const pageNum = index; // Because index 0 is previous button
+                item.classList.toggle('active', pageNum === page);
+            });
+        }
+        
+        // Initialize pagination
+        updatePagination();
+        
+        // Price range filter
+        const priceRange = document.getElementById('priceRange');
+        const minPrice = document.getElementById('minPrice');
+        const maxPrice = document.getElementById('maxPrice');
+        
+        priceRange.addEventListener('input', function() {
+            const maxValue = parseInt(this.value);
+            maxPrice.textContent = '$' + maxValue;
+            
+            iso.arrange({
+                filter: function(itemElem) {
+                    const price = parseFloat(itemElem.getAttribute('data-price'));
+                    return price <= maxValue;
+                }
+            });
+            updatePagination();
+        });
+    });
+    
+    // Quick view modal functionality
+    function openQuickView(pid) {
+        fetch(`<?php echo BASE_URL; ?>quick-view.php?pid=${pid}`)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById("quickViewContent").innerHTML = html;
+                new bootstrap.Modal(document.getElementById("quickViewModal")).show();
+                refreshFsLightbox();
+            });
+    }
+</script>

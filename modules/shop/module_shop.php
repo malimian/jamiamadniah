@@ -3,7 +3,7 @@
     <div class="container">
         <div class="shop-section-header d-flex justify-content-between align-items-center mb-5">
             <h2 class="display-5 fw-bold text-dark mb-0">{SITE_TITLE} Gift Shop</h2>
-            <a href="<?php echo BASE_URL; ?>products.html" class="btn btn-primary rounded-pill px-4">
+            <a href="<?php echo BASE_URL; ?>shop.html" class="btn btn-primary rounded-pill px-4">
                 View All <i class="fas fa-arrow-right ms-2"></i>
             </a>
         </div>
