@@ -179,4 +179,3 @@ AdminHeader(
 
     <?php echo include_module('modules/upload_image.php', null); ?>
     <?php include 'includes/footer.php'; ?>
-</body>
