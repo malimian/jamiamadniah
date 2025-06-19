@@ -21,7 +21,7 @@
         }
         
         // Function to display menu items recursively
-        function displayMenuItems($parentId, $menuTree, $level = 0) {
+        function displayCategoryMenuItems($parentId, $menuTree, $level = 0) {
             if (!isset($menuTree[$parentId])) return;
             
             foreach ($menuTree[$parentId] as $menu) {
@@ -43,7 +43,7 @@
                     
                     // Show child categories first
                     if ($hasChildren) {
-                        displayMenuItems($menu['catid'], $menuTree, $level + 1);
+                        displayCategoryMenuItems($menu['catid'], $menuTree, $level + 1);
                     }
                     
                     // Then show pages if configured to do so
@@ -83,7 +83,7 @@
         }
         
         // Start displaying from root menus (parent_id = 0)
-        displayMenuItems(0, $menuTree);
+        displayCategoryMenuItems(0, $menuTree);
         ?>
     </div>
 </div>
