@@ -167,6 +167,17 @@ if (isset($_GET['template_id'])) {
                             <div id="attribute-list">
                                 <!-- Attributes -->
                                 <div class="template-attributes-container">
+                                     <div class="text-right mb-3">
+                                        <button type="button" class="btn btn-primary btn-sm add-new-attribute-global"
+                                                data-template-id="<?php echo $template_id; ?>"
+                                                data-toggle="modal"
+                                                data-target="#attributeModal"
+                                                data-action="add"
+                                                data-global-add="true"
+                                                title="Add New Attribute to Any Section">
+                                            <i class="fas fa-plus mr-1"></i> Add New Attribute
+                                        </button>
+                                    </div>
                                     <?php if (!empty($attributes)) : ?>
                                         <?php foreach ($attributes as $tab_name => $sections) : ?>
                                             <div class="card mb-4">
@@ -175,6 +186,7 @@ if (isset($_GET['template_id'])) {
                                                 </div>
                                                 <div class="card-body">
                                                     <?php foreach ($sections as $section_name => $section_attributes) : ?>
+                                                        <!-- In the section header div, modify the existing button and add new ones -->
                                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                                             <?php if (count($sections) > 1) : ?>
                                                                 <h6 class="text-muted mb-0"><?php echo htmlspecialchars($section_name); ?></h6>
@@ -185,17 +197,29 @@ if (isset($_GET['template_id'])) {
                                                                     <div></div>
                                                                 <?php endif; ?>
                                                             <?php endif; ?>
-                                                            <button type="button" class="btn btn-success btn-sm add-attribute-to-section"
-                                                                    data-template-id="<?php echo $template_id; ?>"
-                                                                    data-tab-name="<?php echo htmlspecialchars($tab_name); ?>"
-                                                                    data-tab-id="<?php echo $section_attributes[0]['tab_id'] ?? 0; ?>"
-                                                                    data-section-name="<?php echo htmlspecialchars($section_name); ?>"
-                                                                    data-toggle="modal"
-                                                                    data-target="#attributeModal"
-                                                                    data-action="add"
-                                                                    title="Add New Attribute to <?php echo htmlspecialchars($section_name); ?>">
-                                                                <i class="fas fa-plus mr-1"></i> Add New Attribute to <?php echo htmlspecialchars($section_name); ?>
-                                                            </button>
+                                                            <div class="btn-group">
+                                                                <button type="button" class="btn btn-success btn-sm add-attribute-to-section"
+                                                                        data-template-id="<?php echo $template_id; ?>"
+                                                                        data-tab-name="<?php echo htmlspecialchars($tab_name); ?>"
+                                                                        data-tab-id="<?php echo $section_attributes[0]['tab_id'] ?? 0; ?>"
+                                                                        data-section-name="<?php echo htmlspecialchars($section_name); ?>"
+                                                                        data-toggle="modal"
+                                                                        data-target="#attributeModal"
+                                                                        data-action="add"
+                                                                        title="Add New Attribute to <?php echo htmlspecialchars($section_name); ?>">
+                                                                    <i class="fas fa-plus mr-1"></i> Add Attribute
+                                                                </button>
+                                                                
+                                                                
+                                                                <!-- Duplicate Section button -->
+                                                                <button type="button" class="btn btn-info btn-sm duplicate-section"
+                                                                        data-tab-id="<?php echo $section_attributes[0]['tab_id'] ?? 0; ?>"
+                                                                        data-section-name="<?php echo htmlspecialchars($section_name); ?>"
+                                                                        data-attributes='<?php echo json_encode($section_attributes); ?>'
+                                                                        title="Duplicate <?php echo htmlspecialchars($section_name); ?> Section">
+                                                                    <i class="fas fa-clone mr-1"></i> Duplicate
+                                                                </button>
+                                                            </div>
                                                         </div>
 
                                                         <div class="row">
@@ -218,6 +242,7 @@ if (isset($_GET['template_id'])) {
                                                                                 </div>
                                                                             </div>
 
+                                                                            <!-- Inside the attribute-card div, add these buttons to the btn-group -->
                                                                             <div class="btn-group btn-group-sm">
                                                                                 <button type="button" class="btn btn-outline-primary edit-attribute"
                                                                                         data-id="<?php echo $attribute['id']; ?>"
@@ -227,28 +252,36 @@ if (isset($_GET['template_id'])) {
                                                                                         title="Edit Attribute">
                                                                                     <i class="fas fa-edit"></i>
                                                                                 </button>
-
+                                                                                
+                                                                                <!-- Add Copy Attribute button -->
+                                                                                <button type="button" class="btn btn-outline-success copy-attribute"
+                                                                                        data-id="<?php echo $attribute['id']; ?>"
+                                                                                        title="Copy Attribute">
+                                                                                    <i class="fas fa-copy"></i>
+                                                                                </button>
+                                                                                
                                                                                 <button type="button" class="btn btn-outline-info attribute-settings"
                                                                                         data-id="<?php echo $attribute['id']; ?>"
-                                                                                        title="Advanced Settings">
+                                                                                        title="Attribute Options setting">
                                                                                     <i class="fas fa-cog"></i>
                                                                                 </button>
 
-                                                                             <?php if ($attribute['usage_count'] == 0) : ?>
+                                                                                <?php if ($attribute['usage_count'] == 0) : ?>
                                                                                 <button type="button" class="btn btn-outline-danger delete-attribute"
                                                                                         data-id="<?php echo $attribute['id']; ?>"
                                                                                         title="Delete Attribute">
                                                                                     <i class="fas fa-trash-alt"></i>
                                                                                 </button>
-                                                                            <?php else : ?>
+                                                                                <?php else : ?>
                                                                                 <button type="button" class="btn btn-outline-danger delete-attribute-in-use"
                                                                                         data-id="<?php echo $attribute['id']; ?>"
                                                                                         title="Delete Attribute"
                                                                                         data-usage-count="<?php echo $attribute['usage_count']; ?>">
                                                                                     <i class="fas fa-trash-alt"></i>
                                                                                 </button>
-                                                                            <?php endif; ?>
+                                                                                <?php endif; ?>
                                                                             </div>
+
                                                                         </div>
 
                                                                         <div class="attribute-meta mt-2 small text-muted">
@@ -257,11 +290,26 @@ if (isset($_GET['template_id'])) {
                                                                                 <div>Section: <?php echo htmlspecialchars($section_name); ?></div>
                                                                             <?php endif; ?>
                                                                             <div>Order: <?php echo $attribute['sort_order']; ?></div>
-                                                                            <div>Code : <?php
-                                                                            $code = '$attribute['.($section_attributes[0]['tab_id'] ?? 0).'][\'sections\'][\''.$section_name.'\'][\'attributes\']['.$attribute['id'].']';
-                                                                            echo $code ;
-                                                                            ?>
-                                                                            </div>
+                                                                            <div>Code: $attribute[<?php echo ($section_attributes[0]['tab_id'] ?? 0); ?>]['sections']['<?php echo $section_name; ?>']['attributes'][<?php echo $attribute['id']; ?>]</div>
+                                                                            
+                                                                                <div class="attribute-options">
+                                                                                    <strong>Options:</strong>
+                                                                                    <?php 
+                                                                                    $options_sql = "SELECT option_value, option_label FROM attribute_options WHERE attribute_id = " . $attribute['id'] . " ORDER BY sort_order";
+                                                                                    $options = return_multiple_rows($options_sql);
+                                                                                    if ($options) {
+                                                                                        echo '<div class="options-list">';
+                                                                                        foreach ($options as $option) {
+                                                                                            echo '<span class="badge badge-secondary mr-1">' . 
+                                                                                                 htmlspecialchars($option['option_value']) . ' (' . 
+                                                                                                 htmlspecialchars($option['option_label']) . ')</span>';
+                                                                                        }
+                                                                                        echo '</div>';
+                                                                                    } else {
+                                                                                        echo '<span class="text-muted">No options</span>';
+                                                                                    }
+                                                                                    ?>
+                                                                                </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
