@@ -21,7 +21,7 @@ define('SITE_TELNO', $settings[16]['settings_value'] , '');
 
 
 ##########################PROJECT
-define('Company', 'Ibotoempire' , '');
+define('Company', 'HAT INC' , '');
 
 ##########################Email
 define('EMAIL', $settings[4]['settings_value'] , '');
@@ -44,8 +44,8 @@ else $protocol = "http://";
 
 if($_SERVER['REMOTE_ADDR'] == "::1" || $_SERVER['REMOTE_ADDR'] == "127.0.0.1"){
 	
-	define('BASE_URL', $protocol.'localhost/ibspotlight/' , '');
-	define('API_BASE_URL', $protocol.'localhost/ibspotlight/api/' , '');
+	define('BASE_URL', $protocol.'localhost/jamiamadniah/' , '');
+	define('API_BASE_URL', $protocol.'localhost/jamiamadniah/api/' , '');
 }
 else{
 	define('BASE_URL', $protocol.$settings[2]['settings_value'] , '');
@@ -78,7 +78,7 @@ define('PAGE_LOADER',  $settings[13]['settings_value'] , '0');
 
 define('COMMENT_API', '%241%24wq1rdBcg%24cC9mlw%2FSWcQWnSvdj5vpc1' , '');
 
-define('CURRENCY', '$' , '');
+define('CURRENCY', 'PKR' , '');
 
 define('COMMENTS_API', '%241%24wq1rdBcg%248zHXZtKoEIW1v91GvA%2FwO.' , '');
 
