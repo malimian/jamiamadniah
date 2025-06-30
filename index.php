@@ -44,635 +44,755 @@ if (!empty($navbar_content)) {
 
 ?>
 
-<style>
+<!-- Hero Start -->
+    <div class="container-fluid hero-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="hero-header-inner animated zoomIn">
+                        <p class="fs-4 text-dark">جامعہ مدنیہ میں خوش آمدید</p>
+                        <h1 class="display-1 mb-5 text-dark">علم دین حاصل کریں، اپنی آخرت سنواریں</h1>
+                        <a href="" class="btn btn-primary py-3 px-5">مزید جانیں</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Hero End -->
 
-    .owl-carousel img {
-        height: 250px; /* Adjust height as needed */
-        object-fit: cover; /* Ensures the image covers the area without stretching */
-    }
-</style>
 
-<!-- Features Start -->
-<div class="container-fluid features mb-5">
-    <div class="container py-5">
-        <div class="row g-4">
-            <?php
-            $news_categories = return_multiple_rows("SELECT * FROM category WHERE ParentCategory = 118");
-            foreach ($news_categories as $new_category) {
-            
-                $latest_news = return_single_row("SELECT * FROM pages WHERE catid = " . $new_category['catid'] . " AND isactive = 1 AND soft_delete = 0 AND template_id = 7 AND views = 0 ORDER BY pages.createdon DESC LIMIT 0,1");
-            ?>
-                <div class="col-md-6 col-lg-6 col-xl-3">
-                    <div class="row g-4 align-items-center features-item">
-                        <div class="col-4">
-                            <div class="rounded-circle position-relative">
-                                <div class="overflow-hidden rounded-circle overflow-hidden">
-                                    <img src="<?php echo getFullImageUrl($latest_news['featured_image']); ?>" class="img-zoomin img-fluid rounded-circle w-100 circle-clss" alt="<?php echo $latest_news['page_title']; ?>">
-                                </div>
-                                <span class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute" style="top: 10%; right: -10px;"><?php echo return_single_ans("SELECT COUNT(pid) FROM pages WHERE views = 0 AND catid = " . $new_category['catid'] . " AND DATE(createdon) = CURDATE();"); ?></span>
-                            </div>
+    <!-- About Satrt -->
+    <div class="container-fluid about py-5">
+        <div class="container py-5">
+            <div class="row g-5 mb-5">
+                <div class="col-xl-6">
+                    <div class="row g-4">
+                        <div class="col-6">
+                            <img src="img/about-1.jpg" class="img-fluid h-100 wow zoomIn" data-wow-delay="0.1s" alt="">
                         </div>
-                        <div class="col-8">
-                            <div class="features-content d-flex flex-column">
-                                <p class="text-uppercase mb-2"><?php echo $new_category['catname']; ?></p>
-                                <a href="<?php echo $latest_news['page_url']; ?>" class="h6">
-                                    <?php echo mb_strimwidth($latest_news['page_title'], 0, 50, "..."); ?>
-                                </a>
-                                <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($latest_news['createdon']); ?></small>
-                            </div>
+                        <div class="col-6">
+                            <img src="img/about-2.jpg" class="img-fluid pb-3 wow zoomIn" data-wow-delay="0.1s" alt="">
+                            <img src="img/about-3.jpg" class="img-fluid pt-3 wow zoomIn" data-wow-delay="0.1s" alt="">
                         </div>
                     </div>
                 </div>
-            <?php 
-                    $not_show_more_then_once[] = $latest_news['pid'];
-        } ?>
+                <div class="col-xl-6 wow fadeIn" data-wow-delay="0.5s">
+                    <p class="fs-5 text-uppercase text-primary">جامعہ مدنیہ کے بارے میں</p>
+                    <h1 class="display-5 pb-4 m-0">اللہ تعالیٰ کی رضا کے لیے علم دین</h1>
+                    <p class="pb-4">جامعہ مدنیہ ایک معروف اسلامی تعلیمی ادارہ ہے جو قرآن و حدیث کی تعلیمات کو عام کرنے کے لیے کوشاں ہے۔ ہمارا مقصد معیاری دینی تعلیم فراہم کرنا ہے تاکہ معاشرے کی اصلاح ہو سکے۔</p>
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <div class="ps-3 d-flex align-items-center justify-content-start">
+                                <span class="bg-primary btn-md-square rounded-circle mt-4 me-2"><i class="fa fa-eye text-dark fa-4x mb-5 pb-2"></i></span>
+                                <div class="ms-4">
+                                    <h5>ہمارا ویژن</h5>
+                                    <p>معیاری دینی تعلیم کا فروغ</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="ps-3 d-flex align-items-center justify-content-start">
+                                <span class="bg-primary btn-md-square rounded-circle mt-4 me-2"><i class="fa fa-flag text-dark fa-4x mb-5 pb-2"></i></span>
+                                <div class="ms-4">
+                                    <h5>ہمارا مشن</h5>
+                                    <p>قرآن و سنت کی تعلیمات کو عام کرنا</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-light p-3 mb-4">
+                        <div class="row align-items-center justify-content-center">
+                            <div class="col-3">
+                                <img src="img/about-child.jpg" class="img-fluid rounded-circle" alt="">
+                            </div>
+                            <div class="col-6">
+                                <p class="mb-0">جامعہ مدنیہ میں طلبہ کو قرآن و حدیث کی معیاری تعلیم دی جاتی ہے۔</p>
+                            </div>
+                            <div class="col-3">
+                                    <h2 class="mb-0 text-primary text-center">20,46$</h2>
+                                    <h5 class="mb-0 text-center">اکٹھے کیے گئے</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md-6">
+                            <p class="mb-2"><i class="fa fa-check text-primary me-3"></i>خیرات و عطیات</p>
+                            <p class="mb-0"><i class="fa fa-check text-primary me-3"></i>والدین کی تعلیم</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="mb-2"><i class="fa fa-check text-primary me-3"></i>حدیث و سنت</p>
+                            <p class="mb-0"><i class="fa fa-check text-primary me-3"></i>مسجد کی ترقی</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container text-center bg-primary py-5 wow fadeIn" data-wow-delay="0.1s">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-2">
+                        <i class="fa fa-mosque fa-5x text-white"></i>
+                    </div>
+                    <div class="col-lg-7 text-center text-lg-start">
+                        <h1 class="mb-0">ہر مسلمان کو اسلام کے "ارکان" کی اہمیت کا احساس ہونا چاہیے</h1>
+                    </div>
+                    <div class="col-lg-3">
+                        <a href="" class="btn btn-light py-2 px-4">مزید جانیں</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- About End -->
+
+<style type="text/css">
+.counter-item {
+    transition: all 0.3s;
+}
+.counter-item:hover {
+    transform: translateY(-5px);
+}
+</style>
+<!-- Statistics Section Start -->
+<div class="container-fluid py-5 bg-light">
+    <div class="container py-5">
+        <div class="row g-4 text-center">
+            <!-- فارغ التحصیل -->
+            <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.1s">
+                <div class="counter-item bg-white p-4 rounded shadow">
+                    <div class="counter-icon">
+                        <i class="fas fa-user-graduate fa-3x text-primary mb-3"></i>
+                    </div>
+                    <h2 class="mb-1 display-5" data-toggle="counter-up">130</h2>
+                    <p class="mb-0 text-dark fw-bold">فارغ التحصیل</p>
+                </div>
+            </div>
+            
+            <!-- شعبہ درس نظامی میں زیر تعلیم طلبہ -->
+            <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.3s">
+                <div class="counter-item bg-white p-4 rounded shadow">
+                    <div class="counter-icon">
+                        <i class="fas fa-book-open fa-3x text-primary mb-3"></i>
+                    </div>
+                    <h2 class="mb-1 display-5" data-toggle="counter-up">196</h2>
+                    <p class="mb-0 text-dark fw-bold">شعبہ درس نظامی میں زیر تعلیم طلبہ</p>
+                </div>
+            </div>
+            
+            <!-- شعبہ تحفیظ القرآن میں زیر تعلیم طلبہ -->
+            <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.5s">
+                <div class="counter-item bg-white p-4 rounded shadow">
+                    <div class="counter-icon">
+                        <i class="fas fa-quran fa-3x text-primary mb-3"></i>
+                    </div>
+                    <h2 class="mb-1 display-5" data-toggle="counter-up">260</h2>
+                    <p class="mb-0 text-dark fw-bold">شعبہ تحفیظ القرآن میں زیر تعلیم طلبہ</p>
+                </div>
+            </div>
+            
+            <!-- شعبہ حفاظ عربی طلبہ -->
+            <div class="col-md-6 col-lg-3 wow fadeIn" data-wow-delay="0.7s">
+                <div class="counter-item bg-white p-4 rounded shadow">
+                    <div class="counter-icon">
+                        <i class="fas fa-language fa-3x text-primary mb-3"></i>
+                    </div>
+                    <h2 class="mb-1 display-5" data-toggle="counter-up">88</h2>
+                    <p class="mb-0 text-dark fw-bold">شعبہ حفاظ عربی طلبہ</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-<!-- Features End -->
+<!-- Statistics Section End -->
 
-<!-- Main Post Section Start -->
+    <!-- Activities Start -->
+    <div class="container-fluid activities py-5">
+        <div class="container py-5">
+            <div class="mx-auto text-center mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+                <p class="fs-5 text-uppercase text-primary">سرگرمیاں</p>
+                <h1 class="display-3">ہماری سرگرمیاں</h1>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-6 col-xl-4">
+                    <div class="activities-item p-4 wow fadeIn" data-wow-delay="0.1s">
+                        <i class="fa fa-mosque fa-4x text-dark"></i>
+                        <div class="ms-4">
+                            <h4>درس نظامی</h4>
+                            <p class="mb-4">جامعہ مدنیہ میں معیاری درس نظامی کا انتظام ہے جس میں طلبہ کو دینی علوم کی تعلیم دی جاتی ہے۔</p>
+                            <a href="" class="btn btn-primary px-3">مزید جانیں</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-4">
+                    <div class="activities-item p-4 wow fadeIn" data-wow-delay="0.3s">
+                        <i class="fa fa-donate fa-4x text-dark"></i>
+                        <div class="ms-4">
+                            <h4>تحفیظ القرآن</h4>
+                            <p class="mb-4">جامعہ میں قرآن کریم حفظ کرانے کا خصوصی انتظام ہے جہاں بچوں کو حفظ قرآن کی تعلیم دی جاتی ہے۔</p>
+                            <a href="" class="btn btn-primary px-3">مزید جانیں</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-4">
+                    <div class="activities-item p-4 wow fadeIn" data-wow-delay="0.5s">
+                        <i class="fa fa-quran fa-4x text-dark"></i>
+                        <div class="ms-4">
+                            <h4>حفاظ عربی</h4>
+                            <p class="mb-4">جامعہ میں حفاظ کرام کو عربی زبان کی تعلیم دی جاتی ہے تاکہ وہ قرآن و حدیث کو بہتر سمجھ سکیں۔</p>
+                            <a href="" class="btn btn-primary px-3">مزید جانیں</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-4">
+                    <div class="activities-item p-4 wow fadeIn" data-wow-delay="0.1s">
+                        <i class="fa fa-book fa-4x text-dark"></i>
+                        <div class="ms-4">
+                            <h4>دارالافتاء</h4>
+                            <p class="mb-4">جامعہ میں دارالافتاء قائم ہے جہاں سے عوام الناس کے شرعی مسائل کے حل پیش کیے جاتے ہیں۔</p>
+                            <a href="" class="btn btn-primary px-3">مزید جانیں</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-4">
+                    <div class="activities-item p-4 wow fadeIn" data-wow-delay="0.3s">
+                        <i class="fa fa-book-open fa-4x text-dark"></i>
+                        <div class="ms-4">
+                            <h4>خدمت خلق</h4>
+                            <p class="mb-4">جامعہ مدنیہ معاشرے کے ضرورت مند افراد کی مدد کے لیے مختلف رفاہی پروگرام چلاتا ہے۔</p>
+                            <a href="" class="btn btn-primary px-3">مزید جانیں</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-4">
+                    <div class="activities-item p-4 wow fadeIn" data-wow-delay="0.5s">
+                        <i class="fa fa-hands fa-4x text-dark"></i>
+                        <div class="ms-4">
+                            <h4>مختصر کورسز</h4>
+                            <p class="mb-4">جامعہ میں مختلف مختصر دینی کورسز کا انتظام ہے جو عام لوگوں کے لیے مفید ہیں۔</p>
+                            <a href="" class="btn btn-primary px-3">مزید جانیں</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Activities Start -->
+
+
+    <!-- Events Start -->
+    <div class="container-fluid event py-5">
+        <div class="container py-5">
+            <h1 class="display-3 mb-5 wow fadeIn" data-wow-delay="0.1s">آنے والی <span class="text-primary">تقریبات</span></h1>
+            <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.1s">
+                <div class="col-3 col-lg-2 pe-0">
+                    <div class="text-center border-bottom border-dark py-3 px-2">
+                        <h6>01 جنوری 2024</h6>
+                        <p class="mb-0">جمعہ 06:55</p>
+                    </div>
+                </div>
+                <div class="col-9 col-lg-6 border-start border-dark pb-5">
+                    <div class="ms-3">
+                        <h4 class="mb-3">میلاد النبی ﷺ</h4>
+                        <p class="mb-4">جامعہ مدنیہ میں میلاد النبی ﷺ کی خصوصی تقریب منعقد ہوگی جس میں علماء کرام سے خطابات ہوں گے۔</p>
+                        <a href="#" class="btn btn-primary px-3">شامل ہوں</a>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="overflow-hidden mb-5">
+                        <img src="img/events-1.jpg" class="img-fluid w-100" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.3s">
+                <div class="col-3 col-lg-2 pe-0">
+                    <div class="text-center border-bottom border-dark py-3 px-2">
+                        <h6>10 اپریل 2024</h6>
+                        <p class="mb-0">بدھ 11:30</p>
+                    </div>
+                </div>
+                <div class="col-9 col-lg-6 border-start border-dark pb-5">
+                    <div class="ms-3">
+                        <h4 class="mb-3">عید الفطر</h4>
+                        <p class="mb-4">جامعہ مدنیہ میں عید الفطر کی خصوصی نماز اور تقریب کا اہتمام کیا جائے گا۔</p>
+                        <a href="#" class="btn btn-primary px-3">شامل ہوں</a>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="overflow-hidden mb-5">
+                        <img src="img/events-2.jpg" class="img-fluid w-100" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="row g-4 event-item wow fadeIn" data-wow-delay="0.5s">
+                <div class="col-3 col-lg-2 pe-0">
+                    <div class="text-center border-bottom border-dark py-3 px-2">
+                        <h6>16 جون 2024</h6>
+                        <p class="mb-0">جمعرات 11:30</p>
+                    </div>
+                </div>
+                <div class="col-9 col-lg-6 border-start border-dark pb-5">
+                    <div class="ms-3">
+                        <h4 class="mb-3">عید الاضحی</h4>
+                        <p class="mb-4">جامعہ مدنیہ میں عید الاضحی کی خصوصی نماز اور قربانی کی تقریب منعقد ہوگی۔</p>
+                        <a href="#" class="btn btn-primary px-3">شامل ہوں</a>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="overflow-hidden mb-5">
+                        <img src="img/events-3.jpg" class="img-fluid w-100" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Events End -->
+
+
+    <!-- Sermon Start -->
+    <div class="container-fluid sermon py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+                <p class="fs-5 text-uppercase text-primary">بیانات</p>
+                <h1 class="display-3">اسلامی معاشرے سے جڑیں</h1>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-6 col-xl-4">
+                    <div class="sermon-item wow fadeIn" data-wow-delay="0.1s">
+                        <div class="overflow-hidden p-4 pb-0">
+                            <img src="img/sermon-1.jpg" class="img-fluid w-100" alt="">
+                        </div>
+                        <div class="p-4">
+                            <div class="sermon-meta d-flex justify-content-between pb-2">
+                                <div class="">
+                                    <small><i class="fa fa-calendar me-2 text-muted"></i><a href="" class="text-muted me-2">13 نومبر 2023</small></a>
+                                    <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted">ایڈمن</small></a>
+                                </div>
+                                <div class="">
+                                    <a href="" class="me-1"><i class="fas fa-video text-muted"></i></a>
+                                    <a href="" class="me-1"><i class="fas fa-headphones text-muted"></i></a>
+                                    <a href="" class="me-1"><i class="fas fa-file-alt text-muted"></i></a>
+                                    <a href="" class=""><i class="fas fa-image text-muted"></i></a>
+                                </div>
+                            </div>
+                            <a href="" class="d-inline-block h4 lh-sm mb-3">اللہ تعالیٰ سے قریب ہونے کے طریقے</a>
+                            <p class="mb-0">حضرت مولانا ارشاد احمد صاحب کا خصوصی بیان جس میں اللہ تعالیٰ سے قریب ہونے کے طریقے بیان کیے گئے ہیں۔</p>
+                        </div>
+                    </div>
+                </div>
+               <div class="col-lg-6 col-xl-4">
+                    <div class="sermon-item wow fadeIn" data-wow-delay="0.3s">
+                        <div class="overflow-hidden p-4 pb-0">
+                            <img src="img/sermon-2.jpg" class="img-fluid w-100" alt="">
+                        </div>
+                        <div class="p-4">
+                            <div class="sermon-meta d-flex justify-content-between pb-2">
+                                <div class="">
+                                    <small><i class="fa fa-calendar me-2 text-muted"></i><a href="" class="text-muted me-2">13 نومبر 2023</small></a>
+                                    <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted">ایڈمن</small></a>
+                                </div>
+                                <div class="">
+                                    <a href="" class="me-1"><i class="fas fa-video text-muted"></i></a>
+                                    <a href="" class="me-1"><i class="fas fa-headphones text-muted"></i></a>
+                                    <a href="" class="me-1"><i class="fas fa-file-alt text-muted"></i></a>
+                                    <a href="" class=""><i class="fas fa-image text-muted"></i></a>
+                                </div>
+                            </div>
+                            <a href="" class="d-inline-block h4 lh-sm mb-3">اسلام میں حج کی اہمیت</a>
+                            <p class="mb-0">حضرت مولانا نعیم صاحب کا خصوصی بیان جس میں حج کی فضیلت اور اہمیت کو بیان کیا گیا ہے۔</p>
+                        </div>
+                    </div>
+                </div>
+               <div class="col-lg-6 col-xl-4">
+                    <div class="sermon-item wow fadeIn" data-wow-delay="0.5s">
+                        <div class="overflow-hidden p-4 pb-0">
+                            <img src="img/sermon-3.jpg" class="img-fluid w-100" alt="">
+                        </div>
+                        <div class="p-4">
+                            <div class="sermon-meta d-flex justify-content-between pb-2">
+                                <div class="">
+                                    <small><i class="fa fa-calendar me-2 text-muted"></i><a href="" class="text-muted me-2">13 نومبر 2023</small></a>
+                                    <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted">ایڈمن</small></a>
+                                </div>
+                                <div class="">
+                                    <a href="" class="me-1"><i class="fas fa-video text-muted"></i></a>
+                                    <a href="" class="me-1"><i class="fas fa-headphones text-muted"></i></a>
+                                    <a href="" class="me-1"><i class="fas fa-file-alt text-muted"></i></a>
+                                    <a href="" class=""><i class="fas fa-image text-muted"></i></a>
+                                </div>
+                            </div>
+                            <a href="" class="d-inline-block h4 lh-sm mb-3">اسلام کے "ارکان" کی اہمیت</a>
+                            <p class="mb-0">حضرت مولانا عبدالستار صاحب کا خصوصی بیان جس میں اسلام کے ارکان کی اہمیت کو واضح کیا گیا ہے۔</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Sermon End -->
+
+
+    <!-- Blog Start -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <h1 class="display-3 mb-5 wow fadeIn" data-wow-delay="0.1s">ہمارے <span class="text-primary">بلاگز</span> سے تازہ ترین</h1>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-6 col-xl-4">
+                    <div class="blog-item wow fadeIn" data-wow-delay="0.1s">
+                        <div class="blog-img position-relative overflow-hidden">
+                            <img src="img/blog-1.jpg" class="img-fluid w-100" alt="">
+                            <div class="bg-primary d-inline px-3 py-2 text-center text-white position-absolute top-0 end-0">01 جنوری 2024</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="blog-meta d-flex justify-content-between pb-2">
+                                <div class="">
+                                    <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted me-2">ایڈمن کی جانب سے</small></a>
+                                    <small><i class="fa fa-comment-alt me-2 text-muted"></i><a href="" class="text-muted me-2">12 تبصرے</small></a>
+                                </div>
+                                <div class="">
+                                    <a href=""><i class="fas fa-bookmark text-muted"></i></a>
+                                </div>
+                            </div>
+                            <a href="" class="d-inline-block h4 lh-sm mb-3">اسلام کے "ارکان" کی اہمیت</a>
+                            <p class="mb-4">اس بلاگ میں اسلام کے بنیادی ارکان کی اہمیت اور ان کے معاشرے پر اثرات پر تفصیلی بحث کی گئی ہے۔</p>
+                            <a href="#" class="btn btn-primary px-3">مزید تفصیلات</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-xl-4">
+                    <div class="blog-item wow fadeIn" data-wow-delay="0.3s">
+                        <div class="blog-img position-relative overflow-hidden">
+                            <img src="img/blog-2.jpg" class="img-fluid w-100" alt="">
+                            <div class="bg-primary d-inline px-3 py-2 text-center text-white position-absolute top-0 end-0">01 جنوری 2024</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="blog-meta d-flex justify-content-between pb-2">
+                                <div class="">
+                                    <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted me-2">ایڈمن کی جانب سے</small></a>
+                                    <small><i class="fa fa-comment-alt me-2 text-muted"></i><a href="" class="text-muted me-2">12 تبصرے</small></a>
+                                </div>
+                                <div class="">
+                                    <a href=""><i class="fas fa-bookmark text-muted"></i></a>
+                                </div>
+                            </div>
+                            <a href="" class="d-inline-block h4 lh-sm mb-3">اللہ تعالیٰ سے قریب ہونے کے طریقے</a>
+                            <p class="mb-4">اس بلاگ میں اللہ تعالیٰ سے قریب ہونے کے عملی طریقے بیان کیے گئے ہیں جو ہر مسلمان کے لیے مفید ہیں۔</p>
+                            <a href="#" class="btn btn-primary px-3">مزید تفصیلات</a>
+                        </div>
+                    </div>
+                </div>
+               <div class="col-lg-6 col-xl-4">
+                    <div class="blog-item wow fadeIn" data-wow-delay="0.5s">
+                        <div class="blog-img position-relative overflow-hidden">
+                            <img src="img/blog-3.jpg" class="img-fluid w-100" alt="">
+                            <div class="bg-primary d-inline px-3 py-2 text-center text-white position-absolute top-0 end-0">01 جنوری 2024</div>
+                        </div>
+                        <div class="p-4">
+                            <div class="blog-meta d-flex justify-content-between pb-2">
+                                <div class="">
+                                    <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted me-2">ایڈمن کی جانب سے</small></a>
+                                    <small><i class="fa fa-comment-alt me-2 text-muted"></i><a href="" class="text-muted me-2">12 تبصرے</small></a>
+                                </div>
+                                <div class="">
+                                    <a href=""><i class="fas fa-bookmark text-muted"></i></a>
+                                </div>
+                            </div>
+                            <a href="" class="d-inline-block h4 lh-sm mb-3">اسلام میں حج کی اہمیت</a>
+                            <p class="mb-4">اس بلاگ میں حج کی فضیلت، اہمیت اور اس کے معاشرتی و روحانی فوائد پر روشنی ڈالی گئی ہے۔</p>
+                            <a href="#" class="btn btn-primary px-3">مزید تفصیلات</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Blog End -->
+
+
+<!-- Bayanat Section Start -->
 <div class="container-fluid py-5">
     <div class="container py-5">
+        <div class="text-center mx-auto mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+            <p class="fs-5 text-uppercase text-primary">بیانات</p>
+            <h1 class="display-3">علماء کرام کے بیانات</h1>
+        </div>
         <div class="row g-4">
-            <div class="col-lg-7 col-xl-8 mt-0">
-                <!-- Main News Article -->
-                <?php
-                $main_news = return_single_row("
-                    SELECT * 
-                    FROM pages 
-                    WHERE isactive = 1 
-                      AND soft_delete = 0 
-                      AND template_id = 7
-                      AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                    ORDER BY createdon DESC 
-                    LIMIT 1
-                ");
-                    $not_show_more_then_once[] = $main_news['pid'];
-                ?>
-                <div class="position-relative overflow-hidden rounded">
-                    <img src="<?php echo getFullImageUrl($main_news['featured_image']); ?>" class="img-fluid rounded img-zoomin w-100" alt="<?php echo $main_news['page_title']; ?>">
-                    <div class="d-flex justify-content-center px-4 position-absolute flex-wrap" style="bottom: 10px; left: 0;">
-                        <a href="#" class="text-white me-3 link-hover"><i class="fa fa-clock"></i> <?php echo $main_news['article_read']; ?></a>
-                        <a href="#" class="text-white me-3 link-hover"><i class="fa fa-eye"></i> <?php echo $main_news['views']; ?> Views</a>
-                        <a href="#" class="text-white me-3 link-hover"><i class="fa fa-comment-dots"></i> 05 Comments</a>
-                        <a href="#" class="text-white link-hover"><i class="fa fa-arrow-up"></i> 1.5k Shares</a>
-                    </div>
-                </div>
-                <div class="border-bottom py-3">
-                    <a href="<?php echo $main_news['page_url']; ?>" class="display-4 text-dark mb-0 link-hover"><?php echo $main_news['page_title']; ?></a>
-                </div>
-                <p class="mt-3 mb-4"><?php echo mb_strimwidth(cleanContent($main_news['page_desc']), 0, 200, "..."); ?></p>
-
-                <!-- Top Story Section -->
-                <div class="bg-light p-4 rounded">
-                    <div class="news-2">
-                        <h3 class="mb-4">Top Stories</h3>
-                    </div>
-                    <?php
-                    $top_story = return_single_row("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
-                      AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                        ORDER BY views DESC LIMIT 1");
-
-                         $not_show_more_then_once[] = $top_story['pid'];
-                    ?>
-                    <div class="row g-4 align-items-center">
-                        <div class="col-md-6">
-                            <div class="rounded overflow-hidden">
-                                <img src="<?php echo getFullImageUrl($top_story['featured_image']); ?>" class="img-fluid rounded img-zoomin w-100" alt="<?php echo $top_story['page_title']; ?>">
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-flex flex-column">
-                                <a href="<?php echo $top_story['page_url']; ?>" class="h3"><?php echo $top_story['page_title']; ?></a>
-                                <p class="mb-0 fs-5"><i class="fa fa-clock"></i> <?php echo $top_story['article_read']; ?></p>
-                                <p class="mb-0 fs-5"><i class="fa fa-eye"></i> <?php echo $top_story['views']; ?> Views</p>
-                            </div>
+            <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-3">شفق و رحمت سے پڑھنا</h4>
+                        <p class="card-text"><strong>بیان:</strong> حضرت مولانا ارشاد احمد</p>
+                        <p class="card-text"><strong>سامعین:</strong> اساتذہ کرام شعبہ حفظ</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <a href="#" class="btn btn-primary btn-sm">مزید تفصیلات</a>
+                            <small class="text-muted">12 جنوری 2024</small>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="0.3s">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-3">شفق و رحمت سے پڑھنا</h4>
+                        <p class="card-text"><strong>بیان:</strong> حضرت مولانا ارشاد احمد</p>
+                        <p class="card-text"><strong>سامعین:</strong> اساتذہ کرام شعبہ حفظ</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <a href="#" class="btn btn-primary btn-sm">مزید تفصیلات</a>
+                            <small class="text-muted">5 جنوری 2024</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="0.5s">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <h4 class="card-title mb-3">شفق و رحمت سے پڑھنا</h4>
+                        <p class="card-text"><strong>بیان:</strong> حضرت مولانا ارشاد احمد</p>
+                        <p class="card-text"><strong>سامعین:</strong> اساتذہ کرام شعبہ حفظ</p>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <a href="#" class="btn btn-primary btn-sm">مزید تفصیلات</a>
+                            <small class="text-muted">29 دسمبر 2023</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="#" class="btn btn-primary px-4">مزید بیانات</a>
+        </div>
+    </div>
+</div>
+<!-- Bayanat Section End -->
 
-            <!-- Sidebar Section -->
-            <div class="col-lg-5 col-xl-4">
-                <div class="bg-light rounded p-4 pt-0">
+    <!-- Books Section Start -->
+    <div class="container-fluid bg-light py-5">
+        <div class="container py-5">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                    <div class="about-img">
+                        <img src="img/library.jpg" class="img-fluid rounded" alt="جامعہ مدنیہ لائبریری">
+                    </div>
+                </div>
+                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.3s">
+                    <h1 class="display-5 mb-4">جامعہ مدنیہ کتب خانہ</h1>
+                    <p class="mb-4 text-dark">
+                        تعلیم اور کتب خانے ایک دوسرے کیلئے لازم وملزوم کی حیثیت رکھتے ہیں۔ کوئی تعلیمی درسگاہ ایک منظم کتب خانے کی ضرورت سے بے نیاز نہیں ہوسکتی۔ تعلیمی اداروں میں نصابی ضرورت محض نصابی کتابوں سے پوری نہیں ہو سکتیں لہذا تحقیقی ضروریات کیلئے اضافی کتابوں کا ہونا ضروری ہے۔ جنہیں منظم تعلیمی کتب خانوں کی صورت میں رکھا جاے۔ اسی ضرورت کے پیش نظر جامعہ مدنیہ میں بھی ایک وسیع اور عریض لائبریری ہے جس میں سیکڑوں کی تعداد میں مختلف موضوعات پر کتابیں ہیں جس سے اساتذہ اور طلباء فائدہ اٹھاتے ہیں۔
+                    </p>
+                    <div class="row g-4 mb-4">
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <div class="btn-lg-square bg-primary rounded-circle me-3">
+                                    <i class="fa fa-book text-white"></i>
+                                </div>
+                                <h5 class="mb-0">سیکڑوں کتابیں</h5>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="d-flex align-items-center">
+                                <div class="btn-lg-square bg-primary rounded-circle me-3">
+                                    <i class="fa fa-users text-white"></i>
+                                </div>
+                                <h5 class="mb-0">اساتذہ و طلباء کی خدمت</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn btn-primary py-2 px-4">لائبریری دیکھیں</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Books Section End -->
+
+    <!-- Team Start -->
+    <div class="container-fluid team py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+                <p class="fs-5 text-uppercase text-primary">ہمارا اسٹاف</p>
+                <h1 class="display-3">ہمارے منتظمین سے ملاقات کریں</h1>
+            </div>
+            <div class="row g-5">
+                <div class="col-lg-4 col-xl-5">
+                    <div class="team-img wow zoomIn" data-wow-delay="0.1s">
+                        <img src="img/team-1.jpg" class="img-fluid" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-8 col-xl-7">
+                    <div class="team-item wow fadeIn" data-wow-delay="0.1s">
+                        <h1>مولانا نعیم صاحب</h1>
+                        <h5 class="fw-normal fst-italic text-primary mb-4">صدر جامعہ مدنیہ</h5>
+                        <p class="mb-4">مولانا نعیم صاحب جامعہ مدنیہ کے بانی اور صدر ہیں جنہوں نے دینی تعلیم کے فروغ کے لیے قابل قدر خدمات انجام دی ہیں۔</p>
+                        <div class="team-icon d-flex pb-4 mb-4 border-bottom border-primary">
+                            <a class="btn btn-primary btn-lg-square me-2" href=""><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn btn-primary btn-lg-square me-2" href=""><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="btn btn-primary btn-lg-square me-2"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="btn btn-primary btn-lg-square"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
                     <div class="row g-4">
-                        <div class="col-12">
-                            <div class="rounded overflow-hidden">
-                                <img src="img/news-3.jpg" class="img-fluid rounded img-zoomin w-100" alt="">
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="d-flex flex-column">
-                                <a href="#" class="h4 mb-2">Get the best speak market, news.</a>
-                                <p class="fs-5 mb-0"><i class="fa fa-clock"> 06 minute read</i> </p>
-                                <p class="fs-5 mb-0"><i class="fa fa-eye"> 3.5k Views</i></p>
-                            </div>
-                        </div>
-
-                        <?php
-                        $sidebar_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0
-                         AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                         ORDER BY createdon DESC LIMIT 5");
-                        foreach ($sidebar_news as $news) {
-                        ?>
-                            <div class="col-12">
-                                <div class="row g-4 align-items-center">
-                                    <div class="col-5">
-                                        <div class="overflow-hidden rounded">
-                                            <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $news['page_title']; ?>">
-                                        </div>
-                                    </div>
-                                    <div class="col-7">
-                                        <div class="features-content d-flex flex-column">
-                                            <a href="<?php echo $news['page_url']; ?>" class="h6"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
-                                            <small><i class="fa fa-clock"></i> <?php echo $news['article_read']; ?></small>
-                                            <small><i class="fa fa-eye"></i> <?php echo $news['views']; ?> Views</small>
+                        <div class="col-md-4">
+                            <div class="team-item wow zoomIn" data-wow-delay="0.2s">
+                                <img src="img/team-2.jpg" class="img-fluid w-100" alt="">
+                                <div class="team-content text-dark text-center py-3">
+                                    <div class="team-content-inner">
+                                        <h5 class="mb-0">مولانا ارشاد احمد</h5>
+                                        <p class="text-dark">امام و خطیب</p>
+                                        <div class="team-icon d-flex align-items-center justify-content-center">
+                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-facebook-f"></i></a>
+                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-twitter"></i></a>
+                                            <a href="#" class="btn btn-primary btn-sm-square me-2"><i class="fab fa-instagram"></i></a>
+                                            <a href="#" class="btn btn-primary btn-sm-square"><i class="fab fa-linkedin-in"></i></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        <?php 
-                            $not_show_more_then_once[] = $news['pid'];
-                    } ?>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="team-item wow zoomIn" data-wow-delay="0.4s">
+                                <img src="img/team-3.jpg" class="img-fluid w-100" alt="">
+                                <div class="team-content text-dark text-center py-3">
+                                    <div class="team-content-inner">
+                                        <h5 class="mb-0">مولانا عبدالستار</h5>
+                                        <p class="text-dark">استاذ حدیث</p>
+                                        <div class="team-icon d-flex align-items-center justify-content-center">
+                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-facebook-f"></i></a>
+                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-twitter"></i></a>
+                                            <a href="#" class="btn btn-primary btn-sm-square me-2"><i class="fab fa-instagram"></i></a>
+                                            <a href="#" class="btn btn-primary btn-sm-square"><i class="fab fa-linkedin-in"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="team-item wow zoomIn" data-wow-delay="0.6s">
+                                <img src="img/team-4.jpg" class="img-fluid w-100" alt="">
+                                <div class="team-content text-dark text-center py-3">
+                                    <div class="team-content-inner">
+                                        <h5 class="mb-0">مولانا محمد علی</h5>
+                                        <p class="text-dark">استاذ قرآن</p>
+                                        <div class="team-icon d-flex align-items-center justify-content-center">
+                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-facebook-f"></i></a>
+                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-twitter"></i></a>
+                                            <a href="#" class="btn btn-primary btn-sm-square me-2"><i class="fab fa-instagram"></i></a>
+                                            <a href="#" class="btn btn-primary btn-sm-square"><i class="fab fa-linkedin-in"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Main Post Section End -->
+    <!-- Team End -->
 
-<!-- Breaking News Live Section Start -->
-<?php
-$islive_streaming = return_single_ans("SELECT isactive FROM category WHERE catid = 124");
-if ($islive_streaming == 1) {
-    $islive_streaming_page = return_single_row("SELECT * FROM pages WHERE catid = 124 AND isactive = 1 AND soft_delete = 0 ORDER BY createdon ASC");
 
-        echo $content['page_desc'];
- } ?>
-<!-- Breaking News Live Section End -->
-
-<?php
-$news_categories = return_multiple_rows("SELECT * FROM category WHERE ParentCategory = 118");
-
-$latest_news_items = [];
-
-foreach ($news_categories as $new_category) {
-    $latest_news = return_single_row("
-        SELECT * 
-        FROM pages 
-        WHERE catid = " . $new_category['catid'] . " 
-          AND isactive = 1 
-          AND soft_delete = 0 
-          AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ")
-          AND views = 0 
-        ORDER BY createdon DESC 
-        LIMIT 1
-    ");
-
-    if ($latest_news) {
-        $latest_news_items[] = $latest_news;
-    }
-}
-
-?>
-<!-- Latest News Start -->
-<div class="container-fluid latest-news py-5">
-    <div class="container py-5">
-        <h2 class="mb-4">Latest News</h2>
-        <div class="latest-news-carousel owl-carousel">
-            <?php
-            // Loop through the latest news items and display them
-            foreach ($latest_news_items as $news) {
-            ?>
-                <div class="latest-news-item">
-                    <div class="bg-light rounded">
-                        <div class="rounded-top overflow-hidden">
-                            <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
-                        </div>
-                        <div class="d-flex flex-column p-4">
-                            <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 45, "..."); ?></a>
-                            <div class="d-flex justify-content-between">
-                                <a href="#" class="small text-body link-hover">by <?php echo mb_strimwidth($news['article_author'], 0, 15, "..."); ?></a>
-                                <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($news['createdon']); ?></small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            <?php
-                 $not_show_more_then_once[] = $news['pid'];
-             } ?>
-        </div>
-    </div>
-</div>
-<!-- Latest News End -->
-
-<!-- Most Popular News Start -->
-<div class="container-fluid populer-news py-5">
-    <div class="container py-5">
-        <div class="tab-class mb-4">
-            <div class="row g-4">
-                <div class="col-lg-8 col-xl-9">
-                    <div class="d-flex flex-column flex-md-row justify-content-md-between border-bottom mb-4">
-                        <h1 class="mb-4">What's New</h1>
-                        <ul class="nav nav-pills d-inline-flex text-center">
-                            <?php
-                            $categories = return_multiple_rows("SELECT * FROM category WHERE ParentCategory = 118");
-                            foreach ($categories as $index => $category) {
-                            ?>
-                                <li class="nav-item mb-3">
-                                    <a class="d-flex py-2 bg-light rounded-pill <?php echo $index === 0 ? 'active' : ''; ?> me-2" data-bs-toggle="pill" href="#tab-<?php echo $index + 1; ?>">
-                                        <span class="text-dark" style="width: 100px;"><?php echo $category['catname']; ?></span>
-                                    </a>
-                                </li>
-                            <?php } ?>
-                        </ul>
-                    </div>
-                    <div class="tab-content mb-4">
-                        <?php
-                        foreach ($categories as $index => $category) {
-                            $category_news = return_multiple_rows("SELECT * FROM pages WHERE catid = " . $category['catid'] . " AND isactive = 1 AND soft_delete = 0
-                             AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                             AND template_id = 7
-                             ORDER BY createdon DESC LIMIT 5");
-                        ?>
-                            <div id="tab-<?php echo $index + 1; ?>" class="tab-pane fade show p-0 <?php echo $index === 0 ? 'active' : ''; ?>">
-                                <div class="row g-4">
-                                    <div class="col-lg-8">
-                                        <?php
-                                        $main_category_news = $category_news[0];
-                                        $not_show_more_then_once[] = $main_category_news['pid'];
-                                        ?>
-                                        <div class="position-relative rounded overflow-hidden">
-                                            <img src="<?php echo getFullImageUrl($main_category_news['featured_image']); ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $main_category_news['page_title']; ?>">
-                                            <div class="position-absolute text-white px-4 py-2 bg-primary rounded" style="top: 20px; right: 20px;">
-                                                <?php echo $category['catname']; ?>
-                                            </div>
-                                        </div>
-                                        <div class="my-4">
-                                            <a href="<?php echo $main_category_news['page_url']; ?>" class="h4"><?php echo $main_category_news['page_title']; ?></a>
-                                        </div>
-                                        <div class="d-flex justify-content-between">
-                                            <a href="#" class="text-dark link-hover me-3"><i class="fa fa-clock"></i> <?php echo $main_category_news['article_read']; ?></a>
-                                            <a href="#" class="text-dark link-hover me-3"><i class="fa fa-eye"></i> <?php echo $main_category_news['views']; ?> Views</a>
-                                            <a href="#" class="text-dark link-hover me-3"><i class="fa fa-comment-dots"></i> 05 Comments</a>
-                                            <a href="#" class="text-dark link-hover"><i class="fa fa-arrow-up"></i> 1.5k Shares</a>
-                                        </div>
-                                        <p class="my-4"><?php echo mb_strimwidth(cleanContent($main_category_news['page_desc']), 0, 200, "..."); ?></p>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <?php
-                                        foreach (array_slice($category_news, 1) as $news) {
-                                            $not_show_more_then_once[] = $news['pid'];
-                                        ?>
-                                            <div class="row g-4 align-items-center">
-                                                <div class="col-5">
-                                                    <div class="overflow-hidden rounded">
-                                                        <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $news['page_title']; ?>">
-                                                    </div>
-                                                </div>
-                                                <div class="col-7">
-                                                    <div class="features-content d-flex flex-column">
-                                                        <p class="text-uppercase mb-2"><?php echo $category['catname']; ?></p>
-                                                        <a href="<?php echo $news['page_url']; ?>" class="h6"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
-                                                        <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($news['createdon']); ?></small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    </div>
-
-                        <!-- Life Style and Most View Section Start -->
-                        <?php
-                        // Fetch most viewed news articles
-                        $most_viewed_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
-                            AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                            ORDER BY views DESC LIMIT 5");
-                        ?>
-
-            <!-- Most Views News Section -->
-            <div class="border-bottom mb-4">
-                <h2 class="my-4">Most Views News</h2>
+    <!-- Testiminial Start -->
+    <div class="container-fluid testimonial py-5">
+        <div class="container py-5">
+            <div class="text-center mx-auto mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
+                <p class="fs-5 text-uppercase text-primary">توصیفی کلمات</p>
+                <h1 class="display-3">لوگ اسلام کے بارے میں کیا کہتے ہیں</h1>
             </div>
-            <div class="whats-carousel owl-carousel most-views-news">
-                <?php
-                foreach ($most_viewed_news as $news) {
-                ?>
-                    <div class="latest-news-item">
-                        <div class="bg-light rounded">
-                            <div class="rounded-top overflow-hidden">
-                                <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-fluid rounded-top w-100" alt="<?php echo $news['page_title']; ?>">
-                            </div>
-                            <div class="d-flex flex-column p-4">
-                                <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
-                                <div class="d-flex justify-content-between">
-                                    <a href="#" class="small text-body link-hover">by <?php echo $news['article_author']; ?></a>
-                                    <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($news['createdon']); ?></small>
-                                </div>
+            <div class="owl-carousel testimonial-carousel wow fadeIn" data-wow-delay="0.1s">
+                <div class="testimonial-item">
+                    <div class="d-flex mb-3">
+                        <div class="position-relative">
+                            <img src="img/testimonial-1.jpg" class="img-fluid" alt="">
+                            <div class="btn-md-square bg-primary rounded-circle position-absolute" style="top: 25px; left: -25px;">
+                                <i class="fa fa-quote-left text-dark"></i>
                             </div>
                         </div>
-                    </div>
-                <?php 
-                   $not_show_more_then_once[] = $news['pid'];
-                } ?>
-            </div>
-
-            <!-- Life Style Section -->
-            <div class="mt-5 lifestyle">
-                <div class="border-bottom mb-4">
-                    <h1 class="mb-4">Trending Stories</h1>
-                </div>
-                <div class="row g-4">
-                    <?php
-                       // Fetch lifestyle news articles
-                    $lifestyle_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 
-                            AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                            ORDER BY createdon DESC LIMIT 2");
-
-                    foreach ($lifestyle_news as $news) {
-                    ?>
-                        <div class="col-lg-6">
-                            <div class="lifestyle-item rounded">
-                                <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-fluid w-100 rounded" alt="<?php echo $news['page_title']; ?>">
-                                <div class="lifestyle-content">
-                                    <div class="mt-auto">
-                                        <a href="<?php echo $news['page_url']; ?>" class="h4 text-white link-hover"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
-                                        <div class="d-flex justify-content-between mt-4">
-                                            <a href="#" class="small text-white link-hover">By <?php echo $news['article_author']; ?></a>
-                                            <small class="text-white d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($news['createdon']); ?></small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    <?php 
-                      $not_show_more_then_once[] = $news['pid'];
-                } ?>
-                </div>
-            </div>
-                <!-- Life Style and Most View Section End -->
-
-                <!-- Editor Choice Start -->
-                    <div class="border-bottom mb-4">
-                        <h2 class="my-4">Editors Top News</h2>
-                    </div>
-                    <div class="whats-carousel owl-carousel most-views-news">
-                    <?php
-                        // Fetch most viewed news articles
-                        $editor_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0 AND createdby != 0
-                            ORDER BY views DESC LIMIT 5");
-
-                        foreach ($editor_news as $news) {
-
-                            $user = return_single_row("Select username , fullname , profile_pic , details from loginuser Where soft_delete = 0 and isactive = 1  and id = ".$news['createdby']);
-                        ?>
-                            <div class="latest-news-item">
-                                <div class="bg-light rounded">
-                                    <div class="rounded-top overflow-hidden">
-                                        <?php
-                                        $imageUrl = getFullImageUrl($news['featured_image']);
-                                        ?>
-
-                                        <img src="<?php echo $imageUrl; ?>" 
-                                             class="img-fluid rounded-top w-100" 
-                                             alt="<?php echo htmlspecialchars($news['page_title']); ?>">
-
-                                    </div>
-                                    <div class="d-flex flex-column p-4">
-                                        <a href="<?php echo $news['page_url']; ?>" class="h4"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
-                                        <div class="d-flex justify-content-between">
-                                            <a href="#" class="small text-body link-hover">by <?php echo $user['fullname']; ?></a>
-                                            <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i><?php echo timeAgo($news['createdon']); ?></small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php 
-                           $not_show_more_then_once[] = $news['pid'];
-                        } ?>
-                    </div>
-                <!-- Editor Choice End -->
-                </div>
-                <style type="text/css">
-                    /* Latest News Sidebar Styles */
-                    .latest-news-sidebar .news-item {
-                    transition: all 0.3s ease;
-                    padding-left: 5px;
-                    }
-
-                    .latest-news-sidebar .news-item:hover {
-                    background-color: #f8f9fa;
-                    border-radius: 5px;
-                    }
-
-                    .latest-news-sidebar h6 {
-                    font-size: 0.95rem;
-                    font-weight: 600;
-                    line-height: 1.4;
-                    transition: color 0.3s ease;
-                    margin-left: 18px;
-                    }
-
-                    .latest-news-sidebar h6:hover {
-                    color: #dc3545;
-                    cursor: pointer;
-                    }
-
-                    /* Blinking dot for latest news */
-                    .blinking-dot {
-                    display: inline-block;
-                    width: 8px;
-                    height: 8px;
-                    background-color: #dc3545;
-                    border-radius: 50%;
-                    animation: blink 1.5s infinite;
-                    }
-
-                    @keyframes blink {
-                    0% { opacity: 1; }
-                    50% { opacity: 0.3; }
-                    100% { opacity: 1; }
-                    }
-
-                    /* Red timestamp */
-                    .text-danger.fw-bold {
-                    font-weight: 700 !important;
-                    }
-                </style>
-               <!-- Sidebar Section Latest News Section -->
-                <div class="col-lg-4 col-xl-3">
-                    <div class="bg-light rounded p-4 pt-0">
-                        <!-- Latest News Section -->
-                        <div class="mb-4">
-                            <div class="d-flex justify-content-between align-items-center border-bottom mb-3 pb-2">
-                                <h4 class="mb-0 text-uppercase fw-bold">Latest News</h4>
-                                <span class="badge bg-danger">Live</span>
-                            </div>
-                            
-                            <!-- Latest News Items -->
-                            <div class="latest-news-sidebar">
-                                <?php
-                                $latest_sidebar_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0
-                                    AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                                    ORDER BY createdon DESC LIMIT 6");
-
-                                foreach ($latest_sidebar_news as $index => $news) {
-                                    $time = date("h:i a", strtotime($news['createdon']));
-                                    $is_latest = $index === 0; // First item is the latest
-                                    $not_show_more_then_once[] = $news['pid'];
-                                ?>
-                                <div class="col-12 mb-3">
-                                    <div class="row g-4 align-items-center">
-                                        <div class="col-5">
-                                            <div class="overflow-hidden rounded">
-                                                <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo htmlspecialchars($news['page_title']); ?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-7">
-                                            <div class="features-content d-flex flex-column">
-                                                <div class="d-flex align-items-center mb-1">
-                                                        <span class="blinking-dot me-2"></span>
-                                                    <small class="text-danger fw-bold"><?php echo $time; ?></small>
-                                                </div>
-                                                <a href="<?php echo $news['page_url']; ?>" class="h6">
-                                                    <?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?>
-                                                </a>
-                                                <small><i class="fa fa-eye"></i> <?php echo $news['views']; ?> Views</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php } ?>
-                            </div>
-                        </div>
-
-
-                        <!-- Existing Sidebar Content -->
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <div class="rounded overflow-hidden">
-                                    <img src="img/news-3.jpg" class="img-fluid rounded img-zoomin w-100" alt="">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="d-flex flex-column">
-                                    <a href="#" class="h4 mb-2">Get the best speak market, news.</a>
-                                    <p class="fs-5 mb-0"><i class="fa fa-clock"> 06 minute read</i> </p>
-                                    <p class="fs-5 mb-0"><i class="fa fa-eye"> 3.5k Views</i></p>
-                                </div>
-                            </div>
-
-                            <?php
-                            $sidebar_news = return_multiple_rows("SELECT * FROM pages WHERE template_id = 7 AND isactive = 1 AND soft_delete = 0
-                             AND pid NOT IN (" . (!empty($not_show_more_then_once) ? implode(",", $not_show_more_then_once) : "0") . ") 
-                             ORDER BY createdon DESC LIMIT 5 OFFSET 3"); // Skip first 3 we already showed
-                            foreach ($sidebar_news as $news) {
-                            ?>
-                                <div class="col-12">
-                                    <div class="row g-4 align-items-center">
-                                        <div class="col-5">
-                                            <div class="overflow-hidden rounded">
-                                                <img src="<?php echo getFullImageUrl($news['featured_image']); ?>" class="img-zoomin img-fluid rounded w-100" alt="<?php echo $news['page_title']; ?>">
-                                            </div>
-                                        </div>
-                                        <div class="col-7">
-                                            <div class="features-content d-flex flex-column">
-                                                <a href="<?php echo $news['page_url']; ?>" class="h6"><?php echo mb_strimwidth($news['page_title'], 0, 50, "..."); ?></a>
-                                                <small><i class="fa fa-clock"></i> <?php echo $news['article_read']; ?></small>
-                                                <small><i class="fa fa-eye"></i> <?php echo $news['views']; ?> Views</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php 
-                                $not_show_more_then_once[] = $news['pid'];
-                            } ?>
+                        <div class="ps-3 my-auto ">
+                            <h5 class="mb-0">احمد رضا</h5>
+                            <p class="m-0">کاروباری شخصیت</p>
                         </div>
                     </div>
+                    <div class="testimonial-content">
+                        <div class="d-flex">
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                        </div>
+                        <p class="fs-5 m-0 pt-3">جامعہ مدنیہ ایک عظیم دینی درسگاہ ہے جہاں معیاری تعلیم دی جاتی ہے۔</p>
+                    </div>
                 </div>
-
+                <div class="testimonial-item">
+                    <div class="d-flex mb-3">
+                        <div class="position-relative">
+                            <img src="img/testimonial-2.jpg" class="img-fluid" alt="">
+                            <div class="btn-md-square bg-primary rounded-circle position-absolute" style="top: 25px; left: -25px;">
+                                <i class="fa fa-quote-left text-dark"></i>
+                            </div>
+                        </div>
+                        <div class="ps-3 my-auto ">
+                            <h5 class="mb-0">محمد عمر</h5>
+                            <p class="m-0">استاذ</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-content">
+                        <div class="d-flex">
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                        </div>
+                        <p class="fs-5 m-0 pt-3">جامعہ مدنیہ میں میرے بچوں کو قرآن و حدیث کی بہترین تعلیم دی گئی۔</p>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <div class="d-flex mb-3">
+                        <div class="position-relative">
+                            <img src="img/testimonial-3.jpg" class="img-fluid" alt="">
+                            <div class="btn-md-square bg-primary rounded-circle position-absolute" style="top: 25px; left: -25px;">
+                                <i class="fa fa-quote-left text-dark"></i>
+                            </div>
+                        </div>
+                        <div class="ps-3 my-auto ">
+                            <h5 class="mb-0">عبداللہ خان</h5>
+                            <p class="m-0">طالب علم</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-content">
+                        <div class="d-flex">
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                        </div>
+                        <p class="fs-5 m-0 pt-3">جامعہ مدنیہ میں تعلیم حاصل کرنا میرے لیے ایک اعزاز کی بات ہے۔</p>
+                    </div>
+                </div>
+                <div class="testimonial-item">
+                    <div class="d-flex mb-3">
+                        <div class="position-relative">
+                            <img src="img/testimonial-4.jpg" class="img-fluid" alt="">
+                            <div class="btn-md-square bg-primary rounded-circle position-absolute" style="top: 25px; left: -25px;">
+                                <i class="fa fa-quote-left text-dark"></i>
+                            </div>
+                        </div>
+                        <div class="ps-3 my-auto ">
+                            <h5 class="mb-0">سیدہ فاطمہ</h5>
+                            <p class="m-0">گھریلو خاتون</p>
+                        </div>
+                    </div>
+                    <div class="testimonial-content">
+                        <div class="d-flex">
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                            <i class="fas fa-star text-primary"></i>
+                        </div>
+                        <p class="fs-5 m-0 pt-3">جامعہ مدنیہ کی خدمات قابل تحسین ہیں، اللہ تعالیٰ قبول فرمائے۔</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Most Popular News End -->
-
-    <div id="module-news-carousel"></div>
-
-       <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', function () {
-            loadModule('modules/index/module_news_carousel.php', {}, '#module-news-carousel')
-                .then(() => {
-                    if (typeof $ === 'function' && typeof $.fn.owlCarousel === 'function') {
-                        $('.business-carousel, .health-carousel, .sports-carousel, .tech-carousel').owlCarousel({
-                            loop: true,
-                            margin: 20,
-                            nav: true,
-                            dots: false,
-                            navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
-                            responsive: {
-                                0: { items: 1 },
-                                576: { items: 2 },
-                                768: { items: 3 },
-                                992: { items: 4 }
-                            }
-                        });
-                    } else {
-                        console.warn('jQuery or Owl Carousel is not available.');
-                    }
-                })
-                .catch((error) => {
-                    console.error('Failed to load module:', error);
-                    const el = document.querySelector('#module-news-carousel');
-                    if (el) el.innerHTML = 'Module failed to load';
-                });
-        });
-</script>
-
-
-    <div id="blog_section"></div>
-   <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-        try {
-            loadModule('modules/index/module_blog_section.php', {}, '#blog_section');
-        } catch (error) {
-            console.error('Failed to load module:', error);
-            const blogSection = document.querySelector('#blog_section');
-            if (blogSection) {
-                blogSection.innerHTML = 'Module failed to load';
-            }
-        }
-    });
-</script>
-
-
-
-    <div id="shop_section"></div>
-   <script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-        try {
-            loadModule('modules/shop/module_shop.php', {}, '#shop_section');
-        } catch (error) {
-            console.error('Failed to load module:', error);
-            const blogSection = document.querySelector('#shop_section');
-            if (blogSection) {
-                blogSection.innerHTML = 'Module failed to load';
-            }
-        }
-    });
-</script>
-
-
-    </div>
-</div>
-
-<!-- Category News Carousels Ends -->
-
+    <!-- Testiminial End -->
 <?php 
 echo replace_sysvari(front_script(null, $template_id), getcwd() . "/");
 ?>

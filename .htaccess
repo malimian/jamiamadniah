@@ -15,7 +15,7 @@ RewriteRule ^([^/]*)\.html$ info.php?url=$1 [L,QSA]
 
 # Error and defaults
 DirectoryIndex index.php
-ErrorDocument 404 https://ibspotlight.com/error404.html
+ErrorDocument 404 https://jamiamadniah.com/error404.html
 
 # Block protected folders
 RewriteRule ^(includes|modules|templates)/.*$ /error404.html [L,R=302]

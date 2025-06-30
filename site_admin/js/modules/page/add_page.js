@@ -179,7 +179,7 @@ $(document).ready(function() {
                             if (!originalPageId) {
                                 $('#addPageForm')[0].reset();
                                 $('#addPageForm').removeClass('was-validated');
-                                $('#modalCtname, #modalSiteTemplate, #modalTemplatePage').val(null).trigger('change');
+                                // $('#modalCtname, #modalSiteTemplate, #modalTemplatePage').val(null).trigger('change');
                             }
                             // Update the URL field with the final URL (without .html)
                             $('#modalPageUrl').val(result.final_url.replace('.html', ''));

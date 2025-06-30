@@ -10,14 +10,26 @@
         }, 1);
     };
     spinner(0);
+    
+    
+    // Initiate the wowjs
+    new WOW().init();
 
 
     // Fixed Navbar
     $(window).scroll(function () {
-        if ($(this).scrollTop() > 300) {
-            $('.sticky-top').addClass('shadow-sm').css('top', '0px');
+        if ($(window).width() < 992) {
+            if ($(this).scrollTop() > 45) {
+                $('.fixed-top').addClass('bg-white shadow');
+            } else {
+                $('.fixed-top').removeClass('bg-white shadow');
+            }
         } else {
-            $('.sticky-top').removeClass('shadow-sm').css('top', '-200px');
+            if ($(this).scrollTop() > 45) {
+                $('.fixed-top').addClass('bg-white shadow').css('top', -45);
+            } else {
+                $('.fixed-top').removeClass('bg-white shadow').css('top', 0);
+            }
         }
     });
     
@@ -36,12 +48,11 @@
     });
 
 
-    // Latest-news-carousel
-    $(".latest-news-carousel").owlCarousel({
+    // Testimonial carousel
+    $(".testimonial-carousel").owlCarousel({
         autoplay: true,
-        smartSpeed: 2000,
-        center: false,
-        dots: true,
+        smartSpeed: 1500,
+        dots: false,
         loop: true,
         margin: 25,
         nav : true,
@@ -49,72 +60,21 @@
             '<i class="bi bi-arrow-left"></i>',
             '<i class="bi bi-arrow-right"></i>'
         ],
-        responsiveClass: true,
         responsive: {
             0:{
                 items:1
             },
-            576:{
+            768:{
                 items:1
             },
-            768:{
+            992:{
                 items:2
             },
-            992:{
+            1200:{
                 items:3
-            },
-            1200:{
-                items:4
             }
         }
     });
-
-
-    // What's New carousel
-    $(".whats-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 2000,
-        center: false,
-        dots: true,
-        loop: true,
-        margin: 25,
-        nav : true,
-        navText : [
-            '<i class="bi bi-arrow-left"></i>',
-            '<i class="bi bi-arrow-right"></i>'
-        ],
-        responsiveClass: true,
-        responsive: {
-            0:{
-                items:1
-            },
-            576:{
-                items:1
-            },
-            768:{
-                items:2
-            },
-            992:{
-                items:2
-            },
-            1200:{
-                items:2
-            }
-        }
-    });
-
 
 })(jQuery);
 
-// Skeleton loader
-document.addEventListener("DOMContentLoaded", function () {
-    document.querySelectorAll("img").forEach(function (img) {
-        img.addEventListener("error", function () {
-            const skeleton = document.createElement("div");
-            skeleton.className = "skeleton-placeholder";
-            skeleton.style.width = img.width + "px";
-            skeleton.style.height = img.height + "px";
-            img.replaceWith(skeleton);
-        });
-    });
-});

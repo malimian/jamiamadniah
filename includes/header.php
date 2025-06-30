@@ -129,7 +129,7 @@ function front_header($title = null, $keywords = null, $description = null, $lib
 
     return <<<HTML
 <!DOCTYPE html>
-<html lang="{$language}" dir="ltr">
+<html lang="{$language}" dir="rtl">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
