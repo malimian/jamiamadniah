@@ -14,55 +14,50 @@ $media_type = isset($_POST['media_type']) ? clean($_POST['media_type']) : null;
 $media_id = isset($_POST['media_id']) ? clean($_POST['media_id']) : null;
 $section_name = !empty($_POST['section_name']) ? clean($_POST['section_name']) : null;
 
-
 // Handle status change request from js-switch
 if (isset($_POST['change_status'])) {
-
-    $response = ['success' => false, 'message' => 'Unknown error'];
     $id = isset($_POST['id']) ? clean($_POST['id']) : null;
     $media_type = isset($_POST['media_type']) ? clean($_POST['media_type']) : null;
     $is_active = isset($_POST['is_active']) ? (int)$_POST['is_active'] : 0;
 
-        if (!$id || !$media_type) {
-            $response['message'] = 'Missing required parameters';
-            echo json_encode($response);
-            exit;
-        }
-
-        try {
-            switch ($media_type) {
-                case 'image':
-                    $table = 'images';
-                    $id_field = 'i_id';
-                    break;
-                case 'video':
-                    $table = 'videos';
-                    $id_field = 'v_id';
-                    break;
-                case 'file':
-                    $table = 'page_files';
-                    $id_field = 'f_id';
-                    break;
-                default:
-                    throw new Exception('Invalid media type');
-            }
-
-            $sql = "UPDATE $table SET isactive = $is_active WHERE $id_field = '$id'";
-
-            if (Update($sql)) {
-                $response = ['success' => true, 'message' => 'Status updated'];
-            } else {
-                $response = ['success' => false, 'message' => 'Failed to update status'];
-            }
-        } catch (Exception $e) {
-            $response = ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
-        }
-
+    if (!$id || !$media_type) {
+        $response['message'] = 'Missing required parameters';
         echo json_encode($response);
+        exit;
+    }
+
+    try {
+        switch ($media_type) {
+            case 'image':
+                $table = 'images';
+                $id_field = 'i_id';
+                break;
+            case 'video':
+                $table = 'videos';
+                $id_field = 'v_id';
+                break;
+            case 'file':
+                $table = 'page_files';
+                $id_field = 'f_id';
+                break;
+            default:
+                throw new Exception('Invalid media type');
+        }
+
+        $sql = "UPDATE $table SET isactive = $is_active WHERE $id_field = '$id'";
+
+        if (Update($sql)) {
+            $response = ['success' => true, 'message' => 'Status updated'];
+        } else {
+            $response = ['success' => false, 'message' => 'Failed to update status'];
+        }
+    } catch (Exception $e) {
+        $response = ['success' => false, 'message' => 'Error: ' . $e->getMessage()];
+    }
+
+    echo json_encode($response);
     exit;
 }
-
-
 
 if (!$page_id || !$media_type || !$media_id) {
     $response['message'] = 'Missing required parameters';
@@ -100,13 +95,13 @@ try {
 
             // Update database
             $sql = "UPDATE images SET
-                        section_name = " . ($section_name ? "'$section_name'" : "NULL") . ",
-                        i_name = '$new_filename',
-                        i_title = '$i_title',
-                        i_caption = '$i_caption',
-                        i_alttext = '$i_alttext',
-                        i_description = '$i_description'
-                        WHERE i_id = '$media_id'";
+                    section_name = " . ($section_name ? "'$section_name'" : "NULL") . ",
+                    i_name = '$new_filename',
+                    i_title = '$i_title',
+                    i_caption = '$i_caption',
+                    i_alttext = '$i_alttext',
+                    i_description = '$i_description'
+                    WHERE i_id = '$media_id'";
 
             if (Update($sql)) {
                 $response = ['success' => true, 'message' => 'Image updated'];
@@ -160,12 +155,12 @@ try {
 
             // Update database
             $sql = "UPDATE videos SET
-                        section_name = " . ($section_name ? "'$section_name'" : "NULL") . ",
-                        v_name = '$new_video',
-                        v_title = '$v_title',
-                        v_thumbnail = '$new_thumbnail',
-                        v_description = '$v_description'
-                        WHERE v_id = '$media_id'";
+                    section_name = " . ($section_name ? "'$section_name'" : "NULL") . ",
+                    v_name = '$new_video',
+                    v_title = '$v_title',
+                    v_thumbnail = '$new_thumbnail',
+                    v_description = '$v_description'
+                    WHERE v_id = '$media_id'";
 
             if (Update($sql)) {
                 $response = ['success' => true, 'message' => 'Video updated'];
@@ -180,9 +175,11 @@ try {
             $f_description = clean($_POST['f_description']);
 
             // Get current file data
-            $current_file = return_single_row("SELECT f_name FROM page_files WHERE f_id = '$media_id'");
+            $current_file = return_single_row("SELECT f_name, f_thumbnail FROM page_files WHERE f_id = '$media_id'");
             $old_filename = $current_file['f_name'];
+            $old_thumbnail = $current_file['f_thumbnail'];
             $new_filename = $old_filename;
+            $new_thumbnail = $old_thumbnail;
 
             // Handle new file upload
             if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
@@ -199,17 +196,35 @@ try {
                 move_uploaded_file($_FILES['file']['tmp_name'], '../../../../' . ABSOLUTE_FILEPATH . $new_filename);
             }
 
+            // Handle new thumbnail upload
+            if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['error'] == UPLOAD_ERR_OK) {
+                // Delete old thumbnail if exists
+                if ($old_thumbnail) {
+                    $old_thumb_path = '../../../../' . ABSOLUTE_IMAGEPATH . $old_thumbnail;
+                    if (file_exists($old_thumb_path)) {
+                        unlink($old_thumb_path);
+                    }
+                }
+
+                // Upload new thumbnail
+                $temp = explode(".", $_FILES['thumbnail']['name']);
+                $new_thumbnail = $temp[0] . "_" . uniqid() . '.' . strtolower(end($temp));
+                $new_thumbnail = clean($new_thumbnail);
+                move_uploaded_file($_FILES['thumbnail']['tmp_name'], '../../../../' . ABSOLUTE_IMAGEPATH . $new_thumbnail);
+            }
+
             // Update database
             $sql = "UPDATE page_files SET
-                        section_name = " . ($section_name ? "'$section_name'" : "NULL") . ",
-                        f_name = '$new_filename',
-                        f_title = '$f_title',
-                        f_download_link = '$f_download_link',
-                        f_description = '$f_description'
-                        WHERE f_id = '$media_id'";
+                    section_name = " . ($section_name ? "'$section_name'" : "NULL") . ",
+                    f_name = '$new_filename',
+                    f_title = '$f_title',
+                    f_download_link = '$f_download_link',
+                    f_description = '$f_description',
+                    f_thumbnail = '$new_thumbnail'
+                    WHERE f_id = '$media_id'";
 
             if (Update($sql)) {
-                $response = ['success' => true, 'message' => 'File updated '];
+                $response = ['success' => true, 'message' => 'File updated'];
             } else {
                 $response = ['success' => false, 'message' => 'Failed to update file'];
             }

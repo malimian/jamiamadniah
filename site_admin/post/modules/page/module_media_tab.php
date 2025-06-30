@@ -99,42 +99,56 @@ if(isset($_POST['submit_media'])) {
                 break;
                 
             case 'files':
-                if (isset($_FILES['page_files']) && $_FILES['page_files']['error'][0] != UPLOAD_ERR_NO_FILE) {
-                    $countfiles = count($_FILES['page_files']['name']);
-                    $titles = clean($_POST['f_title']);
-                    $download_links = clean($_POST['f_download_link']);
-                    $descriptions = clean($_POST['f_description']);
-                    $section_name = !empty($_POST['section_name']) ? clean($_POST['section_name']) : null;
+            if (isset($_FILES['page_files']) && $_FILES['page_files']['error'][0] != UPLOAD_ERR_NO_FILE) {
+                $countfiles = count($_FILES['page_files']['name']);
+                $titles = clean($_POST['f_title']);
+                $download_links = clean($_POST['f_download_link']);
+                $descriptions = clean($_POST['f_description']);
+                $section_name = !empty($_POST['section_name']) ? clean($_POST['section_name']) : null;
+                $thumbnail = 'NULL';
 
-                    // Get last sequence number for files
-                    $get_last_sequence = (int)return_single_ans("SELECT MAX(f_sequence) FROM page_files WHERE pid = '$page_id'");
-                    $next_sequence = $get_last_sequence + 1;
+                // Get last sequence number for files
+                $get_last_sequence = (int)return_single_ans("SELECT MAX(f_sequence) FROM page_files WHERE pid = '$page_id'");
+                $next_sequence = $get_last_sequence + 1;
 
-                    for ($i = 0; $i < $countfiles; $i++) {
-                        if ($_FILES['page_files']['error'][$i] == UPLOAD_ERR_OK) {
-                            $filename = $_FILES['page_files']['name'][$i];
-                            $temp = explode(".", $filename);
-                            $temp1 = strtolower(end($temp));
-                            $newfilename = $temp[0] . "_" . uniqid() . '.' . $temp1;
-                            $newfilename = clean($newfilename);
+                // Handle thumbnail if uploaded
+                if (isset($_FILES['f_thumbnail']) && $_FILES['f_thumbnail']['error'] != UPLOAD_ERR_NO_FILE) {
+                    $thumbFilename = $_FILES['f_thumbnail']['name'];
+                    $temp = explode(".", $thumbFilename);
+                    $temp1 = strtolower(end($temp));
+                    $newThumbFilename = $temp[0] . "_" . uniqid() . '.' . $temp1;
+                    $newThumbFilename = clean($newThumbFilename);
 
-                            if (move_uploaded_file($_FILES['page_files']['tmp_name'][$i], '../../../../' . ABSOLUTE_FILEPATH . $newfilename)) {
-                                $sql = "INSERT INTO `page_files` 
-                                        (`pid`, `section_name`, `f_name`, `f_title`, `f_download_link`, `f_description`, `f_sequence`, `isactive`, `soft_delete`) 
-                                        VALUES 
-                                        ('$page_id', " . ($section_name ? "'$section_name'" : "NULL") . ", '$newfilename', '$titles', '$download_links', '$descriptions', '$next_sequence', '1', '0')";
-                                
-                                $id = Insert($sql);
-                                $next_sequence++; // Increment sequence for next file
-                            }
+                    if (move_uploaded_file($_FILES['f_thumbnail']['tmp_name'], '../../../../' . ABSOLUTE_IMAGEPATH . $newThumbFilename)) {
+                        $thumbnail = "'$newThumbFilename'";
+                    }
+                }
+
+                for ($i = 0; $i < $countfiles; $i++) {
+                    if ($_FILES['page_files']['error'][$i] == UPLOAD_ERR_OK) {
+                        $filename = $_FILES['page_files']['name'][$i];
+                        $temp = explode(".", $filename);
+                        $temp1 = strtolower(end($temp));
+                        $newfilename = $temp[0] . "_" . uniqid() . '.' . $temp1;
+                        $newfilename = clean($newfilename);
+
+                        if (move_uploaded_file($_FILES['page_files']['tmp_name'][$i], '../../../../' . ABSOLUTE_FILEPATH . $newfilename)) {
+                            $sql = "INSERT INTO `page_files` 
+                                    (`pid`, `section_name`, `f_name`, `f_title`, `f_download_link`, `f_description`, `f_thumbnail`, `f_sequence`, `isactive`, `soft_delete`) 
+                                    VALUES 
+                                    ('$page_id', " . ($section_name ? "'$section_name'" : "NULL") . ", '$newfilename', '$titles', '$download_links', '$descriptions', $thumbnail, '$next_sequence', '1', '0')";
+                            
+                            $id = Insert($sql);
+                            $next_sequence++; // Increment sequence for next file
                         }
                     }
-                    
-                    $response = ['success' => true, 'message' => 'Files saved'];
-                } else {
-                    $response = ['success' => false, 'message' => 'No files selected'];
                 }
-                break;
+                
+                $response = ['success' => true, 'message' => 'Files saved'];
+            } else {
+                $response = ['success' => false, 'message' => 'No files selected'];
+            }
+            break;
                 
             default:
                 $response = ['success' => false, 'message' => 'Invalid media type'];

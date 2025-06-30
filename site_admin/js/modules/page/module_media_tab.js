@@ -22,7 +22,7 @@ $(document).ready(function() {
             $('#new_section_name').val('');
             $('#newSectionModal').modal('hide');
         }
-    });
+    }); 
 
     $(document).on("change", ".js-switch", function() {
         var id = $(this).data("id");
@@ -171,6 +171,11 @@ function saveFiles() {
         formData.append("page_files[]", files[i]);
     }
     
+    // Add thumbnail if provided
+    if ($('#file_thumbnail')[0].files.length > 0) {
+        formData.append("f_thumbnail", $('#file_thumbnail')[0].files[0]);
+    }
+    
     saveMedia(formData, 'files');
 }
 
@@ -243,6 +248,11 @@ function updateFile() {
     
     if ($('#page_files')[0].files.length > 0) {
         formData.append("file", $('#page_files')[0].files[0]);
+    }
+    
+    // Add thumbnail if provided
+    if ($('#file_thumbnail')[0].files.length > 0) {
+        formData.append("thumbnail", $('#file_thumbnail')[0].files[0]);
     }
     
     updateMedia(formData, 'file');

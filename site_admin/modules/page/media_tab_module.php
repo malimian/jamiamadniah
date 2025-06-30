@@ -538,16 +538,15 @@ if (!empty($videogallery)) {
 
     <!-- Files Tab -->
     <div class="tab-pane fade <?php echo ($media_type == 'file') ? 'show active' : ''; ?>" id="tab-page-files" role="tabpanel" aria-labelledby="files-tab">
+      <!-- In the Files Tab edit section, add this after the current file display -->
         <?php if ($media_type == 'file' && $edit_data): ?>
         <div class="mb-3">
-            <h6>Current File:</h6>
-            <a href="<?php echo "../" . ABSOLUTE_FILEPATH . $edit_data['f_name']; ?>" target="_blank" class="btn btn-primary">
-                <i class="fa fa-download"></i> Download Current File
-            </a>
-            <div class="mt-2">
-                <span class="badge badge-info">Filename: <?php echo htmlspecialchars($edit_data['f_name']); ?></span>
-                <span class="badge badge-info ml-2">Type: <?php echo pathinfo($edit_data['f_name'], PATHINFO_EXTENSION); ?></span>
-            </div>
+            <h6>Current Thumbnail:</h6>
+            <?php if (!empty($edit_data['f_thumbnail'])): ?>
+            <img src="<?php echo "../" . ABSOLUTE_IMAGEPATH . $edit_data['f_thumbnail']; ?>" class="img-thumbnail" style="max-height: 100px;">
+            <?php else: ?>
+            <div class="alert alert-warning">No thumbnail set</div>
+            <?php endif; ?>
         </div>
         <?php endif; ?>
 
@@ -606,12 +605,25 @@ if (!empty($videogallery)) {
                 <input type="text" class="form-control" id="file_download_link" placeholder="Enter custom download link" value="<?php echo ($media_type == 'file' && $edit_data) ? htmlspecialchars($edit_data['f_download_link']) : ''; ?>">
             </div>
         </div>
-        <div class="row mb-3">
-            <div class="col-md-12">
-                <label for="file_description">Description</label>
-                <textarea class="form-control" id="file_description" rows="3" placeholder="Enter description"><?php echo ($media_type == 'file' && $edit_data) ? htmlspecialchars($edit_data['f_description']) : ''; ?></textarea>
-            </div>
+       <div class="row mb-3">
+        <div class="col-md-6 mb-3">
+            <label for="file_thumbnail">Thumbnail (optional)</label>
+            <input type="file" class="form-control" id="file_thumbnail" name="file_thumbnail">
+            
+            <?php if ($media_type == 'file' && !empty($edit_data['f_thumbnail'])): ?>
+                <div class="mt-2">
+                    <p>Current Thumbnail:</p>
+                    <img src="<?= htmlspecialchars($edit_data['f_thumbnail']) ?>" alt="Thumbnail" class="img-thumbnail" style="max-width: 200px;">
+                </div>
+            <?php endif; ?>
         </div>
+
+        <div class="col-md-12">
+            <label for="file_description">Description</label>
+            <textarea class="form-control" id="file_description" name="file_description" rows="3" placeholder="Enter description"><?php echo ($media_type == 'file' && $edit_data) ? htmlspecialchars($edit_data['f_description']) : ''; ?></textarea>
+        </div>
+    </div>
+
         
         <!-- Add Save/Update Files Buttons -->
         <div class="row mb-4">
