@@ -61,87 +61,92 @@ if (!empty($navbar_content)) {
     <!-- Hero End -->
 
 
-    <!-- About Satrt -->
-    <div class="container-fluid about py-5">
-        <div class="container py-5">
-            <div class="row g-5 mb-5">
-                <div class="col-xl-6">
-                    <div class="row g-4">
-                        <div class="col-6">
-                            <img src="img/about-1.jpg" class="img-fluid h-100 wow zoomIn" data-wow-delay="0.1s" alt="">
-                        </div>
-                        <div class="col-6">
-                            <img src="img/about-2.jpg" class="img-fluid pb-3 wow zoomIn" data-wow-delay="0.1s" alt="">
-                            <img src="img/about-3.jpg" class="img-fluid pt-3 wow zoomIn" data-wow-delay="0.1s" alt="">
-                        </div>
+   <!-- Jamia ki Khasoosiat Start -->
+<div class="container-fluid about py-5">
+    <div class="container py-5">
+        <div class="row g-5 mb-5">
+            <div class="col-xl-6">
+                <div class="row g-4">
+                    <div class="col-6">
+                        <img src="img/about-1.jpg" class="img-fluid h-100 wow zoomIn" data-wow-delay="0.1s" alt="">
                     </div>
-                </div>
-                <div class="col-xl-6 wow fadeIn" data-wow-delay="0.5s">
-                    <p class="fs-5 text-uppercase text-primary">جامعہ مدنیہ کے بارے میں</p>
-                    <h1 class="display-5 pb-4 m-0">اللہ تعالیٰ کی رضا کے لیے علم دین</h1>
-                    <p class="pb-4">جامعہ مدنیہ ایک معروف اسلامی تعلیمی ادارہ ہے جو قرآن و حدیث کی تعلیمات کو عام کرنے کے لیے کوشاں ہے۔ ہمارا مقصد معیاری دینی تعلیم فراہم کرنا ہے تاکہ معاشرے کی اصلاح ہو سکے۔</p>
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <div class="ps-3 d-flex align-items-center justify-content-start">
-                                <span class="bg-primary btn-md-square rounded-circle mt-4 me-2"><i class="fa fa-eye text-dark fa-4x mb-5 pb-2"></i></span>
-                                <div class="ms-4">
-                                    <h5>ہمارا ویژن</h5>
-                                    <p>معیاری دینی تعلیم کا فروغ</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="ps-3 d-flex align-items-center justify-content-start">
-                                <span class="bg-primary btn-md-square rounded-circle mt-4 me-2"><i class="fa fa-flag text-dark fa-4x mb-5 pb-2"></i></span>
-                                <div class="ms-4">
-                                    <h5>ہمارا مشن</h5>
-                                    <p>قرآن و سنت کی تعلیمات کو عام کرنا</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-light p-3 mb-4">
-                        <div class="row align-items-center justify-content-center">
-                            <div class="col-3">
-                                <img src="img/about-child.jpg" class="img-fluid rounded-circle" alt="">
-                            </div>
-                            <div class="col-6">
-                                <p class="mb-0">جامعہ مدنیہ میں طلبہ کو قرآن و حدیث کی معیاری تعلیم دی جاتی ہے۔</p>
-                            </div>
-                            <div class="col-3">
-                                    <h2 class="mb-0 text-primary text-center">20,46$</h2>
-                                    <h5 class="mb-0 text-center">اکٹھے کیے گئے</h5>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row g-2">
-                        <div class="col-md-6">
-                            <p class="mb-2"><i class="fa fa-check text-primary me-3"></i>خیرات و عطیات</p>
-                            <p class="mb-0"><i class="fa fa-check text-primary me-3"></i>والدین کی تعلیم</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p class="mb-2"><i class="fa fa-check text-primary me-3"></i>حدیث و سنت</p>
-                            <p class="mb-0"><i class="fa fa-check text-primary me-3"></i>مسجد کی ترقی</p>
-                        </div>
+                    <div class="col-6">
+                        <img src="img/about-2.jpg" class="img-fluid pb-3 wow zoomIn" data-wow-delay="0.1s" alt="">
+                        <img src="img/about-3.jpg" class="img-fluid pt-3 wow zoomIn" data-wow-delay="0.1s" alt="">
                     </div>
                 </div>
             </div>
-            <div class="container text-center bg-primary py-5 wow fadeIn" data-wow-delay="0.1s">
-                <div class="row g-4 align-items-center">
-                    <div class="col-lg-2">
-                        <i class="fa fa-mosque fa-5x text-white"></i>
+            <div class="col-xl-6 wow fadeIn" data-wow-delay="0.5s">
+                <p class="fs-5 text-uppercase text-primary">جامعہ کی خصوصیات</p>
+                <h1 class="display-5 pb-4 m-0">عصری سہولیات کے ساتھ معیاری دینی تعلیم</h1>
+                <p class="pb-4">جامعہ مدنیہ ایک مثالی دینی ادارہ ہے جو طلبہ کو جدید سہولیات کے ساتھ دینی و دنیاوی علوم سکھانے میں پیش پیش ہے۔ یہاں قیام، طعام، سیکیورٹی اور دیگر سہولیات فراہم کی جاتی ہیں۔</p>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="ps-3 d-flex align-items-start mb-3">
+                            <span class="bg-primary btn-md-square rounded-circle mt-1 me-2"><i class="fa fa-home text-dark fa-4x mb-5 pb-2"></i></span>
+                            <div class="ms-3">
+                                <h5>قیام و طعام</h5>
+                                <p>جامعہ میں رہائش کے لیے آرام دہ کمروں اور معیاری کھانے کا انتظام ہے تاکہ طلبہ پوری توجہ سے تعلیم حاصل کریں۔</p>
+                            </div>
+                        </div>
+                        <div class="ps-3 d-flex align-items-start mb-3">
+                            <span class="bg-primary btn-md-square rounded-circle mt-1 me-2"><i class="fa fa-video text-dark fa-4x mb-5 pb-2"></i></span>
+                            <div class="ms-3">
+                                <h5>سی سی ٹی وی سیکیورٹی</h5>
+                                <p>جامعہ کے احاطے میں CCTV کیمروں کے ذریعے 24 گھنٹے نگرانی کی جاتی ہے تاکہ طلبہ و والدین کو مکمل اطمینان رہے۔</p>
+                            </div>
+                        </div>
+                        <div class="ps-3 d-flex align-items-start mb-3">
+                            <span class="bg-primary btn-md-square rounded-circle mt-1 me-2"><i class="fa fa-solar-panel text-dark fa-4x mb-5 pb-2"></i></span>
+                            <div class="ms-3">
+                                <h5>شمسی توانائی</h5>
+                                <p>بجلی کی مستقل فراہمی کے لیے جامعہ میں شمسی توانائی کا نظام نصب ہے تاکہ کسی بھی تعلیمی عمل میں خلل نہ آئے۔</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-7 text-center text-lg-start">
-                        <h1 class="mb-0">ہر مسلمان کو اسلام کے "ارکان" کی اہمیت کا احساس ہونا چاہیے</h1>
-                    </div>
-                    <div class="col-lg-3">
-                        <a href="" class="btn btn-light py-2 px-4">مزید جانیں</a>
+                    <div class="col-md-6">
+                        <div class="ps-3 d-flex align-items-start mb-3">
+                            <span class="bg-primary btn-md-square rounded-circle mt-1 me-2"><i class="fa fa-mosque text-dark fa-4x mb-5 pb-2"></i></span>
+                            <div class="ms-3">
+                                <h5>خوبصورت مسجد</h5>
+                                <p>جامعہ میں ایک وسیع اور خوبصورت مسجد ہے جہاں طلبہ باجماعت نماز ادا کرتے ہیں اور دینی ماحول حاصل کرتے ہیں۔</p>
+                            </div>
+                        </div>
+                        <div class="ps-3 d-flex align-items-start mb-3">
+                            <span class="bg-primary btn-md-square rounded-circle mt-1 me-2"><i class="fa fa-futbol text-dark fa-4x mb-5 pb-2"></i></span>
+                            <div class="ms-3">
+                                <h5>کھیل کا میدان</h5>
+                                <p>طلبہ کی جسمانی صحت کے لیے کھیل کا میدان موجود ہے جہاں وہ مختلف کھیل کھیل کر صحت مند رہ سکتے ہیں۔</p>
+                            </div>
+                        </div>
+                        <div class="ps-3 d-flex align-items-start mb-3">
+                            <span class="bg-primary btn-md-square rounded-circle mt-1 me-2"><i class="fa fa-hand-holding-heart text-dark fa-4x mb-5 pb-2"></i></span>
+                            <div class="ms-3">
+                                <h5>خیرات و عطیات</h5>
+                                <p>جامعہ میں مستحق طلبہ کی مدد کے لیے باقاعدہ خیرات و عطیات کا انتظام موجود ہے۔</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="container text-center bg-primary py-5 wow fadeIn" data-wow-delay="0.1s">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-2">
+                    <i class="fa fa-mosque fa-5x text-white"></i>
+                </div>
+                <div class="col-lg-7 text-center text-lg-start">
+                    <h1 class="mb-0 text-white">جامعہ مدنیہ میں مسجد، رہائش، طعام، کھیل کا میدان اور جدید سیکیورٹی سسٹم</h1>
+                </div>
+                <div class="col-lg-3">
+                    <a href="#" class="btn btn-light py-2 px-4">مزید جانیں</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <!-- About End -->
+</div>
+<!-- Jamia ki Khasoosiat End -->
+
 
 <style type="text/css">
 .counter-item {
@@ -276,6 +281,259 @@ if (!empty($navbar_content)) {
     </div>
     <!-- Activities Start -->
 
+    <!-- Yearly Risala Section Start -->
+<section class="py-5 bg-light" id="risala">
+    <div class="container">
+        <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="text-uppercase text-primary">جامعہ مدنیہ کا سالانہ</h5>
+            <h1 class="display-5 mb-0">رسالہ</h1>
+            <p class="fs-5 text-muted">ہمارے سالانہ رسالے میں دینی تعلیمات، مضامین اور جامعہ کی سرگرمیاں</p>
+        </div>
+
+        <div class="row g-4">
+            <!-- Current Year Risala -->
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="position-relative">
+                        <img src="img/kitab_6862b7b74813f.jpg" class="card-img-top" alt="جامعہ مدنیہ کا سالانہ رسالہ">
+                        <div class="badge bg-primary text-white position-absolute top-0 end-0 m-3 fs-6">نیا</div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">جامعہ مدنیہ سالانہ رسالہ 2024</h3>
+                        <p class="card-text">اس سال کے رسالے میں خصوصی مضامین، جامعہ کی سال بھر کی سرگرمیاں، طلبہ کے علمی مضامین اور مفید دینی معلومات شامل ہیں۔</p>
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item"><i class="fa fa-check text-primary me-2"></i> 150+ صفحات</li>
+                            <li class="list-group-item"><i class="fa fa-check text-primary me-2"></i> رنگیں تصاویر</li>
+                            <li class="list-group-item"><i class="fa fa-check text-primary me-2"></i> مفید دینی معلومات</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <a href="#" class="btn btn-primary py-2 px-4 me-2"><i class="fa fa-download me-2"></i> ڈاؤن لوڈ کریں</a>
+                        <a href="#" class="btn btn-outline-primary py-2 px-4"><i class="fa fa-book me-2"></i> آن لائن پڑھیں</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Previous Years Risala Archive -->
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">گذشتہ سالوں کے رسالے</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>سال</th>
+                                        <th>عنوان</th>
+                                        <th>عمل</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>2023</td>
+                                        <td>دینی تعلیم کی اہمیت</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i></a>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-book"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2022</td>
+                                        <td>قرآن و حدیث کی روشنی</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i></a>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-book"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2021</td>
+                                        <td>اسلامی اقدار</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i></a>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-book"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2020</td>
+                                        <td>معاشرتی اصلاح</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i></a>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-book"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>2019</td>
+                                        <td>اخلاقیات</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i></a>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-book"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0 text-center">
+                        <a href="#" class="btn btn-link">تمام گذشتہ رسالے دیکھیں <i class="fa fa-arrow-right ms-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.7s">
+            <div class="bg-primary p-4 rounded">
+                <h3 class="text-white mb-3">رسالے میں اپنا مضمون شائع کروائیں</h3>
+                <p class="text-white mb-4">اگر آپ دینی موضوعات پر لکھتے ہیں تو اپنا مضمون ہمارے سالانہ رسالے کے لیے ارسال کریں۔</p>
+                <a href="#" class="btn btn-light py-2 px-4"><i class="fa fa-pen me-2"></i> مضمون ارسال کریں</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Yearly Risala Section End -->
+
+
+<!-- Audio Bayanat Section Start -->
+<section class="py-5" id="bayanat">
+    <div class="container py-5">
+        <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="text-uppercase text-primary">علمی بیانات</h5>
+            <h1 class="display-5 mb-0">آڈیو بیانات</h1>
+            <p class="fs-5 text-muted">جامعہ مدنیہ کے اساتذہ کرام کے علمی بیانات اور دروس</p>
+        </div>
+
+        <!-- Introduction Section -->
+        <div class="row justify-content-center mb-5 wow fadeInUp" data-wow-delay="0.2s">
+            <div class="col-lg-10">
+                <div class="card border-0 shadow-sm bg-light">
+                    <div class="card-body p-4">
+                        <p class="lead text-center mb-0">
+                            "تعلیم اور کتب خانے ایک دوسرے کیلئے لازم وملزوم کی حیثیت رکھتے ہیں۔ کوئی تعلیمی درسگاہ ایک منظم کتب خانے کی ضرورت سے بے نیاز نہیں ہوسکتی۔ تعلیمی اداروں میں نصابی ضرورت محض نصابی کتابوں سے پوری نہیں ہو سکتیں لہذا تحقیقی ضروریات کیلئے اضافی کتابوں کا ہونا ضروری ہے۔ جنہیں منظم تعلیمی کتب خانوں کی صورت میں رکھا جاے۔ اسی ضرورت کے پیش نظر جامعہ مدنیہ میں بھی ایک وسیع اور عریض لائبریری ہے جس میں سیکڑوں کی تعداد میں مختلف موضوعات پر کتابیں ہیں جس سے اساتذہ اور طلباء فائدہ اٹھاتے ہیں۔"
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audio Bayanat Cards -->
+        <div class="row g-4">
+            <!-- Bayan 1 -->
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="card-img-top bg-dark position-relative" style="height: 200px;">
+                        <img src="img/bayan-1.jpg" class="img-fluid h-100 w-100 object-fit-cover" alt="بیان">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                            <button class="btn btn-primary btn-lg rounded-circle" style="width: 60px; height: 60px;">
+                                <i class="fa fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">شفقت و رحمت سے پڑھنا</h4>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fa fa-user text-primary me-2"></i>
+                            <span>حضرت مولانا ارشاد احمد</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fa fa-users text-primary me-2"></i>
+                            <span>اساتذہ کرام شعبہ حفظ</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-calendar text-primary me-2"></i>
+                            <span>15 جنوری 2024</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <audio controls class="w-100">
+                            <source src="audio/bayan-1.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bayan 2 -->
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="card-img-top bg-dark position-relative" style="height: 200px;">
+                        <img src="img/bayan-2.jpg" class="img-fluid h-100 w-100 object-fit-cover" alt="بیان">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                            <button class="btn btn-primary btn-lg rounded-circle" style="width: 60px; height: 60px;">
+                                <i class="fa fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">حفظ قرآن کی فضیلت</h4>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fa fa-user text-primary me-2"></i>
+                            <span>حضرت مولانا ارشاد احمد</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fa fa-users text-primary me-2"></i>
+                            <span>اساتذہ کرام شعبہ حفظ</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-calendar text-primary me-2"></i>
+                            <span>10 جنوری 2024</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <audio controls class="w-100">
+                            <source src="audio/bayan-2.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bayan 3 -->
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.7s">
+                <div class="card border-0 shadow-lg h-100">
+                    <div class="card-img-top bg-dark position-relative" style="height: 200px;">
+                        <img src="img/bayan-3.jpg" class="img-fluid h-100 w-100 object-fit-cover" alt="بیان">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                            <button class="btn btn-primary btn-lg rounded-circle" style="width: 60px; height: 60px;">
+                                <i class="fa fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">اخلاق معلمین</h4>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fa fa-user text-primary me-2"></i>
+                            <span>حضرت مولانا ارشاد احمد</span>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fa fa-users text-primary me-2"></i>
+                            <span>اساتذہ کرام شعبہ حفظ</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="fa fa-calendar text-primary me-2"></i>
+                            <span>5 جنوری 2024</span>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-0">
+                        <audio controls class="w-100">
+                            <source src="audio/bayan-3.mp3" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- View More Button -->
+        <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.9s">
+            <a href="#" class="btn btn-primary py-3 px-5">
+                <i class="fa fa-headphones me-2"></i> مزید بیانات سنیں
+            </a>
+        </div>
+    </div>
+</section>
+<!-- Audio Bayanat Section End -->
 
     <!-- Events Start -->
     <div class="container-fluid event py-5">
