@@ -728,8 +728,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     ORDER BY RAND()
                 LIMIT 6; "
             );
-
-            print_r($gallery_images);
             
             if (!empty($gallery_images)):
                 foreach ($gallery_images as $image): 
