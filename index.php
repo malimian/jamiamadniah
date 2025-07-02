@@ -723,19 +723,13 @@ document.addEventListener('DOMContentLoaded', function() {
             <?php
             // Fetch limited number of gallery images (6 in this case)
             $gallery_images = return_multiple_rows(
-                "SELECT 
-                        ANY_VALUE(i_id) AS i_id,
-                        ANY_VALUE(image_url) AS image_url,
-                        section_name
-                    FROM (
-                        SELECT * 
-                        FROM images 
-                        WHERE isactive = 1 AND soft_delete = 0 AND pid = 16424 
-                        ORDER BY RAND()
-                    ) AS shuffled_images
-                    GROUP BY section_name
-                    LIMIT 6;"
+                "SELECT * FROM images 
+                    WHERE isactive = 1 AND soft_delete = 0 AND pid = 16424 
+                    ORDER BY RAND()
+                LIMIT 6; "
             );
+
+            print_r($gallery_images);
             
             if (!empty($gallery_images)):
                 foreach ($gallery_images as $image): 
