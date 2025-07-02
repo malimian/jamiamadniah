@@ -10,8 +10,8 @@ if($_SERVER['REMOTE_ADDR'] == "::1" || $_SERVER['REMOTE_ADDR'] == "127.0.0.1"){
 }
 else{
 	$servername = "localhost";
-	$username = "jamiamadniah";
-	$password = "jamiamadniah";
+	$username = "jamiamadniah123";
+	$password = "jamiamadniah123";
 	$dbname = "jamiamadniah";
 	$conn = new mysqli($servername, $username, $password, $dbname);	
 	//u
