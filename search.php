@@ -213,20 +213,44 @@ if (!empty($navbar_content)) {
 }
 </style>
 
-<div class="container search-page">
-    <h1 class="mb-4"><?= htmlspecialchars($content['page_title'] ?? 'Search News') ?></h1>
-    
-    <div class="search-form">
-        <form action="search.php" method="get">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Enter keywords..." value="<?= htmlspecialchars($search_query) ?>">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" type="submit">Search</button>
+<!-- Hero Start -->
+<div class="container-fluid hero-header bg-light position-relative">
+    <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25"></div>
+    <div class="container position-relative z-index-1">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="hero-header-inner animated zoomIn">
+                    <h1 class="display-1 text-dark"><?= htmlspecialchars($content['page_title']) ?></h1>
+                    <ol class="breadcrumb mb-0">
+                        <li class="breadcrumb-item"><a href="<?= BASE_URL ?>">Home</a></li>
+                        <li class="breadcrumb-item"><a href="<?= replace_sysvari($content['cat_url']) ?>"><?= htmlspecialchars(replace_sysvari($content['catname'])) ?></a></li>
+                        <li class="breadcrumb-item text-dark" aria-current="page"><?= htmlspecialchars($content['page_title']) ?></li>
+                    </ol>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
+</div>
+<!-- Hero End -->
 
+<div class="container-fluid bg-light position-relative search-page py-5" dir="rtl" style="text-align: right;">
+    <div class="position-absolute top-0 start-0 w-100 h-100 opacity-25"></div>
+    <div class="container position-relative z-index-1 text-center">
+        <h1 class="mb-4"><?= htmlspecialchars($content['page_title'] ?? 'خبریں تلاش کریں') ?></h1>
+
+        <div class="search-form d-flex justify-content-center">
+            <form action="search.php" method="get" class="w-75">
+                <div class="input-group" style="direction: ltr;">
+                    <input type="text" name="q" class="form-control" placeholder="الفاظ درج کریں..." value="<?= htmlspecialchars($search_query ?? '') ?>">
+                    <button class="btn btn-primary" type="submit">تلاش کریں</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+ 
     <div class="search-results">
         <?php
         if (!empty($search_query)) {

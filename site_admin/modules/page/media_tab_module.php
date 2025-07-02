@@ -613,7 +613,7 @@ if (!empty($videogallery)) {
             <?php if ($media_type == 'file' && !empty($edit_data['f_thumbnail'])): ?>
                 <div class="mt-2">
                     <p>Current Thumbnail:</p>
-                    <img src="<?= htmlspecialchars($edit_data['f_thumbnail']) ?>" alt="Thumbnail" class="img-thumbnail" style="max-width: 200px;">
+                    <img src="<?= BASE_URL.ABSOLUTE_IMAGEPATH.$edit_data['f_thumbnail'] ?>" alt="Thumbnail" class="img-thumbnail" style="max-width: 200px;">
                 </div>
             <?php endif; ?>
         </div>
@@ -651,13 +651,18 @@ if (!empty($videogallery)) {
         <div class="card mb-3" id="dr_<?php echo $filegallery_['f_id']; ?>">
             <div class="card-body p-0">
                 <div class="row no-gutters">
-                    <!-- File icon column (25% width) -->
-                    <div class="col-md-3 p-3">
-                        <div style="height: 134px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
+                   <div class="col-md-3 p-3">
+                        <div style="align-items: center; justify-content: center; background: #f8f9fa;">
                             <div class="text-center">
-                                <i class="fa fa-file-o fa-4x text-muted"></i>
+                                <?php if (!empty($filegallery_['f_thumbnail'])): ?>
+                                    <img src="<?php echo BASE_URL . ABSOLUTE_IMAGEPATH . $filegallery_['f_thumbnail']; ?>" 
+                                         alt="Thumbnail" 
+                                         style="max-height: 100%; max-width: 100%;">
+                                <?php else: ?>
+                                    <i class="fa fa-file-o fa-4x text-muted"></i>
+                                <?php endif; ?>
                                 <div class="mt-2">
-                                    <a href="<?php echo "../" . ABSOLUTE_FILEPATH . $filegallery_['f_name']; ?>" 
+                                    <a href="<?php echo BASE_URL . ABSOLUTE_FILEPATH . $filegallery_['f_name']; ?>" 
                                        target="_blank" 
                                        class="btn btn-sm btn-outline-primary">
                                         <i class="fa fa-download"></i> Download
@@ -666,6 +671,7 @@ if (!empty($videogallery)) {
                             </div>
                         </div>
                     </div>
+
                     
                     <!-- Content column (50% width) -->
                     <div class="col-md-6 p-3">
@@ -686,7 +692,7 @@ if (!empty($videogallery)) {
                         
                         <div class="row mb-1">
                             <div class="col-3 font-weight-bold"><i class="fa fa-edit"></i> Description:</div>
-                            <div class="col-9"><?php echo htmlspecialchars($filegallery_['f_description']); ?></div>
+                            <div class="col-9"><?php echo html_entity_decode($filegallery_['f_description']); ?></div>
                         </div>
 
                         <?php if (!empty($filegallery_['section_name'])): ?>

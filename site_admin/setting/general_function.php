@@ -716,6 +716,27 @@ function createmulltilevelcheckbox($parent, $menu, $selected_categories = null)
 }
 
 
+function buildCategoryOptions($parentId, $categoryTree, $depth = 0, $selectedCatId = null) {
+    if (!isset($categoryTree[$parentId])) return;
+    
+    foreach ($categoryTree[$parentId] as $category) {
+        $catId = (int)$category['catid'];
+        $catName = htmlspecialchars($category['catname'], ENT_QUOTES, 'UTF-8');
+        $indent = str_repeat('&nbsp;&nbsp;', $depth);
+
+        $selected = ($selectedCatId == $catId) ? 'selected' : '';
+
+        echo "<option value='{$catId}' {$selected}>";
+        echo $indent;
+        if ($depth > 0) echo '↳ ';
+        echo $catName;
+        echo "</option>";
+        
+        buildCategoryOptions($catId, $categoryTree, $depth + 1, $selectedCatId);
+    }
+}
+
+
 function remove_utf($str){
 
          $str = str_replace('"','',$str); 

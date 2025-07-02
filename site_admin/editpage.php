@@ -128,23 +128,46 @@ AdminHeader(
                             </div>
 
                             <div class="form-group row">
-                                <label for="ctname" class="col-sm-2 col-form-label">Category</label>
-                                <div class="col-sm-10">
+                                <label for="ctname" class="col-sm-2 col-form-label">Category <span class="text-danger">*</span></label>
+                              <div class="col-sm-10">
                                     <select class="form-control" id="ctname" required name="ctname">
                                         <?php 
-                                        // Get categories from database
-                                        $categories = return_multiple_rows("SELECT catname, catid FROM category $where_gc AND isactive = 1");
+                                        // get categories
+                                        $allCategories = return_multiple_rows("
+                                            SELECT catid, catname, ParentCategory, cat_sequence 
+                                            FROM category 
+                                            WHERE soft_delete = 0 
+                                            AND isactive = 1
+                                            ORDER BY ParentCategory, cat_sequence, catname
+                                        ");
                                         
-                                        foreach ($categories as $category) {
-                                            $selected = ($page['catid'] == $category['catid']) ? 'selected' : '';
-                                            $catname = htmlspecialchars($category['catname'], ENT_QUOTES, 'UTF-8');
-                                            $catid = (int)$category['catid'];
-                                            
-                                            echo "<option value='{$catid}' {$selected}>{$catname}</option>";
+                                        // organize
+                                        $categoryTree = [];
+                                        foreach ($allCategories as $category) {
+                                            $parentId = (int)$category['ParentCategory'];
+                                            if (!isset($categoryTree[$parentId])) {
+                                                $categoryTree[$parentId] = [];
+                                            }
+                                            $categoryTree[$parentId][] = $category;
+                                        }
+
+                                        // build options
+                                        buildCategoryOptions(0, $categoryTree, 0, $page['catid'] ?? null);
+
+                                        // handle orphaned
+                                        foreach ($allCategories as $category) {
+                                            $parentId = (int)$category['ParentCategory'];
+                                            $catId = (int)$category['catid'];
+                                            if ($parentId != 0 && !isset($categoryTree[$parentId])) {
+                                                $catName = htmlspecialchars($category['catname'], ENT_QUOTES, 'UTF-8');
+                                                $selected = ($page['catid'] == $catId) ? 'selected' : '';
+                                                echo "<option value='{$catId}' {$selected} style='color:#dc3545'>[Orphaned] {$catName}</option>";
+                                            }
                                         }
                                         ?>
                                     </select>
                                 </div>
+
                             </div>
                             <!-- URL -->
                            <div class="form-group row align-items-center">

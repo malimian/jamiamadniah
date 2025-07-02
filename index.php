@@ -2,7 +2,6 @@
 include 'front_connect.php';
 
 $url = "index.php";
-$not_show_more_then_once = [];
 
 // Fetch page data using proper URL sanitization
 $safe_url = addslashes($url); // Basic sanitization for SQL
@@ -222,7 +221,7 @@ if (!empty($navbar_content)) {
                         <div class="ms-4">
                             <h4>درس نظامی</h4>
                             <p class="mb-4">جامعہ مدنیہ میں معیاری درس نظامی کا انتظام ہے جس میں طلبہ کو دینی علوم کی تعلیم دی جاتی ہے۔</p>
-                            <a href="" class="btn btn-primary px-3">مزید جانیں</a>
+                            <a href="dars-e-nizami-boys.html" class="btn btn-primary px-3">مزید جانیں</a>
                         </div>
                     </div>
                 </div>
@@ -232,7 +231,7 @@ if (!empty($navbar_content)) {
                         <div class="ms-4">
                             <h4>تحفیظ القرآن</h4>
                             <p class="mb-4">جامعہ میں قرآن کریم حفظ کرانے کا خصوصی انتظام ہے جہاں بچوں کو حفظ قرآن کی تعلیم دی جاتی ہے۔</p>
-                            <a href="" class="btn btn-primary px-3">مزید جانیں</a>
+                            <a href="tahafaz-quran.html" class="btn btn-primary px-3">مزید جانیں</a>
                         </div>
                     </div>
                 </div>
@@ -242,7 +241,7 @@ if (!empty($navbar_content)) {
                         <div class="ms-4">
                             <h4>حفاظ عربی</h4>
                             <p class="mb-4">جامعہ میں حفاظ کرام کو عربی زبان کی تعلیم دی جاتی ہے تاکہ وہ قرآن و حدیث کو بہتر سمجھ سکیں۔</p>
-                            <a href="" class="btn btn-primary px-3">مزید جانیں</a>
+                            <a href="hifz.html" class="btn btn-primary px-3">مزید جانیں</a>
                         </div>
                     </div>
                 </div>
@@ -252,7 +251,7 @@ if (!empty($navbar_content)) {
                         <div class="ms-4">
                             <h4>دارالافتاء</h4>
                             <p class="mb-4">جامعہ میں دارالافتاء قائم ہے جہاں سے عوام الناس کے شرعی مسائل کے حل پیش کیے جاتے ہیں۔</p>
-                            <a href="" class="btn btn-primary px-3">مزید جانیں</a>
+                            <a href="dar-al-ifta.html" class="btn btn-primary px-3">مزید جانیں</a>
                         </div>
                     </div>
                 </div>
@@ -281,7 +280,185 @@ if (!empty($navbar_content)) {
     </div>
     <!-- Activities Start -->
 
-    <!-- Yearly Risala Section Start -->
+    <!-- Jamia Introduction Video Section -->
+<section class="py-5 bg-light" id="intro-video">
+    <div class="container py-5">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-5 mb-lg-0 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="position-relative rounded overflow-hidden">
+                    <!-- Video Thumbnail with Play Button -->
+                    <img src="img/jamia-video-thumbnail.jpg" class="img-fluid w-100 rounded shadow" alt="جامعہ مدنیہ کا تعارفی ویڈیو">
+                    <div class="video-play-button">
+                        <a href="#" class="video-popup-btn" data-bs-toggle="modal" data-bs-target="#videoModal">
+                            <i class="fas fa-play"></i>
+                        </a>
+                    </div>
+                    <!-- Video Stats -->
+                    <div class="video-stats bg-primary text-white p-3 rounded-bottom">
+                        <div class="row text-center">
+                            <div class="col-4 border-end border-white">
+                                <h4 class="mb-0">1.2K</h4>
+                                <small>Views</small>
+                            </div>
+                            <div class="col-4 border-end border-white">
+                                <h4 class="mb-0">95</h4>
+                                <small>Likes</small>
+                            </div>
+                            <div class="col-4">
+                                <h4 class="mb-0">24</h4>
+                                <small>Shares</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="ps-lg-5">
+                    <h5 class="text-uppercase text-primary mb-3">ہمارا تعارف</h5>
+                    <h1 class="display-5 mb-4">جامعہ مدنیہ کا تعارفی ویڈیو</h1>
+                    <p class="mb-4">جامعہ مدنیہ ایک عظیم دینی درسگاہ ہے جہاں قرآن و حدیث کی تعلیم دی جاتی ہے۔ اس ویڈیو میں آپ جامعہ کی عمارت، اساتذہ کرام، طلبہ اور تعلیمی ماحول کو قریب سے دیکھ سکتے ہیں۔</p>
+                    
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="flex-shrink-0 bg-primary rounded-circle p-3 me-3">
+                            <i class="fas fa-mosque text-white fa-2x"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">دینی تعلیم کا بہترین مرکز</h5>
+                            <p class="mb-0 text-muted">جامعہ مدنیہ میں حفظ قرآن اور درس نظامی کی معیاری تعلیم</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="flex-shrink-0 bg-primary rounded-circle p-3 me-3">
+                            <i class="fas fa-user-graduate text-white fa-2x"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">تجربہ کار اساتذہ</h5>
+                            <p class="mb-0 text-muted">قرآن و حدیث کے ماہر اساتذہ کی نگرانی میں تعلیم</p>
+                        </div>
+                    </div>
+                    
+                    <a href="mad_intro.mp4" class="btn btn-primary py-3 px-4 me-2" download>
+                        <i class="fas fa-download me-2"></i> ویڈیو ڈاؤن لوڈ کریں
+                    </a>
+                    <a href="#" class="btn btn-outline-primary py-3 px-4">
+                        <i class="fas fa-share-alt me-2"></i> شیئر کریں
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Video Modal -->
+<div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="videoModalLabel">جامعہ مدنیہ کا تعارفی ویڈیو</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="ratio ratio-16x9">
+                    <video id="introVideo" controls class="w-100">
+                        <source src="mad_intro.mp4" type="video/mp4">
+                        آپ کا براؤزر ویڈیو کو سپورٹ نہیں کرتا۔
+                    </video>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">بند کریں</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Custom CSS for Video Section */
+.video-play-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.video-play-button a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(5px);
+    border-radius: 50%;
+    color: white;
+    font-size: 30px;
+    transition: all 0.3s ease;
+}
+
+.video-play-button a:hover {
+    background: var(--bs-primary);
+    transform: scale(1.1);
+}
+
+.video-stats {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    transition: all 0.3s ease;
+}
+
+.video-popup-btn:hover + .video-stats {
+    opacity: 0;
+}
+
+@media (max-width: 767.98px) {
+    .video-play-button a {
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+    }
+}
+
+/* Video player styling */
+#introVideo {
+    background-color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var videoModal = document.getElementById('videoModal');
+    var video = document.getElementById('introVideo');
+    
+    videoModal.addEventListener('show.bs.modal', function () {
+        // Play video when modal opens
+        video.play();
+    });
+    
+    videoModal.addEventListener('hide.bs.modal', function () {
+        // Pause video when modal closes
+        video.pause();
+        // Reset video to beginning
+        video.currentTime = 0;
+    });
+    
+    // Handle download button
+    document.querySelector('[download]').addEventListener('click', function(e) {
+        // You can add download tracking here if needed
+        console.log('Video download initiated');
+    });
+});
+</script>
+<!-- Intro video ends -->
+
+  <!-- Yearly Risala Section Start -->
 <section class="py-5 bg-light" id="risala">
     <div class="container">
         <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
@@ -290,26 +467,38 @@ if (!empty($navbar_content)) {
             <p class="fs-5 text-muted">ہمارے سالانہ رسالے میں دینی تعلیمات، مضامین اور جامعہ کی سرگرمیاں</p>
         </div>
 
+        <?php 
+        $file_gallery = return_multiple_rows("SELECT * FROM page_files WHERE isactive = 1 AND soft_delete = 0 AND pid = 16423 ORDER BY f_sequence DESC");
+        
+        if (!empty($file_gallery)): 
+            // Get current year's risala (first item)
+            $current_risala = $file_gallery[0];
+            $current_file_path = BASE_URL . ABSOLUTE_FILEPATH . $current_risala['f_name'];
+            $current_thumbnail = !empty($current_risala['f_thumbnail']) ? BASE_URL . ABSOLUTE_IMAGEPATH . $current_risala['f_thumbnail'] : 'img/default-book.jpg';
+            
+            // Get previous risalas (all except first item)
+            $previous_risalas = array_slice($file_gallery, 1);
+        ?>
+        
         <div class="row g-4">
             <!-- Current Year Risala -->
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
                 <div class="card border-0 shadow-lg h-100">
                     <div class="position-relative">
-                        <img src="img/kitab_6862b7b74813f.jpg" class="card-img-top" alt="جامعہ مدنیہ کا سالانہ رسالہ">
+                        <img src="<?= $current_thumbnail ?>" class="card-img-top" alt="<?= htmlspecialchars($current_risala['f_title']) ?>">
                         <div class="badge bg-primary text-white position-absolute top-0 end-0 m-3 fs-6">نیا</div>
                     </div>
                     <div class="card-body">
-                        <h3 class="card-title">جامعہ مدنیہ سالانہ رسالہ 2024</h3>
-                        <p class="card-text">اس سال کے رسالے میں خصوصی مضامین، جامعہ کی سال بھر کی سرگرمیاں، طلبہ کے علمی مضامین اور مفید دینی معلومات شامل ہیں۔</p>
-                        <ul class="list-group list-group-flush mb-3">
-                            <li class="list-group-item"><i class="fa fa-check text-primary me-2"></i> 150+ صفحات</li>
-                            <li class="list-group-item"><i class="fa fa-check text-primary me-2"></i> رنگیں تصاویر</li>
-                            <li class="list-group-item"><i class="fa fa-check text-primary me-2"></i> مفید دینی معلومات</li>
-                        </ul>
+                        <h3 class="card-title"><?= htmlspecialchars($current_risala['f_title']) ?></h3>
+                        <p class="card-text"><?= html_entity_decode($current_risala['f_description']) ?></p>
                     </div>
                     <div class="card-footer bg-white border-0">
-                        <a href="#" class="btn btn-primary py-2 px-4 me-2"><i class="fa fa-download me-2"></i> ڈاؤن لوڈ کریں</a>
-                        <a href="#" class="btn btn-outline-primary py-2 px-4"><i class="fa fa-book me-2"></i> آن لائن پڑھیں</a>
+                        <a href="<?= $current_file_path ?>" class="btn btn-primary py-2 px-4 me-2" download>
+                            <i class="fa fa-download me-2"></i> ڈاؤن لوڈ کریں
+                        </a>
+                        <a href="<?= $current_file_path ?>" target="_blank" class="btn btn-outline-primary py-2 px-4">
+                            <i class="fa fa-book me-2"></i> آن لائن پڑھیں
+                        </a>
                     </div>
                 </div>
             </div>
@@ -331,53 +520,32 @@ if (!empty($navbar_content)) {
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <?php foreach ($previous_risalas as $risala): 
+                                        $file_path = BASE_URL . ABSOLUTE_FILEPATH . $risala['f_name'];
+                                        $year = date('Y', strtotime($risala['createdon']));
+                                    ?>
                                     <tr>
-                                        <td>2023</td>
-                                        <td>دینی تعلیم کی اہمیت</td>
+                                        <td><?= $year ?></td>
+                                        <td><?= htmlspecialchars($risala['f_title']) ?></td>
                                         <td>
-                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i></a>
-                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-book"></i></a>
+                                            <a href="<?= $file_path ?>" class="btn btn-sm btn-outline-primary" download>
+                                                <i class="fa fa-download"></i>
+                                            </a>
+                                            <a href="<?= $file_path ?>" target="_blank" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-book"></i>
+                                            </a>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td>2022</td>
-                                        <td>قرآن و حدیث کی روشنی</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i></a>
-                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-book"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2021</td>
-                                        <td>اسلامی اقدار</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i></a>
-                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-book"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2020</td>
-                                        <td>معاشرتی اصلاح</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i></a>
-                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-book"></i></a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2019</td>
-                                        <td>اخلاقیات</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-download"></i></a>
-                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fa fa-book"></i></a>
-                                        </td>
-                                    </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
                     </div>
+                    <?php if (count($previous_risalas) > 5): ?>
                     <div class="card-footer bg-white border-0 text-center">
-                        <a href="#" class="btn btn-link">تمام گذشتہ رسالے دیکھیں <i class="fa fa-arrow-right ms-2"></i></a>
+                        <a href="yearly-magazine.html" class="btn btn-link">تمام گذشتہ رسالے دیکھیں <i class="fa fa-arrow-right ms-2"></i></a>
                     </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -390,10 +558,17 @@ if (!empty($navbar_content)) {
                 <a href="#" class="btn btn-light py-2 px-4"><i class="fa fa-pen me-2"></i> مضمون ارسال کریں</a>
             </div>
         </div>
+        
+        <?php else: ?>
+        <div class="text-center py-5">
+            <i class="fas fa-book fa-3x text-muted mb-3"></i>
+            <h4>کوئی رسالہ دستیاب نہیں ہے</h4>
+            <p class="text-muted">براہ کرم بعد میں دوبارہ کوشش کریں</p>
+        </div>
+        <?php endif; ?>
     </div>
 </section>
 <!-- Yearly Risala Section End -->
-
 
 <!-- Audio Bayanat Section Start -->
 <section class="py-5" id="bayanat">
@@ -534,6 +709,132 @@ if (!empty($navbar_content)) {
     </div>
 </section>
 <!-- Audio Bayanat Section End -->
+
+<!-- Gallery Section Start -->
+<section class="py-5 bg-light" id="gallery">
+    <div class="container py-5">
+        <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
+            <h5 class="text-uppercase text-primary">تصاویر</h5>
+            <h1 class="display-5 mb-0">ہماری گیلری</h1>
+            <p class="fs-5 text-muted">جامعہ مدنیہ کی سرگرمیوں اور تقریبات کی جھلکیاں</p>
+        </div>
+
+        <div class="row g-4">
+            <?php
+            // Fetch limited number of gallery images (6 in this case)
+            $gallery_images = return_multiple_rows(
+                "SELECT * FROM (
+                    SELECT * FROM images 
+                    WHERE isactive = 1 AND soft_delete = 0 AND pid = 16424 
+                    ORDER BY RAND()
+                ) AS shuffled_images
+                GROUP BY section_name
+                LIMIT 6;
+            "
+            );
+            
+            if (!empty($gallery_images)):
+                foreach ($gallery_images as $image): 
+                    $image_path = BASE_URL . ABSOLUTE_IMAGEPATH . $image['i_name'];
+            ?>
+            <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.<?= ($index+1) ?>s">
+                <div class="gallery-item position-relative rounded overflow-hidden">
+                    <img src="<?= $image_path ?>" class="img-fluid w-100" alt="<?= htmlspecialchars($image['i_alttext'] ?: 'Gallery Image') ?>">
+                    <div class="gallery-overlay">
+                        <a href="<?= $image_path ?>" data-lightbox="gallery" class="btn btn-primary btn-square rounded-circle">
+                            <i class="fa fa-search-plus"></i>
+                        </a>
+                        <div class="gallery-caption bg-white p-3">
+                            <h6 class="mb-1"><?= htmlspecialchars($image['i_title'] ?: 'Gallery') ?></h6>
+                            <small class="text-muted"><?= htmlspecialchars($image['section_name']) ?></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+            <?php else: ?>
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-image fa-3x text-muted mb-3"></i>
+                <h4>تصاویر دستیاب نہیں ہیں</h4>
+            </div>
+            <?php endif; ?>
+        </div>
+
+        <!-- Complete Gallery Button -->
+        <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.7s">
+            <a href="gallery.php" class="btn btn-primary py-3 px-5">
+                <i class="fa fa-images me-2"></i> مکمل گیلری دیکھیں
+            </a>
+        </div>
+    </div>
+</section>
+<!-- Gallery Section End -->
+
+<!-- Add Lightbox CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+<style>
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 250px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.gallery-caption {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.gallery-item:hover .gallery-caption {
+    bottom: 0;
+}
+</style>
+
+<script>
+// Initialize lightbox
+lightbox.option({
+    'resizeDuration': 200,
+    'wrapAround': true,
+    'showImageNumberLabel': true,
+    'alwaysShowNavOnTouchDevices': true
+});
+</script>
 
     <!-- Events Start -->
     <div class="container-fluid event py-5">
@@ -820,43 +1121,245 @@ if (!empty($navbar_content)) {
 <!-- Bayanat Section End -->
 
     <!-- Books Section Start -->
-    <div class="container-fluid bg-light py-5">
-        <div class="container py-5">
-            <div class="row g-5 align-items-center">
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                    <div class="about-img">
-                        <img src="img/library.jpg" class="img-fluid rounded" alt="جامعہ مدنیہ لائبریری">
+<section class="library-section py-5">
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <!-- Image Column -->
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="library-img-container position-relative">
+                    <img src="img/library.jpg" class="img-fluid rounded-4 library-main-img shadow-lg" alt="جامعہ مدنیہ لائبریری">
+                    
+                    <!-- Decorative Elements -->
+                    <div class="library-decoration-1"></div>
+                    <div class="library-decoration-2"></div>
+                    
+                    <!-- Floating Book Icons -->
+                    <div class="floating-book book-1">
+                        <i class="fas fa-book-open text-primary"></i>
+                    </div>
+                    <div class="floating-book book-2">
+                        <i class="fas fa-quran text-warning"></i>
+                    </div>
+                    <div class="floating-book book-3">
+                        <i class="fas fa-book text-success"></i>
                     </div>
                 </div>
-                <div class="col-lg-6 wow fadeIn" data-wow-delay="0.3s">
-                    <h1 class="display-5 mb-4">جامعہ مدنیہ کتب خانہ</h1>
-                    <p class="mb-4 text-dark">
-                        تعلیم اور کتب خانے ایک دوسرے کیلئے لازم وملزوم کی حیثیت رکھتے ہیں۔ کوئی تعلیمی درسگاہ ایک منظم کتب خانے کی ضرورت سے بے نیاز نہیں ہوسکتی۔ تعلیمی اداروں میں نصابی ضرورت محض نصابی کتابوں سے پوری نہیں ہو سکتیں لہذا تحقیقی ضروریات کیلئے اضافی کتابوں کا ہونا ضروری ہے۔ جنہیں منظم تعلیمی کتب خانوں کی صورت میں رکھا جاے۔ اسی ضرورت کے پیش نظر جامعہ مدنیہ میں بھی ایک وسیع اور عریض لائبریری ہے جس میں سیکڑوں کی تعداد میں مختلف موضوعات پر کتابیں ہیں جس سے اساتذہ اور طلباء فائدہ اٹھاتے ہیں۔
-                    </p>
-                    <div class="row g-4 mb-4">
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center">
-                                <div class="btn-lg-square bg-primary rounded-circle me-3">
-                                    <i class="fa fa-book text-white"></i>
+            </div>
+            
+            <!-- Content Column -->
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.3s">
+                <div class="ps-lg-4">
+                    <span class="section-tag bg-primary bg-opacity-10 text-primary py-1 px-3 rounded-pill">علم کا خزانہ</span>
+                    <h1 class="display-5 fw-bold mb-4 mt-3">جامعہ مدنیہ کا عظیم کتب خانہ</h1>
+                    
+                    <div class="library-description mb-4">
+                        <p class="lead text-dark mb-4">
+                            تعلیم اور کتب خانے ایک دوسرے کیلئے لازم وملزوم کی حیثیت رکھتے ہیں۔ کوئی تعلیمی درسگاہ ایک منظم کتب خانے کی ضرورت سے بے نیاز نہیں ہوسکتی۔
+                        </p>
+                        
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="flex-shrink-0">
+                                <div class="library-icon-box bg-primary bg-opacity-10 text-primary rounded-3 p-2">
+                                    <i class="fas fa-check fs-5 text-light"></i>
                                 </div>
-                                <h5 class="mb-0">سیکڑوں کتابیں</h5>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <p class="mb-0 text-dark">
+                                    تعلیمی اداروں میں نصابی ضرورت محض نصابی کتابوں سے پوری نہیں ہو سکتیں
+                                </p>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="d-flex align-items-center">
-                                <div class="btn-lg-square bg-primary rounded-circle me-3">
-                                    <i class="fa fa-users text-white"></i>
+                        
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="flex-shrink-0">
+                                <div class="library-icon-box bg-primary bg-opacity-10 text-primary rounded-3 p-2">
+                                    <i class="fas fa-check fs-5 text-light"></i>
                                 </div>
-                                <h5 class="mb-0">اساتذہ و طلباء کی خدمت</h5>
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <p class="mb-0 text-dark">
+                                    تحقیقی ضروریات کیلئے اضافی کتابوں کا ہونا ضروری ہے
+                                </p>
                             </div>
                         </div>
                     </div>
-                    <a href="#" class="btn btn-primary py-2 px-4">لائبریری دیکھیں</a>
+                    
+                    <!-- Features Grid -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-sm-6">
+                            <div class="library-feature-card p-4 rounded-4 h-100">
+                                <div class="icon-wrapper bg-primary bg-opacity-10 text-primary rounded-3 p-3 mb-3">
+                                    <i class="fas fa-book fs-3 text-light"></i>
+                                </div>
+                                <h5 class="mb-2">سیکڑوں کتابیں</h5>
+                                <p class="small text-muted mb-0">دینی و دنیاوی علوم پر مشتمل</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="library-feature-card p-4 rounded-4 h-100">
+                                <div class="icon-wrapper bg-primary bg-opacity-10 text-primary rounded-3 p-3 mb-3">
+                                    <i class="fas fa-users fs-3 text-light"></i>
+                                </div>
+                                <h5 class="mb-2">اساتذہ و طلباء</h5>
+                                <p class="small text-muted mb-0">سب کی تحقیقی ضروریات پوری کرنا</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="#" class="btn btn-primary px-4 py-3">
+                            <i class="fas fa-book-open me-2"></i> لائبریری دیکھیں
+                        </a>
+                        <a href="#" class="btn btn-outline-primary px-4 py-3">
+                            <i class="fas fa-list me-2 text-light"></i> کتابوں کی فہرست
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Books Section End -->
+</section>
+<!-- Books Section End -->
+
+<style>
+/* Library Section Custom Styles */
+.library-section {
+    background-color: #f8f9fa;
+    position: relative;
+    overflow: hidden;
+}
+
+.library-img-container {
+    position: relative;
+    z-index: 1;
+}
+
+.library-main-img {
+    border: 8px solid white;
+    transform: perspective(1000px) rotateY(-5deg);
+    transition: all 0.5s ease;
+}
+
+.library-img-container:hover .library-main-img {
+    transform: perspective(1000px) rotateY(0deg);
+}
+
+/* Decorative Elements */
+.library-decoration-1 {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background-color: rgba(13, 110, 253, 0.1);
+    border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+    top: -20px;
+    left: -20px;
+    z-index: -1;
+    animation: float 6s ease-in-out infinite;
+}
+
+.library-decoration-2 {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background-color: rgba(255, 193, 7, 0.1);
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    bottom: -30px;
+    right: -30px;
+    z-index: -1;
+    animation: float 8s ease-in-out infinite;
+}
+
+/* Floating Books Animation */
+.floating-book {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.8;
+    animation: float 5s ease-in-out infinite;
+}
+
+.floating-book.book-1 {
+    top: 10%;
+    left: -5%;
+    animation-delay: 0s;
+}
+
+.floating-book.book-2 {
+    top: 70%;
+    right: -5%;
+    animation-delay: 1s;
+}
+
+.floating-book.book-3 {
+    bottom: 10%;
+    left: 20%;
+    animation-delay: 2s;
+}
+
+/* Feature Cards */
+.library-feature-card {
+    background-color: white;
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    transition: all 0.3s ease;
+}
+
+.library-feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+/* Icon Wrapper */
+.icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+/* Section Tag */
+.section-tag {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Floating Animation */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+    100% { transform: translateY(0px); }
+}
+
+@media (max-width: 767.98px) {
+    .library-main-img {
+        transform: none;
+    }
+    
+    .floating-book {
+        display: none;
+    }
+}
+</style>
+
+<script>
+// Additional interactive effects
+document.addEventListener('DOMContentLoaded', function() {
+    const libraryImg = document.querySelector('.library-main-img');
+    
+    if (libraryImg) {
+        libraryImg.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            libraryImg.style.transform = `perspective(1000px) rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+        
+        libraryImg.addEventListener('mouseleave', () => {
+            libraryImg.style.transform = 'perspective(1000px) rotateY(-5deg)';
+        });
+    }
+});
+</script>
 
     <!-- Team Start -->
     <div class="container-fluid team py-5">

@@ -2,8 +2,6 @@
 include 'front_connect.php';
 
 $url = "yearly-magazine.php";
-$not_show_more_then_once = [];
-
 // Fetch page data using proper URL sanitization
 $safe_url = addslashes($url); // Basic sanitization for SQL
 $content = return_single_row(

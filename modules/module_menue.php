@@ -1,6 +1,6 @@
-<div class="collapse navbar-collapse bg-light py-3" id="navbarCollapse">
+<div class="collapse navbar-collapse bg-light" id="navbarCollapse">
     <!-- responsive nav -->
-                <div class="navbar-nav mx-auto border-top">
+                <div class="navbar-nav me-lg-auto mx-xl-auto">
                                                 
                     <?php
                     $menues = return_multiple_rows("Select * from category Where soft_delete = 0  and isactive = 1 and showInNavBar = 1 Order By cat_sequence ASC");

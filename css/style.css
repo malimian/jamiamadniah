@@ -145,7 +145,7 @@ h4, h5, h6, .h4, .h5, .h6 {
 .topbar .topbar-inner {
     height: 45px;
     padding: 10px 15px;
-    background: rgba(255, 255, 255, .5);
+/*    background: rgba(255, 255, 255, .5);*/
 }
 
 .topbar a,

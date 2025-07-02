@@ -52,16 +52,42 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                           <div class="form-group row">
                                 <label for="modalCtname" class="col-sm-2 col-form-label">Category <span class="text-danger">*</span></label>
                                 <div class="col-sm-10">
-                                    <select class="form-control select2" id="modalCtname" required name="ctname">
+                                    <select class="form-control" id="modalCtname" required name="ctname">
                                         <?php 
-                                        $categories = return_multiple_rows("SELECT catname, catid FROM category Where soft_delete = 0 AND isactive = 1");
-                                        foreach ($categories as $category) {
-                                            $catname = htmlspecialchars($category['catname'], ENT_QUOTES, 'UTF-8');
-                                            $catid = (int)$category['catid'];
-                                            echo "<option value='{$catid}'>{$catname}</option>";
+                                        // Get all active categories ordered by ParentCategory and sequence
+                                        $allCategories = return_multiple_rows("
+                                            SELECT catid, catname, ParentCategory, cat_sequence 
+                                            FROM category 
+                                            WHERE soft_delete = 0 
+                                            AND isactive = 1
+                                            ORDER BY ParentCategory, cat_sequence, catname
+                                        ");
+                                        
+                                        // Organize categories into parent-child structure
+                                        $categoryTree = [];
+                                        foreach ($allCategories as $category) {
+                                            $parentId = (int)$category['ParentCategory'];
+                                            if (!isset($categoryTree[$parentId])) {
+                                                $categoryTree[$parentId] = [];
+                                            }
+                                            $categoryTree[$parentId][] = $category;
+                                        }
+                                        
+                                        
+                                        // Start building from root categories (ParentCategory = 0)
+                                        buildCategoryOptions(0, $categoryTree);
+                                        
+                                        // Handle any orphaned categories (just in case)
+                                        foreach ($allCategories as $category) {
+                                            $parentId = (int)$category['ParentCategory'];
+                                            $catId = (int)$category['catid'];
+                                            if ($parentId != 0 && !isset($categoryTree[$parentId])) {
+                                                $catName = htmlspecialchars($category['catname'], ENT_QUOTES, 'UTF-8');
+                                                echo "<option value='{$catId}' style='color:#dc3545'>[Orphaned] {$catName}</option>";
+                                            }
                                         }
                                         ?>
                                     </select>
