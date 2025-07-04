@@ -1020,60 +1020,6 @@ lightbox.option({
     <!-- Blog End -->
 
 
-<!-- Bayanat Section Start -->
-<div class="container-fluid py-5">
-    <div class="container py-5">
-        <div class="text-center mx-auto mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
-            <p class="fs-5 text-uppercase text-primary">بیانات</p>
-            <h1 class="display-3">علماء کرام کے بیانات</h1>
-        </div>
-        <div class="row g-4">
-            <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="0.1s">
-                <div class="card h-100">
-                    <div class="card-body p-4">
-                        <h4 class="card-title mb-3">شفق و رحمت سے پڑھنا</h4>
-                        <p class="card-text"><strong>بیان:</strong> حضرت مولانا ارشاد احمد</p>
-                        <p class="card-text"><strong>سامعین:</strong> اساتذہ کرام شعبہ حفظ</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <a href="#" class="btn btn-primary btn-sm">مزید تفصیلات</a>
-                            <small class="text-muted">12 جنوری 2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="0.3s">
-                <div class="card h-100">
-                    <div class="card-body p-4">
-                        <h4 class="card-title mb-3">شفق و رحمت سے پڑھنا</h4>
-                        <p class="card-text"><strong>بیان:</strong> حضرت مولانا ارشاد احمد</p>
-                        <p class="card-text"><strong>سامعین:</strong> اساتذہ کرام شعبہ حفظ</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <a href="#" class="btn btn-primary btn-sm">مزید تفصیلات</a>
-                            <small class="text-muted">5 جنوری 2024</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 wow fadeIn" data-wow-delay="0.5s">
-                <div class="card h-100">
-                    <div class="card-body p-4">
-                        <h4 class="card-title mb-3">شفق و رحمت سے پڑھنا</h4>
-                        <p class="card-text"><strong>بیان:</strong> حضرت مولانا ارشاد احمد</p>
-                        <p class="card-text"><strong>سامعین:</strong> اساتذہ کرام شعبہ حفظ</p>
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <a href="#" class="btn btn-primary btn-sm">مزید تفصیلات</a>
-                            <small class="text-muted">29 دسمبر 2023</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="text-center mt-5">
-            <a href="#" class="btn btn-primary px-4">مزید بیانات</a>
-        </div>
-    </div>
-</div>
-<!-- Bayanat Section End -->
 
     <!-- Books Section Start -->
 <section class="library-section py-5">
@@ -1162,11 +1108,8 @@ lightbox.option({
                     </div>
                     
                     <div class="d-flex flex-wrap gap-3">
-                        <a href="#" class="btn btn-primary px-4 py-3">
+                        <a href="books.html" class="btn btn-primary px-4 py-3">
                             <i class="fas fa-book-open me-2"></i> لائبریری دیکھیں
-                        </a>
-                        <a href="#" class="btn btn-outline-primary px-4 py-3">
-                            <i class="fas fa-list me-2 text-light"></i> کتابوں کی فہرست
                         </a>
                     </div>
                 </div>
