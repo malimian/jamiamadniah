@@ -290,7 +290,7 @@ if (isset($_GET['template_id'])) {
                                                                                 <div>Section: <?php echo htmlspecialchars($section_name); ?></div>
                                                                             <?php endif; ?>
                                                                             <div>Order: <?php echo $attribute['sort_order']; ?></div>
-                                                                            <div>Code: $attribute[<?php echo ($section_attributes[0]['tab_id'] ?? 0); ?>]['sections']['<?php echo $section_name; ?>']['attributes'][<?php echo $attribute['id']; ?>]</div>
+                                                                            <div>Code: $content['attributes'][<?php echo ($section_attributes[0]['tab_id'] ?? 0); ?>]['sections']['<?php echo $section_name; ?>']['attributes'][<?php echo $attribute['id']; ?>]<?php if (!$attribute['is_dynamic']){ echo "['current_value']"; }?></div>
                                                                             
                                                                                 <div class="attribute-options">
                                                                                     <strong>Options:</strong>

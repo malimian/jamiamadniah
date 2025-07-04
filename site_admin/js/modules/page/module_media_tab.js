@@ -86,9 +86,9 @@ function deleteMedia(mediaType, id) {
 }
 
 // Original delete functions
-function delete_image(id) { deleteMedia('image', id); }
-function delete_video(id) { deleteMedia('video', id); }
-function delete_file(id) { deleteMedia('file', id); }
+function delete_media_image(id) { deleteMedia('image', id); }
+function delete_media_video(id) { deleteMedia('video', id); }
+function delete_media_file(id) { deleteMedia('file', id); }
 
 // Save New Media Functions
 function saveImages() {

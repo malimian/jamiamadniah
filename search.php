@@ -6,7 +6,8 @@ $search_query = isset($_GET['q']) ? trim($_GET['q']) : '';
 $safe_search_query = mysqli_real_escape_string($conn, $search_query);
 
 // Set the page URL for meta information
-$safe_url = 'search.php'; // Assuming your search page URL is 'search'
+
+$safe_url = basename($_SERVER['PHP_SELF']);
 
 // Get page content for SEO
 $content = return_single_row(

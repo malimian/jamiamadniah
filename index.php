@@ -1,7 +1,7 @@
 <?php
 include 'front_connect.php';
 
-$url = "index.php";
+$url = basename($_SERVER['PHP_SELF']);
 
 // Fetch page data using proper URL sanitization
 $safe_url = addslashes($url); // Basic sanitization for SQL
@@ -571,144 +571,103 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Yearly Risala Section End -->
 
 <!-- Audio Bayanat Section Start -->
-<section class="py-5" id="bayanat">
+
+<?php
+// Get first 6 audio files (assuming they're MP4 files in your case)
+$audio_files = return_multiple_rows("SELECT * FROM videos WHERE pid = 16425 AND isactive = 1 AND soft_delete = 0 ORDER BY v_sequence LIMIT 6");
+?>
+
+<!-- Audio Bayanat Section -->
+<section class="py-5">
     <div class="container py-5">
         <div class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">
-            <h5 class="text-uppercase text-primary">علمی بیانات</h5>
-            <h1 class="display-5 mb-0">آڈیو بیانات</h1>
-            <p class="fs-5 text-muted">جامعہ مدنیہ کے اساتذہ کرام کے علمی بیانات اور دروس</p>
-        </div>
-
-        <!-- Introduction Section -->
-        <div class="row justify-content-center mb-5 wow fadeInUp" data-wow-delay="0.2s">
-            <div class="col-lg-10">
-                <div class="card border-0 shadow-sm bg-light">
-                    <div class="card-body p-4">
-                        <p class="lead text-center mb-0">
-                            "تعلیم اور کتب خانے ایک دوسرے کیلئے لازم وملزوم کی حیثیت رکھتے ہیں۔ کوئی تعلیمی درسگاہ ایک منظم کتب خانے کی ضرورت سے بے نیاز نہیں ہوسکتی۔ تعلیمی اداروں میں نصابی ضرورت محض نصابی کتابوں سے پوری نہیں ہو سکتیں لہذا تحقیقی ضروریات کیلئے اضافی کتابوں کا ہونا ضروری ہے۔ جنہیں منظم تعلیمی کتب خانوں کی صورت میں رکھا جاے۔ اسی ضرورت کے پیش نظر جامعہ مدنیہ میں بھی ایک وسیع اور عریض لائبریری ہے جس میں سیکڑوں کی تعداد میں مختلف موضوعات پر کتابیں ہیں جس سے اساتذہ اور طلباء فائدہ اٹھاتے ہیں۔"
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <h5 class="text-uppercase text-primary">آڈیو بیانات</h5>
+            <h1 class="display-5 mb-0">ہمارے آڈیو بیانات</h1>
+            <p class="fs-5 text-muted">علماء کرام کے بیانات سے مستفید ہوں</p>
         </div>
 
         <!-- Audio Bayanat Cards -->
         <div class="row g-4">
-            <!-- Bayan 1 -->
-            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.3s">
+            <?php foreach ($audio_files as $index => $audio): 
+                $audio_path = BASE_URL . ABSOLUTE_VIDEOPATH . $audio['v_name'];
+                $speaker_name = $audio['section_name'] ?: 'مولانا صاحب';
+                $title = $audio['v_title'] ?: 'بیان';
+                $date = date('d M Y', strtotime($audio['createdon']));
+            ?>
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.<?= ($index%3)+3 ?>s">
                 <div class="card border-0 shadow-lg h-100">
                     <div class="card-img-top bg-dark position-relative" style="height: 200px;">
-                        <img src="img/bayan-1.jpg" class="img-fluid h-100 w-100 object-fit-cover" alt="بیان">
+                        <?php if (!empty($audio['v_thumbnail'])): ?>
+                            <img src="<?= BASE_URL . ABSOLUTE_IMAGEPATH . $audio['v_thumbnail'] ?>" class="img-fluid h-100 w-100 object-fit-cover" alt="<?= htmlspecialchars($title) ?>">
+                        <?php else: ?>
+                            <div class="h-100 w-100 d-flex align-items-center justify-content-center bg-secondary">
+                                <i class="fas fa-headphones fa-4x text-white"></i>
+                            </div>
+                        <?php endif; ?>
                         <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                            <button class="btn btn-primary btn-lg rounded-circle" style="width: 60px; height: 60px;">
+                            <button class="btn btn-primary btn-lg rounded-circle" style="width: 60px; height: 60px;"
+                                onclick="document.getElementById('audioPlayer<?= $audio['v_id'] ?>').play()">
                                 <i class="fa fa-play"></i>
                             </button>
                         </div>
                     </div>
                     <div class="card-body">
-                        <h4 class="card-title">شفقت و رحمت سے پڑھنا</h4>
+                        <h4 class="card-title"><?= htmlspecialchars($title) ?></h4>
                         <div class="d-flex align-items-center mb-3">
                             <i class="fa fa-user text-primary me-2"></i>
-                            <span>حضرت مولانا ارشاد احمد</span>
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="fa fa-users text-primary me-2"></i>
-                            <span>اساتذہ کرام شعبہ حفظ</span>
+                            <span><?= htmlspecialchars($speaker_name) ?></span>
                         </div>
                         <div class="d-flex align-items-center">
                             <i class="fa fa-calendar text-primary me-2"></i>
-                            <span>15 جنوری 2024</span>
+                            <span><?= $date ?></span>
                         </div>
                     </div>
                     <div class="card-footer bg-white border-0">
-                        <audio controls class="w-100">
-                            <source src="audio/bayan-1.mp3" type="audio/mpeg">
-                            Your browser does not support the audio element.
+                        <audio id="audioPlayer<?= $audio['v_id'] ?>" controls class="w-100">
+                            <source src="<?= $audio_path ?>" type="audio/mpeg">
+                            آپ کا براؤزر آڈیو ایلیمنٹ کو سپورٹ نہیں کرتا۔
                         </audio>
                     </div>
                 </div>
             </div>
-
-            <!-- Bayan 2 -->
-            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.5s">
-                <div class="card border-0 shadow-lg h-100">
-                    <div class="card-img-top bg-dark position-relative" style="height: 200px;">
-                        <img src="img/bayan-2.jpg" class="img-fluid h-100 w-100 object-fit-cover" alt="بیان">
-                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                            <button class="btn btn-primary btn-lg rounded-circle" style="width: 60px; height: 60px;">
-                                <i class="fa fa-play"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title">حفظ قرآن کی فضیلت</h4>
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="fa fa-user text-primary me-2"></i>
-                            <span>حضرت مولانا ارشاد احمد</span>
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="fa fa-users text-primary me-2"></i>
-                            <span>اساتذہ کرام شعبہ حفظ</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <i class="fa fa-calendar text-primary me-2"></i>
-                            <span>10 جنوری 2024</span>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-white border-0">
-                        <audio controls class="w-100">
-                            <source src="audio/bayan-2.mp3" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Bayan 3 -->
-            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.7s">
-                <div class="card border-0 shadow-lg h-100">
-                    <div class="card-img-top bg-dark position-relative" style="height: 200px;">
-                        <img src="img/bayan-3.jpg" class="img-fluid h-100 w-100 object-fit-cover" alt="بیان">
-                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                            <button class="btn btn-primary btn-lg rounded-circle" style="width: 60px; height: 60px;">
-                                <i class="fa fa-play"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h4 class="card-title">اخلاق معلمین</h4>
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="fa fa-user text-primary me-2"></i>
-                            <span>حضرت مولانا ارشاد احمد</span>
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="fa fa-users text-primary me-2"></i>
-                            <span>اساتذہ کرام شعبہ حفظ</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <i class="fa fa-calendar text-primary me-2"></i>
-                            <span>5 جنوری 2024</span>
-                        </div>
-                    </div>
-                    <div class="card-footer bg-white border-0">
-                        <audio controls class="w-100">
-                            <source src="audio/bayan-3.mp3" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
 
         <!-- View More Button -->
         <div class="text-center mt-5 wow fadeInUp" data-wow-delay="0.9s">
-            <a href="#" class="btn btn-primary py-3 px-5">
+            <a href="audio-bayant.html" class="btn btn-primary py-3 px-5">
                 <i class="fa fa-headphones me-2"></i> مزید بیانات سنیں
             </a>
         </div>
     </div>
 </section>
-<!-- Audio Bayanat Section End -->
+
+<style>
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+.audio-controls {
+    width: 100%;
+    background: #f8f9fa;
+    border-radius: 0 0 8px 8px;
+}
+</style>
+
+<script>
+// Auto-pause other players when one plays
+document.addEventListener('play', function(e){
+    var audios = document.getElementsByTagName('audio');
+    for(var i = 0, len = audios.length; i < len; i++){
+        if(audios[i] != e.target){
+            audios[i].pause();
+        }
+    }
+}, true);
+</script>
 
 <!-- Gallery Section Start -->
 <section class="py-5 bg-light" id="gallery">

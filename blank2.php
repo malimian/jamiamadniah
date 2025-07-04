@@ -1,7 +1,7 @@
 <?php
 include 'front_connect.php';
 
-$url = "index.php";
+$url = basename($_SERVER['PHP_SELF']);
 
 $content = return_single_row(
     "SELECT page_meta_title, site_template_id, page_meta_keywords, page_meta_desc, 

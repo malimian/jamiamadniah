@@ -1,7 +1,7 @@
 <?php
 include 'front_connect.php';
 
-$url = "fatawa.php";
+$url = basename($_SERVER['PHP_SELF']);
 
 // Fetch page data using proper URL sanitization
 $safe_url = addslashes($url); // Basic sanitization for SQL

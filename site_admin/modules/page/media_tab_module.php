@@ -274,7 +274,7 @@ if (!empty($photogallery)) {
                            class="btn btn-primary btn-sm rounded-0 mb-2" title="Edit">
                             <i class="fa fa-edit"></i> Edit
                         </a>
-                        <button onclick="delete_image(<?php echo $photogallery_['i_id']; ?>)" 
+                        <button onclick="delete_media_image(<?php echo $photogallery_['i_id']; ?>)" 
                                 class="btn btn-danger btn-sm rounded-0" 
                                 type="button" title="Delete">
                             <i class="fa fa-trash"></i> Delete
@@ -497,7 +497,7 @@ if (!empty($videogallery)) {
                        class="btn btn-primary btn-sm rounded-0 mb-2" title="Edit">
                         <i class="fa fa-edit"></i> Edit
                     </a>
-                    <button onclick="delete_video(<?php echo $videogallery_['v_id']; ?>)" 
+                    <button onclick="delete_media_video(<?php echo $videogallery_['v_id']; ?>)" 
                             class="btn btn-danger btn-sm rounded-0" 
                             type="button" title="Delete">
                         <i class="fa fa-trash"></i> Delete
@@ -749,7 +749,7 @@ if (!empty($videogallery)) {
                                class="btn btn-primary btn-sm rounded-0 mb-2" title="Edit">
                                 <i class="fa fa-edit"></i> Edit
                             </a>
-                            <button onclick="delete_file(<?php echo $filegallery_['f_id']; ?>)" 
+                            <button onclick="delete_media_file(<?php echo $filegallery_['f_id']; ?>)" 
                                     class="btn btn-danger btn-sm rounded-0" 
                                     type="button" title="Delete">
                                 <i class="fa fa-trash"></i> Delete
