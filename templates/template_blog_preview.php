@@ -194,7 +194,7 @@ $user = return_single_row("Select username, fullname, profile_pic, details, emai
 $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".$content['catid']);
 ?>
 
-<div class="blog-single bg-light">
+<div class="blog-single bg-light" style=" padding-top: 17rem">
     <div class="container">
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb">
@@ -391,9 +391,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                         {comments}
                     </div>
                 </article>
-            </div>
-            
-            <!-- Sidebar -->
+  <!-- Sidebar -->
             <div class="col-lg-4">
                 <!-- Search Widget -->
                 <div class="widget">
@@ -506,8 +504,7 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </div>        </div>
     </div>
 </div>
 

@@ -24,6 +24,11 @@ $allActiveCategories = return_multiple_rows("SELECT * FROM category
 
 // Format dates
 $createdDate = date('d F Y', strtotime($fatwa['createdon']));
+
+
+$fataws = return_multiple_rows("Select * from pages Where template_id = 17 and isactive = 1 and soft_delete = 0");
+$side_bar_categories = return_multiple_rows("Select * from category Where ParentCategory = 154 and isactive = 1 and soft_delete = 0");
+
 ?>
 
 <style>
@@ -56,7 +61,7 @@ $createdDate = date('d F Y', strtotime($fatwa['createdon']));
         margin-bottom: 15px;
     }
     .fatwa-sidebar {
-        padding-top: 7rem;
+        padding-top: 17rem;
     }
     .fatwa-content img {
         width: 100%;
@@ -187,62 +192,57 @@ $createdDate = date('d F Y', strtotime($fatwa['createdon']));
             </div>
         </div>
 
-        <!-- Sidebar -->
-        <div class="col-lg-4 fatwa-sidebar">
-            <!-- Ask Question -->
+       <!-- Sidebar -->
+        <div class="fatwa-sidebar col-lg-4">
+            <!-- Categories Section -->
             <div class="card shadow-sm mb-4">
                 <div class="card-body">
-                    <h4 class="card-title mb-4"><i class="fas fa-question-circle me-2"></i>نیا سوال پوچھیں</h4>
-                    <p class="card-text">اپنے شرعی مسائل کے لیے جامعہ مدنیہ کے مفتیان کرام سے رجوع کریں۔</p>
-                    <a href="#" class="btn btn-primary w-100">سوال جمع کروائیں</a>
+                    <h4 class="card-title mb-4"><i class="fas fa-tags me-2"></i>زمرہ جات</h4>
+                    <div class="accordion" id="fatwaCategories">
+                        <?php foreach($side_bar_categories as $index => $category): ?>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading<?= $index ?>">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
+                                    <?= htmlspecialchars($category['catname']) ?>
+                                </button>
+                            </h2>
+                            <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#fatwaCategories">
+                                <div class="accordion-body">
+                                    <?php 
+                                    $category_fatawa = array_filter($fataws, function($fatwa) use ($category) {
+                                        return strpos($fatwa['page_title'], $category['catname']) !== false;
+                                    });
+                                    $category_fatawa = array_slice($category_fatawa, 0, 5);
+                                    ?>
+                                    <div class="list-group list-group-flush">
+                                        <?php foreach($category_fatawa as $fatwa): ?>
+                                            <a href="<?= BASE_URL . $fatwa['page_url'] ?>" class="list-group-item list-group-item-action"><?= htmlspecialchars($fatwa['page_title']) ?></a>
+                                        <?php endforeach; ?>
+                                        <a href="<?= BASE_URL . $category['cat_url'] ?>" class="list-group-item list-group-item-action text-primary">مزید دیکھیں...</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
 
             <!-- Popular Fatawa -->
-            <?php 
-            $popularFatawa = return_multiple_rows("SELECT p.* FROM pages p
-                INNER JOIN page_category pc ON p.pid = pc.page_id
-                WHERE pc.cat_id IN (
-                    SELECT catid FROM category 
-                    WHERE ParentCategory = 0 
-                    AND isactive = 1
-                )
-                AND p.isactive = 1
-                GROUP BY p.pid
-                ORDER BY p.views DESC
-                LIMIT 5");
-            ?>
-            
-            <?php if(!empty($popularFatawa)): ?>
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4"><i class="fas fa-fire me-2"></i>مقبول فتاویٰ</h4>
-                        <div class="list-group list-group-flush">
-                            <?php foreach($popularFatawa as $popular): ?>
-                                <a href="<?= $popular['page_url'] ?>" class="list-group-item list-group-item-action">
-                                    <?= htmlspecialchars($popular['page_title']) ?>
-                                </a>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-            <?php endif; ?>
-
-            <!-- Categories -->
             <div class="card shadow-sm">
                 <div class="card-body">
-                    <h4 class="card-title mb-4"><i class="fas fa-tags me-2"></i>زمرہ جات</h4>
-                    <div class="d-flex flex-wrap">
-                        <?php foreach($allActiveCategories as $cat): ?>
-                            <?php if($cat['ParentCategory'] == 154): ?>
-                                <a href="<?= $cat['cat_url'] ?>" class="btn btn-sm btn-outline-primary me-2 mb-2">
-                                    <?= htmlspecialchars($cat['catname']) ?>
-                                </a>
-                            <?php endif; ?>
+                    <h4 class="card-title mb-4"><i class="fas fa-fire me-2"></i>مقبول فتاویٰ</h4>
+                    <div class="list-group list-group-flush">
+                        <?php 
+                        $popular_fatawa = array_slice($fataws, 6, 10); // Get 10 popular fatawa
+                        foreach($popular_fatawa as $fatwa): ?>
+                            <a href="<?= BASE_URL . $fatwa['page_url'] ?>" class="list-group-item list-group-item-action"><?= htmlspecialchars($fatwa['page_title']) ?></a>
                         <?php endforeach; ?>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- End of Side Bar -->
+
     </div>
 </div>

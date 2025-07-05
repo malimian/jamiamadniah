@@ -378,39 +378,80 @@ function generate_organization_schema($page_meta = []) {
         ]
     ];
 
-    // Parse address if SHOP_LOCATION exists
-    $address = [];
-    if (!empty($settings_array['SHOP_LOCATION'])) {
-        // Sample format: "6101 Cherry Avenue Suite 102A - 206 Fontana CA 92336"
-        $location = $settings_array['SHOP_LOCATION'];
-        
-        // Extract ZIP code (last 5-digit group)
-        preg_match('/\b(\d{5})\b/', $location, $zip_matches);
-        $postalCode = $zip_matches[1] ?? '';
-        $location = trim(str_replace($postalCode, '', $location));
-        
-        // Extract state (2-letter code before ZIP)
-        preg_match('/\b([A-Z]{2})\b/', $location, $state_matches);
-        $addressRegion = $state_matches[1] ?? '';
-        $location = trim(str_replace($addressRegion, '', $location));
-        
-        // Extract city (last remaining word before state)
-        $parts = explode(' ', $location);
-        $addressLocality = array_pop($parts);
-        $location = trim(implode(' ', $parts));
-        
-        // The rest is street address
-        $streetAddress = str_replace([' ,', ', '], ', ', $location); // Normalize commas
-        
-        $address = [
-            "@type" => "PostalAddress",
-            "streetAddress" => $streetAddress,
-            "addressLocality" => $addressLocality,
-            "addressRegion" => $addressRegion,
-            "postalCode" => $postalCode,
-            "addressCountry" => "US" // Default to US, can be made configurable
-        ];
+   // Parse address if SHOP_LOCATION exists
+$address = [];
+if (!empty($settings_array['SHOP_LOCATION'])) {
+    $location = trim($settings_array['SHOP_LOCATION']);
+    
+    // Initialize address components
+    $streetAddress = '';
+    $addressLocality = '';
+    $addressRegion = '';
+    $postalCode = '';
+    $addressCountry = '';
+
+    // First try to extract country (if present)
+    if (preg_match('/\b([A-Z]{2})\s*$/', $location, $country_matches)) {
+        $addressCountry = $country_matches[1];
+        $location = trim(substr($location, 0, -strlen($addressCountry)));
     }
+
+    // Try to extract postal code (various international formats)
+    if (preg_match('/\b(\d{5})(?:-\d{4})?\b/', $location, $zip_matches) ||  // US ZIP
+       preg_match('/\b([A-Z]\d[A-Z]\s?\d[A-Z]\d)\b/i', $location, $zip_matches) ||  // Canadian
+       preg_match('/\b([A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2})\b/', $location, $zip_matches) ||  // UK
+       preg_match('/\b(\d{4,6})\b/', $location, $zip_matches)) {  // Other numeric codes
+        $postalCode = trim($zip_matches[0]);
+        $location = trim(str_replace($postalCode, '', $location));
+    }
+
+    // Try to extract state/region (2-3 letters or full name)
+    if (preg_match('/\b([A-Z]{2,3})\b/', $location, $state_matches)) {
+        $addressRegion = $state_matches[1];
+        $location = trim(str_replace($addressRegion, '', $location));
+    }
+
+    // Split remaining parts
+    $parts = preg_split('/\s*,\s*/', $location);
+    
+    // Handle different address formats
+    if (count($parts) >= 3) {
+        // Format: Street, City, State, Postal, Country
+        $streetAddress = trim(array_shift($parts));
+        $addressLocality = trim(array_shift($parts));
+        if (empty($addressRegion)) {
+            $addressRegion = trim(array_shift($parts));
+        }
+    } elseif (count($parts) == 2) {
+        // Format: Street, City
+        $streetAddress = trim(array_shift($parts));
+        $addressLocality = trim(array_shift($parts));
+    } else {
+        // Format with no commas - try to parse last word as city
+        $parts = preg_split('/\s+/', $location);
+        $addressLocality = array_pop($parts);
+        $streetAddress = trim(implode(' ', $parts));
+    }
+
+    // Clean up street address
+    $streetAddress = preg_replace('/\s+/', ' ', $streetAddress);
+    $streetAddress = preg_replace('/\s*,\s*/', ', ', $streetAddress);
+
+    // Set default country if not found
+    if (empty($addressCountry)) {
+        $addressCountry = "US"; // Default to US if no country code found
+    }
+
+    $address = [
+        "@type" => "PostalAddress",
+        "streetAddress" => $streetAddress,
+        "addressLocality" => $addressLocality,
+        "addressRegion" => $addressRegion,
+        "postalCode" => $postalCode,
+        "addressCountry" => $addressCountry
+    ];
+}
+
 
 
     // Add contact information

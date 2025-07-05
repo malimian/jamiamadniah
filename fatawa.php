@@ -16,7 +16,6 @@ $content = return_single_row(
     AND pages.isactive = 1"
 );
 
-
 // Initialize template ID with default if not found
 $template_id = !empty($content['site_template_id']) ? (int)$content['site_template_id'] : 0;
 
@@ -40,6 +39,9 @@ $navbar_content = front_menu(null, $template_id);
 if (!empty($navbar_content)) {
     echo replace_sysvari($navbar_content, getcwd() . "/");
 }
+
+$fataws = return_multiple_rows("Select * from pages Where template_id = 17 and isactive = 1 and soft_delete = 0");
+$side_bar_categories = return_multiple_rows("Select * from category Where ParentCategory = 154 and isactive = 1 and soft_delete = 0");
 ?>
 
 <!-- Hero Start -->
@@ -61,66 +63,83 @@ if (!empty($navbar_content)) {
     </div>
 </div>
 <!-- Hero End -->
-    <style>
-        .fatwa-card {
-            transition: all 0.3s ease;
-            border-left: 4px solid #0d6efd;
-        }
-        .fatwa-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-        .search-box {
-            position: relative;
-        }
-        .search-box .form-control {
-            padding-right: 45px;
-        }
-        .search-box .btn {
-            position: absolute;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-        .category-badge {
-            font-size: 0.8rem;
-            background-color: #f8f9fa;
-            color: #0d6efd;
-            border: 1px solid #dee2e6;
-        }
-        .mufti-img {
-            width: 60px;
-            height: 60px;
-            object-fit: cover;
-        }
-    </style>
-    <!-- Fatwa Header Section -->
-    <header class="bg-primary text-white py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1 class="display-4 fw-bold mb-3"><i class="fas fa-question-circle me-3"></i>جامعہ مدنیہ آن لائن فتاویٰ</h1>
-                    <p class="lead mb-0">شرعی مسائل کے مستند اور معتبر جوابات</p>
-                </div>
-                <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                    <img src="img/jamia-logo.png" alt="جامعہ مدنیہ لوگو" style="height: 80px;">
-                </div>
+
+<style>
+    .fatwa-card {
+        transition: all 0.3s ease;
+        border-left: 4px solid #0d6efd;
+    }
+    .fatwa-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .search-box {
+        position: relative;
+    }
+    .search-box .form-control {
+        padding-right: 45px;
+    }
+    .search-box .btn {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    .category-badge {
+        font-size: 0.8rem;
+        background-color: #f8f9fa;
+        color: #0d6efd;
+        border: 1px solid #dee2e6;
+    }
+    .mufti-img {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+    }
+    .accordion-button:not(.collapsed) {
+        background-color: #f8f9fa;
+        color: #0d6efd;
+    }
+    .fatwa-number {
+        background-color: #f8f9fa;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 0.9rem;
+    }
+</style>
+
+<!-- Fatwa Header Section -->
+<header class="bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <h1 class="display-4 fw-bold mb-3"><i class="fas fa-question-circle me-3"></i>جامعہ مدنیہ آن لائن فتاویٰ</h1>
+                <p class="lead mb-0">شرعی مسائل کے مستند اور معتبر جوابات</p>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
-    <!-- Main Content Section -->
-    <div class="container py-5">
-        <div class="row">
-            <!-- Main Fatwa Content -->
-            <div class="col-lg-8">
-                <!-- Search Section -->
-                <div class="card shadow-sm mb-5">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4"><i class="fas fa-search me-2"></i>فتاویٰ تلاش کریں</h4>
-                        <div class="search-box">
-                            <input type="text" class="form-control form-control-lg" placeholder="فتاویٰ تلاش کریں...">
-                            <button class="btn btn-primary"><i class="fas fa-search"></i></button>
+<!-- Main Content Section -->
+<div class="container py-5">
+    <div class="row">
+        <!-- Main Fatwa Content -->
+        <div class="col-lg-8">
+            <!-- Search Section -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-body">
+                    <h4 class="card-title mb-4"><i class="fas fa-search me-2"></i>فتاویٰ تلاش کریں</h4>
+                    <form action="" method="get">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="search-box mb-3 mb-md-0">
+                                    <input type="text" name="search" class="form-control form-control-lg" placeholder="فتاویٰ تلاش کریں..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="fatwa_number" class="form-control form-control-lg" placeholder="فتویٰ نمبر درج کریں" value="<?= isset($_GET['fatwa_number']) ? htmlspecialchars($_GET['fatwa_number']) : '' ?>">
+                            </div>
                         </div>
                         <div class="mt-3">
                             <a href="#" class="btn btn-sm btn-outline-primary me-2 mb-2">نماز</a>
@@ -132,192 +151,141 @@ if (!empty($navbar_content)) {
                             <a href="#" class="btn btn-sm btn-outline-primary me-2 mb-2">طلاق</a>
                             <a href="#" class="btn btn-sm btn-outline-primary mb-2">جدید مسائل</a>
                         </div>
-                    </div>
+                    </form>
                 </div>
+            </div>
 
-                <!-- Ask Question Section -->
-                <div class="card shadow-sm mb-5">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4"><i class="fas fa-question me-2"></i>نیا سوال پوچھیں</h4>
-                        <form>
-                            <div class="mb-3">
-                                <label for="questionCategory" class="form-label">زمرہ</label>
-                                <select class="form-select" id="questionCategory">
-                                    <option selected>زمرہ منتخب کریں</option>
-                                    <option>نماز</option>
-                                    <option>روزہ</option>
-                                    <option>زکوٰۃ</option>
-                                    <option>حج</option>
-                                    <option>نکاح و طلاق</option>
-                                    <option>معاملات</option>
-                                    <option>جدید مسائل</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label for="questionTitle" class="form-label">سوال کا عنوان</label>
-                                <input type="text" class="form-control" id="questionTitle" placeholder="سوال کا عنوان تحریر کریں">
-                            </div>
-                            <div class="mb-3">
-                                <label for="questionDetail" class="form-label">سوال کی تفصیل</label>
-                                <textarea class="form-control" id="questionDetail" rows="5" placeholder="سوال مکمل تفصیل سے تحریر کریں"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="questionerName" class="form-label">نام (اختیاری)</label>
-                                <input type="text" class="form-control" id="questionerName" placeholder="اپنا نام تحریر کریں">
-                            </div>
-                            <button type="submit" class="btn btn-primary">سوال جمع کروائیں</button>
-                        </form>
-                    </div>
+            <!-- Selected Fatawa -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0"><i class="fas fa-star me-2"></i>منتخب فتاویٰ</h4>
                 </div>
-
-                <!-- Recent Fatawa -->
-                <div class="card shadow-sm mb-5">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4"><i class="fas fa-file-alt me-2"></i>تازہ ترین فتاویٰ</h4>
-                        
-                        <!-- Fatwa 1 -->
+                <div class="card-body">
+                    <?php 
+                    $selected_fatawa = array_slice($fataws, 0, 3); // Get first 3 as selected
+                    foreach($selected_fatawa as $fatwa): ?>
                         <div class="card fatwa-card mb-3">
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="category-badge rounded-pill px-3 py-1">نماز</span>
-                                    <small class="text-muted">2 دن پہلے</small>
+                                    <span class="fatwa-number">فتویٰ نمبر: <?= $fatwa['pid'] ?></span>
+                                    <small class="text-muted"><?= date('d M Y', strtotime($fatwa['createdon'])) ?></small>
                                 </div>
-                                <h5 class="mb-3">اگر نماز میں سورہ فاتحہ بھول جائے تو کیا حکم ہے؟</h5>
-                                <p class="text-muted mb-3">نماز میں سورہ فاتحہ پڑھنا فرض ہے، اگر بھول جائے تو سجدہ سہو واجب ہوگا...</p>
+                                <h5 class="mb-3"><?= htmlspecialchars($fatwa['page_title']) ?></h5>
+                                <p class="text-muted mb-3"><?= substr(strip_tags($fatwa['page_desc']), 0, 150) ?>...</p>
                                 <div class="d-flex align-items-center">
                                     <img src="img/mufti-1.jpg" alt="مفتی صاحب" class="mufti-img rounded-circle me-3">
                                     <div>
-                                        <h6 class="mb-0">مفتی محمد عمر</h6>
-                                        <small class="text-muted">جامعہ مدنیہ</small>
+                                        <h6 class="mb-0">جامعہ مدنیہ</h6>
+                                        <small class="text-muted">فتویٰ جات</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer bg-white">
-                                <a href="#" class="btn btn-sm btn-outline-primary">مکمل جواب پڑھیں</a>
+                                <a href="<?= BASE_URL . $fatwa['page_url'] ?>" class="btn btn-sm btn-outline-primary">مکمل جواب پڑھیں</a>
                             </div>
                         </div>
-                        
-                        <!-- Fatwa 2 -->
-                        <div class="card fatwa-card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="category-badge rounded-pill px-3 py-1">روزہ</span>
-                                    <small class="text-muted">1 ہفتہ پہلے</small>
-                                </div>
-                                <h5 class="mb-3">کیا خون ٹیسٹ کروانے سے روزہ ٹوٹ جاتا ہے؟</h5>
-                                <p class="text-muted mb-3">خون ٹیسٹ کروانے سے روزہ نہیں ٹوٹتا بشرطیکہ خون کی مقدار معمولی ہو...</p>
-                                <div class="d-flex align-items-center">
-                                    <img src="img/mufti-2.jpg" alt="مفتی صاحب" class="mufti-img rounded-circle me-3">
-                                    <div>
-                                        <h6 class="mb-0">مفتی ارشاد احمد</h6>
-                                        <small class="text-muted">جامعہ مدنیہ</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-white">
-                                <a href="#" class="btn btn-sm btn-outline-primary">مکمل جواب پڑھیں</a>
-                            </div>
-                        </div>
-                        
-                        <!-- Fatwa 3 -->
-                        <div class="card fatwa-card mb-3">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="category-badge rounded-pill px-3 py-1">زکوٰۃ</span>
-                                    <small class="text-muted">2 ہفتے پہلے</small>
-                                </div>
-                                <h5 class="mb-3">کیا گھر کے سامان پر زکوٰۃ واجب ہوتی ہے؟</h5>
-                                <p class="text-muted mb-3">صرف سونے چاندی، نقدی اور تجارتی سامان پر زکوٰۃ واجب ہوتی ہے، گھر کے استعمال کے سامان پر زکوٰۃ نہیں...</p>
-                                <div class="d-flex align-items-center">
-                                    <img src="img/mufti-3.jpg" alt="مفتی صاحب" class="mufti-img rounded-circle me-3">
-                                    <div>
-                                        <h6 class="mb-0">مفتی عبدالرحمن</h6>
-                                        <small class="text-muted">جامعہ مدنیہ</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-footer bg-white">
-                                <a href="#" class="btn btn-sm btn-outline-primary">مکمل جواب پڑھیں</a>
-                            </div>
-                        </div>
-                        
-                        <!-- View More Button -->
-                        <div class="text-center mt-4">
-                            <a href="#" class="btn btn-primary">مزید فتاویٰ دیکھیں</a>
-                        </div>
+                    <?php endforeach; ?>
+                    
+                    <div class="text-center mt-4">
+                        <a href="#" class="btn btn-primary">مزید منتخب فتاویٰ دیکھیں</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Sidebar -->
-            <div class="col-lg-4">
-                <!-- Muftis Section -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4"><i class="fas fa-user-tie me-2"></i>ہمارے مفتیان کرام</h4>
-                        <div class="list-group list-group-flush">
-                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                                <img src="img/mufti-1.jpg" alt="مفتی صاحب" class="mufti-img rounded-circle me-3">
-                                <div>
-                                    <h6 class="mb-0">مفتی محمد عمر</h6>
-                                    <small class="text-muted">صدر مفتی جامعہ مدنیہ</small>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                                <img src="img/mufti-2.jpg" alt="مفتی صاحب" class="mufti-img rounded-circle me-3">
-                                <div>
-                                    <h6 class="mb-0">مفتی ارشاد احمد</h6>
-                                    <small class="text-muted">نائب صدر مفتی</small>
-                                </div>
-                            </a>
-                            <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
-                                <img src="img/mufti-3.jpg" alt="مفتی صاحب" class="mufti-img rounded-circle me-3">
-                                <div>
-                                    <h6 class="mb-0">مفتی عبدالرحمن</h6>
-                                    <small class="text-muted">شیخ الحدیث</small>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+            <!-- New Fatawa -->
+            <div class="card shadow-sm mb-5">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0"><i class="fas fa-file-alt me-2"></i>نئے فتاویٰ</h4>
                 </div>
-
-                <!-- Categories Section -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4"><i class="fas fa-tags me-2"></i>زمرہ جات</h4>
-                        <div class="d-flex flex-wrap">
-                            <a href="#" class="btn btn-sm btn-outline-primary me-2 mb-2">نماز (142)</a>
-                            <a href="#" class="btn btn-sm btn-outline-primary me-2 mb-2">روزہ (98)</a>
-                            <a href="#" class="btn btn-sm btn-outline-primary me-2 mb-2">زکوٰۃ (76)</a>
-                            <a href="#" class="btn btn-sm btn-outline-primary me-2 mb-2">حج (54)</a>
-                            <a href="#" class="btn btn-sm btn-outline-primary me-2 mb-2">نکاح (112)</a>
-                            <a href="#" class="btn btn-sm btn-outline-primary me-2 mb-2">طلاق (67)</a>
-                            <a href="#" class="btn btn-sm btn-outline-primary me-2 mb-2">معاملات (89)</a>
-                            <a href="#" class="btn btn-sm btn-outline-primary me-2 mb-2">جدید مسائل (145)</a>
+                <div class="card-body">
+                    <?php 
+                    $new_fatawa = array_slice($fataws, 3, 3); // Get next 3 as new
+                    foreach($new_fatawa as $fatwa): ?>
+                        <div class="card fatwa-card mb-3">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="fatwa-number">فتویٰ نمبر: <?= $fatwa['pid'] ?></span>
+                                    <small class="text-muted"><?= date('d M Y', strtotime($fatwa['createdon'])) ?></small>
+                                </div>
+                                <h5 class="mb-3"><?= htmlspecialchars($fatwa['page_title']) ?></h5>
+                                <p class="text-muted mb-3"><?= substr(strip_tags($fatwa['page_desc']), 0, 150) ?>...</p>
+                                <div class="d-flex align-items-center">
+                                    <img src="img/mufti-1.jpg" alt="مفتی صاحب" class="mufti-img rounded-circle me-3">
+                                    <div>
+                                        <h6 class="mb-0">جامعہ مدنیہ</h6>
+                                        <small class="text-muted">فتویٰ جات</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white">
+                                <a href="<?= BASE_URL . $fatwa['page_url'] ?>" class="btn btn-sm btn-outline-primary">مکمل جواب پڑھیں</a>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- Popular Fatawa -->
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h4 class="card-title mb-4"><i class="fas fa-fire me-2"></i>مقبول فتاویٰ</h4>
-                        <div class="list-group list-group-flush">
-                            <a href="#" class="list-group-item list-group-item-action">موبائل پر قرآن سننے کا حکم</a>
-                            <a href="#" class="list-group-item list-group-item-action">بینک ملازمت کے شرعی احکام</a>
-                            <a href="#" class="list-group-item list-group-item-action">ڈیجیٹل کرنسی کا شرعی حکم</a>
-                            <a href="#" class="list-group-item list-group-item-action">تین طلاقوں کا مسئلہ</a>
-                            <a href="#" class="list-group-item list-group-item-action">شرعی پردے کی تفصیل</a>
-                        </div>
+                    <?php endforeach; ?>
+                    
+                    <div class="text-center mt-4">
+                        <a href="#" class="btn btn-primary">مزید نئے فتاویٰ دیکھیں</a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Categories Section -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="card-title mb-4"><i class="fas fa-tags me-2"></i>زمرہ جات</h4>
+                    <div class="accordion" id="fatwaCategories">
+                        <?php foreach($side_bar_categories as $index => $category): ?>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading<?= $index ?>">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?= $index ?>" aria-expanded="false" aria-controls="collapse<?= $index ?>">
+                                    <?= htmlspecialchars($category['catname']) ?>
+                                </button>
+                            </h2>
+                            <div id="collapse<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $index ?>" data-bs-parent="#fatwaCategories">
+                                <div class="accordion-body">
+                                    <?php 
+                                    $category_fatawa = array_filter($fataws, function($fatwa) use ($category) {
+                                        return strpos($fatwa['page_title'], $category['catname']) !== false;
+                                    });
+                                    $category_fatawa = array_slice($category_fatawa, 0, 5);
+                                    ?>
+                                    <div class="list-group list-group-flush">
+                                        <?php foreach($category_fatawa as $fatwa): ?>
+                                            <a href="<?= BASE_URL . $fatwa['page_url'] ?>" class="list-group-item list-group-item-action"><?= htmlspecialchars($fatwa['page_title']) ?></a>
+                                        <?php endforeach; ?>
+                                        <a href="<?= BASE_URL . $category['cat_url'] ?>" class="list-group-item list-group-item-action text-primary">مزید دیکھیں...</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Popular Fatawa -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title mb-4"><i class="fas fa-fire me-2"></i>مقبول فتاویٰ</h4>
+                    <div class="list-group list-group-flush">
+                        <?php 
+                        $popular_fatawa = array_slice($fataws, 6, 15); // Get 10 popular fatawa
+                        foreach($popular_fatawa as $fatwa): ?>
+                            <a href="<?= BASE_URL . $fatwa['page_url'] ?>" class="list-group-item list-group-item-action"><?= htmlspecialchars($fatwa['page_title']) ?></a>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End of Side Bar -->
+        
     </div>
+</div>
+
 <?php 
 echo replace_sysvari(front_script(null, $template_id), getcwd() . "/");
-?>
-
-<?php
 echo replace_sysvari(front_footer(null, $template_id), getcwd() . "/");
 ?>
