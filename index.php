@@ -791,81 +791,72 @@ lightbox.option({
 });
 </script>
 
-    <!-- Blog Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <h1 class="display-3 mb-5 wow fadeIn" data-wow-delay="0.1s">ہمارے <span class="text-primary">بلاگز</span> سے تازہ ترین</h1>
-            <div class="row g-4 justify-content-center">
-                <div class="col-lg-6 col-xl-4">
-                    <div class="blog-item wow fadeIn" data-wow-delay="0.1s">
-                        <div class="blog-img position-relative overflow-hidden">
-                            <img src="img/blog-1.jpg" class="img-fluid w-100" alt="">
-                            <div class="bg-primary d-inline px-3 py-2 text-center text-white position-absolute top-0 end-0">01 جنوری 2024</div>
-                        </div>
-                        <div class="p-4">
-                            <div class="blog-meta d-flex justify-content-between pb-2">
-                                <div class="">
-                                    <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted me-2">ایڈمن کی جانب سے</small></a>
-                                    <small><i class="fa fa-comment-alt me-2 text-muted"></i><a href="" class="text-muted me-2">12 تبصرے</small></a>
-                                </div>
-                                <div class="">
-                                    <a href=""><i class="fas fa-bookmark text-muted"></i></a>
-                                </div>
-                            </div>
-                            <a href="" class="d-inline-block h4 lh-sm mb-3">اسلام کے "ارکان" کی اہمیت</a>
-                            <p class="mb-4">اس بلاگ میں اسلام کے بنیادی ارکان کی اہمیت اور ان کے معاشرے پر اثرات پر تفصیلی بحث کی گئی ہے۔</p>
-                            <a href="#" class="btn btn-primary px-3">مزید تفصیلات</a>
-                        </div>
+<?php
+// Get latest blog posts from database
+$blogs = return_multiple_rows("SELECT p.*, u.username, u.profile_pic 
+                             FROM pages p 
+                             JOIN loginuser u ON p.createdby = u.id 
+                             WHERE p.template_id = 3 
+                             AND p.isactive = 1 
+                             AND p.soft_delete = 0 
+                             ORDER BY p.createdon DESC 
+                             LIMIT 6");
+?>
+
+<!-- Blog Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="display-3 mb-5 wow fadeIn" data-wow-delay="0.1s">ہمارے <span class="text-primary">بلاگز</span> سے تازہ ترین</h1>
+        <div class="row g-4 justify-content-center">
+            <?php foreach($blogs as $blog): 
+                // Format date
+                $date = date_create($blog['createdon']);
+                $formatted_date = date_format($date, 'd F Y');
+                
+                // Get excerpt
+                $excerpt = strip_tags($blog['page_desc']);
+                $excerpt = mb_substr($excerpt, 0, 250) . '...';
+                
+                // Get author info
+                $author = $blog['username'];
+                $profile_pic = !empty($blog['profile_pic']) ? ABSOLUTE_IMAGEPATH.$blog['profile_pic'] : 'img/default-profile.jpg';
+            ?>
+            <div class="col-lg-6 col-xl-4">
+                <div class="blog-item wow fadeIn" data-wow-delay="0.1s">
+                    <div class="blog-img position-relative overflow-hidden">
+                        <?php if(!empty($blog['featured_image'])): ?>
+                            <img src="<?php echo ABSOLUTE_IMAGEPATH.$blog['featured_image']; ?>" class="img-fluid w-100" alt="<?php echo $blog['page_title']; ?>">
+                        <?php else: ?>
+                            <img src="img/hero.jpg" class="img-fluid w-100" alt="Default Blog Image">
+                        <?php endif; ?>
+                        <div class="bg-primary d-inline px-3 py-2 text-center text-white position-absolute top-0 end-0"><?php echo $formatted_date; ?></div>
                     </div>
-                </div>
-                <div class="col-lg-6 col-xl-4">
-                    <div class="blog-item wow fadeIn" data-wow-delay="0.3s">
-                        <div class="blog-img position-relative overflow-hidden">
-                            <img src="img/blog-2.jpg" class="img-fluid w-100" alt="">
-                            <div class="bg-primary d-inline px-3 py-2 text-center text-white position-absolute top-0 end-0">01 جنوری 2024</div>
-                        </div>
-                        <div class="p-4">
-                            <div class="blog-meta d-flex justify-content-between pb-2">
-                                <div class="">
-                                    <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted me-2">ایڈمن کی جانب سے</small></a>
-                                    <small><i class="fa fa-comment-alt me-2 text-muted"></i><a href="" class="text-muted me-2">12 تبصرے</small></a>
-                                </div>
-                                <div class="">
-                                    <a href=""><i class="fas fa-bookmark text-muted"></i></a>
-                                </div>
+                    <div class="p-4">
+                        <div class="blog-meta d-flex justify-content-between pb-2">
+                            <div class="d-flex align-items-center">
+                                <img src="<?php echo $profile_pic; ?>" class="rounded-circle me-2" width="30" height="30" alt="Author">
+                                <small><a href="author.php?id=<?php echo $blog['createdby']; ?>" class="text-muted"><?php echo $author; ?></a></small>
                             </div>
-                            <a href="" class="d-inline-block h4 lh-sm mb-3">اللہ تعالیٰ سے قریب ہونے کے طریقے</a>
-                            <p class="mb-4">اس بلاگ میں اللہ تعالیٰ سے قریب ہونے کے عملی طریقے بیان کیے گئے ہیں جو ہر مسلمان کے لیے مفید ہیں۔</p>
-                            <a href="#" class="btn btn-primary px-3">مزید تفصیلات</a>
-                        </div>
-                    </div>
-                </div>
-               <div class="col-lg-6 col-xl-4">
-                    <div class="blog-item wow fadeIn" data-wow-delay="0.5s">
-                        <div class="blog-img position-relative overflow-hidden">
-                            <img src="img/blog-3.jpg" class="img-fluid w-100" alt="">
-                            <div class="bg-primary d-inline px-3 py-2 text-center text-white position-absolute top-0 end-0">01 جنوری 2024</div>
-                        </div>
-                        <div class="p-4">
-                            <div class="blog-meta d-flex justify-content-between pb-2">
-                                <div class="">
-                                    <small><i class="fas fa-user me-2 text-muted"></i><a href="" class="text-muted me-2">ایڈمن کی جانب سے</small></a>
-                                    <small><i class="fa fa-comment-alt me-2 text-muted"></i><a href="" class="text-muted me-2">12 تبصرے</small></a>
-                                </div>
-                                <div class="">
-                                    <a href=""><i class="fas fa-bookmark text-muted"></i></a>
-                                </div>
+                            <div class="">
+                                <a href=""><i class="fas fa-bookmark text-muted"></i></a>
                             </div>
-                            <a href="" class="d-inline-block h4 lh-sm mb-3">اسلام میں حج کی اہمیت</a>
-                            <p class="mb-4">اس بلاگ میں حج کی فضیلت، اہمیت اور اس کے معاشرتی و روحانی فوائد پر روشنی ڈالی گئی ہے۔</p>
-                            <a href="#" class="btn btn-primary px-3">مزید تفصیلات</a>
                         </div>
+                        <a href="<?php echo $blog['page_url']; ?>" class="d-inline-block h4 lh-sm mb-3"><?php echo $blog['page_title']; ?></a>
+                        <p class="mb-4"><?php echo $excerpt; ?></p>
+                        <a href="<?php echo $blog['page_url']; ?>" class="btn btn-primary px-3">مزید تفصیلات</a>
                     </div>
                 </div>
             </div>
+            <?php endforeach; ?>
+        </div>
+        
+        <!-- View All Button -->
+        <div class="text-center mt-5">
+            <a href="blogs.html" class="btn btn-outline-primary px-4">تمام بلاگز دیکھیں</a>
         </div>
     </div>
-    <!-- Blog End -->
+</div>
+<!-- Blog End -->
 
 
 
@@ -1107,93 +1098,9 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-    <!-- Team Start -->
-    <div class="container-fluid team py-5">
-        <div class="container py-5">
-            <div class="text-center mx-auto mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
-                <p class="fs-5 text-uppercase text-primary">ہمارا اسٹاف</p>
-                <h1 class="display-3">ہمارے منتظمین سے ملاقات کریں</h1>
-            </div>
-            <div class="row g-5">
-                <div class="col-lg-4 col-xl-5">
-                    <div class="team-img wow zoomIn" data-wow-delay="0.1s">
-                        <img src="img/team-1.jpg" class="img-fluid" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-8 col-xl-7">
-                    <div class="team-item wow fadeIn" data-wow-delay="0.1s">
-                        <h1>مولانا نعیم صاحب</h1>
-                        <h5 class="fw-normal fst-italic text-primary mb-4">صدر جامعہ مدنیہ</h5>
-                        <p class="mb-4">مولانا نعیم صاحب جامعہ مدنیہ کے بانی اور صدر ہیں جنہوں نے دینی تعلیم کے فروغ کے لیے قابل قدر خدمات انجام دی ہیں۔</p>
-                        <div class="team-icon d-flex pb-4 mb-4 border-bottom border-primary">
-                            <a class="btn btn-primary btn-lg-square me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                            <a class="btn btn-primary btn-lg-square me-2" href=""><i class="fab fa-twitter"></i></a>
-                            <a href="#" class="btn btn-primary btn-lg-square me-2"><i class="fab fa-instagram"></i></a>
-                            <a href="#" class="btn btn-primary btn-lg-square"><i class="fab fa-linkedin-in"></i></a>
-                        </div>
-                    </div>
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <div class="team-item wow zoomIn" data-wow-delay="0.2s">
-                                <img src="img/team-2.jpg" class="img-fluid w-100" alt="">
-                                <div class="team-content text-dark text-center py-3">
-                                    <div class="team-content-inner">
-                                        <h5 class="mb-0">مولانا ارشاد احمد</h5>
-                                        <p class="text-dark">امام و خطیب</p>
-                                        <div class="team-icon d-flex align-items-center justify-content-center">
-                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-twitter"></i></a>
-                                            <a href="#" class="btn btn-primary btn-sm-square me-2"><i class="fab fa-instagram"></i></a>
-                                            <a href="#" class="btn btn-primary btn-sm-square"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="team-item wow zoomIn" data-wow-delay="0.4s">
-                                <img src="img/team-3.jpg" class="img-fluid w-100" alt="">
-                                <div class="team-content text-dark text-center py-3">
-                                    <div class="team-content-inner">
-                                        <h5 class="mb-0">مولانا عبدالستار</h5>
-                                        <p class="text-dark">استاذ حدیث</p>
-                                        <div class="team-icon d-flex align-items-center justify-content-center">
-                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-twitter"></i></a>
-                                            <a href="#" class="btn btn-primary btn-sm-square me-2"><i class="fab fa-instagram"></i></a>
-                                            <a href="#" class="btn btn-primary btn-sm-square"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="team-item wow zoomIn" data-wow-delay="0.6s">
-                                <img src="img/team-4.jpg" class="img-fluid w-100" alt="">
-                                <div class="team-content text-dark text-center py-3">
-                                    <div class="team-content-inner">
-                                        <h5 class="mb-0">مولانا محمد علی</h5>
-                                        <p class="text-dark">استاذ قرآن</p>
-                                        <div class="team-icon d-flex align-items-center justify-content-center">
-                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-facebook-f"></i></a>
-                                            <a class="btn btn-primary btn-sm-square me-2" href=""><i class="fab fa-twitter"></i></a>
-                                            <a href="#" class="btn btn-primary btn-sm-square me-2"><i class="fab fa-instagram"></i></a>
-                                            <a href="#" class="btn btn-primary btn-sm-square"><i class="fab fa-linkedin-in"></i></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Team End -->
-
 
     <!-- Testiminial Start -->
-    <div class="container-fluid testimonial py-5">
+    <!-- <div class="container-fluid testimonial py-5">
         <div class="container py-5">
             <div class="text-center mx-auto mb-5 wow fadeIn" data-wow-delay="0.1s" style="max-width: 700px;">
                 <p class="fs-5 text-uppercase text-primary">توصیفی کلمات</p>
@@ -1298,7 +1205,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Testiminial End -->
 <?php 
 echo replace_sysvari(front_script(null, $template_id), getcwd() . "/");

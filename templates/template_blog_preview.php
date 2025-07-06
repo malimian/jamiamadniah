@@ -262,6 +262,28 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                         <?php else: ?>
                             <?php echo replace_sysvari($content['page_desc'], getcwd()."/"); ?>
                         <?php endif; ?>
+
+                          <?php 
+                            $files = return_single_row("SELECT * FROM page_files 
+                                WHERE isactive = 1 
+                                AND soft_delete = 0 
+                                AND pid = ".$content['pid']);
+
+                            if (!empty($files) && !empty($files['f_name'])) {
+                                $file_link = ABSOLUTE_FILEPATH . $files['f_name'];
+                            ?>
+                                <div class="mt-4">
+                                    <a href="<?= htmlspecialchars($file_link) ?>" class="btn btn-outline-success me-2" download>
+                                        <i class="fas fa-download me-2"></i>ڈاؤن لوڈ کریں
+                                    </a>
+                                    <a href="<?= htmlspecialchars($file_link) ?>" target="_blank" class="btn btn-outline-primary">
+                                        <i class="fas fa-eye me-2"></i>آن لائن دیکھیں
+                                    </a>
+                                </div>
+                            <?php } else { ?>
+                                <div class='alert alert-warning mt-4'>اس فتوی کی کوئی فائل موجود نہیں ہے۔</div>
+                            <?php } ?>
+
                     </div>
                     
                     <!-- Gallery Section -->
@@ -422,12 +444,8 @@ $news_categories = return_multiple_rows("SELECT * FROM category WHERE catid = ".
                         ");
                         
                         foreach ($latest_posts as $post): 
-                            $post_image = !empty($post['featured_image']) ? ABSOLUTE_IMAGEPATH.$post['featured_image'] : ABSOLUTE_IMAGEPATH.'default-article-image.jpg';
                         ?>
                         <div class="latest-post-aside d-flex mb-3">
-                            <div class="flex-shrink-0">
-                                <img src="<?php echo $post_image; ?>" alt="<?php echo $post['page_title']; ?>" width="80" class="rounded">
-                            </div>
                             <div class="flex-grow-1 ms-3">
                                 <h6 class="mb-1"><a href="<?php echo $post['page_url']; ?>" class="text-decoration-none"><?php echo mb_strimwidth($post['page_title'], 0, 50, '...'); ?></a></h6>
                                 <small class="text-muted">
