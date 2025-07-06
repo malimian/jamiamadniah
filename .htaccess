@@ -1,9 +1,6 @@
 RewriteEngine On
 
 # Force HTTPS only in production
-RewriteCond %{HTTP_HOST} !^localhost
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Allow sitemaps, robots.txt
 RewriteRule ^sitemap\.xml$ sitemap.php [L]
@@ -29,13 +26,11 @@ RewriteRule ^(includes|modules|templates)/.*$ /error404.html [L,R=302]
 # image-300x200.jpg
 # image-300x.jpg
 # image-x200.jpg
-
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.+)-([0-9]*)x([0-9]*)\.(jpg|jpeg|png|webp)$ plugins/image_resize/image_resize.php?path=$1&width=$2&height=$3&ext=$4 [L,QSA]
 
-
-#add Expires headers
+# Add Expires headers
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access plus 1 month"
@@ -68,5 +63,4 @@ RewriteRule ^(.+)-([0-9]*)x([0-9]*)\.(jpg|jpeg|png|webp)$ plugins/image_resize/i
     # Others
     ExpiresByType application/pdf "access plus 1 month"
     ExpiresByType application/x-shockwave-flash "access plus 1 month"
-</IfModule>  
-
+</IfModule>
