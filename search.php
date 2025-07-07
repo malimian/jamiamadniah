@@ -370,7 +370,7 @@ if (!empty($navbar_content)) {
                 echo "<div class='no-results'>No results found for \"".htmlspecialchars($search_query)."\"</div>";
             }
         } else {
-            echo "<div class='search-instructions'>اوپر موجود تلاش کے خانے میں مطلوبہ الفاظ درج کریں تاکہ خبری مضامین تلاش کیے جا سکیں۔
+            echo "<div class='search-instructions'>اوپر دیے گئے تلاش کے خانے میں مطلوبہ الفاظ درج کریں تاکہ صفحات تلاش کیے جا سکیں۔
 </div>";
         }
         ?>
